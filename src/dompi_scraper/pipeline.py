@@ -286,10 +286,14 @@ def parse_results_page(html: str) -> list[dict]:
             el = soup.find("span", {"id": f"id_sc_field_{fld}_{suf}"})
             return el.get_text(" ", strip=True) if el else ""
 
+        # Extrai todas as URLs dos links da linha
         cands = [extract_pdf_url_from_href(str(a.get("href"))) for a in row.find_all("a", href=True)]
         cands = [c for c in cands if c]
-        arqs = [u for u in cands if "_Campo_Maior_" in u or "_" in u.split("/")[-1]]
-        url_final = arqs[0] if arqs else (cands[0] if cands else "")
+        
+        # Prioriza URLs que pareçam "completas" (com detalhes descritivos e número de página)
+        # URLs completas têm padrão: DM_XXXX_NNN_municipio_tipo_descricao_pag_NNN.pdf
+        urls_detalhadas = [u for u in cands if "pag_" in u.lower() and u.count("_") >= 4]
+        url_final = urls_detalhadas[0] if urls_detalhadas else (cands[0] if cands else "")
 
         regs.append({
             "edicao": xt("numedicao"),
