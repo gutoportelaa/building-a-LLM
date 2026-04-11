@@ -261,12 +261,14 @@ def extract_pdf_url_from_href(href: str) -> str:
     if ".pdf" in low: return urljoin(BASE_URL, cleaned.strip())
     return ""
 
-def get_total_pages(html: str) -> int:
+def get_total_pages(html: str) -> tuple[int, int]:
     txt = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
     m = re.search(r"(\d+)\s*a\s*(\d+)\s*de\s*(\d+)", txt)
     if m:
-        return max(1, (int(m.group(3)) + 10 - 1) // 10)
-    return 1
+        total_docs = int(m.group(3))
+        total_pags = max(1, (total_docs + 10 - 1) // 10)
+        return total_pags, total_docs
+    return 1, 0
 
 def parse_results_page(html: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
@@ -344,7 +346,7 @@ def pipeline_main(mun_list: list, entidades: list, d_in: str, d_fif: str, out_di
             html1 = fetch_search_results(session, ctx, mun, ent, d_in, d_fif, p=1)
             if not html1: continue
             
-            pags = get_total_pages(html1)
+            pags, max_docs = get_total_pages(html1)
             docs_salvos = 0
             
             # Navegar nas páginas apenas até atingir o limite estipulado

@@ -31,6 +31,7 @@ import json
 import logging
 import sys
 import time
+import http.client as http_client
 from datetime import datetime
 from pathlib import Path
 
@@ -76,6 +77,12 @@ def _configure_logging(verbose: bool = False) -> None:
     log.setLevel(level)
     log.handlers.clear()
     log.addHandler(handler)
+    
+    if verbose:
+        http_client.HTTPConnection.debuglevel = 1
+        requests_log = logging.getLogger("urllib3")
+        requests_log.setLevel(logging.DEBUG)
+        requests_log.propagate = True
 
 
 # ---------------------------------------------------------------------------
@@ -87,7 +94,7 @@ def scrape_territorio(
     entidades: list[str],
     ano: int,
     limit_per_cruzamento: int,
-) -> list[dict]:
+) -> tuple[list[dict], list[dict]]:
     """
     Itera [município × entidade] e coleta metadados das publicações.
     Retorna lista de dicionários com os campos de cada publicação encontrada.
@@ -102,13 +109,14 @@ def scrape_territorio(
 
     if ctx.get("error"):
         log.error(f"Falha ao carregar formulário: {ctx['error']}")
-        return []
+        return [], []
 
     municipios_ok = len(ctx.get("municipio_options", {}))
     entidades_ok = len(ctx.get("entidade_options", {}))
     log.info(f"Formulário carregado: {municipios_ok} municípios | {entidades_ok} entidades mapeadas.")
 
     resultados: list[dict] = []
+    discrepancias: list[dict] = []
     total_cruzamentos = len(mun_list) * len(entidades)
     cruzamento_atual = 0
 
@@ -123,9 +131,14 @@ def scrape_territorio(
             html1 = fetch_search_results(session, ctx, mun, ent, d_ini, d_fim, p=1)
             if not html1:
                 log.warning(f"  Sem resposta para {mun} / {ent}. Pulando.")
+                discrepancias.append({
+                    "municipio": mun, "entidade": ent, 
+                    "esperado": 0, "coletado": 0, "status": "FALHA_CONEXAO"
+                })
                 continue
 
-            total_pags = get_total_pages(html1)
+            total_pags, total_docs = get_total_pages(html1)
+            log.info(f"  -> Fonte acusou {total_docs} documentos disponíveis em {total_pags} página(s).")
             coletados = 0
 
             for pag in range(1, total_pags + 1):
@@ -173,8 +186,22 @@ def scrape_territorio(
                     coletados += 1
 
             log.info(f"  → {coletados} publicação(ões) coletada(s) para {mun} / {ent}.")
+            
+            # Checa validade vs expectativa do portal
+            if coletados < total_docs and coletados < limit_per_cruzamento:
+                discrepancias.append({
+                    "municipio": mun, "entidade": ent, 
+                    "esperado": total_docs, "coletado": coletados, 
+                    "status": "INCOMPLETO"
+                })
+            elif total_docs == 0:
+                discrepancias.append({
+                    "municipio": mun, "entidade": ent, 
+                    "esperado": 0, "coletado": 0, 
+                    "status": "VAZIO"
+                })
 
-    return resultados
+    return resultados, discrepancias
 
 
 # ---------------------------------------------------------------------------
@@ -284,7 +311,7 @@ def main() -> None:
     log.info(f"Ano: {args.ano} | Limite por cruzamento: {args.limite}")
 
     # Executa o scraping
-    resultados = scrape_territorio(muns, entidades, args.ano, args.limite)
+    resultados, discrepancias = scrape_territorio(muns, entidades, args.ano, args.limite)
 
     if not resultados:
         log.warning("Nenhum resultado coletado. Verifique os parâmetros e a conectividade.")
@@ -317,6 +344,48 @@ def main() -> None:
     print("\n  Distribuição por cruzamento:")
     for chave, qtd in sorted(contagem.items()):
         print(f"    {chave}: {qtd} doc(s)")
+        
+    if discrepancias:
+        print("\n  [ATENÇÃO] Alertas de Inconsistência:")
+        for disc in discrepancias:
+            print(f"    - [{disc['municipio']} / {disc['entidade']}]: Status = {disc['status']} (Aguardava {disc['esperado']} | Coletou {disc['coletado']})")
+    
+    # Deduplicação Pré-Download (Agrupa por PDF URL)
+    doc_unicos = {}
+    for r in resultados:
+        pdf = r.get("pdf_url")
+        if not pdf: continue
+        if pdf not in doc_unicos:
+            doc_unicos[pdf] = r.copy()
+            doc_unicos[pdf]["municipios_referenciados"] = [r["municipio"]]
+            doc_unicos[pdf]["entidades_referenciadas"] = [r["entidade"]]
+        else:
+            if r["municipio"] not in doc_unicos[pdf]["municipios_referenciados"]:
+                doc_unicos[pdf]["municipios_referenciados"].append(r["municipio"])
+            if r["entidade"] not in doc_unicos[pdf]["entidades_referenciadas"]:
+                doc_unicos[pdf]["entidades_referenciadas"].append(r["entidade"])
+                
+    lista_unicos = list(doc_unicos.values())
+    
+    path_json_unico = Path(base_saida).with_name(f"{Path(base_saida).name}_deduplicados.json")
+    path_csv_unico = Path(base_saida).with_name(f"{Path(base_saida).name}_deduplicados.csv")
+    
+    lista_unicos_csv = []
+    for d in lista_unicos:
+        d_copy = d.copy()
+        d_copy["municipios_referenciados"] = "; ".join(d_copy["municipios_referenciados"])
+        d_copy["entidades_referenciadas"] = "; ".join(d_copy["entidades_referenciadas"])
+        lista_unicos_csv.append(d_copy)
+
+    salvar_json(lista_unicos, path_json_unico)
+    if not args.so_json:
+        salvar_csv(lista_unicos_csv, path_csv_unico)
+
+    print("\n  📈 Extrato de Deduplicação:")
+    print(f"    - Publicações processadas (linhas brutas): {len(resultados)}")
+    print(f"    - Documentos PDF físicos reais (deduplicados): {len(lista_unicos)}")
+    print(f"    > {len(resultados) - len(lista_unicos)} requisições de download serão economizadas!")
+
     print("─" * 60 + "\n")
 
 
