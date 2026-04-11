@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dompi-scraper"
+version = "0.1.0"
+description = "Pipeline de coleta, deduplicacao e auditoria de publicacoes do DOMPI."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "bs4>=0.0.2",
+    "markitdown[pdf]>=0.0.1",
+    "pypdf>=5.4.0",
+    "requests>=2.33.1",
+]
+
+[project.optional-dependencies]
+docling = [
+    "docling>=2.0.0",
+]
+
+[project.scripts]
+dompi-crawl = "dompi_scraper.requests_CampoMaior:main"
+dompi-dedupe-pdfs = "dompi_scraper.baixar_pdfs_unicos:main"
+dompi-extract-text = "dompi_scraper.extrair_texto_pdfs_unicos:main"
+dompi-enrich = "dompi_scraper.enriquecer_registros_texto:main"
+dompi-audit = "dompi_scraper.auditoria_integridade:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
