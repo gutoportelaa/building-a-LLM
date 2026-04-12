@@ -147,7 +147,7 @@ def scrape_territorio(
 
                 if pag > 1:
                     time.sleep(1.2)  # Respeita o servidor
-                    html1 = fetch_search_results(session, ctx, mun, ent, d_ini, d_fim, p=pag)
+                    html1 = fetch_search_results(session, ctx, mun, ent, d_ini, d_fim, p=pag, last_html=html1)
                     if not html1:
                         continue
 
@@ -219,7 +219,13 @@ def salvar_csv(dados: list[dict], caminho: Path) -> None:
     if not dados:
         return
     caminho.parent.mkdir(parents=True, exist_ok=True)
-    campos = list(dados[0].keys())
+    
+    campos = []
+    for row in dados:
+        for key in row.keys():
+            if key not in campos:
+                campos.append(key)
+                
     with open(caminho, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=campos)
         writer.writeheader()
@@ -323,6 +329,33 @@ def main() -> None:
     base_saida = args.saida or f"scraping_carnaubais_{args.ano}"
     path_json = Path(base_saida).with_suffix(".json")
     path_csv = Path(base_saida).with_suffix(".csv")
+
+    # Lógica de Upsert (Mistura com base antiga se existir)
+    novos_registros_qtd = len(resultados)
+    registros_antigos_qtd = 0
+    
+    if path_json.exists():
+        try:
+            with open(path_json, "r", encoding="utf-8") as f:
+                dados_antigos = json.load(f)
+            
+            def get_pk(r: dict) -> str:
+                return f"{r.get('municipio', '')}_{r.get('entidade', '')}_{r.get('identificador_oficial', '')}_{r.get('pdf_url', '')}"
+            
+            # Indexa base antiga
+            mapa_registros = {get_pk(r): r for r in dados_antigos}
+            registros_antigos_qtd = len(mapa_registros)
+            
+            # Upsert dos novos
+            for r in resultados:
+                mapa_registros[get_pk(r)] = r
+                
+            resultados = list(mapa_registros.values())
+            print(f"\n  [INCREMENTO] Carregados {registros_antigos_qtd} registros antigos de {path_json.name}.")
+        except Exception as e:
+            log.error(f"CRÍTICO: Erro ao tentar carregar base antiga {path_json}: {e}")
+            log.error("Abortando execução de salvamento para proteger a base de dados original contra sobrescrita!")
+            sys.exit(1)
 
     salvar_json(resultados, path_json)
     if not args.so_json:

@@ -32,6 +32,12 @@ venv/
 # Generated scraping outputs (heavy artifacts)
 carnaubais_dom/
 carnaubais_dom_full/
+scraping_carnaubais_*.json
+scraping_carnaubais_*.csv
+
+# Data Lake e corpus de treino (gerados pelo pipeline)
+dados_brutos/
+corpus_treino_dompi*.jsonl
 
 # Keep only curated sample datasets under data/samples
 data/*
@@ -40,3 +46,9 @@ data/*
 
 # Notebook checkpoints
 .ipynb_checkpoints/
+
+# SQLite, PDFs e manifestos (artefatos pesados)
+db_treino_carnaubais/
+download_manifest.json
+
+.gitignore

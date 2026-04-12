@@ -221,10 +221,25 @@ def split_date(d: str):
     if m: return m.group(1), m.group(2), m.group(3)
     return "", "", ""
 
-def fetch_search_results(session, ctx, mun, endt, di="01/01/2025", df="31/12/2025", p=1):
+def fetch_search_results(session, ctx, mun, endt, di="01/01/2025", df="31/12/2025", p=1, last_html=""):
     hid = ctx.get("hidden_fields", {})
     e_opts = ctx.get("entidade_options", {})
     m_opts = ctx.get("municipio_options", {})
+
+    if p > 1 and last_html:
+        soup = BeautifulSoup(last_html, "html.parser")
+        f4 = soup.find("form", {"name": "F4"})
+        if f4:
+            payload2 = {i.get("name"): i.get("value") for i in f4.find_all("input", type="hidden")}
+            payload2["nmgp_opcao"] = "rec"
+            payload2["rec"] = str((p - 1) * 10 + 1)
+            try:
+                r = session.post(SEARCH_URL, data=payload2, timeout=30)
+                r.raise_for_status()
+                return r.text
+            except Exception as e:
+                log.error(f"Erro em Paginação Mun: {mun} | Entity: {endt} | Pág: {p} | Erro: {e}")
+                return None
 
     d1, m1, y1 = split_date(di)
     d2, m2, y2 = split_date(df)
@@ -359,7 +374,7 @@ def pipeline_main(mun_list: list, entidades: list, d_in: str, d_fif: str, out_di
                 
                 if pag > 1:
                     time.sleep(1.0)
-                    html1 = fetch_search_results(session, ctx, mun, ent, d_in, d_fif, p=pag)
+                    html1 = fetch_search_results(session, ctx, mun, ent, d_in, d_fif, p=pag, last_html=html1)
                     if not html1: continue
                 
                 regs = parse_results_page(html1)
