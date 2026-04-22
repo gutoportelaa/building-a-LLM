@@ -1,3 +1,9 @@
+<div align="center">
+  <img src="src/assets/scrapingToBLLM.png" width="900px" />
+</div>
+
+
+
 # Projeto DOM-PI Scraper
 
 Repositório dedicado à automação da coleta e processamento de publicações do Diário Oficial dos Municípios do Piauí (DOM-PI), com escopo primário focado no Território de Desenvolvimento dos Carnaubais. O sistema realiza extração de metadados, download de publicações, processamento de PDFs com estratégias de deduplicação incremental e conversão estruturada.
