@@ -37,7 +37,7 @@ scraping_carnaubais_*.csv
 
 # Data Lake e corpus de treino (gerados pelo pipeline)
 dados_brutos/
-corpus_treino_dompi*.jsonl
+corpus_*.jsonl
 
 # Keep only curated sample datasets under data/samples
 data/*
@@ -50,5 +50,7 @@ data/*
 # SQLite, PDFs e manifestos (artefatos pesados)
 db_treino_carnaubais/
 download_manifest.json
+
+output_pipeline/
 
 .gitignore
