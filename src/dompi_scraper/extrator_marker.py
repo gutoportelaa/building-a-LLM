@@ -1,28 +1,34 @@
 #!/usr/bin/env python3
 """
-extrator_marker.py — Extrator de PDFs via Marker com Qualidade OCR
+extrator_marker.py — Extrator GPU-Otimizado via Marker (Etapa 3-B)
 -------------------------------------------------------------------
-Lê PDFs da pasta db_treino_carnaubais/pdfs_arquivos, extrai texto estruturado
-via Marker + DocTR (com quality gate OpenCV), e consolida em JSONL para
-fine-tuning de LLMs.
+Lê o manifesto de downloads (download_manifest.json) e extrai texto
+estruturado dos PDFs via Marker (GPU), gerando Markdown com frontmatter
+YAML no Data Lake e JSONL para fine-tuning — mesmo formato do processar_pdfs.py.
 
-Pipeline interno:
-1. Descoberta de PDFs na pasta de origem
-2. Quality gate com Laplaciano (OpenCV) para detectar desfoque
-3. Extração de texto via Marker (PDF → Markdown)
-4. Mapeamento geométrico via DocTR (detecta tabelas, assinaturas)
-5. Deduplicação textual por hash MD5
-6. Geração de JSONL limpo para fine-tuning
+Otimizações:
+  - Modelos Marker carregados UMA vez por sessão (não por PDF)
+  - Quality gate em memória via PyMuPDF (sem PNGs no disco)
+  - DocTR e pdf2image removidos completamente
+  - Extração de imagens desativada (--disable_image_extraction)
+  - Incremental: consulta registro_dedup_marker.json e pula já processados
+
+GPU: RTX 4070 Laptop (8GB) — Marker usa ~3.17 GB VRAM, 1 worker seguro.
 
 Uso:
-    # Processar 50 PDFs de amostra
-    python src/dompi_scraper/extrator_marker.py --tamanho-amostra 50
+    # Teste com 3 PDFs
+    uv run python src/dompi_scraper/extrator_marker.py \\
+        --manifest db_treino_carnaubais/pdfs_arquivos/download_manifest.json \\
+        --output-dir dados_brutos_marker \\
+        --jsonl-output corpus_marker.jsonl \\
+        --limite 3 --verbose
 
-    # Processar TODOS os PDFs
-    python src/dompi_scraper/extrator_marker.py --tamanho-amostra None
-
-    # Com verbose (mostra processamento detalhado)
-    python src/dompi_scraper/extrator_marker.py --tamanho-amostra 10 --verbose
+    # Produção completa (PDFs escaneados do DOM-PI)
+    uv run python src/dompi_scraper/extrator_marker.py \\
+        --manifest db_treino_carnaubais/pdfs_arquivos/download_manifest.json \\
+        --output-dir dados_brutos_marker \\
+        --jsonl-output corpus_marker.jsonl \\
+        --force-ocr
 """
 
 from __future__ import annotations
@@ -33,508 +39,505 @@ import json
 import logging
 import os
 import sys
+import time
 from pathlib import Path
-from typing import Any
+
+try:
+    import torch
+except ImportError:
+    print("Erro: 'torch' necessário. Instale com: uv add torch")
+    sys.exit(1)
+
+try:
+    import fitz  # PyMuPDF — quality gate em memória
+except ImportError:
+    print("Erro: 'pymupdf' necessário. Instale com: uv add pymupdf")
+    sys.exit(1)
 
 try:
     import cv2
     import numpy as np
-    import torch
 except ImportError:
-    print("Erro: Bibliotecas necessárias não instaladas.")
-    print("Instale com: pip install opencv-python numpy torch")
+    print("Erro: 'opencv-python' e 'numpy' necessários. Instale com: uv add opencv-python numpy")
     sys.exit(1)
 
 try:
-    from pdf2image import convert_from_path
+    from .shared_utils import compute_content_md5, classify_act_type, extract_date_from_text
 except ImportError:
-    print("Erro: 'pdf2image' é necessário. Instale com: pip install pdf2image")
-    sys.exit(1)
+    from shared_utils import compute_content_md5, classify_act_type, extract_date_from_text
 
+# Importa utilitários de formatação do processar_pdfs (evita duplicação)
 try:
-    from .shared_utils import compute_content_md5, normalize_text_for_dedup
+    from .processar_pdfs import generate_frontmatter, build_datalake_path
 except ImportError:
-    from shared_utils import compute_content_md5, normalize_text_for_dedup
+    from processar_pdfs import generate_frontmatter, build_datalake_path
 
+# ==============================================================================
+# LOGGING
+# ==============================================================================
 
-# ---------------------------------------------------------------------------
-# Configuração
-# ---------------------------------------------------------------------------
-
-# Variável de controle: número de PDFs a processar
-# Se None, processa todos os PDFs disponíveis
-TAMANHO_AMOSTRA = 5
-
-# Caminho da pasta contendo os PDFs
-PASTA_PDFS = Path("db_treino_carnaubais/pdfs_arquivos")
-
-# Diretório de saída
-DIR_SAIDA = "output_pipeline"
-
-# Arquivo JSONL de saída
-JSONL_OUTPUT = "corpus_marker.jsonl"
-
-# Threshold mínimo de qualidade OCR (Laplaciano)
-LIMIAR_DESFOQUE = 100.0
-
-# Logging
 log = logging.getLogger("extrator_marker")
 
 
-# ---------------------------------------------------------------------------
-# Configuração de Logging
-# ---------------------------------------------------------------------------
-
-def _configure_logging(verbose: bool = False) -> None:
+def _configure_logging(verbose: bool = False, log_file: str | None = None) -> None:
     level = logging.DEBUG if verbose else logging.INFO
-    fmt = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setFormatter(fmt)
+    fmt = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     log.setLevel(level)
     log.handlers.clear()
-    log.addHandler(handler)
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setFormatter(fmt)
+    ch.setLevel(level)
+    log.addHandler(ch)
+    if log_file:
+        Path(log_file).parent.mkdir(parents=True, exist_ok=True)
+        fh = logging.FileHandler(log_file, encoding="utf-8")
+        fh.setFormatter(fmt)
+        log.addHandler(fh)
 
 
-# ---------------------------------------------------------------------------
-# Detecção de Poppler (para Windows)
-# ---------------------------------------------------------------------------
+# ==============================================================================
+# QUALITY GATE EM MEMÓRIA (PyMuPDF, sem PNGs no disco)
+# ==============================================================================
 
-def _find_poppler_path() -> str | None:
+def quality_gate_inmemory(
+    pdf_path: str,
+    sample_pages: int = 2,
+    min_variance: float = 50.0,
+) -> tuple[bool, float]:
     """
-    Detecta o caminho do Poppler instalado no Conda Base (Windows).
-    Retorna o caminho ou None.
-    """
-    import platform
+    Avalia qualidade do PDF renderizando páginas de amostra em memória (72 DPI,
+    escala de cinza) via PyMuPDF e calculando variância do Laplaciano com cv2.
 
-    if platform.system() != "Windows":
-        return "/usr/bin"
-
-    conda_base_paths = [
-        Path(os.path.expandvars(r"%USERPROFILE%\miniconda3")),
-        Path(os.path.expandvars(r"%USERPROFILE%\anaconda3")),
-        Path(os.path.expandvars(r"%USERPROFILE%\Miniconda3")),
-        Path(os.path.expandvars(r"%USERPROFILE%\Anaconda3")),
-        Path("C:\\miniconda3"),
-        Path("C:\\anaconda3"),
-    ]
-
-    for conda_path in conda_base_paths:
-        lib_bin = conda_path / "Library" / "bin"
-        if lib_bin.exists():
-            if (lib_bin / "pdftoimage.exe").exists() or (lib_bin / "pdftoppm.exe").exists():
-                log.debug(f"Poppler encontrado em: {lib_bin}")
-                return str(lib_bin)
-
-    log.warning("Poppler não encontrado. Usando valor padrão (None)")
-    return None
-
-
-# ---------------------------------------------------------------------------
-# Pipeline Principal
-# ---------------------------------------------------------------------------
-
-class DocumentAIPipeline:
-    """
-    Pipeline de extração de PDFs com quality gate e deduplicação.
-    """
-
-    def __init__(
-        self,
-        output_dir: str = "output_pipeline",
-        limiar_desfoque: float = 100.0,
-        poppler_path: str | None = None,
-    ):
-        self.output_dir = output_dir
-        self.limiar_desfoque = limiar_desfoque
-        self.poppler_path = poppler_path
-        os.makedirs(self.output_dir, exist_ok=True)
-        log.info(f"🚀 Pipeline inicializado com limiar de desfoque: {limiar_desfoque}")
-
-    def _limpar_vram(self, *modelos: Any) -> None:
-        """Limpa memória VRAM para evitar Out Of Memory."""
-        for modelo in modelos:
-            if modelo is not None:
-                del modelo
-        gc.collect()
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
-
-    def preparar_imagens(self, pdf_path: str) -> list[str]:
-        """Converte PDF para PNG e salva no disco."""
-        log.debug(f"📄 Convertendo {pdf_path} para imagens PNG (DPI=300)...")
-        try:
-            if self.poppler_path:
-                imagens = convert_from_path(pdf_path, dpi=300, poppler_path=self.poppler_path)
-            else:
-                imagens = convert_from_path(pdf_path, dpi=300)
-        except Exception as e:
-            log.error(f"❌ Erro ao converter PDF: {e}")
-            raise
-
-        caminhos = []
-        for i, img in enumerate(imagens):
-            caminho = os.path.join(self.output_dir, f"page_{i}.png")
-            img.save(caminho, "PNG")
-            caminhos.append(caminho)
-
-        return caminhos
-
-    def avaliar_qualidade_opencv(self, caminhos_imagens: list[str]) -> tuple[list[str], list[str]]:
-        """
-        Quality gate: Calcula a Variância do Laplaciano para detectar desfoque.
-        Retorna (imagens_validas, imagens_rejeitadas).
-        """
-        log.debug("🔍 Iniciando triagem de qualidade (CPU)...")
-        paginas_validas = []
-        paginas_rejeitadas = []
-
-        for caminho in caminhos_imagens:
-            try:
-                imagem = cv2.imread(caminho)
-                if imagem is None:
-                    log.warning(f"  ⚠️  {os.path.basename(caminho)} não pôde ser lida")
-                    paginas_rejeitadas.append(caminho)
-                    continue
-
-                cinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
-                nitidez = cv2.Laplacian(cinza, cv2.CV_64F).var()
-
-                nome_arquivo = os.path.basename(caminho)
-                if nitidez > self.limiar_desfoque:
-                    log.debug(f"  ✅ {nome_arquivo} Aprovada (Nitidez: {nitidez:.2f})")
-                    paginas_validas.append(caminho)
-                else:
-                    log.debug(f"  ❌ {nome_arquivo} Rejeitada por desfoque (Nitidez: {nitidez:.2f})")
-                    paginas_rejeitadas.append(caminho)
-            except Exception as e:
-                log.error(f"  Erro ao processar {caminho}: {e}")
-                paginas_rejeitadas.append(caminho)
-
-        return paginas_validas, paginas_rejeitadas
-
-    def extrair_texto_marker(self, pdf_path: str) -> str:
-        """Extração de texto via Marker com GPU."""
-        log.debug("🛠️  Iniciando Marker (Extração de Markdown)...")
-
-        try:
-            from marker.converters.pdf import PdfConverter
-            from marker.models import create_model_dict
-            from marker.output import text_from_rendered
-        except ImportError:
-            log.error("❌ Marker não instalado. Instale com: pip install marker-pdf")
-            raise
-
-        try:
-            # Marker gerencia GPU automaticamente via device_type (CUDA por padrão se disponível)
-            if torch.cuda.is_available():
-                log.debug("  📊 GPU detectada - Marker usará CUDA automaticamente")
-            else:
-                log.warning("  ⚠️  GPU não disponível - Marker usará CPU (lento!)")
-            
-            modelos_marker = create_model_dict()
-            converter = PdfConverter(artifact_dict=modelos_marker)
-            rendered = converter(pdf_path)
-            full_text, _, _ = text_from_rendered(rendered)
-            self._limpar_vram(modelos_marker, converter, rendered)
-            return full_text
-        except Exception as e:
-            log.error(f"❌ Erro ao extrair texto com Marker: {e}")
-            raise
-
-    def mapear_geometria_doctr(self, caminhos_imagens: list[str]) -> dict:
-        """Mapeamento geométrico via DocTR."""
-        log.debug("📐 Iniciando DocTR (Mapeamento Geométrico)...")
-
-        if not caminhos_imagens:
-            log.warning("  ⚠️  Sem imagens para mapear com DocTR")
-            return {}
-
-        try:
-            from doctr.io import DocumentFile
-            from doctr.models import ocr_predictor
-        except ImportError:
-            log.error("❌ DocTR não instalado. Instale com: pip install python-doctr[torch]")
-            return {}
-
-        try:
-            modelo_doctr = ocr_predictor(pretrained=True).cuda()
-            documento = DocumentFile.from_images(caminhos_imagens)
-            resultado = modelo_doctr(documento)
-            dicionario_espacial = resultado.export()
-            self._limpar_vram(modelo_doctr)
-            return dicionario_espacial
-        except Exception as e:
-            log.error(f"❌ Erro ao mapear geometria: {e}")
-            return {}
-
-    def processar_documento(self, pdf_path: str) -> dict:
-        """
-        Processa um único PDF completo.
-
-        Retorna:
-        {
-            "status": "processado" | "rejeitado_por_qualidade" | "erro",
-            "texto": texto_extraido (se processado),
-            "paginas_rejeitadas": num (se processado),
-            "error": mensagem de erro (se erro),
-        }
-        """
-        log.info(f"--- PROCESSANDO: {os.path.basename(pdf_path)} ---")
-
-        try:
-            # 1. Preparação
-            todas_imagens = self.preparar_imagens(pdf_path)
-            log.debug(f"  {len(todas_imagens)} páginas convertidas para PNG")
-
-            # 2. Quality Gate
-            imagens_validas, imagens_rejeitadas = self.avaliar_qualidade_opencv(todas_imagens)
-            log.debug(
-                f"  Quality Gate: {len(imagens_validas)} válidas, "
-                f"{len(imagens_rejeitadas)} rejeitadas"
-            )
-
-            # Regra crítica: se nenhuma página for válida, aborta
-            if not imagens_validas:
-                log.warning("  🛑 Documento rejeitado: nenhuma página legível")
-                return {
-                    "status": "rejeitado_por_qualidade",
-                    "erro": "Nenhuma página legível detectada",
-                }
-
-            # 3. Extração de texto
-            try:
-                texto_md = self.extrair_texto_marker(pdf_path)
-            except Exception as e:
-                return {
-                    "status": "erro",
-                    "error": f"Erro ao extrair com Marker: {str(e)}",
-                }
-
-            # 4. Mapeamento geométrico
-            geometria = self.mapear_geometria_doctr(imagens_validas)
-
-            log.info(
-                f"  ✅ Processamento concluído ({len(imagens_validas)} páginas, "
-                f"{len(texto_md)} caracteres)"
-            )
-
-            return {
-                "status": "processado",
-                "texto": texto_md,
-                "paginas_rejeitadas": len(imagens_rejeitadas),
-                "mapa_geometrico": geometria,
-            }
-
-        except Exception as e:
-            log.error(f"  ❌ Erro durante processamento: {type(e).__name__}: {e}")
-            return {
-                "status": "erro",
-                "error": str(e),
-            }
-
-
-# ---------------------------------------------------------------------------
-# Descoberta de PDFs
-# ---------------------------------------------------------------------------
-
-def descobrir_pdfs(pasta: Path, limite: int | None = None) -> list[Path]:
-    """
-    Descobre todos os PDFs em uma pasta.
-
-    Args:
-        pasta: Caminho da pasta contendo os PDFs
-        limite: Número máximo de PDFs a retornar. Se None, retorna todos.
+    Sem gravação de PNGs em disco. Dependências: fitz, cv2, numpy (já existentes).
 
     Returns:
-        Lista de caminhos de PDFs
+        (aprovado, max_variancia_encontrada)
     """
-    if not pasta.exists():
-        log.error(f"❌ Pasta não encontrada: {pasta}")
-        return []
+    try:
+        doc = fitz.open(pdf_path)
+        total = len(doc)
+        if total == 0:
+            doc.close()
+            return False, 0.0
 
-    pdfs = sorted(pasta.glob("*.pdf"))
-    log.info(f"📁 {len(pdfs)} PDFs encontrados em {pasta}")
+        # Amostra primeira e página do meio
+        indices = sorted({0, total // 2})[:sample_pages]
+        max_var = 0.0
 
-    if limite is not None:
-        pdfs = pdfs[:limite]
-        log.info(f"   Limitado a {limite} PDFs")
+        for idx in indices:
+            page = doc.load_page(idx)
+            # 72 DPI (Matrix 1x) em cinza — rápido, suficiente para desfoque
+            pix = page.get_pixmap(matrix=fitz.Matrix(1.0, 1.0), colorspace=fitz.csGRAY)
+            arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width)
+            variance = float(cv2.Laplacian(arr, cv2.CV_64F).var())
+            if variance > max_var:
+                max_var = variance
 
-    return pdfs
+        doc.close()
+        return max_var >= min_variance, max_var
+
+    except Exception as e:
+        log.warning(f"  Quality gate falhou ({os.path.basename(pdf_path)}): {e}")
+        return True, -1.0  # Permite processamento em caso de erro
 
 
-# ---------------------------------------------------------------------------
-# Pipeline Principal
-# ---------------------------------------------------------------------------
+# ==============================================================================
+# SESSÃO MARKER — MODELOS CARREGADOS UMA VEZ
+# ==============================================================================
 
-def run_extraction_pipeline(
-    pasta_pdfs: Path,
+def create_marker_session(
+    force_ocr: bool = False,
+    disable_images: bool = True,
+) -> tuple[dict, object]:
+    """
+    Cria a sessão Marker carregando todos os modelos UMA única vez por execução.
+    O custo de ~30s de inicialização ocorre apenas aqui, não por PDF.
+
+    Returns:
+        (modelos_dict, config_parser) — reutilizados em cada chamada ao converter.
+    """
+    try:
+        from marker.models import create_model_dict
+        from marker.config.parser import ConfigParser
+    except ImportError:
+        log.error("Marker não instalado. Instale com: uv add marker-pdf")
+        raise
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    os.environ["TORCH_DEVICE"] = device
+    log.info(f"Dispositivo: {device.upper()}")
+
+    if device == "cuda":
+        props = torch.cuda.get_device_properties(0)
+        log.info(f"  GPU: {torch.cuda.get_device_name(0)}")
+        log.info(f"  VRAM: {props.total_memory / 1e9:.1f} GB total")
+    else:
+        log.warning("  GPU não disponível — processamento em CPU (lento)")
+
+    config: dict = {
+        "disable_image_extraction": disable_images,
+        "output_format": "markdown",
+    }
+    if force_ocr:
+        config["force_ocr"] = True
+        log.info("  Modo force_ocr: ATIVADO")
+
+    config_parser = ConfigParser(config)
+
+    log.info("Carregando modelos Marker (operação única por sessão)...")
+    t0 = time.time()
+    modelos = create_model_dict()
+    elapsed = time.time() - t0
+    log.info(f"  Modelos prontos em {elapsed:.1f}s")
+
+    if device == "cuda":
+        used_gb = torch.cuda.memory_allocated() / 1e9
+        log.info(f"  VRAM alocada: {used_gb:.2f} GB")
+
+    return modelos, config_parser
+
+
+def extract_with_marker(
+    modelos: dict,
+    config_parser: object,
+    pdf_path: str,
+) -> str | None:
+    """
+    Extrai Markdown de um único PDF reutilizando os modelos já carregados.
+    Cria um novo PdfConverter por PDF (leve — os modelos são passados por referência).
+    """
+    try:
+        from marker.converters.pdf import PdfConverter
+        from marker.output import text_from_rendered
+
+        converter = PdfConverter(
+            config=config_parser.generate_config_dict(),
+            artifact_dict=modelos,
+            processor_list=config_parser.get_processors(),
+            renderer=config_parser.get_renderer(),
+        )
+        rendered = converter(pdf_path)
+        text, _, _ = text_from_rendered(rendered)
+        del rendered, converter
+        gc.collect()
+        return text
+
+    except Exception as e:
+        log.error(f"  Marker falhou em {os.path.basename(pdf_path)}: {e}")
+        return None
+
+
+# ==============================================================================
+# PERSISTÊNCIA
+# ==============================================================================
+
+def _load_json(path: str) -> dict:
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _save_json_atomic(data: dict, path: str) -> None:
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
+
+
+def _append_jsonl(records: list[dict], path: str) -> None:
+    if not records:
+        return
+    with open(path, "a", encoding="utf-8") as f:
+        for rec in records:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+
+# ==============================================================================
+# PIPELINE PRINCIPAL
+# ==============================================================================
+
+def run_marker_pipeline(
+    manifest_path: str,
+    output_dir: str,
     jsonl_output: str,
-    tamanho_amostra: int | None = None,
-    limiar_desfoque: float = 100.0,
-    verbose: bool = False,
+    dedup_path: str,
+    limite: int,
+    force_ocr: bool,
+    min_variance: float,
+    checkpoint_every: int,
 ) -> dict:
     """
-    Executa o pipeline completo de extração.
-
-    Returns:
-        Estatísticas de processamento
+    Pipeline completo: manifesto → quality gate → Marker → Data Lake + JSONL.
+    Incremental: pula PDFs já processados via registro_dedup_marker.json.
     """
-    _configure_logging(verbose=verbose)
+    manifest = _load_json(manifest_path)
+    ok_entries = {fid: e for fid, e in manifest.items() if e.get("status") == "OK"}
+    log.info(f"PDFs com status OK no manifesto: {len(ok_entries)}")
 
-    # Inicializa pipeline
-    poppler_path = _find_poppler_path()
-    pipeline = DocumentAIPipeline(
-        output_dir=DIR_SAIDA,
-        limiar_desfoque=limiar_desfoque,
-        poppler_path=poppler_path,
-    )
+    dedup_registry = _load_json(dedup_path)
+    log.info(f"Hashes já registrados: {len(dedup_registry)}")
 
-    # Descobre PDFs
-    pdfs = descobrir_pdfs(pasta_pdfs, limite=tamanho_amostra)
-    if not pdfs:
-        log.error("❌ Nenhum PDF encontrado")
-        return {"total": 0, "processados": 0, "rejeitados": 0, "erros": 0}
+    if not ok_entries:
+        log.error("Nenhum PDF disponível para processar.")
+        return {"total": 0, "gerados": 0, "rejeitados": 0, "duplicatas": 0, "erros": 0}
 
-    # Registro de deduplicação
-    dedup_registry: set[str] = set()
+    # Carrega modelos Marker UMA VEZ
+    modelos, config_parser = create_marker_session(force_ocr=force_ocr, disable_images=True)
 
-    # Processamento
-    stats = {"total": len(pdfs), "processados": 0, "rejeitados": 0, "erros": 0}
-    jsonl_records: list[dict] = []
+    os.makedirs(output_dir, exist_ok=True)
+    Path(jsonl_output).parent.mkdir(parents=True, exist_ok=True)
+    jsonl_meta_path = str(Path(jsonl_output).with_suffix(".meta.jsonl"))
 
-    for idx, pdf_path in enumerate(pdfs, 1):
-        log.info(f"\n[{idx}/{len(pdfs)}] Processando {pdf_path.name}...")
+    stats = {"total": 0, "gerados": 0, "rejeitados": 0, "duplicatas": 0, "erros": 0}
+    buf_jsonl: list[dict] = []
+    buf_meta: list[dict] = []
+    processed = 0
 
-        try:
-            resultado = pipeline.processar_documento(str(pdf_path))
+    for fid, entry in ok_entries.items():
+        if processed >= limite:
+            log.info(f"Limite de {limite} PDFs atingido.")
+            break
 
-            if resultado["status"] == "processado":
-                texto = resultado.get("texto", "")
-
-                # Deduplicação
-                content_hash = compute_content_md5(texto)
-                if content_hash in dedup_registry:
-                    log.info(f"  ♻️  DUPLICATA detectada (hash={content_hash[:12]}...)")
-                    stats["rejeitados"] += 1
-                    continue
-
-                dedup_registry.add(content_hash)
-
-                # Cria registro JSONL
-                record = {"arquivo": pdf_path.name, "text": texto}
-                jsonl_records.append(record)
-                stats["processados"] += 1
-
-            elif resultado["status"] == "rejeitado_por_qualidade":
-                log.warning(f"  ⚠️  Rejeitado: {resultado.get('erro', 'qualidade insuficiente')}")
-                stats["rejeitados"] += 1
-
-            else:
-                log.error(f"  ❌ Erro: {resultado.get('error', 'desconhecido')}")
-                stats["erros"] += 1
-
-        except Exception as e:
-            log.error(f"  ❌ Erro não tratado: {e}")
+        pdf_path = entry.get("path", "")
+        if not pdf_path or not os.path.exists(pdf_path):
+            log.warning(f"PDF não encontrado em disco: {pdf_path}")
             stats["erros"] += 1
+            continue
 
-    # Salva JSONL
-    if jsonl_records:
-        jsonl_path = Path(jsonl_output)
-        jsonl_path.parent.mkdir(parents=True, exist_ok=True)
+        stats["total"] += 1
+        processed += 1
 
-        with open(jsonl_path, "w", encoding="utf-8") as f:
-            for record in jsonl_records:
-                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+        municipio  = entry.get("municipio", "DESCONHECIDO")
+        entidade   = entry.get("entidade", "")
+        categoria  = entry.get("categoria", "")
+        data_pub   = entry.get("data_publicacao", "")
+        edicao     = entry.get("edicao", "")
+        url_orig   = entry.get("url", "")
+        documento  = entry.get("documento", "")
+        sha256_pdf = entry.get("sha256", "")
 
-        log.info(f"\n📄 JSONL salvo em: {jsonl_path} ({len(jsonl_records)} linhas)")
+        log.info(f"\n[{processed}/{min(limite, len(ok_entries))}] {os.path.basename(pdf_path)}")
+        log.info(f"  Município: {municipio} | Entidade: {entidade}")
+
+        # 1. Quality gate em memória (PyMuPDF, sem disco)
+        t0 = time.time()
+        aprovado, variancia = quality_gate_inmemory(pdf_path, min_variance=min_variance)
+        log.debug(f"  Quality gate: var={variancia:.1f} limiar={min_variance} ({time.time()-t0:.2f}s)")
+        if not aprovado:
+            log.warning(f"  ⚠️  Rejeitado — variância={variancia:.1f} < {min_variance}")
+            stats["rejeitados"] += 1
+            continue
+
+        # 2. Extração via Marker (modelos reutilizados)
+        t0 = time.time()
+        markdown_text = extract_with_marker(modelos, config_parser, pdf_path)
+        elapsed_ext = time.time() - t0
+
+        if not markdown_text or len(markdown_text.strip()) < 50:
+            log.warning(f"  ⚠️  Texto insuficiente extraído ({elapsed_ext:.1f}s)")
+            stats["erros"] += 1
+            continue
+
+        log.debug(f"  Marker: {elapsed_ext:.1f}s | {len(markdown_text)} chars")
+
+        # 3. Deduplicação textual
+        content_hash = compute_content_md5(markdown_text)
+        if content_hash in dedup_registry:
+            log.info(f"  ♻️  DUPLICATA (hash={content_hash[:12]}...)")
+            stats["duplicatas"] += 1
+            continue
+
+        # 4. Classificação e data
+        tipo_ato = classify_act_type(markdown_text[:1000], fallback_category=categoria)
+        if not data_pub:
+            data_pub = extract_date_from_text(markdown_text) or ""
+
+        ano, mes = "sem_ano", "sem_mes"
+        if data_pub and len(data_pub) >= 7:
+            parts = data_pub.split("-")
+            if len(parts) >= 2:
+                ano, mes = parts[0], parts[1]
+
+        # 5. Frontmatter YAML (mesmo formato do processar_pdfs.py)
+        frontmatter = generate_frontmatter(
+            content_hash=content_hash,
+            municipio=municipio,
+            entidade=entidade,
+            tipo_ato=tipo_ato,
+            data_publicacao=data_pub,
+            url_origem=url_orig,
+            edicao=edicao,
+            sha256_pdf=sha256_pdf,
+        )
+        full_md = frontmatter + markdown_text
+
+        # 6. Data Lake particionado
+        md_path = build_datalake_path(output_dir, ano, mes, municipio, f"{content_hash}.md")
+        os.makedirs(os.path.dirname(md_path), exist_ok=True)
+        with open(md_path, "w", encoding="utf-8") as f:
+            f.write(full_md)
+
+        # 7. Registro de dedup (persiste extrator=marker para rastreabilidade)
+        dedup_registry[content_hash] = {
+            "path": md_path,
+            "municipio": municipio,
+            "entidade": entidade,
+            "tipo_ato": tipo_ato,
+            "data_publicacao": data_pub,
+            "url_origem": url_orig,
+            "documento": documento,
+            "extrator": "marker",
+        }
+
+        # 8. Buffers JSONL
+        buf_jsonl.append({"text": markdown_text})
+        buf_meta.append({
+            "text": markdown_text,
+            "metadata": {
+                "id_publicacao": content_hash,
+                "municipio": municipio,
+                "entidade": entidade,
+                "tipo_ato": tipo_ato,
+                "data_publicacao": data_pub,
+                "edicao": edicao,
+                "extrator": "marker",
+            },
+        })
+
+        stats["gerados"] += 1
+        log.info(
+            f"  ✅ {municipio} / {tipo_ato} → {content_hash[:12]}... "
+            f"({len(markdown_text)} chars, {elapsed_ext:.1f}s)"
+        )
+
+        # Checkpoint periódico (tolerância a interrupções)
+        if stats["gerados"] % checkpoint_every == 0:
+            _append_jsonl(buf_jsonl, jsonl_output)
+            _append_jsonl(buf_meta, jsonl_meta_path)
+            _save_json_atomic(dedup_registry, dedup_path)
+            log.info(f"  [CHECKPOINT] {stats['gerados']} documentos persistidos")
+            buf_jsonl.clear()
+            buf_meta.clear()
+
+    # Flush final dos buffers
+    _append_jsonl(buf_jsonl, jsonl_output)
+    _append_jsonl(buf_meta, jsonl_meta_path)
+    _save_json_atomic(dedup_registry, dedup_path)
+
+    # Libera VRAM
+    del modelos
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        log.debug(f"VRAM liberada. Alocada atual: {torch.cuda.memory_allocated()/1e9:.2f} GB")
 
     return stats
 
 
-# ---------------------------------------------------------------------------
+# ==============================================================================
 # CLI
-# ---------------------------------------------------------------------------
+# ==============================================================================
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Extrator de PDFs via Marker → JSONL",
+        description="Extrator GPU-Otimizado via Marker — Etapa 3-B do pipeline DOM-PI.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
 
     parser.add_argument(
-        "--pasta-pdfs",
-        type=str,
-        default=str(PASTA_PDFS),
-        help=f"Caminho da pasta contendo os PDFs (padrão: {PASTA_PDFS})",
+        "--manifest", required=True,
+        help="Caminho do download_manifest.json (saída do download_pdfs.py)."
     )
     parser.add_argument(
-        "--tamanho-amostra",
-        type=int,
-        default=TAMANHO_AMOSTRA,
-        help="Número máximo de PDFs a processar. None = processar todos (padrão: None)",
+        "--output-dir", default="dados_brutos_marker",
+        help="Diretório raiz do Data Lake de saída (padrão: dados_brutos_marker)."
     )
     parser.add_argument(
-        "--jsonl-output",
-        type=str,
-        default=JSONL_OUTPUT,
-        help=f"Caminho do arquivo JSONL de saída (padrão: {JSONL_OUTPUT})",
+        "--jsonl-output", default="corpus_marker.jsonl",
+        help="Arquivo JSONL de saída (padrão: corpus_marker.jsonl)."
     )
     parser.add_argument(
-        "--limiar-desfoque",
-        type=float,
-        default=LIMIAR_DESFOQUE,
-        help=f"Threshold de qualidade OCR (Laplaciano) (padrão: {LIMIAR_DESFOQUE})",
+        "--dedup-registry", default=None,
+        help="Registro de dedup. Padrão: <output-dir>/registro_dedup_marker.json"
     )
     parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Ativa logs de debug",
+        "--limite", type=int, default=999999,
+        help="Máx PDFs a processar (padrão: ilimitado)."
+    )
+    parser.add_argument(
+        "--force-ocr", action="store_true",
+        help="Força re-OCR completo via Marker (recomendado para PDFs escaneados do DOM-PI)."
+    )
+    parser.add_argument(
+        "--min-variance", type=float, default=50.0,
+        help="Limiar de variância do Laplaciano para quality gate (padrão: 50.0)."
+    )
+    parser.add_argument(
+        "--checkpoint-every", type=int, default=10,
+        help="Salva JSONL e dedup a cada N docs (padrão: 10)."
+    )
+    parser.add_argument(
+        "--log-file", default=None,
+        help="Caminho para arquivo de log em disco (opcional)."
+    )
+    parser.add_argument(
+        "--verbose", action="store_true",
+        help="Ativa logs DEBUG."
     )
 
     args = parser.parse_args()
+    _configure_logging(verbose=args.verbose, log_file=args.log_file)
 
-    # Converte None string em None
-    tamanho_amostra: int | None = args.tamanho_amostra
-    if isinstance(tamanho_amostra, str) and tamanho_amostra.lower() == "none":
-        tamanho_amostra = None
-    elif isinstance(tamanho_amostra, str):
-        tamanho_amostra = int(tamanho_amostra)
-
-    log_msg = f"""
-╔═══════════════════════════════════════════════════════════╗
-║          EXTRATOR DE PDFS VIA MARKER → JSONL             ║
-╚═══════════════════════════════════════════════════════════╝
-Pasta de PDFs:     {args.pasta_pdfs}
-Tamanho da amostra: {tamanho_amostra if tamanho_amostra else 'TODOS'}
-JSONL de saída:    {args.jsonl_output}
-Limiar de desfoque: {args.limiar_desfoque}
-"""
-
-    print(log_msg)
-
-    pasta_pdfs = Path(args.pasta_pdfs)
-    if not pasta_pdfs.exists():
-        print(f"❌ Pasta não encontrada: {pasta_pdfs}")
+    if not os.path.exists(args.manifest):
+        log.error(f"Manifesto não encontrado: {args.manifest}")
         sys.exit(1)
 
-    stats = run_extraction_pipeline(
-        pasta_pdfs=pasta_pdfs,
-        jsonl_output=args.jsonl_output,
-        tamanho_amostra=tamanho_amostra,
-        limiar_desfoque=args.limiar_desfoque,
-        verbose=args.verbose,
+    dedup_path = args.dedup_registry or os.path.join(
+        args.output_dir, "registro_dedup_marker.json"
     )
 
-    # Resumo final
-    print("\n" + "─" * 60)
-    print(f"  ✔  Extração concluída")
+    log.info("=" * 65)
+    log.info("EXTRATOR MARKER — DOM-PI (GPU-Otimizado, Etapa 3-B)")
+    log.info("=" * 65)
+    log.info(f"Manifesto:     {args.manifest}")
+    log.info(f"Data Lake:     {args.output_dir}")
+    log.info(f"JSONL:         {args.jsonl_output}")
+    log.info(f"Dedup:         {dedup_path}")
+    log.info(f"Force OCR:     {args.force_ocr}")
+    log.info(f"Min variance:  {args.min_variance}")
+    log.info(f"Limite:        {args.limite}")
+    log.info("-" * 65)
+
+    t_start = time.time()
+    stats = run_marker_pipeline(
+        manifest_path=args.manifest,
+        output_dir=args.output_dir,
+        jsonl_output=args.jsonl_output,
+        dedup_path=dedup_path,
+        limite=args.limite,
+        force_ocr=args.force_ocr,
+        min_variance=args.min_variance,
+        checkpoint_every=args.checkpoint_every,
+    )
+    elapsed = time.time() - t_start
+
+    print("\n" + "=" * 65)
+    print("✅  EXTRAÇÃO MARKER CONCLUÍDA")
+    print("=" * 65)
+    print(f"  ⏰ Tempo total:          {elapsed:.1f}s")
     print(f"  📊 Total processado:     {stats['total']}")
-    print(f"  ✅ Sucessos:             {stats['processados']}")
-    print(f"  ⚠️  Rejeitados:           {stats['rejeitados']}")
+    print(f"  📝 Markdown gerados:     {stats['gerados']}")
+    print(f"  ♻️  Duplicatas:           {stats['duplicatas']}")
+    print(f"  ⚠️  Rejeitados (QG):      {stats['rejeitados']}")
     print(f"  ❌ Erros:                {stats['erros']}")
     print(f"  📄 JSONL:                {args.jsonl_output}")
-    print("─" * 60 + "\n")
+    print(f"  🗂️  Data Lake:            {args.output_dir}/")
+    if stats["gerados"] > 0:
+        avg = elapsed / stats["gerados"]
+        print(f"  ⚡ Média/documento:      {avg:.1f}s")
+    print("=" * 65 + "\n")
 
 
 if __name__ == "__main__":

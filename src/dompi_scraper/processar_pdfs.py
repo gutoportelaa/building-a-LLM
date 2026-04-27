@@ -111,6 +111,12 @@ RE_ASSINATURA = re.compile(
     re.IGNORECASE,
 )
 
+# Regex para detectar cabeçalho de entidade municipal (chunking por município)
+RE_CABECALHO_ENTIDADE = re.compile(
+    r"(?:PREFEITURA|C[AÂ]MARA)\s+(?:MUNICIPAL\s+)?(?:DE\s+)?([A-ZÀ-Ÿ][A-ZÀ-Ÿ\s]{2,39})(?:\s*[-–]?\s*(?:PI|PIAUÍ|PIAUI))?$",
+    re.IGNORECASE | re.MULTILINE,
+)
+
 # Palavras comuns em documentos oficiais brasileiros (usadas para validar qualidade OCR)
 _PALAVRAS_VALIDAS = {
     "de", "do", "da", "dos", "das", "em", "no", "na", "nos", "nas", "que",
@@ -241,6 +247,57 @@ def extract_rich_blocks(page: fitz.Page) -> list[dict[str, Any]]:
         })
 
     return blocks
+
+
+# ---------------------------------------------------------------------------
+# DETECÇÃO DE FRONTEIRAS DE MUNICÍPIO (CHUNKING)
+# ---------------------------------------------------------------------------
+
+def detect_city_header(blk: dict) -> str | None:
+    """
+    Detecta se um bloco é cabeçalho de entidade municipal (Prefeitura/Câmara de <Cidade>).
+    Prioriza blocos com fonte >= 11pt ou negrito para reduzir falsos positivos.
+    Retorna o nome da cidade em Title Case ou None.
+    """
+    txt = blk.get("texto", "").strip()
+    tamanho = blk.get("tamanho", 0)
+    negrito = blk.get("negrito", False)
+    # Só considera cabeçalhos visualmente destacados
+    if tamanho < 11.0 and not negrito:
+        return None
+    match = RE_CABECALHO_ENTIDADE.search(txt)
+    if not match:
+        return None
+    cidade = match.group(1).strip()
+    if 3 <= len(cidade) <= 50:
+        return cidade.title()
+    return None
+
+
+def split_blocks_by_city(blocks: list[dict]) -> list[tuple[str, list[dict]]]:
+    """
+    Divide lista de blocos em chunks por município detectado.
+    Retorna lista de (nome_cidade, blocos_do_chunk).
+    O primeiro chunk usa 'DESCONHECIDO' se nenhum cabeçalho for encontrado antes.
+    """
+    chunks: list[tuple[str, list[dict]]] = []
+    cidade_atual = "DESCONHECIDO"
+    buffer: list[dict] = []
+
+    for blk in blocks:
+        cidade = detect_city_header(blk)
+        if cidade and cidade != cidade_atual:
+            if buffer:
+                chunks.append((cidade_atual, buffer))
+            cidade_atual = cidade
+            buffer = [blk]
+        else:
+            buffer.append(blk)
+
+    if buffer:
+        chunks.append((cidade_atual, buffer))
+
+    return chunks
 
 
 # ---------------------------------------------------------------------------
@@ -514,6 +571,7 @@ def process_single_pdf(
     output_dir: str,
     dedup_registry: dict,
     verbose_blocks: bool = False,
+    modo_chunking: bool = False,
 ) -> list[dict]:
     """
     Processa um único PDF e gera arquivos .md.
@@ -591,18 +649,68 @@ def process_single_pdf(
         )
         return []
 
-    # --- Classificação do tipo de ato ---
-    tipo_ato = classify_act_type(raw_text, fallback_category=categoria)
+    # --- Modo Chunking: divide PDF por municípios detectados ---
+    if modo_chunking:
+        return _process_chunks(all_blocks, all_blocks_raw, manifest_entry, output_dir, dedup_registry,
+                               data_iso, ano, mes, entidade, edicao, sha256_pdf, url_origem, documento)
 
-    # --- Extração de data do corpo (fallback se não veio do scraping) ---
+    # --- Modo padrão: PDF inteiro como um documento ---
+    return _gerar_documento(
+        blocos=all_blocks,
+        total_blocos_raw=len(all_blocks_raw),
+        municipio=municipio,
+        entidade=entidade,
+        edicao=edicao,
+        sha256_pdf=sha256_pdf,
+        url_origem=url_origem,
+        documento=documento,
+        data_iso=data_iso,
+        ano=ano,
+        mes=mes,
+        categoria=categoria,
+        output_dir=output_dir,
+        dedup_registry=dedup_registry,
+    )
+
+
+
+def _gerar_documento(
+    blocos: list[dict],
+    total_blocos_raw: int,
+    municipio: str,
+    entidade: str,
+    edicao: str,
+    sha256_pdf: str,
+    url_origem: str,
+    documento: str,
+    data_iso: str,
+    ano: str,
+    mes: str,
+    categoria: str,
+    output_dir: str,
+    dedup_registry: dict,
+) -> list[dict]:
+    """Gera um único arquivo .md e registro JSONL a partir de uma lista de blocos."""
+    raw_text = "\n".join(b["texto"] for b in blocos)
+    content_hash = compute_content_md5(raw_text)
+
+    if content_hash in dedup_registry:
+        log.debug(f"  DUPLICATA detectada: hash={content_hash[:12]}...")
+        return []
+
+    tipo_ato = classify_act_type(raw_text, fallback_category=categoria)
     if not data_iso:
         data_iso = extract_date_from_text(raw_text) or ""
         if data_iso:
             parts = data_iso.split("-")
-            ano, mes, dia = parts[0], parts[1], parts[2]
+            ano, mes = parts[0], parts[1]
 
-    # --- Geração de Markdown hierárquico ---
-    markdown_body = blocks_to_markdown(all_blocks)
+    if not ano:
+        ano, mes = "sem_ano", "sem_mes"
+    if not mes:
+        mes = "sem_mes"
+
+    markdown_body = blocks_to_markdown(blocos)
     frontmatter = generate_frontmatter(
         content_hash=content_hash,
         municipio=municipio,
@@ -614,52 +722,66 @@ def process_single_pdf(
         sha256_pdf=sha256_pdf,
     )
     full_markdown = frontmatter + markdown_body
-
-    # --- Armazenamento em Data Lake ---
-    if not ano:
-        ano, mes = "sem_ano", "sem_mes"
-    if not mes:
-        mes = "sem_mes"
-
-    md_filename = f"{content_hash}.md"
-    md_path = build_datalake_path(output_dir, ano, mes, municipio, md_filename)
-
+    md_path = build_datalake_path(output_dir, ano, mes, municipio, f"{content_hash}.md")
     os.makedirs(os.path.dirname(md_path), exist_ok=True)
-
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(full_markdown)
 
-    # --- Registro de deduplicação ---
     dedup_registry[content_hash] = {
-        "path": md_path,
-        "municipio": municipio,
-        "entidade": entidade,
-        "tipo_ato": tipo_ato,
-        "data_publicacao": data_iso,
-        "url_origem": url_origem,
-        "documento": documento,
-    }
-
-    # --- Registro JSONL ---
-    # Remove frontmatter para o JSONL (o modelo treina em linguagem natural pura)
-    jsonl_record = {
-        "text": raw_text,
-        "metadata": {
-            "id_publicacao": content_hash,
-            "municipio": municipio,
-            "entidade": entidade,
-            "tipo_ato": tipo_ato,
-            "data_publicacao": data_iso,
-            "edicao": edicao,
-        }
+        "path": md_path, "municipio": municipio, "entidade": entidade,
+        "tipo_ato": tipo_ato, "data_publicacao": data_iso,
+        "url_origem": url_origem, "documento": documento,
     }
 
     log.info(
-        f"  ✓ {municipio} / {tipo_ato} → {md_filename[:16]}... "
-        f"({len(all_blocks)}/{len(all_blocks_raw)} blocos aprovados, {len(raw_text)} chars)"
+        f"  ✓ {municipio} / {tipo_ato} → {content_hash[:12]}... "
+        f"({len(blocos)}/{total_blocos_raw} blocos, {len(raw_text)} chars)"
     )
+    return [{"text": raw_text, "metadata": {
+        "id_publicacao": content_hash, "municipio": municipio, "entidade": entidade,
+        "tipo_ato": tipo_ato, "data_publicacao": data_iso, "edicao": edicao,
+    }}]
 
-    return [jsonl_record]
+
+def _process_chunks(
+    all_blocks: list[dict],
+    all_blocks_raw: list[dict],
+    manifest_entry: dict,
+    output_dir: str,
+    dedup_registry: dict,
+    data_iso: str,
+    ano: str,
+    mes: str,
+    entidade: str,
+    edicao: str,
+    sha256_pdf: str,
+    url_origem: str,
+    documento: str,
+) -> list[dict]:
+    """Divide blocos por município detectado e gera um .md por chunk."""
+    chunks = split_blocks_by_city(all_blocks)
+    categoria = manifest_entry.get("categoria", "")
+    resultados: list[dict] = []
+
+    if len(chunks) <= 1:
+        # PDF sem múltiplos municípios detectados — processa normalmente
+        municipio = manifest_entry.get("municipio", chunks[0][0] if chunks else "DESCONHECIDO")
+        if chunks:
+            return _gerar_documento(chunks[0][1], len(all_blocks_raw), municipio, entidade,
+                                    edicao, sha256_pdf, url_origem, documento,
+                                    data_iso, ano, mes, categoria, output_dir, dedup_registry)
+        return []
+
+    log.info(f"  🗺️  {len(chunks)} município(s) detectados neste PDF (modo chunking)")
+    for cidade, blocos_chunk in chunks:
+        if not blocos_chunk:
+            continue
+        recs = _gerar_documento(blocos_chunk, len(all_blocks_raw), cidade, entidade,
+                                edicao, sha256_pdf, url_origem, documento,
+                                data_iso, ano, mes, categoria, output_dir, dedup_registry)
+        resultados.extend(recs)
+
+    return resultados
 
 
 def run_processing_pipeline(
@@ -670,6 +792,7 @@ def run_processing_pipeline(
     limite: int,
     verbose_blocks: bool,
     verbose_blocks_only: int | None,
+    modo_chunking: bool = False,
 ) -> dict:
     """
     Executa o pipeline completo de processamento.
@@ -728,6 +851,7 @@ def run_processing_pipeline(
             output_dir=output_dir,
             dedup_registry=dedup_registry,
             verbose_blocks=verbose_blocks,
+            modo_chunking=modo_chunking,
         )
 
         if records:
@@ -810,6 +934,11 @@ def main() -> None:
         help="Apenas despeja análise de N PDFs SEM processar. Para calibração de thresholds."
     )
     parser.add_argument(
+        "--modo-chunking", action="store_true",
+        help="Detecta múltiplos municípios por PDF e gera um .md por entidade detectada. "
+             "Recomendado para PDFs compartilhados do DOM-PI."
+    )
+    parser.add_argument(
         "--verbose", action="store_true",
         help="Ativa logs de debug."
     )
@@ -837,6 +966,9 @@ def main() -> None:
         log.info(f"Modo VERBOSE-BLOCOS-ONLY: analisando {args.verbose_blocos_only} PDFs (sem processamento)")
     log.info("-" * 60)
 
+    if args.modo_chunking:
+        log.info("Modo CHUNKING ativado — detecção de municípios por PDF")
+
     stats = run_processing_pipeline(
         manifest_path=args.manifest,
         output_dir=args.output_dir,
@@ -845,6 +977,7 @@ def main() -> None:
         limite=args.limite,
         verbose_blocks=args.verbose_blocos,
         verbose_blocks_only=args.verbose_blocos_only,
+        modo_chunking=args.modo_chunking,
     )
 
     # Resumo final

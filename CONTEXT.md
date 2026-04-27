@@ -37,128 +37,189 @@ são descartados antes da geração de Markdown e JSONL.
 
 ---
 
-## 2. Arquitetura Relacional (SQLite — Star Schema)
+## 2. Arquitetura do Pipeline — 3 Módulos + 1 Suporte
 
-O núcleo do pipeline hoje reside num banco `SQLite` local (`dompi_knowledge_base.sqlite`),
-estruturado em 3 tabelas relacionais que modelam cada camada do problema:
+O pipeline foi consolidado em **3 scripts operacionais independentes** (sem SQLite — apenas JSON/manifesto)
+e **1 biblioteca de utilitários compartilhados**:
 
 ```
-fato_publicacoes  ──FK──>  dim_documentos_pdf  ──FK──>  dim_extracoes_texto
-(aparições)                (arquivos únicos)             (textos únicos)
+src/dompi_scraper/
+├── pipeline.py          ← Etapa 1: Scraping paralelo (ThreadPoolExecutor)
+├── download_pdfs.py     ← Etapa 2: Download controlado com manifesto SHA-256
+├── processar_pdfs.py    ← Etapa 3: Extração PyMuPDF → Markdown + JSONL
+├── shared_utils.py      ← Utilitários compartilhados (slugify, hash, classify_act)
+└── extrator_marker.py   ← (em avaliação — extração via GPU/Marker, ver §10)
 ```
 
-### 2.1 `fato_publicacoes` — Tabela Fato (Aparições)
-
-Registra **cada ocorrência de um ato no Diário Oficial**. É o espelho fiel do portal de busca:
-se uma licitação for publicada 3 vezes consecutivas, existirão 3 linhas aqui — com
-**Entidade Fonte** (Prefeitura, Câmara) e metadados extraídos da URL por regex
-(número da edição, código interno do município, página).
-
-> Esta tabela não sabe se o PDF foi baixado. Ela apenas registra que *aquela publicação existiu*.
-
-### 2.2 `dim_documentos_pdf` — Deduplicação de Arquivo Físico
-
-Controla os arquivos em disco. A chave primária é o **MD5 da URL do PDF**: se múltiplas
-publicações em `fato_publicacoes` (de cidades diferentes!) apontam para o mesmo arquivo,
-o download ocorre **uma única vez**. As próximas inserções reutilizam o registro existente.
-
-Esta camada resolve o gargalo de rede e armazenamento: edições do DOM-PI podem ser grandes
-(centenas de MB), mas como são compartilhadas, o volume total em disco escala de forma
-controlada independentemente do número de municípios indexados.
-
-> O campo `path_local` aponta para o PDF em disco. O `status_download` pode ser `OK` ou `FAILED`.
-
-### 2.3 `dim_extracoes_texto` — Deduplicação Textual (Corpus RAG)
-
-A *coroa de joia* do pipeline. O texto extraído do PDF (via OCR/MarkItDown) recebe um
-**MD5 do conteúdo normalizado** como chave primária. Dois PDFs com conteúdo idêntico —
-mesmo que com nomes diferentes — resultam num único registro aqui.
-
-Esta tabela é o corpus final para ingestão em LLMs e vector databases (Qdrant, Chroma, Pinecone).
+Cada script é **atômico e idempotente**: pode ser re-executado sem risco de corrupção.
+A persistência é exclusivamente em **JSON + CSV + manifesto** — portável e sem dependência de servidor.
 
 ---
 
-## 3. Pipeline Modularizado — Scripts Isolados
+## 3. Fluxo End-to-End
 
-O pipeline foi decomposto em **scripts atômicos e independentes** para facilitar
-validação humana, debug e re-execução parcial de cada estágio.
-
-### Estágio 1 — Scraping de Metadados ✅
-
-**Script:** `scraper_isolado.py`
-
-Coleta metadados das publicações do DOM-PI sem baixar PDFs e sem acessar SQLite.
-Gera JSON e CSV com os registros coletados, realiza lógica de upsert incremental
-e deduplicação pré-download (agrupa URLs únicas).
-
-```bash
-# Território Carnaubais completo (16 municípios × 2 entidades, sem limite)
-uv run python src/dompi_scraper/scraper_isolado.py \
-    --territorio-carnaubais --ano 2025 --limite 1000000 --verbose
+```
+Etapa 1           Etapa 2              Etapa 3
+pipeline.py  →  download_pdfs.py  →  processar_pdfs.py
+     ↓                ↓                     ↓
+JSON dedup      manifest.json        .md + .jsonl
+(por URL)       (SHA-256/PDF)        (Data Lake + Corpus)
 ```
 
+---
+
+## 4. Etapa 1 — Scraping de Metadados (`pipeline.py`)
+
+**Responsabilidade:** Coletar metadados das publicações do portal DOM-PI sem baixar PDFs.
+
+**Tecnologia:**
+- `ThreadPoolExecutor` — cada cruzamento `[município × entidade]` roda em thread própria
+- Cada thread cria **sessão HTTP e contexto de formulário independentes** (necessário pois
+  os campos `hidden` do portal Scriptcase são vinculados à sessão)
+- Paginação correta via **form F4** extraído do HTML da página anterior (não payload fixo)
+- Retry com backoff exponencial (`2^attempt` segundos)
+
 **Saídas:**
-- `scraping_carnaubais_2025.json` — registros brutos (~12.372 publicações)
-- `scraping_carnaubais_2025_deduplicados.json` — URLs únicas com metadados enriquecidos
-- Relatório de discrepâncias e distribuição por município/entidade
+- `<saida>.json` — todos os registros brutos
+- `<saida>_deduplicados.json` — PDFs únicos com `municipios_referenciados` (entrada da Etapa 2)
+- `<saida>.csv` e `<saida>_deduplicados.csv` (opcional, `--so-json` omite)
 
-### Estágio 2 — Download de PDFs ✅
-
-**Script:** `download_pdfs.py`
-
-Consome o JSON deduplicado e baixa PDFs para disco local com:
-- Controle incremental (pula arquivos já existentes)
-- Hash SHA-256 pós-download para integridade
-- Manifesto JSON com mapeamento `{url → path, sha256, status, metadados}`
-- Retry com backoff exponencial
-- Flags: `--dry-run`, `--limite N`
-
+**Teste isolado:**
 ```bash
-# Download dos primeiros 10 PDFs para teste
+# Teste rápido: 1 município, 5 publicações por entidade, 2 workers
+uv run python src/dompi_scraper/pipeline.py \
+    --municipio "Campo Maior" \
+    --ano 2025 \
+    --limite 5 \
+    --max-workers 2 \
+    --saida teste_scraping \
+    --verbose
+
+# Produção: Território Carnaubais completo
+uv run python src/dompi_scraper/pipeline.py \
+    --territorio-carnaubais \
+    --ano 2025 \
+    --max-workers 15 \
+    --saida scraping_carnaubais_2025
+```
+
+---
+
+## 5. Etapa 2 — Download de PDFs (`download_pdfs.py`)
+
+**Responsabilidade:** Consumir o JSON deduplicado e baixar PDFs para disco local.
+
+**Características:**
+- **Incremental**: pula arquivos já existentes com status OK no manifesto
+- **Integridade**: calcula SHA-256 pós-download e registra no manifesto
+- **Checkpoint**: salva manifesto a cada 50 downloads (tolerância a interrupções)
+- **Gravação atômica**: rename de arquivo temporário (sem manifesto corrompido)
+- Retry com backoff exponencial (`2^attempt` segundos, até 3 tentativas)
+- `--dry-run` para simulação sem downloads reais
+
+**Saída:** `<output-dir>/download_manifest.json` — mapeamento `{md5_url → {path, sha256, status, metadados}}`
+
+**Teste isolado:**
+```bash
+# Teste rápido: apenas 3 downloads
+uv run python src/dompi_scraper/download_pdfs.py \
+    --input teste_scraping_deduplicados.json \
+    --output-dir teste_downloads/pdfs_arquivos \
+    --limite 3 \
+    --verbose
+
+# Simulação sem download (valida registros)
 uv run python src/dompi_scraper/download_pdfs.py \
     --input scraping_carnaubais_2025_deduplicados.json \
     --output-dir db_treino_carnaubais/pdfs_arquivos \
-    --limite 10
+    --dry-run
+
+# Produção: download completo
+uv run python src/dompi_scraper/download_pdfs.py \
+    --input scraping_carnaubais_2025_deduplicados.json \
+    --output-dir db_treino_carnaubais/pdfs_arquivos
 ```
 
-**Saída:** `download_manifest.json` — manifesto de integridade
+---
 
-### Estágio 3 — Processamento: PDF → Markdown + JSONL ✅
+## 6. Etapa 3 — Processamento PDF → Markdown + JSONL (`processar_pdfs.py`)
 
-**Script:** `processar_pdfs.py`
+**Responsabilidade:** Extrair texto estruturado dos PDFs baixados e gerar o corpus final.
 
-Lê PDFs baixados, extrai texto estruturado via PyMuPDF e gera:
+**Pipeline interno:**
+1. Lê manifesto de download (apenas entradas com `status: OK`)
+2. Extrai blocos ricos via PyMuPDF (`font`, `size`, `bold`, `bbox`)
+3. Aplica filtro de qualidade OCR (`compute_ocr_quality_score`, limiar 0.35)
+4. **Modo padrão:** processa PDF inteiro como único documento
+5. **Modo chunking (`--modo-chunking`):** detecta fronteiras de município via cabeçalhos
+   (`PREFEITURA/CÂMARA DE <Cidade>`) e gera um `.md` independente por município detectado
+6. Classifica tipo de ato por regex (`Portaria`, `Decreto`, `Lei`, `Edital`, etc.)
+7. Gera Markdown hierárquico com frontmatter YAML (para RAG)
+8. Armazena em Data Lake particionado `ano=YYYY/mes=MM/municipio=slug/`
+9. Deduplicação textual por MD5 do conteúdo normalizado
+10. Consolida JSONL para fine-tuning
 
-1. **Markdown com Frontmatter YAML** — para ingestão em RAG (LangChain/LlamaIndex)
-2. **JSONL** — para fine-tuning de LLMs
-3. **Registro de deduplicação** — hash MD5 do conteúdo normativo
+**Saídas:**
+- `<output-dir>/ano=YYYY/mes=MM/municipio=slug/<hash>.md` — Data Lake
+- `<jsonl-output>` — texto puro para fine-tuning
+- `<jsonl-output>.meta.jsonl` — texto + metadados para RAG
+- `<output-dir>/registro_dedup.json` — controle de duplicatas textuais
 
+**Teste isolado:**
 ```bash
-# Processamento com análise detalhada de blocos
+# Calibração visual: analisa blocos de 3 PDFs sem processar
 uv run python src/dompi_scraper/processar_pdfs.py \
     --manifest db_treino_carnaubais/pdfs_arquivos/download_manifest.json \
     --output-dir dados_brutos \
     --jsonl-output corpus_treino_dompi.jsonl \
     --verbose-blocos-only 3
 
-# Processamento completo
+# Teste rápido: processa 5 PDFs com chunking por município
+uv run python src/dompi_scraper/processar_pdfs.py \
+    --manifest teste_downloads/pdfs_arquivos/download_manifest.json \
+    --output-dir teste_datalake \
+    --jsonl-output teste_corpus.jsonl \
+    --limite 5 \
+    --modo-chunking \
+    --verbose
+
+# Produção: processamento completo com chunking
 uv run python src/dompi_scraper/processar_pdfs.py \
     --manifest db_treino_carnaubais/pdfs_arquivos/download_manifest.json \
     --output-dir dados_brutos \
-    --jsonl-output corpus_treino_dompi.jsonl
+    --jsonl-output corpus_treino_dompi.jsonl \
+    --modo-chunking
 ```
-
-**Saídas:**
-- `dados_brutos/ano=YYYY/mes=MM/municipio=slug/hash.md` — Data Lake particionado
-- `corpus_treino_dompi.jsonl` — texto puro para fine-tuning
-- `corpus_treino_dompi.meta.jsonl` — texto + metadados para RAG
-- `dados_brutos/registro_dedup.json` — controle de duplicatas textuais
 
 ---
 
-## 4. Formato Markdown para RAG
+## 7. Execução Completa End-to-End
 
-### 4.1 Frontmatter YAML
+```bash
+# Passo 1: Scraping
+uv run python src/dompi_scraper/pipeline.py \
+    --territorio-carnaubais --ano 2025 \
+    --max-workers 15 \
+    --saida scraping_carnaubais_2025
+
+# Passo 2: Download
+uv run python src/dompi_scraper/download_pdfs.py \
+    --input scraping_carnaubais_2025_deduplicados.json \
+    --output-dir db_treino_carnaubais/pdfs_arquivos
+
+# Passo 3: Extração
+uv run python src/dompi_scraper/processar_pdfs.py \
+    --manifest db_treino_carnaubais/pdfs_arquivos/download_manifest.json \
+    --output-dir dados_brutos \
+    --jsonl-output corpus_treino_dompi.jsonl \
+    --modo-chunking
+```
+
+---
+
+## 8. Formato Markdown para RAG
+
+### 8.1 Frontmatter YAML
 
 Todo arquivo `.md` gerado segue estritamente este formato:
 
@@ -189,7 +250,7 @@ retriever.invoke(
 )
 ```
 
-### 4.2 Hierarquia Textual (#, ##)
+### 8.2 Hierarquia Textual (#, ##)
 
 O corpo do Markdown é hierarquizado com base nos **atributos visuais** extraídos pelo PyMuPDF:
 
@@ -202,15 +263,9 @@ O corpo do Markdown é hierarquizado com base nos **atributos visuais** extraíd
 | Assinatura | `---` + `*Prefeito Municipal*` |
 | Corpo normal | Parágrafo simples |
 
-Essa hierarquia permite que o `MarkdownHeaderTextSplitter` (LangChain) fatia o texto
-respeitando os limites semânticos — o título de uma portaria nunca fica separado do
-seu artigo 1º em vetores diferentes.
-
 ---
 
-## 5. Data Lake Particionado
-
-Os arquivos `.md` são armazenados fisicamente em disco com particionamento estilo Data Lake:
+## 9. Data Lake Particionado
 
 ```
 dados_brutos/
@@ -226,24 +281,17 @@ dados_brutos/
 ├── registro_dedup.json
 ```
 
-**Vantagem:** Se no futuro trocar de Vector DB (Qdrant → Pinecone) ou alterar a
-estratégia de chunking, os dados brutos permanecem intactos e de fácil acesso.
-A re-ingestão é trivial — basta iterar nos diretórios.
-
 ---
 
-## 6. JSONL para Fine-Tuning de LLMs
+## 10. JSONL para Fine-Tuning de LLMs
 
-O arquivo `corpus_treino_dompi.jsonl` contém uma linha JSON por documento, com
-apenas o texto limpo (sem metadados, sem frontmatter):
+O arquivo `corpus_treino_dompi.jsonl` contém uma linha JSON por documento:
 
 ```json
-{"text": "ESTADO DO PIAUÍ PREFEITURA MUNICIPAL DE ASSUNÇÃO DO PIAUÍ PORTARIA Nº 005/2025 Dispõe sobre..."}
-{"text": "CÂMARA MUNICIPAL DE CAMPO MAIOR DECRETO Nº 012/2025 DECRETA: Art. 1º ..."}
+{"text": "ESTADO DO PIAUÍ PREFEITURA MUNICIPAL DE ASSUNÇÃO DO PIAUÍ PORTARIA Nº 005/2025..."}
 ```
 
-O arquivo `corpus_treino_dompi.meta.jsonl` adicionalmente inclui metadados no
-campo `metadata` para indexação auxiliar:
+O arquivo `corpus_treino_dompi.meta.jsonl` inclui metadados para indexação auxiliar:
 
 ```json
 {"text": "...", "metadata": {"id_publicacao": "abc...", "municipio": "...", "tipo_ato": "Portaria"}}
@@ -251,9 +299,7 @@ campo `metadata` para indexação auxiliar:
 
 ---
 
-## 7. Deduplicação Textual Seletiva
-
-### Hash sobre Conteúdo Normativo Puro
+## 11. Deduplicação Textual Seletiva
 
 O MD5 de deduplicação é calculado **exclusivamente sobre o corpo textual normalizado**:
 - Remove espaços extras e quebras de linha múltiplas
@@ -261,26 +307,12 @@ O MD5 de deduplicação é calculado **exclusivamente sobre o corpo textual norm
 - Remove caracteres de controle Unicode
 - **NÃO inclui**: URL, data de raspagem, metadados de frontmatter
 
-Isso garante que dois PDFs com o mesmo conteúdo normativo (mesmo publicados em datas
-ou edições diferentes) produzam o mesmo hash e sejam registrados apenas uma vez.
-
-### Republicação por Incorreção (Upsert)
-
-Documentos governamentais frequentemente sofrem "republicação por incorreção".
-O registro de deduplicação (`registro_dedup.json`) mantém o mapeamento
-`{hash → {path, municipio, data, url}}`. Em caso de colisão, o registro mais
-recente sobrescreve o anterior — garantindo que o RAG entregue a versão corrigida.
-
 ---
 
-## 8. Classificação de Tipo de Ato
-
-O tipo de ato é classificado por **regex sobre o corpo do texto**, não confiando
-apenas no campo `categoria` do scraping (que pode ser genérico). A lista de padrões
-cobre os tipos mais frequentes no DOM-PI:
+## 12. Classificação de Tipo de Ato
 
 | Padrão Detectado | Tipo Classificado |
-|-------------------|-------------------|
+|---|---|
 | `PORTARIA` | Portaria |
 | `DECRETO` | Decreto |
 | `LEI Nº` | Lei |
@@ -291,32 +323,21 @@ cobre os tipos mais frequentes no DOM-PI:
 | `RESOLUÇÃO` | Resolução |
 | `LRF / RELATÓRIO DE GESTÃO` | LRF |
 
-Se nenhum padrão for detectado, o sistema usa como fallback o campo `categoria`
-vindo do JSON de scraping.
-
 ---
 
-## 9. Filtro de Qualidade OCR
+## 13. Filtro de Qualidade OCR
 
-### Heurísticas de Score
-
-Como muitos PDFs do DOM-PI são escaneados, o pipeline implementa um score de qualidade
-(`compute_ocr_quality_score`) baseado em 4 dimensões:
+`compute_ocr_quality_score()` avalia cada bloco em 4 dimensões:
 
 1. **Proporção alfanumérica** (peso 45%): % de letras + dígitos + espaços vs total
 2. **Tamanho médio de palavras** (peso 20%): palavras reais têm 3-15 chars, OCR tem 1-2
 3. **Vocabulário PT-BR** (peso 25%): presença de palavras como "municipal", "prefeito", "resolve"
 4. **Penalidade especial** (peso 10%): sequências de `~€#&@![]{}|<>` indicam lixo
 
-O threshold `MIN_OCR_QUALITY_SCORE = 0.35` é conservador — pode ser ajustado para cima
-(ex: 0.50) para um corpus mais limpo mas com potencial perda de conteúdo limítrofe.
+Threshold: `MIN_OCR_QUALITY_SCORE = 0.35` — ajustável para corpus mais restrito (ex: 0.50).
 
-### Modo Verbose-Blocos (Calibração)
-
-Para ajustar os thresholds, o script oferece análise visual detalhada:
-
+**Calibração de thresholds:**
 ```bash
-# Despeja análise de 3 PDFs sem processar (apenas calibração)
 uv run python src/dompi_scraper/processar_pdfs.py \
     --manifest db_treino_carnaubais/pdfs_arquivos/download_manifest.json \
     --output-dir dados_brutos \
@@ -324,74 +345,51 @@ uv run python src/dompi_scraper/processar_pdfs.py \
     --verbose-blocos-only 3
 ```
 
-Saída mostra por bloco: negrito, tamanho de fonte, score OCR (Q=0.65 ✓OK), candidatos
-a heading, e distribuição estatística de tamanhos.
+---
+
+## 14. Chunking por Município (`--modo-chunking`)
+
+PDFs do DOM-PI frequentemente são **edições consolidadas** contendo atos de múltiplos municípios.
+Com `--modo-chunking`, o `processar_pdfs.py` detecta fronteiras de município via padrão:
+
+```
+PREFEITURA / CÂMARA DE <Cidade> [- PI]
+```
+
+A detecção filtra apenas blocos **visualmente destacados** (font ≥ 11pt ou negrito),
+reduzindo falsos positivos no corpo do texto. Cada município detectado gera um `.md` independente
+no Data Lake com o nome da cidade no caminho de particionamento.
+
+> **Nota:** A detecção é heurística. PDFs com formatação irregular ou cabeçalhos muito próximos
+> do corpo do texto podem gerar chunks "DESCONHECIDO". Revisar via `--verbose-blocos-only`.
 
 ---
 
-## 10. Tecnologias Core
+## 15. Tecnologias Core
 
 ### PyMuPDF (fitz) — Motor de Extração
 
-O PyMuPDF é o motor primário de extração textual. Diferente do MarkItDown (genérico),
-o PyMuPDF fornece **atributos visuais** por bloco de texto:
+Extrai **atributos visuais** por bloco de texto:
 - Família de fonte (Times-Bold, Helvetica, Arial-BoldMT)
-- Tamanho em pontos (pt)
-- Flags de estilo (negrito, itálico, sublinhado)
+- Tamanho em pontos (pt) e flags de estilo (negrito, itálico)
 - Bounding box espacial (posição na página)
 
-Esses atributos são essenciais para a hierarquização do Markdown e para a detecção
-de cabeçalhos de municípios em PDFs compartilhados.
+Esses atributos são essenciais para hierarquização do Markdown e detecção de cabeçalhos.
 
 ### Mimesis de Browser (Requests/BS4)
 
-O portal DOM-PI usa um sistema de formulário com campos hidden e sessões stateful.
-O pipeline transita esses estados enviando headers corretos (`User-Agent`, `Referer`)
-via `requests.Session`, enquanto o `BeautifulSoup` extrai os `span_ids` sequenciais
-e decodifica os links JavaScript para obter as URLs reais dos PDFs.
+O portal DOM-PI usa formulário Scriptcase com campos hidden e sessões stateful.
+Cada thread do scraper cria sessão própria, transita esses estados via `requests.Session`,
+e usa `BeautifulSoup` para extrair `span_ids` sequenciais, links JavaScript e form F4
+(controle de paginação stateful no servidor).
 
 ### Deduplicação por Hash (MD5)
 
-Todo objeto persistido — arquivo PDF ou texto extraído — recebe um hash MD5 como chave.
-Isso transforma o `INSERT OR IGNORE` do SQLite numa barreira eficiente contra duplicatas,
-sem necessidade de queries de verificação prévia.
+Toda persistência usa MD5 como chave:
+- `md5(url)` → ID do arquivo PDF (evita re-download)
+- `md5(texto_normalizado)` → ID do conteúdo textual (evita re-ingestão)
 
-### SQLite como Hub Intermediário
+### extrator_marker.py (em avaliação)
 
-Para a fase de captura e deduplicação cruzada entre entidades, o SQLite oferece
-integridade relacional nativa sem overhead de infra. O banco pode ser trivialmente
-exportado para Parquet ou ingerido em vector databases (Qdrant, Pinecone, ChromaDB)
-na transição para produção.
-
----
-
-## 11. Execução Completa (Passo a Passo)
-
-### Passo 1: Scraping de Metadados
-```bash
-uv run python src/dompi_scraper/scraper_isolado.py \
-    --territorio-carnaubais --ano 2025 --limite 1000000
-```
-Saída: `scraping_carnaubais_2025_deduplicados.json`
-
-### Passo 2: Download dos PDFs
-```bash
-uv run python src/dompi_scraper/download_pdfs.py \
-    --input scraping_carnaubais_2025_deduplicados.json \
-    --output-dir db_treino_carnaubais/pdfs_arquivos
-```
-Saída: `db_treino_carnaubais/pdfs_arquivos/download_manifest.json`
-
-### Passo 3: Processamento → Markdown + JSONL
-```bash
-uv run python src/dompi_scraper/processar_pdfs.py \
-    --manifest db_treino_carnaubais/pdfs_arquivos/download_manifest.json \
-    --output-dir dados_brutos \
-    --jsonl-output corpus_treino_dompi.jsonl
-```
-Saídas:
-- `dados_brutos/ano=*/mes=*/municipio=*/*.md` — Data Lake
-- `corpus_treino_dompi.jsonl` — Corpus para LLM
-- `corpus_treino_dompi.meta.jsonl` — Corpus com metadados para RAG
-
-O banco `dompi_knowledge_base.sqlite` e os logs ficam em `./db_treino_carnaubais/`.
+Módulo separado em fase de testes e otimização para extração via GPU (Marker).
+**Não integrado ao pipeline principal ainda.** Ver documentação interna do módulo.
