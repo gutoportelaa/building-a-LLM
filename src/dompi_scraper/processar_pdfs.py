@@ -262,8 +262,10 @@ def detect_city_header(blk: dict) -> str | None:
     txt = blk.get("texto", "").strip()
     tamanho = blk.get("tamanho", 0)
     negrito = blk.get("negrito", False)
-    # Só considera cabeçalhos visualmente destacados
-    if tamanho < 11.0 and not negrito:
+    # Só considera cabeçalhos visualmente destacados ou textos que dão match forte
+    # Em layouts 4-em-1, as fontes são reduzidas à metade (ex: 5.5pt a 6pt)
+    is_4_in_1_size = 5.0 <= tamanho <= 8.0
+    if tamanho < 11.0 and not negrito and not is_4_in_1_size:
         return None
     match = RE_CABECALHO_ENTIDADE.search(txt)
     if not match:
