@@ -54,11 +54,34 @@ BASE_URL = "https://www.diarioficialdosmunicipios.org"
 SEARCH_URL = f"{BASE_URL}/consulta/ConPublicacaoGeral/ConPublicacaoGeral.php"
 
 CARNAUBAIS_MUNICIPIOS = [
-    "Assuncao do Pi", "Boa Hora", "Boqueirao do Pi", "Buriti dos Montes",
-    "Cabeceiras do Pi", "Campo Maior", "Capitao de Campos", "Castelo do Pi",
-    "Cocal de Telha", "Jatoba do Pi", "Juazeiro do Pi", "Nossa Senhora de Nazare",
-    "Novo Santo Antonio", "Sao Joao da Serra", "Sao Miguel do Tapuio", "Sigefredo Pacheco",
+    "Picos", 
+    "Ipiranga do Piauí", 
+    "Itainópolis", 
+    "Sussuapara", 
+    "Monsenhor Hipólito", 
+    "Santa Cruz do Piauí", 
+    "Bocaina", 
+    "Dom Expedito Lopes", 
+    "São José do Piauí", 
+    "Geminiano",
+    "Oeiras", 
+    "Simplício Mendes", 
+    "Campinas do Piauí", 
+    "Conceição do Canindé", 
+    "São Francisco do Piauí", 
+    "Isaías Coelho", 
+    "Paes Landim", 
+    "Santo Inácio do Piauí", 
+    "Colônia do Piauí", 
+    "Bela Vista do Piauí"
 ]
+
+# CARNAUBAIS_MUNICIPIOS = [
+#     "Assuncao do Pi", "Boa Hora", "Boqueirao do Pi", "Buriti dos Montes",
+#     "Cabeceiras do Pi", "Campo Maior", "Capitao de Campos", "Castelo do Pi",
+#     "Cocal de Telha", "Jatoba do Pi", "Juazeiro do Pi", "Nossa Senhora de Nazare",
+#     "Novo Santo Antonio", "Sao Joao da Serra", "Sao Miguel do Tapuio", "Sigefredo Pacheco",
+# ]
 
 ENTIDADES_PADRAO = ["Prefeitura", "Camara"]
 
@@ -512,6 +535,29 @@ def _deduplicar_por_url(registros: list[dict]) -> list[dict]:
                 unicos[url]["entidades_referenciadas"].append(r["entidade"])
     return list(unicos.values())
 
+def _deduplicar_por_pag_ed(registros: list[dict]) -> list[dict]:
+    """Deduplica registros com base em página+edição, acumulando documentos e categorias."""
+    unicos: dict[tuple, dict] = {}
+    for r in registros:
+        key = (r.get("pagina_url_meta"), r.get("edicao_url_meta"))
+        if key not in unicos:
+            # Primeiro registro: cria base com arrays para documentos
+            unicos[key] = r.copy()
+            unicos[key]["documentos_acumulados"] = [r.get("documento", "")]
+            unicos[key]["categorias_acumuladas"] = [r.get("categoria", "")]
+            unicos[key]["identificadores_acumulados"] = [r.get("identificador_oficial", "")]
+        else:
+            # Registros subsequentes: acumula dados sem duplicar
+            doc = r.get("documento", "")
+            if doc and doc not in unicos[key]["documentos_acumulados"]:
+                unicos[key]["documentos_acumulados"].append(doc)
+            cat = r.get("categoria", "")
+            if cat and cat not in unicos[key]["categorias_acumuladas"]:
+                unicos[key]["categorias_acumuladas"].append(cat)
+            ident = r.get("identificador_oficial", "")
+            if ident and ident not in unicos[key]["identificadores_acumulados"]:
+                unicos[key]["identificadores_acumulados"].append(ident)
+    return list(unicos.values())
 
 # ==============================================================================
 # CLI
@@ -581,6 +627,7 @@ def main() -> None:
 
     # Deduplicação pré-download
     unicos = _deduplicar_por_url(resultados)
+    unicos = _deduplicar_por_pag_ed(unicos)
     path_dedup = Path(base).with_name(f"{Path(base).name}_deduplicados.json")
     _salvar_json(unicos, path_dedup)
     if not args.so_json:
@@ -589,6 +636,9 @@ def main() -> None:
             dc = d.copy()
             dc["municipios_referenciados"] = "; ".join(dc.get("municipios_referenciados", []))
             dc["entidades_referenciadas"] = "; ".join(dc.get("entidades_referenciadas", []))
+            dc["documentos_acumulados"] = "; ".join(dc.get("documentos_acumulados", []))
+            dc["categorias_acumuladas"] = "; ".join(dc.get("categorias_acumuladas", []))
+            dc["identificadores_acumulados"] = "; ".join(dc.get("identificadores_acumulados", []))
             csv_dedup.append(dc)
         _salvar_csv(csv_dedup, Path(base).with_name(f"{Path(base).name}_deduplicados.csv"))
 

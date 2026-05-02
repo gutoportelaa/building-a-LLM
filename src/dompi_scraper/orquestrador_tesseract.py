@@ -34,6 +34,9 @@ import tempfile
 import time
 from pathlib import Path
 
+# Adiciona o diretório src ao path para importações relativas
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 try:
     import fitz  # PyMuPDF
 except ImportError:
