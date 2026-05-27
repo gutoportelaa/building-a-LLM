@@ -115,8 +115,8 @@ else:
 "
 ```
 
-> **Com GPU (RTX 4070 Laptop):**
-> ```
+> **Com GPU (Ex: RTX 4070 Laptop):**
+> ``` 
 > CUDA disponível: True
 > GPU: NVIDIA GeForce RTX 4070 Laptop GPU
 > VRAM total: 8.0 GB
@@ -187,23 +187,42 @@ building-a-LLM/
 
 ## 5. Passo 2 — Depositar os PDFs (Drop-Zone)
 
-Cada equipe responsável por um território deve copiar seus PDFs para a pasta correspondente:
+Cada equipe responsável por um território deve copiar seus PDFs para a pasta correspondente. O script suporta que os arquivos estejam soltos na pasta `pdfs/` ou organizados em subpastas.
+
+Se você organizar os PDFs em subpastas com o nome do município e da entidade, o script **automaticamente inferirá** esses dados para o seu JSONL final:
 
 ```bash
-# Exemplo: equipe do território Carnaubais
-cp /caminho/dos/pdfs/coletados/*.pdf territorios/carnaubais/pdfs/
+# Estrutura recomendada para facilitar a inferência automática:
+territorios/tabuleiros_alto_parnaiba/pdfs/
+├── Marcos_Parente/
+│   ├── Prefeitura/
+│   │   └── decreto_01.pdf
+│   └── Camara/
+│       └── portaria_02.pdf
+└── Urucui/
+    └── arquivo_avulso.pdf
+```
 
-# Exemplo: equipe de Teresina (usando rsync para pastas grandes)
+Nesse caso, `decreto_01.pdf` receberá `municipio="Marcos Parente"` e `entidade="Prefeitura"` automaticamente.
+
+Comandos úteis para copiar os arquivos:
+
+```bash
+# Exemplo 1: Copiar todos os PDFs já organizados (mantendo as pastas)
+cp -r /origem/pdfs_cidade/* territorios/carnaubais/pdfs/
+
+# Exemplo 2: Usar rsync para transferência segura de grandes volumes
 rsync -avh /origem/pdfs_teresina/ territorios/teresina/pdfs/
 
-# Verificar quantos PDFs foram depositados
-ls territorios/carnaubais/pdfs/ | wc -l
+# Verificar quantos PDFs foram depositados (incluindo subpastas)
+find territorios/carnaubais/pdfs/ -type f -name "*.pdf" | wc -l
 ```
 
 > **Regras para os PDFs:**
-> - Apenas arquivos `.pdf` são processados (outros arquivos são ignorados)
-> - Nomes de arquivo não importam — o sistema usa SHA-256 para identificação
-> - Não é necessário renomear ou organizar internamente
+> - Apenas arquivos `.pdf` são processados (outros arquivos são ignorados).
+> - O script faz busca recursiva, então não há limite para a profundidade das pastas.
+> - Se não houver subpastas com o nome do município, o script usará o nome do território como fallback no campo `municipio` (mas não se preocupe, o Orquestrador refinará o município pelo texto interno).
+> - Nomes de arquivo não importam — o sistema usa o hash SHA-256 para identificação única.
 
 ---
 
@@ -268,10 +287,10 @@ uv run python src/dompi_scraper/extrair_territorio.py --territorio parnaiba
 Se a máquina não tiver GPU, o orquestrador usará apenas PyMuPDF. Para PDFs escaneados, ajuste o threshold para que nenhum documento seja enviado ao Marker:
 
 ```bash
-# --threshold 1.1 → nenhum PDF vai para o Marker (força PyMuPDF para tudo)
+# --threshold 1.1 → nenhum PDF vai para o Marker (força PyMuPDF para tudo), recomendo usar 0.77
 uv run python src/dompi_scraper/extrair_territorio.py \
     --territorio carnaubais \
-    --threshold 1.1
+    --threshold 0.77
 ```
 
 > **Qualidade:** PDFs escaneados extraídos só com PyMuPDF podem ter qualidade inferior. Recomenda-se marcar `engine_extracao: "PyMuPDF-CPU"` manualmente caso precise diferenciar no corpus.

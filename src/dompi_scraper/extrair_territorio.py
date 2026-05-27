@@ -85,20 +85,43 @@ def build_manifest_from_pdfs(
     na pasta de drop-zone, sem precisar do pipeline de scraping.
     """
     manifest = {}
-    pdfs = sorted(pdfs_dir.glob("*.pdf"))
-    log.info(f"  Escaneando {len(pdfs)} PDFs em {pdfs_dir}")
+    # Use rglob to find PDFs recursively in subdirectories (like city/entity)
+    pdfs = sorted(pdfs_dir.rglob("*.pdf"))
+    log.info(f"  Escaneando {len(pdfs)} PDFs em {pdfs_dir} (recursivo)")
 
     for pdf_path in pdfs:
         log.debug(f"    Calculando SHA-256: {pdf_path.name}")
         sha = sha256_file(str(pdf_path))
         fid = pdf_path.stem  # Usa nome do arquivo como ID
 
+        # Tenta inferir município e entidade pela estrutura de pastas:
+        # Ex: pdfs/marcos_parente/Prefeitura/file.pdf -> municipio="marcos_parente", entidade="Prefeitura"
+        municipio_inferido = territorio_nome
+        entidade_inferida = ""
+        
+        # O caminho relativo ao diretório base de pdfs
+        rel_path = pdf_path.relative_to(pdfs_dir)
+        parts = rel_path.parts
+        
+        if len(parts) >= 2:
+            # Pelo menos um subdiretório (cidade)
+            # Substitui '_' por espaço e capitaliza (ex: marcos_parente -> Marcos Parente)
+            cidade_dir = parts[0].replace("_", " ").title()
+            # Ajuste simples de preposições para nomes mais limpos (opcional mas útil)
+            for prep in [" Do ", " Da ", " De ", " Dos ", " Das "]:
+                cidade_dir = cidade_dir.replace(prep, prep.lower())
+            municipio_inferido = cidade_dir
+            
+            if len(parts) >= 3:
+                # Tem subdiretório de entidade também (cidade/entidade)
+                entidade_inferida = parts[1].replace("_", " ").title()
+
         manifest[fid] = {
             "path": str(pdf_path.resolve()),
             "sha256": sha,
             "status": "OK",
-            "municipio": territorio_nome,  # Fallback; será refinado pelo chunking
-            "entidade": "",
+            "municipio": municipio_inferido,  # Inferido da pasta ou fallback pro território
+            "entidade": entidade_inferida,
             "data_publicacao": "",
             "edicao": "",
             "url": "",
@@ -135,7 +158,7 @@ def run(args: argparse.Namespace) -> None:
         )
         sys.exit(1)
 
-    pdfs = list(pdfs_dir.glob("*.pdf"))
+    pdfs = list(pdfs_dir.rglob("*.pdf"))
     if not pdfs:
         log.error(
             f"Nenhum PDF encontrado em {pdfs_dir}\n"
