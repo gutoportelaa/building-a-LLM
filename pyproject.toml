@@ -11,17 +11,27 @@ requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.13.5",
     "bs4>=0.0.2",
+    "chromadb>=1.5.8",
+    "langchain-text-splitters>=1.1.2",
     "marker-pdf>=1.10.2",
     "markitdown[pdf]>=0.0.1",
     "numpy>=2.4.4",
+    "ollama>=0.6.2",
     "opencv-python>=4.13.0.92",
     "pdf2image>=1.17.0",
     "pillow>=10.4.0",
     "pymupdf>=1.27.2.2",
     "pypdf>=5.4.0",
     "pytesseract>=0.3.13",
+    "psutil>=6.1.1",
+    "pyyaml>=6.0.3",
+    "pandas>=2.3.0",
+    "matplotlib>=3.10.0",
     "requests>=2.33.1",
+    "selenium>=4.43.0",
+    "tiktoken>=0.12.0",
     "torch>=2.11.0",
+    "webdriver-manager>=4.0.2",
 ]
 
 [project.optional-dependencies]
@@ -35,6 +45,9 @@ dompi-dedupe-pdfs = "dompi_scraper.baixar_pdfs_unicos:main"
 dompi-extract-text = "dompi_scraper.extrair_texto_pdfs_unicos:main"
 dompi-enrich = "dompi_scraper.enriquecer_registros_texto:main"
 dompi-audit = "dompi_scraper.auditoria_integridade:main"
+dompi-benchmark = "dompi_scraper.bench.run_benchmark:main"
+dompi-benchmark-analyze = "dompi_scraper.bench.analyze_results:main"
+dompi-benchmark-validate = "dompi_scraper.bench.validate_env:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

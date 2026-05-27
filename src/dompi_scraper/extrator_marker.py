@@ -140,6 +140,33 @@ def quality_gate_inmemory(
         log.warning(f"  Quality gate falhou ({os.path.basename(pdf_path)}): {e}")
         return True, -1.0  # Permite processamento em caso de erro
 
+def is_garbage_text(pdf_path: str, max_garbage_ratio: float = 0.25) -> tuple[bool, float]:
+    """
+    Identifica se um PDF é majoritariamente um scan complexo/manuscrito
+    analisando a taxa de caracteres não-alfanuméricos (lixo de OCR do PyMuPDF).
+    Retorna (is_garbage, garbage_ratio).
+    """
+    try:
+        import re
+        doc = fitz.open(pdf_path)
+        total_text = ""
+        for page in doc:
+            total_text += page.get_text()
+        doc.close()
+        
+        if not total_text.strip():
+            return True, 1.0 # Sem texto = scan puro
+            
+        text_no_space = re.sub(r'\s+', '', total_text)
+        if not text_no_space:
+            return True, 1.0
+            
+        alnum_count = sum(c.isalnum() for c in text_no_space)
+        garbage_ratio = 1.0 - (alnum_count / len(text_no_space))
+        
+        return garbage_ratio > max_garbage_ratio, garbage_ratio
+    except Exception:
+        return False, 0.0
 
 # ==============================================================================
 # SESSÃO MARKER — MODELOS CARREGADOS UMA VEZ
@@ -253,6 +280,27 @@ def _append_jsonl(records: list[dict], path: str) -> None:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
 
+def get_pdfs_com_tabela_achatada(limpos_dir: str) -> set[str]:
+    """Retorna um set com os sha256_pdf dos arquivos marcados com tabela_achatada_detectada."""
+    target_shas = set()
+    limpos_path = Path(limpos_dir)
+    if not limpos_path.exists():
+        return target_shas
+        
+    for md_file in limpos_path.rglob("*.md"):
+        try:
+            content = md_file.read_text(encoding="utf-8")
+            if "needs_human_review: true" in content and "tabela_achatada_detectada" in content:
+                for line in content.split("\n"):
+                    if line.startswith("sha256_pdf:"):
+                        sha = line.split('"')[1] if '"' in line else line.split(":")[1].strip()
+                        target_shas.add(sha)
+                        break
+        except Exception:
+            pass
+    return target_shas
+
+
 # ==============================================================================
 # PIPELINE PRINCIPAL
 # ==============================================================================
@@ -266,14 +314,29 @@ def run_marker_pipeline(
     force_ocr: bool,
     min_variance: float,
     checkpoint_every: int,
+    filter_limpos_dir: str | None = None,
 ) -> dict:
     """
     Pipeline completo: manifesto → quality gate → Marker → Data Lake + JSONL.
     Incremental: pula PDFs já processados via registro_dedup_marker.json.
+    Pode filtrar os PDFs lendo os markdowns sinalizados em filter_limpos_dir.
     """
     manifest = _load_json(manifest_path)
     ok_entries = {fid: e for fid, e in manifest.items() if e.get("status") == "OK"}
-    log.info(f"PDFs com status OK no manifesto: {len(ok_entries)}")
+    
+    if filter_limpos_dir:
+        log.info(f"Escaneando {filter_limpos_dir} para identificar PDFs com tabelas achatadas...")
+        shas_tabelas = get_pdfs_com_tabela_achatada(filter_limpos_dir)
+        filtered = {}
+        for fid, e in ok_entries.items():
+            if e.get("sha256") in shas_tabelas or fid in shas_tabelas:
+                filtered[fid] = e
+            elif Path(e.get("path", "")).stem in shas_tabelas:
+                filtered[fid] = e
+        ok_entries = filtered
+        log.info(f"Filtro aplicado: {len(ok_entries)} PDFs mapeados para reprocessamento de tabelas.")
+        
+    log.info(f"PDFs com status OK no manifesto (após filtros): {len(ok_entries)}")
 
     dedup_registry = _load_json(dedup_path)
     log.info(f"Hashes já registrados: {len(dedup_registry)}")
@@ -289,7 +352,7 @@ def run_marker_pipeline(
     Path(jsonl_output).parent.mkdir(parents=True, exist_ok=True)
     jsonl_meta_path = str(Path(jsonl_output).with_suffix(".meta.jsonl"))
 
-    stats = {"total": 0, "gerados": 0, "rejeitados": 0, "duplicatas": 0, "erros": 0}
+    stats = {"total": 0, "gerados": 0, "rejeitados": 0, "rejeitados_scan": 0, "duplicatas": 0, "erros": 0}
     buf_jsonl: list[dict] = []
     buf_meta: list[dict] = []
     processed = 0
@@ -329,10 +392,64 @@ def run_marker_pipeline(
             stats["rejeitados"] += 1
             continue
 
-        # 2. Extração via Marker (modelos reutilizados)
+        # 1.5 Fatiar PDF apenas para as páginas do município
+        import tempfile
+        t_slice = time.time()
+        try:
+            from dompi_scraper.orquestrador_extracao import analisar_e_fatiar_pdf
+        except ImportError:
+            from orquestrador_extracao import analisar_e_fatiar_pdf
+            
+        chunks = analisar_e_fatiar_pdf(pdf_path, municipio)
+        paginas_alvo = []
+        if municipio in chunks:
+            paginas_alvo = chunks[municipio]["paginas"]
+        elif chunks:
+            # Fallback para a maior cidade mapeada
+            maior_cidade = max(chunks.keys(), key=lambda k: len(chunks[k]["paginas"]))
+            paginas_alvo = chunks[maior_cidade]["paginas"]
+            
+        if not paginas_alvo:
+            doc_temp = fitz.open(pdf_path)
+            paginas_alvo = list(range(len(doc_temp)))
+            doc_temp.close()
+            
+        doc = fitz.open(pdf_path)
+        doc.select(paginas_alvo)
+        fd, tmp_pdf = tempfile.mkstemp(suffix=".pdf")
+        os.close(fd)
+        doc.save(tmp_pdf)
+        doc.close()
+        log.debug(f"  Fatiamento ({len(paginas_alvo)} págs) concluído em {time.time()-t_slice:.2f}s")
+
+        # 1.6 Detectar se é um scan denso/manuscrito (lixo de OCR)
+        is_garbage, garbage_ratio = is_garbage_text(tmp_pdf)
+        if is_garbage:
+            log.warning(f"  ⚠️  Rejeitado — Scan complexo detectado (garbage_ratio={garbage_ratio:.2f})")
+            stats["rejeitados_scan"] += 1
+            
+            with open(os.path.join(output_dir, "scans_complexos.jsonl"), "a", encoding="utf-8") as f_scan:
+                f_scan.write(json.dumps({
+                    "manifest_id": fid,
+                    "municipio": municipio,
+                    "entidade": entidade,
+                    "pdf_path": pdf_path,
+                    "garbage_ratio": garbage_ratio,
+                    "motivo": "Excesso de caracteres não-alfanuméricos (provável manuscrito/scan denso)"
+                }, ensure_ascii=False) + "\n")
+                
+            if os.path.exists(tmp_pdf):
+                os.remove(tmp_pdf)
+            continue
+
+        # 2. Extração via Marker (modelos reutilizados) no mini-PDF
         t0 = time.time()
-        markdown_text = extract_with_marker(modelos, config_parser, pdf_path)
+        markdown_text = extract_with_marker(modelos, config_parser, tmp_pdf)
         elapsed_ext = time.time() - t0
+        
+        # Limpeza do PDF temporário
+        if os.path.exists(tmp_pdf):
+            os.remove(tmp_pdf)
 
         if not markdown_text or len(markdown_text.strip()) < 50:
             log.warning(f"  ⚠️  Texto insuficiente extraído ({elapsed_ext:.1f}s)")
@@ -479,6 +596,10 @@ def main() -> None:
         help="Salva JSONL e dedup a cada N docs (padrão: 10)."
     )
     parser.add_argument(
+        "--filter-limpos-dir", default=None,
+        help="Diretório dados_limpos para ler arquivos e processar apenas os que possuem tabelas achatadas."
+    )
+    parser.add_argument(
         "--log-file", default=None,
         help="Caminho para arquivo de log em disco (opcional)."
     )
@@ -520,6 +641,7 @@ def main() -> None:
         force_ocr=args.force_ocr,
         min_variance=args.min_variance,
         checkpoint_every=args.checkpoint_every,
+        filter_limpos_dir=args.filter_limpos_dir,
     )
     elapsed = time.time() - t_start
 
@@ -531,6 +653,7 @@ def main() -> None:
     print(f"  📝 Markdown gerados:     {stats['gerados']}")
     print(f"  ♻️  Duplicatas:           {stats['duplicatas']}")
     print(f"  ⚠️  Rejeitados (QG):      {stats['rejeitados']}")
+    print(f"  📸 Scans Complexos:      {stats['rejeitados_scan']}")
     print(f"  ❌ Erros:                {stats['erros']}")
     print(f"  📄 JSONL:                {args.jsonl_output}")
     print(f"  🗂️  Data Lake:            {args.output_dir}/")
