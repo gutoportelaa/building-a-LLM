@@ -30,17 +30,24 @@ territorios/<slug>/pdfs/   ← Equipe deposita os PDFs aqui
        │
        ▼  uv run python src/dompi_scraper/extrair_territorio.py --territorio <slug>
        │
-       ├─► extraidos/<slug>/datalake/    ← Arquivos .md com frontmatter YAML
-       ├─► extraidos/<slug>/corpus_<slug>.jsonl  ← JSONL para fine-tuning
+       ├─► extraidos/<slug>/datalake/          ← Arquivos .md com frontmatter YAML
+       ├─► extraidos/<slug>/corpus_<slug>.jsonl ← JSONL para fine-tuning
        └─► logs/<slug>/extracao_YYYYMMDD.log
 ```
 
 **Um único comando por território.** O script:
+
 1. Escaneia os PDFs na drop-zone e calcula SHA-256 de cada um
-2. Avalia qualidade de cada PDF (PyMuPDF, sem GPU)
-3. PDFs digitais nativos → extração rápida via **PyMuPDF**
-4. PDFs escaneados → extração estruturada via **Marker na GPU**
-5. Grava resultados no Data Lake e no JSONL
+2. Executa triagem DLA (Document Layout Analysis) via **PyMuPDF** — mapeia páginas por município, calcula score OCR e detecta complexidade (tabelas, keywords fiscais)
+3. Roteia cada chunk de município para o extrator adequado ao hardware:
+
+| Situação | GPU disponível | Sem GPU |
+|---|---|---|
+| Texto nativo digital (score alto, sem tabelas) | PyMuPDF fast path | PyMuPDF fast path |
+| Texto escaneado mundano (score baixo, sem tabelas) | PaddleOCR CUDA | Tesseract (PT-BR) |
+| Documento complexo (tabelas / keywords fiscais) | Docling CUDA | PaddleOCR CPU |
+
+4. Manipula e grava resultados com **Polars** (NDJSON/JSONL) no Data Lake
 
 ---
 
@@ -97,8 +104,13 @@ source ~/.bashrc   # ou reinicie o terminal
 uv sync
 
 # Confirme que o ambiente está funcionando
-uv run python -c "import fitz, torch; print('OK')"
+uv run python -c "import fitz, torch, polars; print('OK')"
 ```
+
+> **Docling (opcional, para documentos com tabelas complexas em GPU):**
+> ```bash
+> uv sync --extra docling
+> ```
 
 ### 3.3 Verificar GPU
 
@@ -111,17 +123,17 @@ if torch.cuda.is_available():
     vram = torch.cuda.get_device_properties(0).total_memory / 1e9
     print(f'VRAM total: {vram:.1f} GB')
 else:
-    print('GPU não disponível — use --force-ocr=False (PyMuPDF) ou Tesseract')
+    print('GPU não disponível — usando Tesseract + PaddleOCR CPU automaticamente')
 "
 ```
 
-> **Com GPU (Ex: RTX 4070 Laptop):**
-> ``` 
+> **Com GPU (ex: RTX 4070 Laptop):**
+> ```
 > CUDA disponível: True
 > GPU: NVIDIA GeForce RTX 4070 Laptop GPU
 > VRAM total: 8.0 GB
 > ```
-> **Sem GPU:** o script continua funcionando, usando apenas PyMuPDF para documentos nativos. PDFs escaneados exigirão `--sem-gpu` (veja Seção 6.3).
+> **Sem GPU:** o script detecta automaticamente e usa Tesseract para OCR e PaddleOCR CPU para tabelas. Nenhuma configuração manual necessária.
 
 ---
 
@@ -169,10 +181,10 @@ building-a-LLM/
 ├── extraidos/                     ← Saída da extração (gerado automaticamente)
 │   └── <slug>/
 │       ├── datalake/              ← Arquivos .md particionados
-│       ├── corpus_<slug>.jsonl    ← JSONL para fine-tuning
+│       ├── corpus_<slug>.jsonl    ← JSONL para fine-tuning (Polars NDJSON)
 │       ├── corpus_<slug>.meta.jsonl
 │       ├── download_manifest.json ← Gerado automaticamente
-│       └── registro_dedup_marker.json
+│       └── registro_dedup.ndjson  ← Dedup persistente (Polars)
 │
 ├── logs/                          ← Logs de cada execução
 │   └── <slug>/
@@ -221,7 +233,7 @@ find territorios/carnaubais/pdfs/ -type f -name "*.pdf" | wc -l
 > **Regras para os PDFs:**
 > - Apenas arquivos `.pdf` são processados (outros arquivos são ignorados).
 > - O script faz busca recursiva, então não há limite para a profundidade das pastas.
-> - Se não houver subpastas com o nome do município, o script usará o nome do território como fallback no campo `municipio` (mas não se preocupe, o Orquestrador refinará o município pelo texto interno).
+> - Se não houver subpastas com o nome do município, o script usará o nome do território como fallback no campo `municipio` (o Orquestrador refinará o município pelo cabeçalho interno do documento).
 > - Nomes de arquivo não importam — o sistema usa o hash SHA-256 para identificação única.
 
 ---
@@ -239,7 +251,9 @@ uv run python src/dompi_scraper/extrair_territorio.py \
     --verbose
 ```
 
-### 6.2 Extração Completa — Com GPU (Recomendado)
+### 6.2 Extração Completa
+
+O script detecta GPU automaticamente — **o mesmo comando funciona com ou sem GPU**:
 
 ```bash
 # Planície Litorânea
@@ -282,34 +296,21 @@ uv run python src/dompi_scraper/extrair_territorio.py --territorio teresina
 uv run python src/dompi_scraper/extrair_territorio.py --territorio parnaiba
 ```
 
-### 6.3 Extração Sem GPU (CPU — Mais Lento)
+### 6.3 Extração Sem GPU (CPU — Stack Automática)
 
-Se a máquina não tiver GPU, o orquestrador usará apenas PyMuPDF. Para PDFs escaneados, ajuste o threshold para que nenhum documento seja enviado ao Marker:
+O script já adapta a stack ao hardware. Em máquinas sem GPU o roteamento é:
 
-```bash
-# --threshold 1.1 → nenhum PDF vai para o Marker (força PyMuPDF para tudo), recomendo usar 0.77
-uv run python src/dompi_scraper/extrair_territorio.py \
-    --territorio carnaubais \
-    --threshold 0.77
-```
+- **Digital nativo** (score ≥ 0.70) → PyMuPDF (milissegundos por página)
+- **Escaneado mundano** (score < 0.70, sem tabelas) → Tesseract PT-BR
+- **Complexo** (tabelas / keywords fiscais) → PaddleOCR CPU
 
-> **Qualidade:** PDFs escaneados extraídos só com PyMuPDF podem ter qualidade inferior. Recomenda-se marcar `engine_extracao: "PyMuPDF-CPU"` manualmente caso precise diferenciar no corpus.
+Nenhum parâmetro extra é necessário. Apenas execute o comando padrão.
 
-### 6.4 Force-OCR para PDFs Escaneados em Massa
+> **Expectativa de velocidade CPU:** ~3–10 s/pág para Tesseract, ~20–60 s/pág para PaddleOCR CPU. Volumes grandes levam horas — considere usar `--limite` para lotes menores e retomar depois (o script é idempotente).
 
-Quando você sabe que o lote é 100% escaneado e quer garantir máxima qualidade de tabelas:
+### 6.4 Extração Incremental (Retomada após Interrupção)
 
-```bash
-uv run python src/dompi_scraper/extrair_territorio.py \
-    --territorio vale_do_sambito \
-    --force-ocr
-```
-
-> **Atenção:** `--force-ocr` usa ~3.2 GB de VRAM. Não combine com outros processos GPU.
-
-### 6.5 Extração Incremental (Retomada após Interrupção)
-
-O script é **idempotente**: re-executar o mesmo comando pula PDFs já processados (verificados via registro de deduplicação).
+O script é **idempotente**: re-executar o mesmo comando pula PDFs já processados (verificados via `registro_dedup.ndjson`).
 
 ```bash
 # Se a extração foi interrompida, basta executar o mesmo comando novamente
@@ -327,40 +328,35 @@ uv run python src/dompi_scraper/extrair_territorio.py --territorio carnaubais
 # Quantos documentos foram extraídos
 find extraidos/carnaubais/datalake -name "*.md" | wc -l
 
-# Ver o JSONL gerado
-head -n 1 extraidos/carnaubais/corpus_carnaubais.jsonl | python -m json.tool | head -30
+# Ver o JSONL gerado (Polars NDJSON)
+uv run python -c "
+import polars as pl
+df = pl.read_ndjson('extraidos/carnaubais/corpus_carnaubais.jsonl')
+print(df.head(2))
+print(df.schema)
+"
 
 # Ver log da extração
 cat logs/carnaubais/$(ls -t logs/carnaubais/ | head -1)
 ```
 
-### 7.2 Validar Schema JSONL
+### 7.2 Validar Schema JSONL com Polars
 
 ```bash
 uv run python -c "
-import json, sys
+import polars as pl
 
-campos = ['doc_id','territorio','municipio','data_publicacao','texto_markdown','engine_extracao']
 slug = 'carnaubais'  # <- altere para o seu território
+df = pl.read_ndjson(f'extraidos/{slug}/corpus_{slug}.jsonl')
 
-erros = 0
-total = 0
-with open(f'extraidos/{slug}/corpus_{slug}.jsonl', 'r') as f:
-    for i, line in enumerate(f, 1):
-        total += 1
-        try:
-            doc = json.loads(line)
-            for c in campos:
-                if c not in doc or not doc[c]:
-                    print(f'Linha {i}: campo obrigatório ausente ou vazio: {c}')
-                    erros += 1
-        except json.JSONDecodeError as e:
-            print(f'Linha {i}: JSON inválido — {e}')
-            erros += 1
+campos = ['id_publicacao', 'municipio', 'tipo_ato', 'data_publicacao', 'extrator', 'texto']
+for c in campos:
+    vazios = df.filter(pl.col(c).is_null() | (pl.col(c) == '')).height
+    if vazios:
+        print(f'  AVISO: {vazios} registros com campo vazio: {c}')
 
-print(f'Total: {total} | Erros: {erros}')
-if erros == 0:
-    print('✅ Validação OK — JSONL pronto para consolidação')
+print(f'Total: {df.height} | Extratores usados:')
+print(df.group_by('extrator').len().sort('len', descending=True))
 "
 ```
 
@@ -381,46 +377,42 @@ done
 
 ## 8. Schema de Dados Unificado
 
-Cada linha do arquivo `.jsonl` gerado segue este formato obrigatório:
+Cada linha do arquivo `.jsonl` gerado segue este formato (Polars NDJSON):
 
 ### 8.1 Campos
 
 | Campo | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| `doc_id` | String | ✅ | SHA-256 do arquivo PDF físico |
-| `territorio` | String | ✅ | Nome canônico da Tabela em §2 |
+| `id_publicacao` | String | ✅ | MD5 do conteúdo textual extraído |
 | `municipio` | String | ✅ | Grafia IBGE exata (ex: `Assunção do Piauí`) |
-| `data_publicacao` | String | ✅ | ISO 8601 (`YYYY-MM-DD`) ou `null` |
-| `texto_markdown` | String | ✅ | Conteúdo extraído com `#`, `##`, tabelas Markdown |
-| `metadados_extraidos` | Objeto | ⬜ | Entidades extras: CNPJs, número de licitação, etc. |
-| `engine_extracao` | String | ✅ | Motor usado (veja tabela abaixo) |
+| `tipo_ato` | String | ✅ | Portaria, Decreto, Lei, Edital, etc. |
+| `data_publicacao` | String | ✅ | ISO 8601 (`YYYY-MM-DD`) ou `""` |
+| `extrator` | String | ✅ | Motor usado (veja tabela abaixo) |
+| `texto` | String | ✅ | Conteúdo Markdown com `#`, `##`, tabelas |
+| `n_chars` | Int | ✅ | Comprimento do campo `texto` |
 
-### 8.2 Valores de `engine_extracao`
+### 8.2 Valores de `extrator`
 
 | Valor | Quando |
 |---|---|
-| `"Orquestrador-Marker"` | PDF escaneado → Marker GPU (padrão slow path) |
-| `"Orquestrador-PyMuPDF"` | PDF nativo → PyMuPDF (padrão fast path) |
-| `"Marker"` | `extrator_marker.py` puro |
-| `"Tesseract"` | `orquestrador_tesseract.py` |
-| `"PyMuPDF"` | `processar_pdfs.py` puro |
+| `"pymupdf"` | Texto digital nativo (score ≥ threshold) — GPU ou CPU |
+| `"paddle-cuda"` | Escaneado simples com GPU CUDA |
+| `"docling-cuda"` | Documento complexo (tabelas) com GPU CUDA |
+| `"tesseract"` | Escaneado mundano sem GPU |
+| `"paddle-cpu"` | Documento complexo (tabelas) sem GPU |
+| `"paddle-cuda-fallback"` | Docling indisponível → PaddleOCR CUDA |
 
 ### 8.3 Exemplo de Registro
 
 ```json
 {
-  "doc_id": "e3b0c44298fc1c149afbf4c8996fb924...b855",
-  "territorio": "Vale do Rio Guaribas",
+  "id_publicacao": "a3f2c9d1e4b07825...",
   "municipio": "Campo Maior",
+  "tipo_ato": "Portaria",
   "data_publicacao": "2025-03-15",
-  "texto_markdown": "# PREFEITURA MUNICIPAL DE CAMPO MAIOR\n\n## PORTARIA Nº 042/2025\n\n**RESOLVE:**\n\n| Servidor | Cargo |\n|---|---|\n| João Silva | Agente Administrativo |",
-  "metadados_extraidos": {
-    "tipo_ato": "Portaria",
-    "num_ato": "042/2025",
-    "entidade": "Prefeitura Municipal",
-    "edicao": "5231"
-  },
-  "engine_extracao": "Orquestrador-Marker"
+  "extrator": "docling-cuda",
+  "texto": "# PREFEITURA MUNICIPAL DE CAMPO MAIOR\n\n## PORTARIA Nº 042/2025\n\n**RESOLVE:**\n\n| Servidor | Cargo |\n|---|---|\n| João Silva | Agente Administrativo |",
+  "n_chars": 312
 }
 ```
 
@@ -448,12 +440,14 @@ uv run python src/dompi_scraper/extrair_territorio.py [opções]
 | Parâmetro | Padrão | Descrição |
 |---|---|---|
 | `--territorio SLUG` | — | **Obrigatório.** Slug do território (veja §2) |
+| `--modo` | `paddle` | `paddle` (padrão) ou `pymu` (mais rápido, sem layout avançado) |
 | `--limite N` | ilimitado | Processa no máximo N PDFs. Use `3` para testes |
-| `--threshold 0.0–1.0` | `0.70` | Score OCR: acima → PyMuPDF, abaixo → Marker |
-| `--force-ocr` | off | Força Marker com OCR completo em todos os PDFs |
-| `--min-variance N` | `50.0` | Nitidez mínima (Laplacian). Abaixo = PDF em branco/corrompido |
 | `--verbose` | off | Ativa logs DEBUG detalhados |
 | `--listar` | — | Lista todos os territórios e slugs disponíveis |
+| `--workers N` | `cpu_count()-1` | [Modo paddle] Processos paralelos |
+| `--threshold` | `0.70` | [Legado] Score OCR para roteamento (ignorado no modo paddle) |
+| `--force-ocr` | off | [Legado] Ignorado. Mantido por compatibilidade |
+| `--min-variance` | `50.0` | [Legado] Ignorado. Mantido por compatibilidade |
 
 **Exemplos rápidos:**
 
@@ -464,14 +458,11 @@ uv run python src/dompi_scraper/extrair_territorio.py --listar
 # Teste com 3 PDFs e log detalhado
 uv run python src/dompi_scraper/extrair_territorio.py --territorio parnaiba --limite 3 --verbose
 
-# Produção padrão (Orquestrador Híbrido com GPU)
+# Produção padrão (detecta GPU automaticamente)
 uv run python src/dompi_scraper/extrair_territorio.py --territorio vale_do_sambito
 
-# Forçar OCR completo (máxima qualidade, mais lento)
-uv run python src/dompi_scraper/extrair_territorio.py --territorio cocais --force-ocr
-
-# Sem GPU (apenas PyMuPDF)
-uv run python src/dompi_scraper/extrair_territorio.py --territorio entre_rios --threshold 1.1
+# Modo PyMuPDF apenas (mais rápido, sem análise de tabelas)
+uv run python src/dompi_scraper/extrair_territorio.py --territorio entre_rios --modo pymu
 ```
 
 ---
@@ -503,13 +494,31 @@ nvidia-smi
 uv add "torch>=2.1.0" --index-url https://download.pytorch.org/whl/cu121
 ```
 
-### ❌ `ImportError: No module named 'marker'`
+### ❌ `ImportError: No module named 'polars'`
 
 ```bash
 uv sync
 # Se persistir:
-uv add marker-pdf
+uv add "polars>=1.0.0"
 ```
+
+### ❌ `ImportError: No module named 'paddleocr'`
+
+```bash
+uv sync
+# Se persistir:
+uv add paddleocr paddlepaddle
+```
+
+### ❌ `ImportError: No module named 'docling'` (apenas com GPU)
+
+Docling é opcional. Instale se quiser extração de tabelas de alta fidelidade com GPU:
+```bash
+uv sync --extra docling
+# ou
+uv add docling
+```
+Sem Docling, documentos complexos são processados automaticamente com PaddleOCR CUDA como fallback.
 
 ### ❌ `tesseract: command not found`
 
@@ -525,26 +534,21 @@ A GPU ficou sem memória. Soluções:
 # 1. Verifique quem está usando a GPU
 nvidia-smi
 
-# 2. Aumente o limiar de variância para pular PDFs muito pesados
-uv run python src/dompi_scraper/extrair_territorio.py \
-    --territorio carnaubais \
-    --min-variance 100.0
-
-# 3. Processe em lotes menores
+# 2. Processe em lotes menores (o script retoma do ponto onde parou)
 uv run python src/dompi_scraper/extrair_territorio.py \
     --territorio carnaubais \
     --limite 50
-# → Depois re-execute (o script retoma do ponto onde parou)
+# → Re-execute até completar (idempotente)
 ```
 
-### ❌ `texto_markdown` está vazio ou com lixo (OCR ruim)
+### ❌ `texto` está vazio ou com lixo (OCR ruim)
+
+Verifique qual extrator foi usado no registro (`extrator` no JSONL). Se for `tesseract`, tente forçar o modo paddle para esse território:
 
 ```bash
-# Reprocesse com force-ocr (Marker fará OCR do zero)
 uv run python src/dompi_scraper/extrair_territorio.py \
     --territorio <slug> \
-    --force-ocr \
-    --min-variance 20.0   # mais permissivo para aceitar PDFs ruins
+    --modo paddle
 ```
 
 ### ❌ Município aparece como `DESCONHECIDO`
@@ -559,12 +563,13 @@ O PDF não tem cabeçalho `PREFEITURA/CÂMARA DE <Cidade>` legível. O registro 
 |---|---|
 | [`setup_territorios.sh`](setup_territorios.sh) | Cria toda a estrutura de diretórios |
 | [`src/dompi_scraper/extrair_territorio.py`](src/dompi_scraper/extrair_territorio.py) | **Script principal de extração por território** |
-| [`src/dompi_scraper/orquestrador_extracao.py`](src/dompi_scraper/orquestrador_extracao.py) | Orquestrador Híbrido (PyMuPDF + Marker) |
-| [`src/dompi_scraper/extrator_marker.py`](src/dompi_scraper/extrator_marker.py) | Motor Marker puro (GPU) |
-| [`src/dompi_scraper/orquestrador_tesseract.py`](src/dompi_scraper/orquestrador_tesseract.py) | Motor Tesseract (CPU fallback) |
+| [`src/dompi_scraper/orquestrador_extracao.py`](src/dompi_scraper/orquestrador_extracao.py) | Orquestrador Híbrido (PyMuPDF + PaddleOCR/Docling/Tesseract) |
+| [`src/dompi_scraper/extrator_paddle.py`](src/dompi_scraper/extrator_paddle.py) | Motor PaddleOCR PP-Structure |
+| [`src/dompi_scraper/worker_docling.py`](src/dompi_scraper/worker_docling.py) | Motor Docling GPU / Ollama CPU |
+| [`src/dompi_scraper/orquestrador_tesseract.py`](src/dompi_scraper/orquestrador_tesseract.py) | Motor Tesseract (referência legada) |
 | [`CONTEXT.md`](CONTEXT.md) | Arquitetura completa do pipeline DOM-PI |
 | [`CONTEXT_2.md`](CONTEXT_2.md) | Relatório de triagem VLM/OCR |
 
 ---
 
-*Última atualização: 2026-05-26 — DOM-PI Pipeline v0.1 · 13 territórios*
+*Última atualização: 2026-05-30 — DOM-PI Pipeline v0.2 · stack sem Marker · Polars NDJSON*
