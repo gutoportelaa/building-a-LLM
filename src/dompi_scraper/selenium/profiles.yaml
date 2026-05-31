@@ -1,0 +1,98 @@
+# Benchmark Configuration Profiles
+# Usage: python run_benchmark.py --config profiles.yaml --profile quick
+
+profiles:
+  # Quick validation test (ideal for CI/testing)
+  quick:
+    dataset: "../../../dados/scraping_results/scraping_carnaubais_2025_deduplicados.json"
+    limit: 20
+    approaches:
+      - requests_sync
+      - aiohttp_async
+    concurrency: [1, 5]
+    timeout: 30
+    runs: 1
+    warmups: 0
+    output: "bench_results_quick"
+
+  # Light comparison (moderate load)
+  light:
+    dataset: "../../../dados/scraping_results/scraping_carnaubais_2025_deduplicados.json"
+    limit: 100
+    approaches:
+      - requests_sync
+      - aiohttp_async
+      - selenium_hybrid
+    concurrency: [1, 5, 10]
+    timeout: 30
+    runs: 2
+    warmups: 1
+    output: "bench_results_light"
+
+  # Standard comparison (recommended)
+  standard:
+    dataset: "../../../dados/scraping_results/scraping_carnaubais_2025_deduplicados.json"
+    limit: 200
+    approaches:
+      - requests_sync
+      - aiohttp_async
+      - selenium_hybrid
+      - selenium_full
+    concurrency: [1, 5, 10, 20]
+    timeout: 30
+    runs: 3
+    warmups: 1
+    output: "bench_results_standard"
+
+  # Full stress test
+  stress:
+    dataset: "../../../dados/scraping_results/scraping_carnaubais_2025_deduplicados.json"
+    limit: 500
+    approaches:
+      - requests_sync
+      - aiohttp_async
+    concurrency: [1, 5, 10, 20, 50]
+    timeout: 60
+    runs: 5
+    warmups: 2
+    output: "bench_results_stress"
+
+  # Request-only benchmark (fast)
+  requests_only:
+    dataset: "../../../dados/scraping_results/scraping_carnaubais_2025_deduplicados.json"
+    limit: 300
+    approaches:
+      - requests_sync
+    concurrency: [1, 5, 10, 20]
+    timeout: 30
+    runs: 3
+    warmups: 1
+    output: "bench_results_requests"
+
+  # Aiohttp-only benchmark (async focused)
+  aiohttp_only:
+    dataset: "../../../dados/scraping_results/scraping_carnaubais_2025_deduplicados.json"
+    limit: 300
+    approaches:
+      - aiohttp_async
+    concurrency: [1, 5, 10, 20, 50]
+    timeout: 30
+    runs: 3
+    warmups: 1
+    output: "bench_results_aiohttp"
+
+  # Selenium benchmarks
+  selenium_only:
+    dataset: "../../../dados/scraping_results/scraping_carnaubais_2025_deduplicados.json"
+    limit: 50
+    approaches:
+      - selenium_hybrid
+      - selenium_full
+    concurrency: [1, 2, 4]
+    timeout: 60
+    runs: 2
+    warmups: 0
+    output: "bench_results_selenium"
+
+# Default profile if none specified
+default_profile: standard
