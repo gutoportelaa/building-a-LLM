@@ -121,23 +121,109 @@ def classify_act_type(text: str, fallback_category: str = "") -> str:
     vindo do campo 'categoria' do JSON de scraping).
 
     Args:
-        text: Corpo do texto do documento (primeiros ~500 chars são suficientes).
+        text: Corpo do texto do documento.
         fallback_category: Categoria padrão vinda dos metadados do scraping.
 
     Returns:
         Nome do tipo de ato identificado.
     """
-    # Usa apenas os primeiros 1000 caracteres para performance
-    snippet = (text or "")[:1000]
+    # Primeira tentativa: primeiros 2000 chars (cabeçalho e título do ato) (P-11)
+    snippet = (text or "")[:2000]
     for act_name, pattern in _ACT_TYPE_PATTERNS:
         if pattern.search(snippet):
             return act_name
+    # Fallback: texto completo para documentos onde o tipo aparece no corpo (P-11)
+    full = text or ""
+    if len(full) > 2000:
+        for act_name, pattern in _ACT_TYPE_PATTERNS:
+            if pattern.search(full):
+                return act_name
     return fallback_category or "Não Identificado"
 
 
 # ---------------------------------------------------------------------------
-# EXTRAÇÃO DE DATAS DO CORPO DO TEXTO
+# EXTRAÇÃO DE DATA E EDIÇÃO A PARTIR DO NOME DO ARQUIVO (DOM-PI)
 # ---------------------------------------------------------------------------
+#
+# Padrão de nome de arquivo do DOM-PI:
+#   DM_{edicao}_{seq}_{Municipio_Parts}_{TipoAto}_{num}-{aa}_pag_{pag}.pdf
+#
+# Exemplos:
+#   DM_5234_053_Antonio_Almeida_Portaria_001-25_pag_616.pdf
+#   DM_5251_056_Antonio_Almeida_Licitacao_Inexigibilidade_004-24_Extrato_Contrato_002-25_pag_484.pdf
+#
+# Estratégia de data (apenas pelo filename, sem ler conteúdo):
+#   1. Extrai número de edição DM_NNNN → campo edicao_dom
+#   2. Coleta TODOS os sufixos "-NN_" antes do "_pag_" e pega o ÚLTIMO
+#      (o processo antecedente tem sufixo mais à esquerda; o ato principal
+#      que efetivamente foi publicado nesta edição está mais à direita)
+#   3. Se não achar sufixo "-NN_", tenta padrão de ano 4 dígitos "_AAAA_"
+#   4. Retorna "AAAA" (somente ano) + campo data_confianca indicando a fonte
+
+_RE_EDICAO = re.compile(r"^DM_(\d+)_", re.IGNORECASE)
+_RE_ANO_SUFIXO = re.compile(r"-(\d{2})(?:_|$)")        # padrão  -25_ ou -25
+_RE_ANO_4DIGITS = re.compile(r"_(\d{4})(?:_|$)")  # padrão  _2025_ ou _2025
+
+
+def extrair_edicao_filename(filename: str) -> str:
+    """
+    Extrai o número de edição do DOM-PI a partir do nome do arquivo.
+
+    Exemplo: DM_5234_053_... → "5234"
+    Retorna "" se o padrão não for encontrado.
+    """
+    basename = os.path.basename(filename)
+    m = _RE_EDICAO.match(basename)
+    return m.group(1) if m else ""
+
+
+def extrair_data_filename(filename: str) -> tuple[str, str]:
+    """
+    Extrai o ano de publicação a partir do nome do arquivo DOM-PI.
+    Não lê nenhum conteúdo — opera apenas sobre o nome do arquivo.
+
+    Lógica:
+    1. Remove o sufixo "_pag_NNN" para evitar falsos positivos no número de página.
+    2. Remove o prefixo "DM_NNNN_MMM_" para evitar capturar a edição como ano.
+    3. Coleta todos os padrões "-NN_" e usa o ÚLTIMO (o ato mais à direita no
+       nome é o ato publicado; referências a processos antecedentes ficam antes).
+    4. Fallback: busca por "_AAAA_" (ano com 4 dígitos).
+
+    Retorna:
+        (ano_iso, data_confianca)
+        - ano_iso:        "2025"  ou  ""  se não encontrado
+        - data_confianca: "filename_sufixo" | "filename_ano4d" | "ausente"
+
+    Atenção: retorna apenas o ANO. O mês/dia exato requer mapeamento de
+    edição→data que não está disponível localmente.
+    """
+    basename = os.path.basename(filename)
+    stem = os.path.splitext(basename)[0]
+
+    # Remove _pag_NNN para não confundir número de página com ano
+    stem = re.sub(r"_pag_\d+$", "", stem, flags=re.IGNORECASE)
+    
+    # Remove o prefixo DM_NNNN_MMM_ para não confundir edição com ano
+    stem = re.sub(r"^DM_\d+_\d+_", "", stem, flags=re.IGNORECASE)
+
+    # Camada 1: sufixos "-NN_" — pega o ÚLTIMO (ato principal, mais à direita)
+    matches = _RE_ANO_SUFIXO.findall(stem)
+    if matches:
+        year_2d = matches[-1]
+        # Converte 2 dígitos → 4 dígitos (assumindo século 21, válido para 00-99)
+        year_4d = f"20{year_2d}"
+        # Sanidade: aceita apenas 2000–2099
+        if 2000 <= int(year_4d) <= 2099:
+            return year_4d, "filename_sufixo"
+
+    # Camada 2: ano de 4 dígitos explícito no nome ("_2025_" ou terminando com "_2025")
+    matches_4d = _RE_ANO_4DIGITS.findall(stem)
+    valid = [y for y in matches_4d if 2000 <= int(y) <= 2099]
+    if valid:
+        return valid[-1], "filename_ano4d"
+
+    return "", "ausente"
+
 
 _MESES_PT = {
     "janeiro": "01", "fevereiro": "02", "março": "03", "marco": "03",
@@ -145,20 +231,27 @@ _MESES_PT = {
     "julho": "07", "agosto": "08", "setembro": "09",
     "outubro": "10", "novembro": "11", "dezembro": "12",
 }
-
-_DATE_PATTERN_EXTENSO = re.compile(
-    r"(\d{1,2})\s+de\s+("
-    + "|".join(_MESES_PT.keys())
-    + r")\s+de\s+(\d{4})",
+_DATE_EXTENSO = re.compile(
+    r"(\d{1,2})\s+de\s+(" + "|".join(_MESES_PT.keys()) + r")\s+de\s+(\d{4})",
     re.IGNORECASE,
 )
+_DATE_NUMERICO = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
 
-_DATE_PATTERN_NUMERICO = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
+
+def _parse_extenso(match: re.Match) -> str:
+    dia = match.group(1).zfill(2)
+    mes = _MESES_PT.get(match.group(2).lower(), "00")
+    return f"{match.group(3)}-{mes}-{dia}"
 
 
 def extract_date_from_text(text: str) -> str | None:
     """
-    Extrai a primeira data encontrada no corpo do texto.
+    Extrai a data de publicação do corpo do texto.
+    NOTA: Use extrair_data_filename() quando disponível — é mais confiável.
+
+    Estratégia (P-02): prefere a data na cauda do documento (últimos 1500
+    chars), onde fica o bloco de assinatura "Cidade, DD de mês de AAAA".
+    Recorre ao texto completo apenas se a cauda não tiver data.
 
     Reconhece formatos:
     - Extenso: "15 de março de 2025"
@@ -169,18 +262,21 @@ def extract_date_from_text(text: str) -> str | None:
     if not text:
         return None
 
-    # Prioriza formato extenso (mais comum em atos oficiais)
-    match = _DATE_PATTERN_EXTENSO.search(text)
+    # 1. Busca na cauda (bloco de assinatura — mais próximo da data de publicação)
+    tail = text[-1500:] if len(text) > 1500 else text
+    match = _DATE_EXTENSO.search(tail)
     if match:
-        dia = match.group(1).zfill(2)
-        mes = _MESES_PT.get(match.group(2).lower(), "00")
-        ano = match.group(3)
-        return f"{ano}-{mes}-{dia}"
+        return _parse_extenso(match)
+    match = _DATE_NUMERICO.search(tail)
+    if match:
+        return f"{match.group(3)}-{match.group(2)}-{match.group(1)}"
 
-    # Fallback: numérico DD/MM/AAAA
-    match = _DATE_PATTERN_NUMERICO.search(text)
+    # 2. Fallback: primeiro match no texto completo
+    match = _DATE_EXTENSO.search(text)
     if match:
-        dia, mes, ano = match.group(1), match.group(2), match.group(3)
-        return f"{ano}-{mes}-{dia}"
+        return _parse_extenso(match)
+    match = _DATE_NUMERICO.search(text)
+    if match:
+        return f"{match.group(3)}-{match.group(2)}-{match.group(1)}"
 
     return None

@@ -18,6 +18,11 @@ import re
 import sys
 from pathlib import Path
 
+try:
+    from .shared_utils import compute_content_md5
+except ImportError:
+    from shared_utils import compute_content_md5
+
 # Configuração de Logging com nível de detalhe dinâmico
 log = logging.getLogger("limpeza_textos")
 
@@ -57,17 +62,32 @@ def parse_markdown(content: str) -> tuple[str, str]:
             return frontmatter, body
     return "", content
 
+# Razões que efetivamente indicam estrutura problemática (P-08).
+# assinaturas_detectadas é informativa — quase todo documento oficial tem.
+_HIGH_SEVERITY_REASONS = {"tabela_achatada_detectada", "alto_indice_ruido_ocr"}
+
+
 def append_review_flags(frontmatter: str, reasons: list) -> str:
-    """Adiciona flags de revisão no frontmatter YAML."""
+    """
+    Adiciona flags de revisão no frontmatter YAML.
+    needs_human_review: true é definido apenas para razões de alta severidade (P-08).
+    Todas as razões são sempre registradas em review_reasons para observabilidade.
+    """
     if not frontmatter or not reasons:
         return frontmatter
-    
+
     parts = frontmatter.rsplit('---', 1)
     if len(parts) == 2:
-        reasons_str = ", ".join(reasons)
-        injection = f"needs_human_review: true\nreview_reasons: \"{reasons_str}\"\n---"
-        return parts[0] + injection
+        reasons_str = ", ".join(sorted(reasons))
+        needs_review = any(r in _HIGH_SEVERITY_REASONS for r in reasons)
+        flags = f"needs_human_review: {str(needs_review).lower()}\nreview_reasons: \"{reasons_str}\"\n---"
+        return parts[0] + flags
     return frontmatter
+
+
+def update_frontmatter_hash(frontmatter: str, new_hash: str) -> str:
+    """Atualiza o campo id_publicacao no frontmatter YAML (P-09)."""
+    return re.sub(r'id_publicacao: "[^"]*"', f'id_publicacao: "{new_hash}"', frontmatter)
 
 def clean_text(text: str) -> tuple[str, dict]:
     """
@@ -165,11 +185,20 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
                 continue
                 
             cleaned_body, stats = clean_text(body)
-            
+
             if stats.get("review_reasons"):
                 frontmatter = append_review_flags(frontmatter, stats["review_reasons"])
-                log.warning(f"[{rel_path}] Marcado para revisão humana: {', '.join(stats['review_reasons'])}")
-            
+                high = [r for r in stats["review_reasons"] if r in _HIGH_SEVERITY_REASONS]
+                if high:
+                    log.warning(f"[{rel_path}] Revisão necessária: {', '.join(high)}")
+                else:
+                    log.debug(f"[{rel_path}] Flags informativas: {', '.join(stats['review_reasons'])}")
+
+            # Recalcula id_publicacao com base no conteúdo limpo (P-09)
+            if frontmatter:
+                new_hash = compute_content_md5(cleaned_body)
+                frontmatter = update_frontmatter_hash(frontmatter, new_hash)
+
             final_content = frontmatter + "\n" + cleaned_body if frontmatter else cleaned_body
             
             with open(out_file, 'w', encoding='utf-8') as f:

@@ -42,6 +42,7 @@ import json
 import logging
 import multiprocessing
 import os
+import psutil
 import re
 import sys
 import time
@@ -369,6 +370,18 @@ _PADDLE_ENGINE = None
 def _init_paddle_worker() -> None:
     """Inicializador de processo worker: cria o PP-Structure uma vez por processo."""
     global _PADDLE_ENGINE
+    
+    import os
+    # Força as bibliotecas matemáticas subjacentes a usarem apenas 1 thread por worker.
+    # Sem isso, 10 workers * 22 cores = 220 threads, causando explosão de memória e crashes (OOM) no WSL.
+    os.environ["OMP_NUM_THREADS"] = "1"
+    os.environ["MKL_NUM_THREADS"] = "1"
+    os.environ["OPENBLAS_NUM_THREADS"] = "1"
+    os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
+    os.environ["NUMEXPR_NUM_THREADS"] = "1"
+    os.environ["MAX_JOBS"] = "1"         # Evita OOM caso haja compilação JIT de C++
+    os.environ["DISABLE_NINJA"] = "1"    # Desativa ninja para compilações pesadas em background
+    
     # Suprime logs verbosos do Paddle nos workers
     import logging as _logging
     _logging.disable(_logging.WARNING)
@@ -511,6 +524,46 @@ def _paddle_worker_task(task: tuple) -> dict | None:
     }
 
 
+def calcular_limite_seguro_workers(use_gpu: bool = False) -> int:
+    """
+    Calcula um limite dinâmico seguro de processos para evitar crashes (OOM),
+    baseado na memória livre real da máquina e nos núcleos da CPU.
+    """
+    import platform
+    import platform
+    is_wsl = 'microsoft' in platform.uname().release.lower()
+    
+    limite_cpu = max(1, multiprocessing.cpu_count() - 1)
+    
+    try:
+        ram_livre_gb = psutil.virtual_memory().available / (1024**3)
+        
+        # O log de SO revelou que CADA instância do PP-Structure consome incríveis ~7.5 GB de RAM
+        # no boot devido ao multiprocessamento do PaddlePaddle no WSL.
+        ram_por_worker = 10.0 if is_wsl else 8.0
+        
+        limite_ram = max(1, int(ram_livre_gb / ram_por_worker))
+        # Hard cap: no CPU, nunca passar de 2 workers no WSL para evitar sobrecarga de barramento
+        limite_final = min(limite_cpu, limite_ram)
+        if is_wsl and not use_gpu:
+            limite_final = min(limite_final, 2)
+    except Exception as e:
+        log.warning(f"  [Aviso] Falha ao ler RAM via psutil ({e}). Usando limite da CPU.")
+        limite_final = limite_cpu
+
+    if use_gpu:
+        try:
+            import torch
+            vram_livre_gb = torch.cuda.mem_get_info()[0] / (1024**3)
+            # Assumimos conservadoramente ~1.5 GB de VRAM por worker
+            limite_vram = max(1, int(vram_livre_gb / 1.5))
+            limite_final = min(limite_final, limite_vram)
+        except Exception:
+            pass
+            
+    return limite_final
+
+
 def run_modo_paddle(
     manifest: dict,
     output_dir: Path,
@@ -527,7 +580,8 @@ def run_modo_paddle(
     um PDF por vez. O processo principal coleta resultados e grava JSONL/dedup.
     """
     if workers is None:
-        workers = max(1, multiprocessing.cpu_count() - 1)
+        workers = calcular_limite_seguro_workers(use_gpu=False)
+        log.info(f"  [Auto-Scale] Limite dinâmico ajustado para {workers} workers (baseado em RAM/CPU/VRAM livres)")
 
     datalake_dir = str(output_dir / "datalake")
     dedup_path = output_dir / "registro_dedup_paddle.json"

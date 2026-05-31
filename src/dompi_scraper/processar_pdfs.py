@@ -188,7 +188,7 @@ def compute_ocr_quality_score(text: str) -> float:
 # EXTRAÇÃO RICH TEXT (PYMUPDF)
 # ---------------------------------------------------------------------------
 
-def extract_rich_blocks(page: fitz.Page) -> list[dict[str, Any]]:
+def extract_rich_blocks(page: fitz.Page, page_num: int = 0) -> list[dict[str, Any]]:
     """
     Extrai blocos de texto ricos de uma página PyMuPDF.
 
@@ -200,6 +200,7 @@ def extract_rich_blocks(page: fitz.Page) -> list[dict[str, Any]]:
     - bbox: bounding box [x0, y0, x1, y1]
     - flags_raw: lista de flag values (para debug/calibração)
     - ocr_quality: score de qualidade [0.0, 1.0]
+    - pagina: índice 0-based da página de origem (P-05)
     """
     page_dict = page.get_text("dict")
     blocks = []
@@ -244,6 +245,7 @@ def extract_rich_blocks(page: fitz.Page) -> list[dict[str, Any]]:
             "bbox": block.get("bbox", []),
             "flags_raw": flags_all,
             "ocr_quality": quality,
+            "pagina": page_num,
         })
 
     return blocks
@@ -262,9 +264,17 @@ def detect_city_header(blk: dict) -> str | None:
     txt = blk.get("texto", "").strip()
     tamanho = blk.get("tamanho", 0)
     negrito = blk.get("negrito", False)
-    # Só considera cabeçalhos visualmente destacados ou textos que dão match forte
-    # Em layouts 4-em-1, as fontes são reduzidas à metade (ex: 5.5pt a 6pt)
+
+    # Layouts 4-em-1 comprimem fontes para 5–8pt; aceitar apenas se o bloco
+    # estiver no topo da página (bbox y0 < 100pt) para evitar falsos positivos
+    # em rodapés e referências internas no corpo do texto. (P-04)
     is_4_in_1_size = 5.0 <= tamanho <= 8.0
+    if is_4_in_1_size:
+        bbox = blk.get("bbox", [])
+        y0 = bbox[1] if len(bbox) >= 2 else 999
+        if y0 >= 100:
+            is_4_in_1_size = False
+
     if tamanho < 11.0 and not negrito and not is_4_in_1_size:
         return None
     match = RE_CABECALHO_ENTIDADE.search(txt)
@@ -276,28 +286,31 @@ def detect_city_header(blk: dict) -> str | None:
     return None
 
 
-def split_blocks_by_city(blocks: list[dict]) -> list[tuple[str, list[dict]]]:
+def split_blocks_by_city(blocks: list[dict]) -> list[tuple[str, list[dict], list[int]]]:
     """
     Divide lista de blocos em chunks por município detectado.
-    Retorna lista de (nome_cidade, blocos_do_chunk).
+    Retorna lista de (nome_cidade, blocos_do_chunk, paginas_do_chunk).
     O primeiro chunk usa 'DESCONHECIDO' se nenhum cabeçalho for encontrado antes.
     """
-    chunks: list[tuple[str, list[dict]]] = []
+    chunks: list[tuple[str, list[dict], list[int]]] = []
     cidade_atual = "DESCONHECIDO"
     buffer: list[dict] = []
+    paginas_buffer: list[int] = []
 
     for blk in blocks:
         cidade = detect_city_header(blk)
         if cidade and cidade != cidade_atual:
             if buffer:
-                chunks.append((cidade_atual, buffer))
+                chunks.append((cidade_atual, buffer, sorted(set(paginas_buffer))))
             cidade_atual = cidade
             buffer = [blk]
+            paginas_buffer = [blk.get("pagina", 0)]
         else:
             buffer.append(blk)
+            paginas_buffer.append(blk.get("pagina", 0))
 
     if buffer:
-        chunks.append((cidade_atual, buffer))
+        chunks.append((cidade_atual, buffer, sorted(set(paginas_buffer))))
 
     return chunks
 
@@ -326,7 +339,7 @@ def dump_verbose_blocks(pdf_path: str, max_pages: int = 3) -> None:
 
     for page_num in range(total):
         page = doc.load_page(page_num)
-        blocks = extract_rich_blocks(page)
+        blocks = extract_rich_blocks(page, page_num=page_num)
 
         print(f"\n{'─' * 70}")
         print(f"  PÁGINA {page_num + 1}")
@@ -493,6 +506,11 @@ def generate_frontmatter(
     edicao: str = "",
     paginas: list[int] | None = None,
     sha256_pdf: str = "",
+    has_tables: bool = False,
+    has_figures: bool = False,
+    table_pages: list[int] | None = None,
+    figure_pages: list[int] | None = None,
+    valores_monetarios_total: int = 0,
 ) -> str:
     """
     Gera bloco YAML frontmatter para ingestão por LangChain/LlamaIndex.
@@ -500,6 +518,10 @@ def generate_frontmatter(
     O frontmatter é lido automaticamente por bibliotecas de ingestão e
     transformado em metadados dos vetores, permitindo buscas híbridas:
     Ex: "portarias de licitação de Campo Maior depois de 01/2025"
+
+    Campos de estrutura (has_tables, has_figures, table_pages, figure_pages,
+    valores_monetarios_total) só são gravados quando não-vazios, mantendo o
+    frontmatter enxuto para documentos sem tabelas.
     """
     lines = ["---"]
     lines.append(f'id_publicacao: "{content_hash}"')
@@ -516,6 +538,19 @@ def generate_frontmatter(
         lines.append(f'sha256_pdf: "{sha256_pdf}"')
 
     lines.append(f'url_origem: "{url_origem}"')
+
+    # Campos de estrutura tabular/visual (gravados apenas quando presentes)
+    if has_tables:
+        lines.append("has_tables: true")
+        if table_pages:
+            lines.append(f"table_pages: {table_pages}")
+    if has_figures:
+        lines.append("has_figures: true")
+        if figure_pages:
+            lines.append(f"figure_pages: {figure_pages}")
+    if valores_monetarios_total > 0:
+        lines.append(f"valores_monetarios_total: {valores_monetarios_total}")
+
     lines.append("---")
     lines.append("")
 
@@ -613,7 +648,7 @@ def process_single_pdf(
     all_blocks_raw: list[dict] = []
     for page_num in range(len(doc)):
         page = doc.load_page(page_num)
-        blocks = extract_rich_blocks(page)
+        blocks = extract_rich_blocks(page, page_num=page_num)
         all_blocks_raw.extend(blocks)
     doc.close()
 
@@ -638,25 +673,14 @@ def process_single_pdf(
         log.warning(f"  PDF sem blocos aproveitáveis após filtro OCR: {pdf_path}")
         return []
 
-    # --- Texto bruto para deduplicação (apenas blocos aprovados) ---
-    raw_text = "\n".join(b["texto"] for b in all_blocks)
-    content_hash = compute_content_md5(raw_text)
-
-    # --- Deduplicação textual ---
-    if content_hash in dedup_registry:
-        existing = dedup_registry[content_hash]
-        log.debug(
-            f"  DUPLICATA detectada: hash={content_hash[:12]}... "
-            f"já registrado para '{existing.get('municipio', '?')}'"
-        )
-        return []
-
     # --- Modo Chunking: divide PDF por municípios detectados ---
+    # A deduplicação por chunk é feita dentro de _gerar_documento (P-01).
     if modo_chunking:
         return _process_chunks(all_blocks, all_blocks_raw, manifest_entry, output_dir, dedup_registry,
                                data_iso, ano, mes, entidade, edicao, sha256_pdf, url_origem, documento)
 
     # --- Modo padrão: PDF inteiro como um documento ---
+    todas_paginas = sorted({b.get("pagina", 0) for b in all_blocks})
     return _gerar_documento(
         blocos=all_blocks,
         total_blocos_raw=len(all_blocks_raw),
@@ -672,6 +696,7 @@ def process_single_pdf(
         categoria=categoria,
         output_dir=output_dir,
         dedup_registry=dedup_registry,
+        paginas=todas_paginas,
     )
 
 
@@ -691,6 +716,7 @@ def _gerar_documento(
     categoria: str,
     output_dir: str,
     dedup_registry: dict,
+    paginas: list[int] | None = None,
 ) -> list[dict]:
     """Gera um único arquivo .md e registro JSONL a partir de uma lista de blocos."""
     raw_text = "\n".join(b["texto"] for b in blocos)
@@ -722,6 +748,7 @@ def _gerar_documento(
         url_origem=url_origem,
         edicao=edicao,
         sha256_pdf=sha256_pdf,
+        paginas=paginas,
     )
     full_markdown = frontmatter + markdown_body
     md_path = build_datalake_path(output_dir, ano, mes, municipio, f"{content_hash}.md")
@@ -769,21 +796,49 @@ def _process_chunks(
         # PDF sem múltiplos municípios detectados — processa normalmente
         municipio = manifest_entry.get("municipio", chunks[0][0] if chunks else "DESCONHECIDO")
         if chunks:
-            return _gerar_documento(chunks[0][1], len(all_blocks_raw), municipio, entidade,
+            cidade, blocos_chunk, paginas_chunk = chunks[0]
+            chunk_data_iso, chunk_ano, chunk_mes = _refinar_data_chunk(
+                blocos_chunk, data_iso, ano, mes
+            )
+            return _gerar_documento(blocos_chunk, len(all_blocks_raw), municipio, entidade,
                                     edicao, sha256_pdf, url_origem, documento,
-                                    data_iso, ano, mes, categoria, output_dir, dedup_registry)
+                                    chunk_data_iso, chunk_ano, chunk_mes, categoria,
+                                    output_dir, dedup_registry, paginas=paginas_chunk)
         return []
 
     log.info(f"  🗺️  {len(chunks)} município(s) detectados neste PDF (modo chunking)")
-    for cidade, blocos_chunk in chunks:
+    for cidade, blocos_chunk, paginas_chunk in chunks:
         if not blocos_chunk:
             continue
+        chunk_data_iso, chunk_ano, chunk_mes = _refinar_data_chunk(
+            blocos_chunk, data_iso, ano, mes
+        )
         recs = _gerar_documento(blocos_chunk, len(all_blocks_raw), cidade, entidade,
                                 edicao, sha256_pdf, url_origem, documento,
-                                data_iso, ano, mes, categoria, output_dir, dedup_registry)
+                                chunk_data_iso, chunk_ano, chunk_mes, categoria,
+                                output_dir, dedup_registry, paginas=paginas_chunk)
         resultados.extend(recs)
 
     return resultados
+
+
+def _refinar_data_chunk(
+    blocos: list[dict],
+    data_iso_fallback: str,
+    ano_fallback: str,
+    mes_fallback: str,
+) -> tuple[str, str, str]:
+    """
+    Tenta extrair data do texto do próprio chunk (P-06).
+    Retorna (data_iso, ano, mes) — usa fallback do manifesto se não encontrar.
+    """
+    chunk_text = "\n".join(b["texto"] for b in blocos)
+    chunk_date = extract_date_from_text(chunk_text)
+    if chunk_date:
+        parts = chunk_date.split("-")
+        if len(parts) >= 2:
+            return chunk_date, parts[0], parts[1]
+    return data_iso_fallback, ano_fallback, mes_fallback
 
 
 def run_processing_pipeline(
