@@ -28,29 +28,50 @@ venv/
 *.log
 *.tmp
 *.bak
+logs/
 
-# Generated scraping outputs (heavy artifacts)
+# ── Saídas do pipeline (artefatos gerados, não versionados) ──────────────────
+
+# Drop-zones e manifesto de download
+territorios/
+download_manifest.json
+
+# Dados brutos de extração (todos os artefatos de extração por território)
+extraidos/
+dados_brutos/
+dados_brutos_marker/
+dados_limpos/
+
+# Datasets de benchmark e testes com PDFs reais (binários pesados)
+dados_benchmark/
+teste_extractor/
+
+# Corpus gerados (JSONL para fine-tuning e RAG)
+corpus_*.jsonl
+corpus_final/
+
+# Bases de treinamento por território (DBs locais pesadas)
+db_treino_*/
+
+# Dados auxiliares e resultados de scraping antigos
+dados/
 carnaubais_dom/
 carnaubais_dom_full/
-scraping_carnaubais_*.json
-scraping_carnaubais_*.csv
+scraping_*.json
+scraping_*.csv
+output_pipeline/
 
-# Data Lake e corpus de treino (gerados pelo pipeline)
-dados_brutos/
-corpus_*.jsonl
+# ── Bases vetoriais (ChromaDB / BM25) ────────────────────────────────────────
+chroma_db/
+chroma_db_marker/
+bm25_index.pkl
+embeddings_*.jsonl
+progress.jsonl
 
-# Keep only curated sample datasets under data/samples
+# ── Amostras curadas (exceção: manter sob data/samples) ──────────────────────
 data/*
 !data/samples/
 !data/samples/**
 
 # Notebook checkpoints
 .ipynb_checkpoints/
-
-# SQLite, PDFs e manifestos (artefatos pesados)
-db_treino_carnaubais/
-download_manifest.json
-
-output_pipeline/
-
-.gitignore
