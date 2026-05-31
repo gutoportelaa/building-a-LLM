@@ -89,6 +89,22 @@ def compute_content_md5(raw_text: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# PALAVRAS-CHAVE DE DOCUMENTOS COM TABELAS / DADOS FISCAIS
+# ---------------------------------------------------------------------------
+# Fonte única usada tanto pelo extrator_paddle (no venv do paddle) quanto pelo
+# orquestrador (no venv do torch) para sinalizar documentos "complexos" que
+# valem o custo do Docling. Mantida aqui (módulo puro, sem dependências de GPU)
+# para ser importável em AMBOS os ambientes isolados.
+PALAVRAS_TABELA: frozenset[str] = frozenset({
+    "balanço", "rreo", "rgf", "orçamentária", "orçamento", "lrf",
+    "licitação", "anexo", "planilha", "dotação", "credito", "crédito",
+    "folha de pagamento", "demonstrativo", "despesa", "receita",
+    "contrato", "extrato", "rubrica", "suplementação", "empenho",
+    "liquidação", "pagamento", "receitas correntes", "despesas correntes",
+})
+
+
+# ---------------------------------------------------------------------------
 # CLASSIFICAÇÃO DE TIPO DE ATO GOVERNAMENTAL
 # ---------------------------------------------------------------------------
 

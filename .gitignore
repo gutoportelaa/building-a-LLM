@@ -15,6 +15,7 @@ wheels/
 
 # Virtual environments
 .venv/
+.venv-paddle/
 venv/
 .env
 .env.*
@@ -75,3 +76,6 @@ data/*
 
 # Notebook checkpoints
 .ipynb_checkpoints/
+
+monitor.py
+dados_brutos_orquestrador/
