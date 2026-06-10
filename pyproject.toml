@@ -12,6 +12,8 @@ dependencies = [
     "aiohttp>=3.13.5",
     "bs4>=0.0.2",
     "chromadb>=1.5.8",
+    "duckdb>=1.1.0",
+    "pyarrow>=15.0.0",
     "langchain-text-splitters>=1.1.2",
     "polars>=1.0.0",
     "numpy>=2.4.4",
@@ -31,13 +33,28 @@ dependencies = [
     "tiktoken>=0.12.0",
     "torch>=2.11.0",
     "webdriver-manager>=4.0.2",
-    "paddlepaddle>=3.3.1",
-    "paddleocr>=2.10.0",
+    "hf>=1.18.0",
 ]
 
+# IMPORTANTE: paddlepaddle/paddleocr NÃO ficam nas deps principais de propósito.
+# O build `paddlepaddle-gpu` (cu126) e o `torch` (cu13) sobrescrevem as mesmas
+# libs no namespace `nvidia/` (libnccl, libcudnn) e quebram o `import torch`.
+# Por isso o PaddleOCR vive num venv ISOLADO (`.venv-paddle`), criado por
+# `setup_venvs.sh`, e o orquestrador o dispara via subprocesso (engine_worker).
+# Mantê-los aqui faria `uv sync`/`uv run` reinstalar paddle no `.venv` principal
+# e requebrar o torch. Use o extra `paddle` SOMENTE para montar o `.venv-paddle`.
 [project.optional-dependencies]
 docling = [
     "docling>=2.0.0",
+    # docling-ibm-models (layout/TableFormer) importa cv2. Headless evita a
+    # dependência de libGL do sistema (melhor em WSL/servidor sem X).
+    "opencv-python-headless>=4.10",
+]
+paddle = [
+    "paddlepaddle>=3.3.1",
+    # <3: o pipeline usa a API PP-Structure 2.10 (`from paddleocr import PPStructure`).
+    # O paddleocr 3.x renomeou para PPStructureV3 (API/saída diferentes) e quebra o worker.
+    "paddleocr>=2.10,<3",
 ]
 
 [project.scripts]

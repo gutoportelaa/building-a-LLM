@@ -241,6 +241,74 @@ def extrair_data_filename(filename: str) -> tuple[str, str]:
     return "", "ausente"
 
 
+# ---------------------------------------------------------------------------
+# ROTEAMENTO POR NOME DE ARQUIVO (pré-processamento de extração)
+# ---------------------------------------------------------------------------
+# O nome do PDF DOM-PI codifica o tipo de ato (ex.:
+#   DM_5336_515_Urucui_Licitacao_Dispensa_012-25_Ata_pag_79.pdf).
+#
+# CALIBRAÇÃO (medida em 1.028 docs reais): rotular TODA licitação/contrato como
+# "tem tabela" estava errado — só 52% das licitações e 16% dos contratos têm
+# tabela de fato no conteúdo. Já os RELATÓRIOS FISCAIS (LRF/RREO/RGF/balanço/
+# PPA/LDO/LOA/anexo/planilha) são tabelões por natureza (~100% têm tabela).
+#
+# Logo, a rota "fiscal" (→ Docling) por NOME é reservada aos relatórios fiscais.
+# Os demais (licitação, contrato, portaria, ...) são roteados pela DETECÇÃO de
+# tabela no conteúdo (is_complex). Assim o motor leve (PaddleOCR/PyMuPDF) atende
+# a maioria (~59%) e o Docling fica reservado ao que realmente tem tabela.
+
+# Relatórios/peças orçamentário-fiscais — tabelões garantidos → SEMPRE Docling.
+_RELATORIO_FISCAL_TOKENS: tuple[str, ...] = (
+    "lrf", "rreo", "rgf", "balanco", "balancete", "demonstrativo",
+    "ppa", "ldo", "loa", "orcament", "anexo", "planilha",
+    "empenho", "suplementacao", "dotacao",
+)
+
+# Demais tipos reconhecidos no nome (auditoria/relatório). NÃO forçam Docling —
+# vão pela detecção de tabela no conteúdo. Ordem = prioridade do "tipo primário".
+_ATO_OUTROS_TOKENS: tuple[str, ...] = (
+    "licitacao", "pregao", "dispensa", "inexigibilidade", "concorrencia",
+    "tomada", "credenciamento", "chamada_publica", "chamamento",
+    "homologacao", "ratificacao", "adjudicacao", "adesao_arp",
+    "contrato", "aditivo", "extrato", "apostilamento", "rescisao",
+    "portaria", "decreto", "lei", "resolucao", "ata", "aviso",
+    "edital", "termo", "oficio", "certidao", "convocacao", "errata",
+)
+
+
+def tipo_ato_por_nome(filename: str) -> str:
+    """
+    Tipo de ato PRIMÁRIO detectado no nome (para roteamento e auditoria). Os tipos
+    de ato comuns (licitação, contrato...) têm prioridade sobre tokens de relatório
+    fiscal que apareçam mais à frente no nome — ex.: 'Licitacao_..._Anexo' → 'licitacao'.
+    Não lê o conteúdo.
+    """
+    base = strip_accents(os.path.basename(filename or "")).lower()
+    for tok in _ATO_OUTROS_TOKENS:
+        if tok in base:
+            return tok
+    for tok in _RELATORIO_FISCAL_TOKENS:
+        if tok in base:
+            return tok
+    return ""
+
+
+def rota_por_nome(filename: str) -> str:
+    """
+    Rota baseada SOMENTE no nome: "fiscal" (→ Docling) apenas para relatórios
+    orçamentário-fiscais (tabelões garantidos); "comum" para todo o resto (que
+    será refinado pela detecção de tabela no conteúdo). Não lê o conteúdo.
+
+    >>> rota_por_nome("DM_5405_220_Marcos_Parente_LRF_RGF_2_Quadrimestre_2025.pdf")
+    'fiscal'
+    >>> rota_por_nome("DM_5268_209_BGR_Contrato_147-25.pdf")   # contrato → conteúdo decide
+    'comum'
+    """
+    if tipo_ato_por_nome(filename) in _RELATORIO_FISCAL_TOKENS:
+        return "fiscal"
+    return "comum"
+
+
 _MESES_PT = {
     "janeiro": "01", "fevereiro": "02", "março": "03", "marco": "03",
     "abril": "04", "maio": "05", "junho": "06",

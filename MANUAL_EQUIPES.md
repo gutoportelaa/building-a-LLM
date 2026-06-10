@@ -28,7 +28,7 @@
        ▼
 territorios/<slug>/pdfs/   ← Equipe deposita os PDFs aqui
        │
-       ▼  uv run python src/dompi_scraper/extrair_territorio.py --territorio <slug>
+       ▼  PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio <slug>
        │
        ├─► extraidos/<slug>/datalake/          ← Arquivos .md com frontmatter YAML
        ├─► extraidos/<slug>/corpus_<slug>.jsonl ← JSONL para fine-tuning
@@ -41,11 +41,27 @@ territorios/<slug>/pdfs/   ← Equipe deposita os PDFs aqui
 2. Executa triagem DLA (Document Layout Analysis) via **PyMuPDF** — mapeia páginas por município, calcula score OCR e detecta complexidade (tabelas, keywords fiscais)
 3. Roteia cada chunk de município para o extrator adequado ao hardware:
 
-| Situação | GPU disponível | Sem GPU |
+A **rota é decidida primariamente pelo NOME do arquivo** (sinal confiável e gratuito):
+documentos da família **licitação / contrato / relatório fiscal** (`Licitacao`, `Pregao`,
+`Contrato`, `Extrato`, `LRF`, `RREO`, `RGF`, `Anexo`, ...) têm tabelas/valores → **Docling**;
+os **demais** (`Portaria`, `Decreto`, `Lei`, `Aviso`, ...) são texto comum. A detecção
+estrutural de tabela no conteúdo (`find_tables` / densidade de valores monetários) pode
+**promover** um documento "comum" para a rota Docling.
+
+| Tipo de documento | Com GPU | Sem GPU (modesto) |
 |---|---|---|
-| Texto nativo digital (score alto, sem tabelas) | PyMuPDF fast path | PyMuPDF fast path |
-| Texto escaneado mundano (score baixo, sem tabelas) | PaddleOCR CUDA | Tesseract (PT-BR) |
-| Documento complexo (tabelas / keywords fiscais) | Docling CUDA | PaddleOCR CPU |
+| **Comum** nativo (portaria, decreto, lei...) | PaddleOCR CUDA | PyMuPDF (instantâneo) |
+| **Fiscal/licitação/contrato** (tabelas/valores) | Docling CUDA | Docling CPU (`do_ocr=False`) |
+| **Escaneado** (sem texto nativo) | PaddleOCR CUDA | Tesseract (PT-BR) |
+
+> **Validação prévia da rota (recomendado):** rode `--dry-run-rota` para classificar todos os
+> documentos (nome → fiscal/comum + detecção de tabela) e gerar `relatorio_rota.ndjson`, **sem
+> rodar nenhum motor** — assim a equipe audita a separação antes de gastar GPU.
+
+> **Datas:** a análise cronológica é feita **somente pelo padrão do nome do arquivo**
+> (`extrair_data_filename`), nunca pelo texto — datas de vigência/referência no corpo
+> contaminavam a partição. A partição usa `ano=<AAAA>/mes=sem_mes` (mês/dia exige o
+> mapeamento edição→data, ainda pendente).
 
 4. Manipula e grava resultados com **Polars** (NDJSON/JSONL) no Data Lake
 
@@ -100,22 +116,28 @@ cd building-a-LLM
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source ~/.bashrc   # ou reinicie o terminal
 
-# Instala todas as dependências do projeto
-uv sync
+# Monta os DOIS ambientes isolados (torch/docling em .venv; paddleocr em .venv-paddle).
+# Idempotente: rode quantas vezes quiser. Em WSL/1-GPU o build CPU do paddle basta.
+bash setup_venvs.sh
 
-# Confirme que o ambiente está funcionando
-uv run python -c "import fitz, torch, polars; print('OK')"
+# Para a máquina-lab com GPU dedicada ao PaddleOCR (build cu126):
+#   bash setup_venvs.sh --paddle-gpu
 ```
 
-> **Docling (opcional, para documentos com tabelas complexas em GPU):**
-> ```bash
-> uv sync --extra docling
-> ```
+> ⚠️ **REGRA DE OURO — nunca use `uv run` para extrair.** O `uv run`/`uv sync` re-sincroniza
+> o `.venv` e pode reinstalar o paddle, **quebrando o `import torch`** (conflito de libs
+> `nvidia/` entre `paddlepaddle-gpu` cu126 e `torch` cu13). Invoque o interpretador
+> direto: `PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio ...`.
+> O orquestrador dispara o `.venv-paddle` sozinho, em subprocesso isolado.
+
+> **Por que dois venvs?** `torch` (Docling) e `paddlepaddle-gpu` (PaddleOCR) sobrescrevem
+> as mesmas libs CUDA e não coexistem no mesmo ambiente. `setup_venvs.sh` cria:
+> `.venv` (torch + docling + orquestrador) e `.venv-paddle` (paddleocr isolado).
 
 ### 3.3 Verificar GPU
 
 ```bash
-uv run python -c "
+./.venv/bin/python -c "
 import torch
 print('CUDA disponível:', torch.cuda.is_available())
 if torch.cuda.is_available():
@@ -245,7 +267,7 @@ find territorios/carnaubais/pdfs/ -type f -name "*.pdf" | wc -l
 Sempre faça um teste antes da extração completa:
 
 ```bash
-uv run python src/dompi_scraper/extrair_territorio.py \
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio \
     --territorio carnaubais \
     --limite 3 \
     --verbose
@@ -257,54 +279,63 @@ O script detecta GPU automaticamente — **o mesmo comando funciona com ou sem G
 
 ```bash
 # Planície Litorânea
-uv run python src/dompi_scraper/extrair_territorio.py --territorio planice_litoran
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio planice_litoran
 
 # Cocais
-uv run python src/dompi_scraper/extrair_territorio.py --territorio cocais
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio cocais
 
 # Carnaubais
-uv run python src/dompi_scraper/extrair_territorio.py --territorio carnaubais
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio carnaubais
 
 # Entre Rios
-uv run python src/dompi_scraper/extrair_territorio.py --territorio entre_rios
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio entre_rios
 
 # Vale do Sambito
-uv run python src/dompi_scraper/extrair_territorio.py --territorio vale_do_sambito
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio vale_do_sambito
 
 # Vale do Rio Guaribas
-uv run python src/dompi_scraper/extrair_territorio.py --territorio vale_do_rio_guaribas
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio vale_do_rio_guaribas
 
 # Chapada Vale do Rio Itaim
-uv run python src/dompi_scraper/extrair_territorio.py --territorio chapada_vale_do_rio_itaim
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio chapada_vale_do_rio_itaim
 
 # Vale do Canindé
-uv run python src/dompi_scraper/extrair_territorio.py --territorio vale_do_caninde
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio vale_do_caninde
 
 # Serra da Capivara
-uv run python src/dompi_scraper/extrair_territorio.py --territorio serra_da_capivara
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio serra_da_capivara
 
 # Vale dos Rios Piauí e Itaueiras
-uv run python src/dompi_scraper/extrair_territorio.py --territorio vale_dos_rios_piaui_e_itaueiras
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio vale_dos_rios_piaui_e_itaueiras
 
 # Tabuleiros do Alto Parnaíba e Chapada das Mangabeiras
-uv run python src/dompi_scraper/extrair_territorio.py --territorio tabuleiros_alto_parnaiba
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio tabuleiros_alto_parnaiba
 
 # Teresina
-uv run python src/dompi_scraper/extrair_territorio.py --territorio teresina
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio teresina
 
 # Parnaíba
-uv run python src/dompi_scraper/extrair_territorio.py --territorio parnaiba
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio parnaiba
 ```
 
 ### 6.3 Extração Sem GPU (CPU — Stack Automática)
 
-O script já adapta a stack ao hardware. Em máquinas sem GPU o roteamento é:
+O orquestrador detecta a GPU (via torch) e adapta a stack. Em máquinas sem GPU o roteamento é:
 
-- **Digital nativo** (score ≥ 0.70) → PyMuPDF (milissegundos por página)
-- **Escaneado mundano** (score < 0.70, sem tabelas) → Tesseract PT-BR
-- **Complexo** (tabelas / keywords fiscais) → PaddleOCR CPU
+- **Digital nativo** (score ≥ `--threshold`, padrão 0.45) → PyMuPDF (milissegundos por página)
+- **Escaneado mundano** (score baixo, sem tabelas) → Tesseract PT-BR
+- **Complexo** (tabela estrutural / densidade de valores monetários) → PaddleOCR CPU
 
-Nenhum parâmetro extra é necessário. Apenas execute o comando padrão.
+> **WSL / GPU única com PaddleOCR build CPU:** se o `.venv-paddle` foi montado sem `--paddle-gpu`,
+> rode os escaneados/complexos com o paddle em CPU explicitamente:
+> ```bash
+> PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio carnaubais --gpu-paddle cpu
+> ```
+> Como PDFs escaneados são raros no DOM-PI (corpus majoritariamente nativo), o PyMuPDF/Docling
+> resolve a maioria e o paddle é acionado pouco.
+
+> **Cap anti-OOM do Docling:** `--docling-max-paginas N` (padrão 8) fatia documentos longos em
+> lotes de N páginas antes de enviar ao Docling — controle decisivo de memória em edições grandes.
 
 > **Expectativa de velocidade CPU:** ~3–10 s/pág para Tesseract, ~20–60 s/pág para PaddleOCR CPU. Volumes grandes levam horas — considere usar `--limite` para lotes menores e retomar depois (o script é idempotente).
 
@@ -314,7 +345,7 @@ O script é **idempotente**: re-executar o mesmo comando pula PDFs já processad
 
 ```bash
 # Se a extração foi interrompida, basta executar o mesmo comando novamente
-uv run python src/dompi_scraper/extrair_territorio.py --territorio carnaubais
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio carnaubais
 # → PDFs já extraídos são pulados automaticamente
 ```
 
@@ -329,7 +360,7 @@ uv run python src/dompi_scraper/extrair_territorio.py --territorio carnaubais
 find extraidos/carnaubais/datalake -name "*.md" | wc -l
 
 # Ver o JSONL gerado (Polars NDJSON)
-uv run python -c "
+./.venv/bin/python -c "
 import polars as pl
 df = pl.read_ndjson('extraidos/carnaubais/corpus_carnaubais.jsonl')
 print(df.head(2))
@@ -343,7 +374,7 @@ cat logs/carnaubais/$(ls -t logs/carnaubais/ | head -1)
 ### 7.2 Validar Schema JSONL com Polars
 
 ```bash
-uv run python -c "
+./.venv/bin/python -c "
 import polars as pl
 
 slug = 'carnaubais'  # <- altere para o seu território
@@ -384,9 +415,10 @@ Cada linha do arquivo `.jsonl` gerado segue este formato (Polars NDJSON):
 | Campo | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
 | `id_publicacao` | String | ✅ | MD5 do conteúdo textual extraído |
+| `territorio` | String | ✅ | Nome canônico do território |
 | `municipio` | String | ✅ | Grafia IBGE exata (ex: `Assunção do Piauí`) |
 | `tipo_ato` | String | ✅ | Portaria, Decreto, Lei, Edital, etc. |
-| `data_publicacao` | String | ✅ | ISO 8601 (`YYYY-MM-DD`) ou `""` |
+| `data_publicacao` | String | ✅ | Ano (`AAAA`) derivado do nome do arquivo, ou `""` |
 | `extrator` | String | ✅ | Motor usado (veja tabela abaixo) |
 | `texto` | String | ✅ | Conteúdo Markdown com `#`, `##`, tabelas |
 | `n_chars` | Int | ✅ | Comprimento do campo `texto` |
@@ -395,12 +427,13 @@ Cada linha do arquivo `.jsonl` gerado segue este formato (Polars NDJSON):
 
 | Valor | Quando |
 |---|---|
-| `"pymupdf"` | Texto digital nativo (score ≥ threshold) — GPU ou CPU |
-| `"paddle-cuda"` | Escaneado simples com GPU CUDA |
-| `"docling-cuda"` | Documento complexo (tabelas) com GPU CUDA |
-| `"tesseract"` | Escaneado mundano sem GPU |
-| `"paddle-cpu"` | Documento complexo (tabelas) sem GPU |
+| `"pymupdf"` | Comum nativo sem GPU (rota padrão CPU) |
+| `"paddle-cuda"` | Comum nativo OU escaneado, com GPU CUDA |
+| `"docling-cuda"` | Fiscal/licitação/tabela com GPU CUDA |
+| `"docling-cpu"` | Fiscal/licitação/tabela sem GPU |
+| `"tesseract"` | Escaneado sem GPU |
 | `"paddle-cuda-fallback"` | Docling indisponível → PaddleOCR CUDA |
+| `"pymupdf-fallback"` | Motor OCR vazio → PyMuPDF (texto nativo) |
 
 ### 8.3 Exemplo de Registro
 
@@ -434,7 +467,7 @@ Sempre use a grafia oficial do IBGE no campo `municipio`:
 ## 9. Referência de Todos os Parâmetros
 
 ```
-uv run python src/dompi_scraper/extrair_territorio.py [opções]
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio [opções]
 ```
 
 | Parâmetro | Padrão | Descrição |
@@ -453,16 +486,16 @@ uv run python src/dompi_scraper/extrair_territorio.py [opções]
 
 ```bash
 # Ver todos os territórios disponíveis
-uv run python src/dompi_scraper/extrair_territorio.py --listar
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --listar
 
 # Teste com 3 PDFs e log detalhado
-uv run python src/dompi_scraper/extrair_territorio.py --territorio parnaiba --limite 3 --verbose
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio parnaiba --limite 3 --verbose
 
 # Produção padrão (detecta GPU automaticamente)
-uv run python src/dompi_scraper/extrair_territorio.py --territorio vale_do_sambito
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio vale_do_sambito
 
 # Modo PyMuPDF apenas (mais rápido, sem análise de tabelas)
-uv run python src/dompi_scraper/extrair_territorio.py --territorio entre_rios --modo pymu
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio entre_rios --modo pymu
 ```
 
 ---
@@ -535,7 +568,7 @@ A GPU ficou sem memória. Soluções:
 nvidia-smi
 
 # 2. Processe em lotes menores (o script retoma do ponto onde parou)
-uv run python src/dompi_scraper/extrair_territorio.py \
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio \
     --territorio carnaubais \
     --limite 50
 # → Re-execute até completar (idempotente)
@@ -546,7 +579,7 @@ uv run python src/dompi_scraper/extrair_territorio.py \
 Verifique qual extrator foi usado no registro (`extrator` no JSONL). Se for `tesseract`, tente forçar o modo paddle para esse território:
 
 ```bash
-uv run python src/dompi_scraper/extrair_territorio.py \
+PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio \
     --territorio <slug> \
     --modo paddle
 ```

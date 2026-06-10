@@ -167,8 +167,15 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
     
     processed_count = 0
     error_count = 0
+    duplicate_count = 0
     total_bytes_saved = 0
-    
+
+    # Dedup cross-file PÓS-limpeza (reforço do P-09): dois documentos que eram
+    # ligeiramente diferentes podem ficar IDÊNTICOS após remover ruído de OCR.
+    # Mantemos o hash do corpo limpo de cada arquivo já escrito e descartamos
+    # os subsequentes idênticos (em vez de só atualizar o id_publicacao).
+    seen_hashes: set[str] = set()
+
     for md_file in md_files:
         try:
             rel_path = md_file.relative_to(input_dir)
@@ -186,6 +193,14 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
                 
             cleaned_body, stats = clean_text(body)
 
+            # Hash do corpo limpo: base do dedup cross-file e do id_publicacao (P-09).
+            new_hash = compute_content_md5(cleaned_body)
+            if new_hash in seen_hashes:
+                duplicate_count += 1
+                log.debug(f"[{rel_path}] Duplicata pós-limpeza ({new_hash[:8]}…) — descartada")
+                continue
+            seen_hashes.add(new_hash)
+
             if stats.get("review_reasons"):
                 frontmatter = append_review_flags(frontmatter, stats["review_reasons"])
                 high = [r for r in stats["review_reasons"] if r in _HIGH_SEVERITY_REASONS]
@@ -196,7 +211,6 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
 
             # Recalcula id_publicacao com base no conteúdo limpo (P-09)
             if frontmatter:
-                new_hash = compute_content_md5(cleaned_body)
                 frontmatter = update_frontmatter_hash(frontmatter, new_hash)
 
             final_content = frontmatter + "\n" + cleaned_body if frontmatter else cleaned_body
@@ -221,6 +235,7 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
     log.info("RESUMO DA LIMPEZA")
     log.info("="*60)
     log.info(f"Arquivos processados: {processed_count}/{total_files}")
+    log.info(f"Duplicatas pós-limpeza descartadas: {duplicate_count}")
     log.info(f"Erros encontrados: {error_count}")
     log.info(f"Caracteres irrelevantes removidos no total: {total_bytes_saved}")
     log.info(f"Saída salva em: {output_dir}")

@@ -313,6 +313,18 @@ def main() -> None:
     for h in log.handlers:
         h.addFilter(_CtxFilter(args.engine, cvd))
 
+    # GUARDA ANTI-THRASH (WSL/CPU): sem limitar threads, o PaddlePaddle-CPU
+    # estoura threads (16 cores × pools mkldnn/openblas) e o WSL trava/OOM —
+    # foi a causa do estouro de memória original. Como cada engine roda em UM
+    # processo dedicado, limitar a poucas threads é seguro e evita o thrash.
+    # Só no caminho CPU; na GPU o pré-processamento se beneficia de mais threads.
+    if args.device == "cpu":
+        for _v in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS",
+                   "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
+            os.environ.setdefault(_v, "4")
+        log.info("CPU: threads de BLAS/OMP limitadas a %s (anti-thrash WSL)",
+                 os.environ.get("OMP_NUM_THREADS"))
+
     log.info("Worker iniciando: engine=%s device=%s dpi=%d pid=%d",
              args.engine, args.device, args.dpi, os.getpid())
     rc = run_worker(args.engine, args.device, args.dpi)
