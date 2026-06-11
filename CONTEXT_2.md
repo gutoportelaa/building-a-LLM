@@ -86,8 +86,30 @@ usar **Tier A**. Tabela achatada (C) é re-extração, fora do escopo de limpeza
 **Plano de níveis de limpeza → configs HF:** `extraido` (bruto, própria extração) · `pretrain`
 (limpeza v2, todos os tiers + coluna `quality_tier`) · `pretrain-curado` (Tier A+B) · `instruction`
 (futuro: Q&A gerado por LLM sobre Tier A — **não** templar de metadados, pois "proprietários de
-licitação" etc. estão só no texto). Implementação: `limpeza v2` + tiering no `build_limpo`/
-`build_corpus`; exportador multi-config no `empacotar_hf`.
+licitação" etc. estão só no texto).
+
+## ✅ Limpeza v2 + tiering — IMPLEMENTADO (corpus regenerado)
+
+- **`limpeza_textos.clean_text` v2** (conservadora + protetiva): remove cabeçalho do diário
+  (a regra antiga exigia `«`; corrigida p/ `·`/`•`), `-- image -->`, QR/autenticidade, **Id do
+  ato** (incl. forma heading markdown `## ld:…` que o Docling gera, e variantes com letra de
+  OCR), e carimbo de assinatura PKI. **Protege** linhas com título/data/valor/`Art.` (`RE_V2_PROTECT`).
+- **`datalake/qualidade.quality_tier`**: A/B/C por `real_word_ratio` (wordfreq) × densidade numérica.
+- **`build_corpus`** calcula `quality_tier` pós-fatiamento; **`empacotar_hf`** gera 3 configs.
+
+**Resultado (corpus regenerado):** boilerplate praticamente zerado — cabeçalho de diário e
+`-- image -->` **52%/55% → 0%**; Id do ato **38,5% → 4,2%**; **~24M tokens de boilerplate
+removidos** (193,6M → **169,5M**). A dedup exata pós-v2 absorveu a maioria dos near-dups
+(D-1 caiu de 863 → **209**). Números finais:
+
+| | docs | obs |
+|---|---|---|
+| `default`/train | **71.205** | dedup + fatiado + limpeza v2 |
+| `curated` (A+B) | **61.249** | prosa aproveitável p/ SFT |
+| `raw` | **71.414** | tudo + cluster_id/is_near_dup |
+
+Tiers: **A 37.903 (53%) · B 23.346 (33%) · C 9.956 (14%)**. Resíduo conhecido: erros de OCR no
+nível da palavra (`Art. 12`←`1º`) — não é limpeza, é re-extração (tier C / D-5).
 
 ## Demandas priorizadas (pendentes)
 

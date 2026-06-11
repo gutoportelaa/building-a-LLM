@@ -42,12 +42,13 @@ from . import ensure_zones, zone_dir
 from .io import read_zone, write_partitioned_parquet
 from .fatiar_megadocs import expandir_megadocs, LIMITE_LONGO
 from .dedup_aproximada import marcar_near_dups
+from .qualidade import quality_tier
 
 log = logging.getLogger("build_corpus")
 
 # Ordem das colunas do produto de treino (mantém paridade com o publicado no HF + novidades).
 _TRAIN_COLUMNS = ["id", "territorio", "municipio", "tipo_ato", "ano",
-                  "data_publicacao", "n_tokens", "tamanho_classe", "texto"]
+                  "data_publicacao", "n_tokens", "tamanho_classe", "quality_tier", "texto"]
 _RAW_EXTRA = ["cluster_id", "is_near_dup", "is_canonical"]
 
 
@@ -97,6 +98,9 @@ def build_corpus(
     # fatias minúsculas e duplicatas EXATAS geradas pelo fatiamento (boilerplate repetido)
     expandido = expandido.filter(pl.col("texto").str.len_chars() >= min_chars)
     expandido = expandido.unique(subset=["id"], keep="first")
+    # quality_tier sobre o texto FINAL (pós-fatiamento)
+    expandido = expandido.with_columns(
+        quality_tier=pl.col("texto").map_elements(quality_tier, return_dtype=pl.Utf8))
     n_pos_split = expandido.height
     log.info("D-2 fatiamento: %d docs → %d (fatiados=%d, fatias=%d, intactos=%d)",
              n_base, n_pos_split, st_split["docs_fatiados"], st_split["fatias_geradas"],
@@ -136,8 +140,11 @@ def build_corpus(
     total_tokens = int(train["n_tokens"].sum())
     dist = (marc.group_by("tamanho_classe").agg(pl.len().alias("k"))
             .sort("k", descending=True).to_dicts())
+    tier_dist = (train.group_by("quality_tier").agg(pl.len().alias("k"))
+                 .sort("quality_tier").to_dicts())
     log.info("Corpus train: %d docs, ~%d tokens, %d shards", n_train, total_tokens, n_shards)
     return {
+        "quality_tier": {d["quality_tier"]: d["k"] for d in tier_dist},
         "limpo": n_limpo,
         "base": n_base,
         "pos_split": n_pos_split,
@@ -180,6 +187,7 @@ def main() -> None:
         f"  D-2 fatiamento:      {res['fatiados']} docs → {res['fatias']} fatias  (pós: {res['pos_split']})\n"
         f"  D-1 near-dup remov.: {res['near_dup_removidos']}\n"
         f"  Classes de tamanho:  {res['tamanho_classe']}\n"
+        f"  Quality tier:        {res['quality_tier']}\n"
         f"  TRAIN (canônicos):   {res['train']}\n"
         f"  RAW (tudo):          {res['raw']}\n"
         f"  Tokens (train):      ~{res['tokens_estimados']:,}\n"

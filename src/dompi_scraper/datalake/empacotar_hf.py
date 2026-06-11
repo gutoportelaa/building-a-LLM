@@ -51,9 +51,13 @@ def _stats(train: pl.DataFrame, raw: pl.DataFrame) -> dict:
     terr = (train.group_by("territorio").agg(pl.len().alias("k")).sort("k", descending=True))
     tipo = (train.group_by("tipo_ato").agg(pl.len().alias("k")).sort("k", descending=True).head(8))
     classe = (raw.group_by("tamanho_classe").agg(pl.len().alias("k")))
+    tier = {d["quality_tier"]: d["k"] for d in
+            train.group_by("quality_tier").agg(pl.len().alias("k")).to_dicts()} \
+        if "quality_tier" in train.columns else {}
     return {
         "n_train": train.height,
         "n_raw": raw.height,
+        "n_curated": int(train["quality_tier"].is_in(["A", "B"]).sum()) if tier else train.height,
         "n_near_dup": raw.height - train.height,
         "tokens": int(train["n_tokens"].sum()),
         "n_munis": train.filter(pl.col("municipio") != "DESCONHECIDO")["municipio"].n_unique(),
@@ -61,6 +65,7 @@ def _stats(train: pl.DataFrame, raw: pl.DataFrame) -> dict:
         "terr": terr.to_dicts(),
         "tipo": tipo.to_dicts(),
         "classe": {d["tamanho_classe"]: d["k"] for d in classe.to_dicts()},
+        "tier": tier,
     }
 
 
@@ -91,6 +96,10 @@ configs:
     data_files:
       - split: train
         path: data/train-*.parquet
+  - config_name: curated
+    data_files:
+      - split: train
+        path: curated/curated-*.parquet
   - config_name: raw
     data_files:
       - split: raw
@@ -111,12 +120,14 @@ documentos** · **~{s['tokens']//1_000_000} milhões de tokens** · **12 territ�
 
 | Config | Split | Conteúdo |
 |---|---|---|
-| `default` | `train` | {s['n_train']:,} docs **deduplicados** (exato + quase-duplicatas) e com documentos longos **fatiados em atos**. Pronto p/ treino. |
+| `default` | `train` | {s['n_train']:,} docs **deduplicados** (exato + quase-duplicatas), longos **fatiados em atos**, com **limpeza v2** (boilerplate removido). Pré-treino. |
+| `curated` | `train` | {s['n_curated']:,} docs **Tier A+B** (prosa aproveitável; exclui tabela fiscal achatada). Base para SFT/instruction. |
 | `raw` | `raw` | {s['n_raw']:,} docs (mesmo pós-processamento) **sem remover quase-duplicatas**, com `cluster_id`/`is_near_dup` para auditoria ou dedup própria. |
 
 ```python
 from datasets import load_dataset
-ds  = load_dataset("{REPO}", split="train")                 # default (limpo p/ treino)
+ds  = load_dataset("{REPO}", split="train")                 # default (pré-treino)
+cur = load_dataset("{REPO}", "curated", split="train")      # Tier A+B (SFT)
 raw = load_dataset("{REPO}", "raw", split="raw")            # tudo + flags de near-dup
 ds = ds.filter(lambda r: r["territorio"] == "cocais")       # filtrar por território
 ```
@@ -135,7 +146,8 @@ Cada linha é **um ato/página publicado** (portaria, decreto, licitação, lei,
 | `data_publicacao` | `DD/MM/AAAA` (maioria) ou `2025` (sem data precisa) |
 | `n_tokens` | estimativa (~`n_chars/4`) |
 | `tamanho_classe` | `normal` (≤8k tok) · `longo` (8k–32k) · `mega` (>32k, doc único não-fatiável) |
-| `texto` | texto limpo do documento |
+| `quality_tier` | `A` prosa limpa · `B` média · `C` tabela fiscal achatada/ruído (re-extração) |
+| `texto` | texto limpo (limpeza v2: boilerplate/cabeçalho/assinatura removidos) |
 | `cluster_id`, `is_near_dup` | *(só no config `raw`)* grupo de quase-duplicatas |
 
 ## Processamento de qualidade (D-1 / D-2)
@@ -187,12 +199,16 @@ def empacotar(root=None, rows_per_file: int = 50000, out: str = "hf_corpus_dompi
                           hive_partitioning=True)
     # garante ordem de colunas estável (ano vem da partição → reordena)
     train_cols = ["id", "territorio", "municipio", "tipo_ato", "ano",
-                  "data_publicacao", "n_tokens", "tamanho_classe", "texto"]
+                  "data_publicacao", "n_tokens", "tamanho_classe", "quality_tier", "texto"]
     train = train.select([c for c in train_cols if c in train.columns])
+    # config 'curated': prosa aproveitável (Tier A+B), sem tabela achatada (C)
+    curated = train.filter(pl.col("quality_tier").is_in(["A", "B"])) \
+        if "quality_tier" in train.columns else train
 
     out_dir = Path(out)
     out_dir.mkdir(parents=True, exist_ok=True)
     n_train_files = _write_parquet_chunks(train, out_dir / "data", "train", rows_per_file)
+    n_cur_files = _write_parquet_chunks(curated, out_dir / "curated", "curated", rows_per_file)
     n_raw_files = _write_parquet_chunks(raw, out_dir / "raw", "raw", rows_per_file)
     # shards de treino: copia do corpus_llm/shards
     src_shards = corpus_dir / "corpus_llm" / "shards"
@@ -204,9 +220,11 @@ def empacotar(root=None, rows_per_file: int = 50000, out: str = "hf_corpus_dompi
 
     s = _stats(train, raw)
     (out_dir / "README.md").write_text(_readme(s), encoding="utf-8")
-    log.info("HF empacotado em %s/ (train=%d em %d arq, raw=%d em %d arq)",
-             out, s["n_train"], n_train_files, s["n_raw"], n_raw_files)
-    s.update(train_files=n_train_files, raw_files=n_raw_files, out=str(out_dir))
+    log.info("HF empacotado em %s/ (train=%d/%darq, curated=%d/%darq, raw=%d/%darq)",
+             out, s["n_train"], n_train_files, s["n_curated"], n_cur_files,
+             s["n_raw"], n_raw_files)
+    s.update(train_files=n_train_files, curated_files=n_cur_files,
+             raw_files=n_raw_files, out=str(out_dir))
     return s
 
 
@@ -221,9 +239,10 @@ def main() -> None:
                         format="%(asctime)s [%(levelname)s] %(message)s", datefmt="%H:%M:%S")
     s = empacotar(args.root, args.rows_per_file, args.out)
     print(
-        f"\n  TRAIN: {s['n_train']:,} docs → {s['train_files']} parquet  (~{s['tokens']:,} tokens)\n"
-        f"  RAW:   {s['n_raw']:,} docs → {s['raw_files']} parquet  (near-dup removidos: {s['n_near_dup']:,})\n"
-        f"  Classes: {s['classe']}\n"
+        f"\n  TRAIN:   {s['n_train']:,} docs → {s['train_files']} parquet  (~{s['tokens']:,} tokens)\n"
+        f"  CURATED: {s['n_curated']:,} docs (Tier A+B) → {s['curated_files']} parquet\n"
+        f"  RAW:     {s['n_raw']:,} docs → {s['raw_files']} parquet  (near-dup removidos: {s['n_near_dup']:,})\n"
+        f"  Tiers: {s['tier']}  |  Classes: {s['classe']}\n"
         f"  Municípios: {s['n_munis']} (+ DESCONHECIDO: {s['n_desconhecido']:,})\n"
         f"  Saída: {s['out']}/  (data/ raw/ shards/ README.md)\n"
         f"\n  Upload (manual):\n"

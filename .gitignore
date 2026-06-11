@@ -97,3 +97,8 @@ dados_brutos_orquestrador/
 
 # Configuração local do Claude Code (não compartilhada)
 .claude/
+# Material de referência do livro (Raschka) — não versionar (copyright/ambiente local)
+docs/referencia_raschka/
+
+# Coleta de Teresina (PDFs do diário próprio) — dados pesados
+diarios-teresina-2025/
