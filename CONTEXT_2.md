@@ -51,6 +51,44 @@ as linhas: normal 74.757 · longo 1.850 · mega 532. Tokens preservados (~193,7M
 > Empacotamento reproduzível em `datalake/empacotar_hf.py` (gera `hf_corpus_dompi/` com
 > configs `default`/`raw`). **Re-publicação no HF é passo manual** (não automatizado).
 
+## Análise de qualidade textual (2026-06-10) — base p/ níveis de limpeza
+
+Inspeção do `texto` do corpus revelou **três tipos de ruído distintos**, com tratamentos diferentes:
+
+1. **Boilerplate** (≈50–56%): cabeçalho de diário (`Ano XXIII · Teresina (PI) - … · Edição V`),
+   placeholder `-- image -->`, linhas de QR/autenticidade/URL, assinaturas com `____`, nº de página.
+   **Removível por regex.** O `clean_text` atual NÃO pega o cabeçalho (a regra exige `«`, mas o
+   diário usa `·`/`•`). → **limpeza v2** corrige isso (boilerplate strip + dedup de linha repetida).
+2. **Corrupção de OCR no nível da palavra** (ex.: "Homo·oaacão", "ucuatórlo", "pUblleo",
+   "lndk:lldorN"): **não** conserta por regex. Parcialmente detectável por `real_word_ratio`
+   (dicionário PT via `wordfreq`).
+3. **Tabela fiscal achatada** (RGF/RREO/orçamento virados em sopa de números/códigos):
+   lexicamente "ok" (palavras reais), semanticamente inútil. **Não detectável por dicionário** —
+   só por sinal **estrutural** (densidade numérica). É problema de **re-extração** (Docling/VLM,
+   ver D-5/D-6), não de limpeza.
+
+**Tiers de qualidade** (amostra 9k, métrica `real_word_ratio` × densidade numérica):
+
+| Tier | Critério | % | Uso |
+|---|---|---|---|
+| **A · prosa limpa** | real_word ≥ 0,88 e numérico < 0,15 | **~52%** | SFT / instruction |
+| **B · média** | demais legíveis | ~35% | pré-treino |
+| **C · tabela achatada/ruim** | numérico ≥ 0,35 ou real_word < 0,78 | **~13%** | excluir do treino de prosa; re-extrair |
+
+O tier C concentra-se em **LRF (43%)**, Lei (14%), Decreto (11%) — os atos fiscais. Portaria/
+Contrato/Licitação são limpos (2–4% C). O conteúdo que interessa para Q&A (vencedores de
+licitação, valores) está nos tiers A/B (ex.: "Participante Vencedor: ANTARES … LTDA").
+
+**Veredito MLOps:** ~87% (A+B) é texto aproveitável; 193M tokens. **Suficiente para EXPERIMENTAR
+pré-treino** (escala Raschka) já — basta limpeza v2 + coluna `quality_tier`. Para **SFT/instruction**,
+usar **Tier A**. Tabela achatada (C) é re-extração, fora do escopo de limpeza.
+
+**Plano de níveis de limpeza → configs HF:** `extraido` (bruto, própria extração) · `pretrain`
+(limpeza v2, todos os tiers + coluna `quality_tier`) · `pretrain-curado` (Tier A+B) · `instruction`
+(futuro: Q&A gerado por LLM sobre Tier A — **não** templar de metadados, pois "proprietários de
+licitação" etc. estão só no texto). Implementação: `limpeza v2` + tiering no `build_limpo`/
+`build_corpus`; exportador multi-config no `empacotar_hf`.
+
 ## Demandas priorizadas (pendentes)
 
 ### D-3 · Município `DESCONHECIDO` (~3,2%) — MÉDIA
