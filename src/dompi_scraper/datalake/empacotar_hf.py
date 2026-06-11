@@ -34,6 +34,7 @@ from . import zone_dir
 log = logging.getLogger("empacotar_hf")
 
 REPO = "gutoportelaa/dom-pi-corpus-2025"
+REPO_PDFS = "gutoportelaa/dom-pi-pdfs-2025"
 
 
 def _write_parquet_chunks(df: pl.DataFrame, dest_dir: Path, stem: str, rows_per_file: int) -> int:
@@ -104,6 +105,10 @@ configs:
     data_files:
       - split: raw
         path: raw/raw-*.parquet
+  - config_name: extraido
+    data_files:
+      - split: train
+        path: extraido/extraido-*.parquet
 ---
 
 # Corpus DOM-PI 2025 — Diário Oficial dos Municípios do Piauí
@@ -123,12 +128,17 @@ documentos** · **~{s['tokens']//1_000_000} milhões de tokens** · **12 territ�
 | `default` | `train` | {s['n_train']:,} docs **deduplicados** (exato + quase-duplicatas), longos **fatiados em atos**, com **limpeza v2** (boilerplate removido). Pré-treino. |
 | `curated` | `train` | {s['n_curated']:,} docs **Tier A+B** (prosa aproveitável; exclui tabela fiscal achatada). Base para SFT/instruction. |
 | `raw` | `raw` | {s['n_raw']:,} docs (mesmo pós-processamento) **sem remover quase-duplicatas**, com `cluster_id`/`is_near_dup` para auditoria ou dedup própria. |
+| `extraido` | `train` | {s['n_extraido']:,} docs de **texto OCR BRUTO** (pré-limpeza) + proveniência (`extrator`, `paginas`). Para quem quer rodar a própria limpeza/extração. |
+
+> **PDFs-fonte** (66 GB): repositório companheiro [`{REPO_PDFS}`](https://huggingface.co/datasets/{REPO_PDFS}),
+> organizado por território. Use o `extraido` ou os PDFs para reproduzir a extração.
 
 ```python
 from datasets import load_dataset
 ds  = load_dataset("{REPO}", split="train")                 # default (pré-treino)
 cur = load_dataset("{REPO}", "curated", split="train")      # Tier A+B (SFT)
 raw = load_dataset("{REPO}", "raw", split="raw")            # tudo + flags de near-dup
+ext = load_dataset("{REPO}", "extraido", split="train")     # OCR bruto (limpeza própria)
 ds = ds.filter(lambda r: r["territorio"] == "cocais")       # filtrar por território
 ```
 
@@ -205,11 +215,21 @@ def empacotar(root=None, rows_per_file: int = 50000, out: str = "hf_corpus_dompi
     curated = train.filter(pl.col("quality_tier").is_in(["A", "B"])) \
         if "quality_tier" in train.columns else train
 
+    # config 'extraido': OCR BRUTO (pré-limpeza) + proveniência, p/ extração/limpeza própria
+    extr = pl.read_parquet(str(zone_dir("extraido", root) / "**" / "*.parquet"),
+                           hive_partitioning=True)
+    extr_cols = ["id_publicacao", "territorio", "municipio", "tipo_ato", "ano",
+                 "data_publicacao", "extrator", "paginas", "n_chars", "texto"]
+    extr = extr.select([c for c in extr_cols if c in extr.columns])
+    if "id_publicacao" in extr.columns:
+        extr = extr.rename({"id_publicacao": "id"})
+
     out_dir = Path(out)
     out_dir.mkdir(parents=True, exist_ok=True)
     n_train_files = _write_parquet_chunks(train, out_dir / "data", "train", rows_per_file)
     n_cur_files = _write_parquet_chunks(curated, out_dir / "curated", "curated", rows_per_file)
     n_raw_files = _write_parquet_chunks(raw, out_dir / "raw", "raw", rows_per_file)
+    n_extr_files = _write_parquet_chunks(extr, out_dir / "extraido", "extraido", rows_per_file)
     # shards de treino: copia do corpus_llm/shards
     src_shards = corpus_dir / "corpus_llm" / "shards"
     dst_shards = out_dir / "shards"
@@ -219,12 +239,12 @@ def empacotar(root=None, rows_per_file: int = 50000, out: str = "hf_corpus_dompi
         shutil.copytree(src_shards, dst_shards)
 
     s = _stats(train, raw)
+    s["n_extraido"] = extr.height
     (out_dir / "README.md").write_text(_readme(s), encoding="utf-8")
-    log.info("HF empacotado em %s/ (train=%d/%darq, curated=%d/%darq, raw=%d/%darq)",
-             out, s["n_train"], n_train_files, s["n_curated"], n_cur_files,
-             s["n_raw"], n_raw_files)
-    s.update(train_files=n_train_files, curated_files=n_cur_files,
-             raw_files=n_raw_files, out=str(out_dir))
+    log.info("HF empacotado em %s/ (train=%d, curated=%d, raw=%d, extraido=%d)",
+             out, s["n_train"], s["n_curated"], s["n_raw"], s["n_extraido"])
+    s.update(train_files=n_train_files, curated_files=n_cur_files, raw_files=n_raw_files,
+             extraido_files=n_extr_files, out=str(out_dir))
     return s
 
 
