@@ -17,7 +17,7 @@ a qualidade do dataset, priorizado por impacto.
 
 | Dimensão | Situação atual |
 |---|---|
-| Cobertura | 12 de 13 Territórios; **sem Teresina e Parnaíba** |
+| Cobertura | **13 Territórios** (12 do DOM-PI + Teresina); **sem Parnaíba** |
 | Município | canonizado para 176 valores oficiais; **~3,2% (~2.147 docs) `DESCONHECIDO`** |
 | Data | **91% com `DD/MM/AAAA`**; ~9% só com o ano (`2025`) |
 | Dedup | só **exato** (pós-normalização); quase-duplicatas persistem |
@@ -137,22 +137,25 @@ repetidos e assinaturas no `texto`.
 (árvore território/município de `reconstruir_coleta.py` + edição→data), eliminando a origem do erro
 em futuras extrações. Torna D-3/D-4 desnecessárias daqui para frente.
 
-### D-7 · Cobertura: Teresina e Parnaíba — BAIXA (esforço alto)
-**Problema:** ambas publicam fora do DOM-PI dos Municípios. Parnaíba (`diarios_parnaiba/`) é um
-**SPA Quasar ("DOMe")** — o download trouxe 217 stubs HTML idênticos de 603 bytes, não PDFs.
-**Abordagem:** descobrir a **API** do portal (XHR/JSON) ou usar **navegador headless** para obter os
-PDFs reais; só então passar pela pipeline padrão. Os stubs atuais são descartáveis.
+### D-7 · Cobertura: Teresina ✅ FEITO / Parnaíba pendente
+**Teresina (capital):** ✅ coletada (250 PDFs do DOM-Teresina), extraída (261 chunks → **9.583
+atos** após fatiamento; 95,6% Tier A — OCR Docling limpo) e **incrementada como 13º território**
+no corpus geral, **e** publicada em dataset isolado [`dom-pi-teresina-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-teresina-2025)
+(texto + PDFs no mesmo repo). Município fixado = "Teresina" (capital = 1 município).
+**Parnaíba:** pendente — **SPA Quasar ("DOMe")**, o download trouxe stubs HTML, não PDFs. Precisa
+descobrir a **API** ou usar **navegador headless** antes de passar pela pipeline.
 
 ---
 
 ## Sequência sugerida
 
-1. ✅ **D-1 + D-2** — feitos no `build_corpus` (train/raw). Falta **re-publicar** o HF
-   (`empacotar_hf` já gerou `hf_corpus_dompi/`; upload é manual).
-2. **D-3 + D-4** (fuzzy município + completar datas) → re-publicar.
-3. **D-5** decidir exposição de flags / split curado.
-4. **D-6** corrigir a raiz na extração (beneficia novas coletas).
-5. **D-7** Parnaíba/Teresina quando houver esforço para o SPA/diário próprio.
+1. ✅ **D-1 + D-2 + limpeza v2 + tiering** — feitos; corpus **publicado** no HF (3 repos:
+   corpus, pdfs, teresina). 4 configs (`default`/`curated`/`raw`/`extraido`).
+2. ✅ **D-7 Teresina** — coletada, extraída, incrementada + dataset isolado.
+3. **D-3 + D-4** (fuzzy município + completar datas) → re-publicar.
+4. **D-5** decidir exposição de flags / split curado.
+5. **D-6** corrigir a raiz na extração (beneficia novas coletas).
+6. **D-7 Parnaíba** quando houver esforço para o SPA.
 
 > Todos os passos de D-1 a D-5 são **CPU-leves e locais** (Polars/DuckDB sobre texto), sem GPU.
 > Cada re-publicação regenera `hf_corpus_dompi/` (Parquet + shards) a partir de `datalake/corpus`.

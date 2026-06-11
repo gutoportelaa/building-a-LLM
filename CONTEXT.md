@@ -14,9 +14,9 @@ as demandas de limpeza do dataset publicado estão em [`CONTEXT_2.md`](CONTEXT_2
 
 ## 1. Estado atual do corpus
 
-- **~67,7 mil documentos** · **~195 milhões de tokens** · **12 dos 13 Territórios de Desenvolvimento** · publicações de **2025**.
-- Publicado no HuggingFace: [`gutoportelaa/dom-pi-corpus-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-corpus-2025) (CC-BY-4.0).
-- **Fora da cobertura:** Teresina e Parnaíba (publicam em diários próprios, fora do DOM-PI dos Municípios).
+- **~80,8 mil documentos** · **~179 milhões de tokens** · **13 Territórios de Desenvolvimento** (12 do DOM-PI + **Teresina**) · publicações de **2025**.
+- Publicado no HuggingFace: corpus [`dom-pi-corpus-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-corpus-2025) · PDFs [`dom-pi-pdfs-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-pdfs-2025) · capital isolada [`dom-pi-teresina-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-teresina-2025) (CC-BY-4.0).
+- **Teresina** (capital, diário próprio DOM-Teresina) incluída como 13º território **e** em dataset isolado. **Parnaíba** fora (coleta via SPA não retornou PDFs válidos).
 - Custo aproximado da extração: ~75,6 GPU-horas (L4, cluster SLURM).
 
 ---

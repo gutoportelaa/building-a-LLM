@@ -9,9 +9,12 @@ do **Diário Oficial dos Municípios do Piauí (DOM-PI)**, para uso em **LLM/RAG
 *scraping* dos metadados e download dos PDFs à extração de texto acelerada por GPU e à
 estruturação num *data lake* colunar, terminando num dataset pronto para treino.
 
-**Resultado atual:** ~**67,7 mil documentos** · **~195 milhões de tokens** · **12 dos 13
-Territórios de Desenvolvimento** · publicações de **2025**. Publicado no HuggingFace:
-[`gutoportelaa/dom-pi-corpus-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-corpus-2025).
+**Resultado atual:** ~**80,8 mil documentos** · **~179 milhões de tokens** · **13 Territórios
+de Desenvolvimento** (12 do DOM-PI dos Municípios **+ Teresina**, a capital) · publicações de
+**2025**. Publicado no HuggingFace:
+- [`gutoportelaa/dom-pi-corpus-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-corpus-2025) — corpus de texto (configs `default`/`curated`/`raw`/`extraido`)
+- [`gutoportelaa/dom-pi-pdfs-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-pdfs-2025) — PDFs-fonte (~66 GB)
+- [`gutoportelaa/dom-pi-teresina-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-teresina-2025) — dataset isolado da capital (texto + PDFs)
 
 > Relatório técnico completo da construção do corpus: **[`RELATORIO_CORPUS_DOM-PI.md`](RELATORIO_CORPUS_DOM-PI.md)**.
 

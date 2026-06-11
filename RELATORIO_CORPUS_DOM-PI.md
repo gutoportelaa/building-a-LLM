@@ -6,7 +6,30 @@
 > Serve também como ponto de partida para a próxima sessão (limpeza, tratamentos,
 > versionamento, RAG).
 
-**Data:** junho/2026 · **Status:** ✅ dataset consolidado e corrigido, pronto para HF.
+**Data:** junho/2026 · **Status:** ✅ dataset consolidado, limpo, tierizado, com Teresina e **publicado no HF**.
+
+---
+
+## Atualização (2026-06-11) — limpeza v2, tiers, Teresina e publicação
+
+Desde o handoff original, o corpus evoluiu (detalhes técnicos em [`CONTEXT_2.md`](CONTEXT_2.md)):
+
+- **D-1 (near-dups)** MinHash+LSH e **D-2 (docs longos)** fatiamento em atos — no `build_corpus`.
+- **Limpeza v2** (`clean_text`): cabeçalho de diário, `-- image -->`, Id do ato (incl. `## ld:…`),
+  QR/autenticidade e carimbo PKI removidos (boilerplate 50–55% → ~0%; −~24M tokens).
+- **`quality_tier` A/B/C** (`real_word_ratio` × densidade numérica): separa prosa de tabela fiscal achatada.
+- **Teresina (capital)** coletada (250 PDFs DOM-Teresina), extraída (261 chunks → **9.583 atos**,
+  95,6% Tier A) e incrementada como **13º território** + **dataset isolado**.
+
+**Números atuais do corpus geral:** **13 territórios · 80.788 docs (`default`) · ~178,8M tokens** ·
+curated (A+B) 70.826 · raw 82.514 · extraido 77.598. Tiers: A 47.065 · B 23.761 · C 9.962.
+
+**Publicado no HuggingFace (3 repos):**
+- [`dom-pi-corpus-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-corpus-2025) — texto, configs `default`/`curated`/`raw`/`extraido`.
+- [`dom-pi-pdfs-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-pdfs-2025) — PDFs-fonte (~66 GB).
+- [`dom-pi-teresina-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-teresina-2025) — capital isolada (texto + PDFs).
+
+Reprodução: `build_limpo --all` → `build_corpus` → `empacotar_hf` / `empacotar_teresina`.
 
 ---
 
