@@ -691,6 +691,19 @@ wheels = [
 ]
 
 [[package]]
+name = "datasketch"
+version = "1.10.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8d/73/8e9014887f9fca2d785777a0a6186813e4fc7faa24f05fc88c6420624891/datasketch-1.10.0.tar.gz", hash = "sha256:d23aea80ce4c40790ca7a40795659848be92ecc43db80942be26f21e81d24714", size = 91699, upload-time = "2026-04-17T23:06:56.388Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ed/e7/a94668082e078099eb0161635649510aa887690767b779fffe4bdc479913/datasketch-1.10.0-py3-none-any.whl", hash = "sha256:303dd90cda0948a21abba3aaefc9f8528fa12b8204edc5e1ae8b1d7b750234e7", size = 99914, upload-time = "2026-04-17T23:06:54.39Z" },
+]
+
+[[package]]
 name = "defusedxml"
 version = "0.7.1"
 source = { registry = "https://pypi.org/simple" }
@@ -842,6 +855,7 @@ dependencies = [
     { name = "aiohttp" },
     { name = "bs4" },
     { name = "chromadb" },
+    { name = "datasketch" },
     { name = "duckdb" },
     { name = "hf" },
     { name = "langchain-text-splitters" },
@@ -881,6 +895,7 @@ requires-dist = [
     { name = "aiohttp", specifier = ">=3.13.5" },
     { name = "bs4", specifier = ">=0.0.2" },
     { name = "chromadb", specifier = ">=1.5.8" },
+    { name = "datasketch", specifier = ">=1.10.0" },
     { name = "docling", marker = "extra == 'docling'", specifier = ">=2.0.0" },
     { name = "duckdb", specifier = ">=1.1.0" },
     { name = "hf", specifier = ">=1.18.0" },

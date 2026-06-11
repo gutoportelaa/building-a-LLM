@@ -109,9 +109,14 @@ datalake/
   ```bash
   python -m dompi_scraper.datalake.ingest_extraido --territorio <slug>   # ou --all
   python -m dompi_scraper.datalake.build_limpo      --territorio <slug>   # ou --all
-  python -m dompi_scraper.datalake.build_corpus
+  python -m dompi_scraper.datalake.build_corpus     # D-2 fatiamento + D-1 near-dup → train+raw
+  python -m dompi_scraper.datalake.empacotar_hf     # gera hf_corpus_dompi/ (upload é manual)
   python -m dompi_scraper.datalake.query "SELECT territorio, count(*) FROM corpus GROUP BY 1"
   ```
+  O `build_corpus` aplica **D-2** (`fatiar_megadocs`: fatia compilações >8k tokens em atos,
+  preservando tabelas) e **D-1** (`dedup_aproximada`: MinHash+LSH marca quase-duplicatas),
+  produzindo `corpus/corpus_llm` (train, só canônicos) e `corpus/corpus_raw` (tudo, com flags).
+  Detalhes e resultados em [`CONTEXT_2.md`](CONTEXT_2.md).
 - Correções pós-extração (sobre a camada extraído, com rebuild de limpo+corpus):
   `corrigir_datas.py` (cronologia ancorada na data da **edição**) e `corrigir_municipios.py`
   (canoniza o município contra a lista oficial em `to-do_territorios.txt`).

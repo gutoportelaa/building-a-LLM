@@ -60,7 +60,8 @@ CLI (tudo CPU-leve, roda local):
 ```bash
 python -m dompi_scraper.datalake.ingest_extraido   --territorio <slug>   # ou --all
 python -m dompi_scraper.datalake.build_limpo        --territorio <slug>   # ou --all
-python -m dompi_scraper.datalake.build_corpus
+python -m dompi_scraper.datalake.build_corpus       # fatia compilações + dedup near-dup → train+raw
+python -m dompi_scraper.datalake.empacotar_hf       # empacota hf_corpus_dompi/ (upload manual)
 python -m dompi_scraper.datalake.query "SELECT territorio, count(*) FROM corpus GROUP BY 1"
 ```
 
@@ -85,7 +86,9 @@ ds = ds.filter(lambda r: r["territorio"] == "cocais")   # filtrar por territóri
 ```
 
 Colunas: `id`, `territorio`, `municipio` (nome oficial canonizado), `tipo_ato`, `ano`,
-`data_publicacao`, `n_tokens`, `texto`. Licença **CC-BY-4.0**.
+`data_publicacao`, `n_tokens`, `tamanho_classe`, `texto`. Config `default`/`train` é
+deduplicado (near-dups removidos) e com compilações fatiadas em atos; config `raw` traz
+tudo + `cluster_id`/`is_near_dup`. Licença **CC-BY-4.0**.
 
 ## Licença
 

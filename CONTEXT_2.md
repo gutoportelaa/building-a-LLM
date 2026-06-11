@@ -26,22 +26,32 @@ a qualidade do dataset, priorizado por impacto.
 
 ---
 
-## Demandas priorizadas
+## ✅ Resolvido (implementado no `build_corpus`)
 
-### D-1 · Quase-duplicatas (near-dups) — ALTA
-**Problema:** a dedup é por hash de conteúdo **exato**; variações de OCR, rodapés ou paginação
-geram registros quase idênticos que escapam.
-**Impacto:** repetição de conteúdo no treino ("poisoning") e inflação de contagens por município/tipo.
-**Abordagem:** dedup aproximada por **MinHash/LSH** ou **SimHash** sobre `texto` normalizado
-(shingles de n-gramas), com limiar de similaridade calibrado; manter a 1ª ocorrência e registrar
-o cluster em `_catalog/dedup_global.parquet`. Rodar como passo extra em `build_corpus`.
+### D-1 · Quase-duplicatas (near-dups) — FEITO
+Módulo `datalake/dedup_aproximada.py`: **MinHash (128 perm) + LSH** sobre shingles de
+5-gramas de palavras do texto normalizado, limiar **Jaccard 0,85**; componentes conexos →
+clusters; elege 1 **canônico** por cluster (maior texto → menos flags → data mais antiga).
+Resultado: **863 redundantes removidos** (1,1%) em 756+ clusters — duplicatas reais (LRF
+curtos quase idênticos, pares de licitação/portaria). O split **`train`** mantém só
+canônicos; o **`raw`** preserva todos com `cluster_id`/`is_near_dup` (reversível). Lever:
+`--threshold 0.80` para mais recall. Catálogo em `datalake/_catalog/near_dup.parquet`.
 
-### D-2 · Mega-documentos — ALTA
-**Problema:** alguns registros são edições/leis consolidadas enormes (LOA, planos plurianuais),
-muito acima da mediana de tokens.
-**Impacto:** distorcem estatísticas, dominam batches de treino e estouram janelas de contexto.
-**Abordagem:** detectar por `n_tokens` (corte por percentil), **sinalizar** com coluna de tamanho
-e/ou **fatiar** em unidades de ato preservando tabelas; decidir política (expor flag vs. dividir).
+### D-2 · Documentos longos — FEITO (com achado relevante)
+Módulo `datalake/fatiar_megadocs.py`. **Medição contradisse a premissa inicial:** os docs
+>32k tokens **não** são compilações de muitos atos — 76% são **documentos únicos** (orçamento,
+planilha de licitação, uma LOA). As compilações reais estão em **8k–32k**. Decisão: fatiar
+**todos os docs >8k** que sejam compilações, usando fronteira = **título de ato** (PORTARIA/
+DECRETO/LEI/… Nº em início de linha) — preciso e **seguro** (em tabela fiscal acha 0 fronteiras
+→ mantém intacto, não corta tabela). Resultado: **1.106 docs fatiados → 10.645 atos**; 1.770
+docs únicos longos mantidos intactos. Coluna **`tamanho_classe`** (normal/longo/mega) em todas
+as linhas: normal 74.757 · longo 1.850 · mega 532. Tokens preservados (~193,7M).
+
+> Produto: `corpus/corpus_llm` (train, 76.276 docs) + `corpus/corpus_raw` (raw, 77.139).
+> Empacotamento reproduzível em `datalake/empacotar_hf.py` (gera `hf_corpus_dompi/` com
+> configs `default`/`raw`). **Re-publicação no HF é passo manual** (não automatizado).
+
+## Demandas priorizadas (pendentes)
 
 ### D-3 · Município `DESCONHECIDO` (~3,2%) — MÉDIA
 **Problema:** ~2.147 docs não foram resolvidos contra a lista oficial por território.
@@ -77,7 +87,8 @@ PDFs reais; só então passar pela pipeline padrão. Os stubs atuais são descar
 
 ## Sequência sugerida
 
-1. **D-1 + D-2** sobre `datalake/limpo` → reconstruir `corpus` → **re-publicar** o HF (maior ganho de qualidade).
+1. ✅ **D-1 + D-2** — feitos no `build_corpus` (train/raw). Falta **re-publicar** o HF
+   (`empacotar_hf` já gerou `hf_corpus_dompi/`; upload é manual).
 2. **D-3 + D-4** (fuzzy município + completar datas) → re-publicar.
 3. **D-5** decidir exposição de flags / split curado.
 4. **D-6** corrigir a raiz na extração (beneficia novas coletas).
