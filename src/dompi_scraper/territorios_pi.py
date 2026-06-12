@@ -1,6 +1,7 @@
 """territorios_pi.py — registry slug→municípios (formato DOM-PI, gerado/validado
 contra o formulário ao vivo em 2026-06-04). "do Piauí" aparece abreviado "do Pi".
-Teresina/Parnaíba não existem nesta fonte (diário próprio). Use em scraper_isolado."""
+Teresina/Parnaíba não existem nesta fonte (diário próprio). Use em scraper_isolado.
+Teresina inclusa aqui como território separado (diário próprio DOM-Teresina)."""
 
 TERRITORIOS_MUNICIPIOS = {
     'carnaubais': [
@@ -152,5 +153,10 @@ TERRITORIOS_MUNICIPIOS = {
         'Santa Luz',
         'Sao Goncalo do Gurgueia',
         'Sebastiao Barros',
+    ],
+    # Diário Oficial de Teresina (DOM-Teresina) — diário próprio da capital,
+    # fora do DOM-PI dos Municípios (AMP). PDFs em diarios-teresina-2025/.
+    'teresina': [
+        'Teresina',
     ],
 }
