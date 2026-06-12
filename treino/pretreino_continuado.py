@@ -133,7 +133,7 @@ def train(args: argparse.Namespace) -> None:
 
     model = AutoModelForCausalLM.from_pretrained(
         args.model,
-        torch_dtype=dtype,
+        dtype=dtype,
         device_map="auto" if args.use_lora else None,
         trust_remote_code=True,
     )
