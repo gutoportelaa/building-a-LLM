@@ -46,6 +46,14 @@ dependencies = [
 # Mantê-los aqui faria `uv sync`/`uv run` reinstalar paddle no `.venv` principal
 # e requebrar o torch. Use o extra `paddle` SOMENTE para montar o `.venv-paddle`.
 [project.optional-dependencies]
+llm = [
+    # Pré-treino continuado + avaliação
+    "transformers>=4.40,<4.58",
+    "datasets>=2.20",
+    "accelerate>=0.30",
+    "peft>=0.11",
+    "bitsandbytes>=0.43",
+]
 docling = [
     "docling>=2.0.0",
     # docling-ibm-models (layout/TableFormer) importa cv2. Headless evita a

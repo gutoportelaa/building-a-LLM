@@ -1,0 +1,23 @@
+# Configuração: Qwen2.5-0.5B full-FT no RTX 4070 Laptop 8GB
+# Batch efetivo = 2 × 8 = 16 sequências × 1024 tokens = 16.384 tokens/step
+
+model: Qwen/Qwen2.5-0.5B
+train_data: data/train_corpus.jsonl
+output_dir: treino/checkpoints
+epochs: 2
+block_size: 1024
+batch_size: 2
+grad_accum: 8          # batch efetivo = 16k tokens/step
+lr: 2.0e-5
+bf16: true
+gradient_checkpointing: true
+use_lora: false
+log_every: 20
+save_every: 500
+
+# Para 1.5B com LoRA (descomente e passe --use-lora):
+# model: Qwen/Qwen2.5-1.5B
+# lr: 1.0e-4
+# use_lora: true
+# lora_r: 16
+# lora_alpha: 32
