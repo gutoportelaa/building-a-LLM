@@ -108,8 +108,8 @@ class PackedTextDataset(IterableDataset):
 
 
 def count_blocks(jsonl_path: str, tokenizer, block_size: int, max_docs: int | None = None) -> int:
-    """Estimativa do número de blocos (scan parcial: primeiros 5000 docs)."""
-    ds = PackedTextDataset(jsonl_path, tokenizer, block_size, max_docs=min(5000, max_docs or 5000))
+    """Conta blocos reais do corpus completo para o scheduler de LR ser preciso."""
+    ds = PackedTextDataset(jsonl_path, tokenizer, block_size, max_docs=max_docs)
     return sum(1 for _ in ds)
 
 
