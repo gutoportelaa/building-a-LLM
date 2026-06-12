@@ -7,7 +7,6 @@
 #SBATCH --output=treino/log_slurm_%j.txt
 #SBATCH --error=treino/log_slurm_%j.txt
 
-set -e
 cd "$SLURM_SUBMIT_DIR"
 
 PYTHON=".venv/bin/python3"
@@ -16,9 +15,19 @@ echo "=== Iniciando pré-treino DOM-PI ==="
 echo "Job ID: $SLURM_JOB_ID"
 echo "Node: $SLURMD_NODENAME"
 echo "Data: $(date)"
-nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
+nvidia-smi --query-gpu=name,memory.total --format=csv,noheader || echo "[aviso] nvidia-smi indisponível no nó"
 
-# Passo 1: gerar held-out/train a partir do HF Hub (sem precisar de Parquets locais)
+# Confirma que torch enxerga a GPU antes de prosseguir
+$PYTHON -c "
+import torch, sys
+print(f'torch {torch.__version__} | cuda: {torch.cuda.is_available()}')
+if not torch.cuda.is_available():
+    print('ERRO: CUDA não disponível — abortando')
+    sys.exit(1)
+print(f'GPU: {torch.cuda.get_device_name(0)} | VRAM: {torch.cuda.get_device_properties(0).total_memory/1e9:.1f}GB')
+"
+
+# Passo 1: gerar held-out/train a partir do HF Hub
 echo "--- Preparando held-out..."
 $PYTHON avaliacao/preparar_held_out.py --from-hub --output-dir data
 
@@ -42,10 +51,15 @@ $PYTHON treino/pretreino_continuado.py \
     --grad-accum 4 \
     --lr 2e-5
 
-# Passo 4: avaliação pós-treino
+# Passo 4: avaliação pós-treino (usa final se existir, senão best)
 echo "--- Avaliando pós-treino..."
+EVAL_CKPT="treino/checkpoints/final"
+if [ ! -d "$EVAL_CKPT" ]; then
+    EVAL_CKPT="treino/checkpoints/best"
+    echo "[aviso] checkpoint final ausente; usando $EVAL_CKPT"
+fi
 $PYTHON avaliacao/avaliar_modelo.py \
-    --model treino/checkpoints/final \
+    --model "$(realpath $EVAL_CKPT)" \
     --held-out data/held_out.jsonl \
     --benchmark benchmark/dompi_qa.jsonl \
     --output avaliacao/resultados_postreino.json

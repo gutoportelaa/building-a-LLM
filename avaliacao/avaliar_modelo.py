@@ -222,12 +222,18 @@ def main() -> None:
     args = parser.parse_args()
 
     log.info("Dispositivo: %s", DEVICE)
-    log.info("Carregando modelo %s...", args.model)
+
+    # resolve para path absoluto se for diretório local (evita que huggingface_hub
+    # interprete caminhos com barras como "namespace/repo_name")
+    model_path = args.model
+    if os.path.isdir(model_path):
+        model_path = os.path.abspath(model_path)
+    log.info("Carregando modelo %s...", model_path)
 
     dtype = torch.bfloat16 if args.bf16 and DEVICE == "cuda" else torch.float32
-    tokenizer = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(
-        args.model,
+        model_path,
         dtype=dtype,
         device_map="auto",
         trust_remote_code=True,

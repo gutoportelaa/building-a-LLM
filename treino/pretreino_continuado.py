@@ -172,7 +172,7 @@ def train(args: argparse.Namespace) -> None:
     train_ds = PackedTextDataset(
         args.train_data, tokenizer, block_size=args.block_size, max_docs=args.max_docs
     )
-    train_dl = DataLoader(train_ds, batch_size=args.batch_size, num_workers=0, pin_memory=False)
+    train_dl = DataLoader(train_ds, batch_size=args.batch_size, num_workers=0, pin_memory=False, drop_last=True)
 
     # Optimizer
     optimizer = torch.optim.AdamW(
@@ -212,7 +212,7 @@ def train(args: argparse.Namespace) -> None:
         train_ds = PackedTextDataset(
             args.train_data, tokenizer, block_size=args.block_size, max_docs=args.max_docs
         )
-        train_dl = DataLoader(train_ds, batch_size=args.batch_size, num_workers=0)
+        train_dl = DataLoader(train_ds, batch_size=args.batch_size, num_workers=0, drop_last=True)
 
         optimizer.zero_grad()
 
