@@ -40,11 +40,7 @@ from typing import Iterator
 
 import torch
 from torch.utils.data import DataLoader, IterableDataset
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    get_cosine_schedule_with_warmup,
-)
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -174,25 +170,31 @@ def train(args: argparse.Namespace) -> None:
     )
     train_dl = DataLoader(train_ds, batch_size=args.batch_size, num_workers=0, pin_memory=False, drop_last=True)
 
-    # Optimizer
-    optimizer = torch.optim.AdamW(
-        [p for p in model.parameters() if p.requires_grad],
-        lr=args.lr,
-        weight_decay=0.01,
-        betas=(0.9, 0.95),
-    )
-
-    # Estimativa de steps para o scheduler
-    # Usa estimativa conservadora de blocos (scan rápido)
-    log.info("Estimando número de blocos (scan de amostra)...")
+    # Estimativa precisa de steps (Apêndice D: total_steps necessário para schedule manual)
+    log.info("Contando blocos reais do corpus (necessário para o LR schedule)...")
     estimated_blocks = count_blocks(args.train_data, tokenizer, args.block_size)
     steps_per_epoch = math.ceil(estimated_blocks / (args.batch_size * args.grad_accum))
     total_steps = steps_per_epoch * args.epochs
-    warmup_steps = max(1, int(0.03 * total_steps))
-    log.info("Estimativa: %d blocos/época | %d steps totais | %d warmup",
+    warmup_steps = max(1, int(args.warmup_fraction * total_steps))
+    log.info("Blocos/época: %d | Steps totais: %d | Warmup steps: %d",
              estimated_blocks, total_steps, warmup_steps)
 
-    scheduler = get_cosine_schedule_with_warmup(optimizer, warmup_steps, total_steps)
+    # LR schedule manual — Apêndice D (Raschka): warmup linear + cosine decay
+    # Não usa HF get_cosine_schedule_with_warmup para evitar wrap-around além de total_steps
+    peak_lr = args.lr
+    initial_lr = peak_lr * 0.01      # começa em 1% do pico (aquecimento)
+    min_lr = peak_lr * 0.1           # termina em 10% do pico (Raschka D.2: min_lr = 0.1 * initial_lr do exemplo)
+    lr_increment = (peak_lr - initial_lr) / max(1, warmup_steps)
+    log.info("LR schedule: initial=%.2e → peak=%.2e → min=%.2e",
+             initial_lr, peak_lr, min_lr)
+
+    # Optimizer inicia com initial_lr (o schedule atualiza manualmente a cada step)
+    optimizer = torch.optim.AdamW(
+        [p for p in model.parameters() if p.requires_grad],
+        lr=initial_lr,
+        weight_decay=0.1,
+        betas=(0.9, 0.95),
+    )
 
     # Diretório de saída
     out_dir = Path(args.output_dir)
@@ -230,8 +232,18 @@ def train(args: argparse.Namespace) -> None:
 
             if (step + 1) % args.grad_accum == 0:
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+
+                # LR schedule manual — Apêndice D: warmup linear + cosine decay
+                if global_step < warmup_steps:
+                    lr_now = initial_lr + global_step * lr_increment
+                else:
+                    progress = (global_step - warmup_steps) / max(1, total_steps - warmup_steps)
+                    progress = min(progress, 1.0)  # sem wrap-around
+                    lr_now = min_lr + (peak_lr - min_lr) * 0.5 * (1 + math.cos(math.pi * progress))
+                for param_group in optimizer.param_groups:
+                    param_group["lr"] = lr_now
+
                 optimizer.step()
-                scheduler.step()
                 optimizer.zero_grad()
                 global_step += 1
 
@@ -241,9 +253,8 @@ def train(args: argparse.Namespace) -> None:
 
                 if global_step % args.log_every == 0:
                     ppl = math.exp(min(avg_loss, 20))
-                    lr_now = scheduler.get_last_lr()[0]
-                    log.info("Época %d | step %d | loss=%.4f | ppl=%.2f | lr=%.2e",
-                             epoch, global_step, avg_loss, ppl, lr_now)
+                    log.info("Época %d | step %d/%d | loss=%.4f | ppl=%.2f | lr=%.2e",
+                             epoch, global_step, total_steps, avg_loss, ppl, lr_now)
 
                 # Checkpoint periódico
                 if global_step % args.save_every == 0:
@@ -280,12 +291,16 @@ def main() -> None:
     parser.add_argument("--model", default="Qwen/Qwen2.5-0.5B")
     parser.add_argument("--train-data", default="data/train_corpus.jsonl")
     parser.add_argument("--output-dir", default="treino/checkpoints")
-    parser.add_argument("--epochs", type=int, default=2)
+    parser.add_argument("--epochs", type=int, default=1,
+                        help="Épocas de treino (Raschka: 'common to train for only one epoch' em corpus grande)")
     parser.add_argument("--block-size", type=int, default=1024)
     parser.add_argument("--batch-size", type=int, default=2)
     parser.add_argument("--grad-accum", type=int, default=8,
                         help="Gradient accumulation steps (batch efetivo = batch-size × grad-accum)")
-    parser.add_argument("--lr", type=float, default=2e-5)
+    parser.add_argument("--lr", type=float, default=5e-6,
+                        help="Peak LR (DAPT conservador; schedule: 0.01×peak→peak→0.1×peak)")
+    parser.add_argument("--warmup-fraction", type=float, default=0.03,
+                        help="Fração de steps para warmup linear (Raschka D.1; 3%% do total)")
     parser.add_argument("--max-docs", type=int, default=None, help="Limitar nº de docs (debug)")
     parser.add_argument("--bf16", action="store_true", default=True)
     parser.add_argument("--gradient-checkpointing", action="store_true", default=True)
@@ -296,9 +311,9 @@ def main() -> None:
     parser.add_argument("--save-every", type=int, default=500)
     args = parser.parse_args()
 
-    log.info("Configuração: model=%s | block=%d | bs=%d | accum=%d | lr=%.2e | epochs=%d | lora=%s",
+    log.info("Configuração: model=%s | block=%d | bs=%d | accum=%d | peak_lr=%.2e | epochs=%d | warmup=%.0f%% | lora=%s",
              args.model, args.block_size, args.batch_size,
-             args.grad_accum, args.lr, args.epochs, args.use_lora)
+             args.grad_accum, args.lr, args.epochs, args.warmup_fraction * 100, args.use_lora)
     log.info("Batch efetivo: %d tokens/step", args.block_size * args.batch_size * args.grad_accum)
 
     train(args)
