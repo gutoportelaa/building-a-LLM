@@ -1,0 +1,12 @@
+{
+  "model": "intfloat/multilingual-e5-base",
+  "dim": 768,
+  "n_docs": 57229,
+  "n_chunks": 175924,
+  "chunk_chars": 1600,
+  "overlap": 200,
+  "corpus": [
+    "data/train_corpus.jsonl",
+    "data/held_out.jsonl"
+  ]
+}

@@ -102,3 +102,15 @@ docs/referencia_raschka/
 
 # Coleta de Teresina (PDFs do diário próprio) — dados pesados
 diarios-teresina-2025/
+
+# ── Q5 RAG: binários pesados regeneráveis (NÃO versionar) ────────────────────
+# modelos/ = base Qwen2.5-1.5B (HF) + adapter DAPT (cluster); regeneráveis
+# rag/index/*.npy e chunks.jsonl = regeneráveis via rag/build_index.py
+# Versionados: rag/*.py, rag/resultados/*.json, rag/index/meta.json
+modelos/
+rag/index/embeddings.npy
+rag/index/chunks.jsonl
+rag/__pycache__/
+trabalho-final/**/index/embeddings.npy
+trabalho-final/**/index/chunks.jsonl
+**/__pycache__/

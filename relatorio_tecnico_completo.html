@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório Técnico — LLM DOM-PI / UFPI-DC</title>
+<style>
+  :root {
+    --txt:    #1c1c1c;
+    --muted:  #5a5a5a;
+    --border: #d2d2d2;
+    --bg-alt: #f7f7f5;
+    --bg-code:#f2f2ef;
+    --accent: #1e3a5f;
+    --accent2:#2e5ca0;
+    --a-light:#e6ecf5;
+    --done-bg:#eaf5ea;
+    --done-fg:#1a4a1a;
+    --pend-bg:#fdf3e7;
+    --pend-fg:#6b3a00;
+    --bad-bg: #f5eaea;
+    --bad-fg: #5a1818;
+    --warn-bg:#fef9e7;
+    --warn-fg:#5c4500;
+    --ok-bg:  #eaf5ea;
+    --ok-fg:  #1a4a1a;
+    --mono:   "Courier New", Courier, monospace;
+    --sans:   "Helvetica Neue", Arial, sans-serif;
+    --serif:  Georgia, "Times New Roman", serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--txt);
+    background: #fff;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 48px 36px 100px;
+  }
+  a { color: var(--accent2); }
+
+  /* ── Títulos ── */
+  h1 { font-family: var(--sans); font-size: 1.9rem; font-weight: 700;
+       color: var(--accent); border-bottom: 3px solid var(--accent);
+       padding-bottom: 12px; margin-bottom: 10px; }
+  h2 { font-family: var(--sans); font-size: 1.25rem; font-weight: 700;
+       color: var(--accent); margin-top: 56px; margin-bottom: 14px;
+       border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+  h3 { font-family: var(--sans); font-size: 1.05rem; font-weight: 600;
+       color: #2a2a2a; margin-top: 30px; margin-bottom: 8px; }
+  h4 { font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+       color: var(--muted); margin-top: 20px; margin-bottom: 6px; font-style: italic; }
+  p  { margin-bottom: 13px; }
+  ul, ol { margin: 8px 0 14px 26px; }
+  li { margin-bottom: 5px; }
+  code { font-family: var(--mono); font-size: 0.82em; background: var(--bg-code);
+         padding: 1px 5px; border-radius: 3px; }
+
+  /* ── Meta do relatório ── */
+  .report-meta {
+    font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+    border-left: 4px solid var(--accent); padding: 10px 16px;
+    margin-bottom: 32px; background: var(--a-light);
+  }
+  .report-meta strong { color: var(--accent); }
+
+  /* ── Status badges ── */
+  .status {
+    display: inline-block; font-family: var(--sans); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 3px; vertical-align: middle; margin-left: 8px;
+  }
+  .done    { background: var(--done-bg); color: var(--done-fg); border: 1px solid #a0cca0; }
+  .pending { background: var(--pend-bg); color: var(--pend-fg); border: 1px solid #d0aa60; }
+  .partial { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0c050; }
+
+  /* ── Tabelas ── */
+  table { width: 100%; border-collapse: collapse; font-family: var(--sans);
+          font-size: 0.83rem; margin: 14px 0 22px; }
+  th { background: var(--accent); color: #fff; text-align: left;
+       padding: 8px 11px; font-weight: 600; }
+  td { padding: 7px 11px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg-alt); }
+  tr:hover td { background: var(--a-light); }
+  .num { font-family: var(--mono); text-align: right; }
+  .tc  { text-align: center; }
+
+  /* ── Callouts ── */
+  .callout { border-left: 4px solid var(--border); padding: 11px 16px;
+             margin: 16px 0; font-family: var(--sans); font-size: 0.88rem;
+             border-radius: 0 4px 4px 0; }
+  .callout.info    { border-color: var(--accent2); background: var(--a-light); }
+  .callout.warn    { border-color: #c08000;         background: var(--warn-bg); }
+  .callout.danger  { border-color: #a02020;         background: var(--bad-bg);  }
+  .callout.success { border-color: #20802a;         background: var(--ok-bg);   }
+  .callout strong  { font-weight: 700; }
+
+  /* ── Caixas de seção de questão ── */
+  .q-header {
+    background: var(--accent); color: #fff; padding: 14px 20px;
+    border-radius: 4px 4px 0 0; font-family: var(--sans);
+    display: flex; align-items: baseline; gap: 12px; margin-top: 56px;
+  }
+  .q-header .q-num { font-size: 1.5rem; font-weight: 900; opacity: 0.6; }
+  .q-header .q-title { font-size: 1.1rem; font-weight: 700; }
+  .q-header .q-status { margin-left: auto; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px;
+    border-radius: 3px; border: 1px solid rgba(255,255,255,0.4); }
+  .q-header .q-status.done    { background: rgba(255,255,255,0.15); }
+  .q-header .q-status.pending { background: rgba(255,180,0,0.25); color: #ffe080; border-color: #ffe080; }
+  .q-header .q-status.partial { background: rgba(255,200,0,0.2);  color: #ffd060; border-color: #ffd060; }
+  .q-body { border: 1px solid var(--border); border-top: none; padding: 24px 24px 20px;
+            margin-bottom: 8px; }
+  .q-enunciado { font-family: var(--sans); font-size: 0.83rem; color: var(--muted);
+                 background: var(--bg-alt); border-left: 3px solid var(--border);
+                 padding: 10px 14px; margin-bottom: 20px; border-radius: 0 3px 3px 0; }
+
+  /* ── Inferências ── */
+  .inf-block { border: 1px solid var(--border); border-radius: 4px; margin: 18px 0 24px; overflow: hidden; }
+  .inf-prompt { background: var(--bg-code); border-bottom: 1px solid var(--border);
+                padding: 10px 14px; font-family: var(--mono); font-size: 0.8rem;
+                color: #222; white-space: pre-wrap; }
+  .inf-prompt .lbl { font-family: var(--sans); font-size: 0.68rem; font-weight: 700;
+                     text-transform: uppercase; letter-spacing: 0.07em;
+                     color: var(--muted); display: block; margin-bottom: 4px; }
+  .inf-resp { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .inf-resp:last-child { border-bottom: none; }
+  .model-tag { display: inline-block; font-family: var(--sans); font-size: 0.68rem;
+               font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+               padding: 2px 8px; border-radius: 3px; margin-bottom: 6px; }
+  .tag-base   { background: var(--a-light);   color: var(--accent2); }
+  .tag-lora   { background: var(--bad-bg);    color: var(--bad-fg); }
+  .tag-qlora  { background: var(--warn-bg);   color: var(--warn-fg); }
+  .tag-fullft { background: var(--ok-bg);     color: var(--ok-fg); }
+  .inf-txt { font-family: var(--mono); font-size: 0.78rem; color: #222;
+             white-space: pre-wrap; line-height: 1.55; margin-top: 4px; }
+  .inf-note { font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+              border-top: 1px solid var(--border); padding: 8px 14px;
+              background: var(--bg-alt); font-style: italic; }
+
+  /* ── Cards de estratégia ── */
+  .strat-card { border: 1px solid var(--border); border-radius: 4px;
+                padding: 16px 18px; margin: 14px 0; }
+  .strat-card .sc-title { font-family: var(--sans); font-size: 0.95rem;
+                          font-weight: 700; color: var(--accent2); margin-bottom: 6px; }
+  .strat-card .sc-meta { font-family: var(--sans); font-size: 0.75rem;
+                         color: var(--muted); margin-bottom: 10px; display: flex;
+                         flex-wrap: wrap; gap: 10px; }
+  .badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem;
+           font-weight: 600; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+  .b-high   { background: var(--ok-bg);   color: var(--ok-fg);   border: 1px solid #90c090; }
+  .b-med    { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0a040; }
+  .b-low    { background: var(--bg-alt);  color: var(--muted);   border: 1px solid var(--border); }
+  .b-info   { background: var(--a-light); color: var(--accent2); border: 1px solid #90b0d8; }
+
+  /* ── Mapa de experimentos ── */
+  .exp-map { border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; margin: 20px 0; }
+  .exp-map-row { display: grid; grid-template-columns: 140px 1fr 1fr;
+                 border-bottom: 1px solid var(--border); }
+  .exp-map-row:last-child { border-bottom: none; }
+  .exp-map-cell { padding: 9px 14px; font-family: var(--sans); font-size: 0.82rem; }
+  .exp-map-hdr  { background: var(--accent); color: #fff; font-weight: 700; }
+  .exp-map-row:nth-child(even) .exp-map-cell:not(.exp-map-hdr) { background: var(--bg-alt); }
+  .arrow { color: var(--muted); font-size: 1.1em; }
+
+  /* ── Índice ── */
+  .toc { font-family: var(--sans); font-size: 0.85rem; background: var(--bg-alt);
+         border: 1px solid var(--border); border-radius: 4px; padding: 18px 22px;
+         margin: 24px 0 40px; }
+  .toc h3 { margin-top: 0; margin-bottom: 10px; font-size: 0.9rem; color: var(--accent); }
+  .toc ol { margin-left: 20px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { color: var(--accent2); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-status { font-size: 0.72rem; margin-left: 6px; }
+
+  /* ── Linha separadora de sub-seção ── */
+  hr.sub { border: none; border-top: 1px dashed var(--border); margin: 24px 0; }
+
+  footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--border);
+           font-family: var(--sans); font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  CABEÇALHO                                                         -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1>Relatório Técnico — Construindo um LLM: DOM-PI &amp; UFPI-DC</h1>
+<div class="report-meta">
+  <strong>Disciplina:</strong> Tópicos Avançados em IA / LLMs &nbsp;|&nbsp;
+  <strong>Dataset principal:</strong> <code>diariosPrefeituras</code> (DOM-PI) &nbsp;|&nbsp;
+  <strong>Dataset secundário:</strong> <code>vickminari/docentesDC</code> &nbsp;|&nbsp;
+  <strong>Modelo base:</strong> Qwen/Qwen2.5-1.5B &nbsp;|&nbsp;
+  <strong>Emissão:</strong> Junho 2026
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  NOTA SOBRE NOMENCLATURA                                           -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="callout warn">
+  <strong>Nota sobre nomenclatura interna:</strong> Os logs e scripts do projeto usam rótulos internos "Q2" e "Q3"
+  que <em>não correspondem</em> às questões do enunciado. Internamente, "Q2" designou experimentos com LoRA/QLoRA
+  sobre o corpus DOM-PI, e "Q3" designou o experimento de Full FT sobre o corpus Teresina — ambos são
+  <strong>sub-experimentos da Questão 1 do enunciado</strong> (Pré-treino). A Questão 2 do enunciado (SFT com docentesDC),
+  a Questão 3 (LoRA/QLoRA com docentesDC), e as seguintes ainda não foram realizadas.
+  Este relatório usa exclusivamente a numeração do enunciado.
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  ÍNDICE                                                             -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="toc">
+  <h3>Índice</h3>
+  <ol>
+    <li><a href="#q1">Questão 1 — Pré-treino Continuado (DAPT)</a> <span class="toc-status status done">concluída</span></li>
+    <li><a href="#q2">Questão 2 — Pós-treino SFT com docentesDC</a> <span class="toc-status status pending">pendente</span></li>
+    <li><a href="#q3">Questão 3 — Pós-treino LoRA/QLoRA com docentesDC</a> <span class="toc-status status pending">pendente</span></li>
+    <li><a href="#q4">Questão 4 — Destilação de Conhecimento</a> <span class="toc-status status pending">pendente</span></li>
+    <li><a href="#q5">Questão 5 — RAG (Standard/HyDE/Reflexivo/Agêntico)</a> <span class="toc-status status done">concluída</span></li>
+    <li><a href="#q6">Questão 6 — Guardrails</a> <span class="toc-status status pending">pendente</span></li>
+    <li><a href="#roadmap">Roadmap de Execução</a></li>
+  </ol>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  QUESTÃO 1                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="q-header" id="q1">
+  <span class="q-num">Q1</span>
+  <span class="q-title">Pré-treino Continuado (DAPT) — diariosPrefeituras</span>
+  <span class="q-status done">✓ Concluída</span>
+</div>
+<div class="q-body">
+
+<div class="q-enunciado">
+  Fazer pré-treinamento continuado de um LLM considerando o dataset unificado <em>diariosPrefeituras</em> e avaliar
+  a qualidade antes e depois. Criar benchmark com ≥25 perguntas e respostas de referência.
+  Métricas: perplexidade, entropia cruzada e acurácia de previsão de tokens.
+</div>
+
+<!-- 1.1 Modelo e corpus -->
+<h3>1.1 Modelo Escolhido e Justificativa</h3>
+<table>
+  <tr><th>Atributo</th><th>Valor</th><th>Justificativa</th></tr>
+  <tr>
+    <td>Modelo base</td><td><code>Qwen/Qwen2.5-1.5B</code></td>
+    <td>Melhor suporte multilingual nativo entre modelos &lt;2B; licença Apache 2.0; tokenizador eficiente para português</td>
+  </tr>
+  <tr>
+    <td>Modelo auxiliar</td><td><code>Qwen/Qwen2.5-0.5B</code></td>
+    <td>Usado nos experimentos iniciais para validação rápida de hiperparâmetros (jobs 381–389)</td>
+  </tr>
+  <tr>
+    <td>Hardware</td><td>GPU NVIDIA L4 (22,5 GB VRAM)</td>
+    <td>Disponível no cluster <code>10.94.80.10</code>; permite full FT do 1.5B com bf16 + AdamW 8-bit</td>
+  </tr>
+  <tr>
+    <td>Precisão</td><td>bfloat16</td>
+    <td>Mantém faixa dinâmica de fp32 com metade da memória; padrão Qwen2.5 para inferência/treino</td>
+  </tr>
+</table>
+
+<h3>1.2 Corpus DOM-PI</h3>
+<table>
+  <tr><th>Dimensão</th><th>Corpus geral</th><th>Subcorpus Teresina</th></tr>
+  <tr><td>Documentos (treino)</td><td class="num">54.368</td><td class="num">8.441 (cluster) / 9.133 (HF)</td></tr>
+  <tr><td>Documentos (held-out)</td><td class="num">2.000</td><td class="num">444</td></tr>
+  <tr><td>Tamanho JSONL</td><td class="num">208 MB</td><td class="num">17 MB (cluster) / ~37 MB descomprimido HF</td></tr>
+  <tr><td>Tokens estimados</td><td class="num">~50 M</td><td class="num">~4 M (cluster) / ~9,3 M (HF)</td></tr>
+  <tr><td>Qualidade</td><td>OCR misto (tiers A/B/C)</td><td>Tier A: 95,6% / B: 4,3%</td></tr>
+  <tr><td>Cobertura</td><td>224 municípios + capital</td><td>Teresina-PI exclusivamente</td></tr>
+</table>
+
+<div class="callout warn">
+  <strong>Limitação estrutural:</strong> O corpus DOM-PI (~50 M tokens) é ~200× menor que o mínimo
+  documentado na literatura para DAPT efetivo (Sabiá-2: 10 B; llm2govbr: ~5 B).
+  Isso condiciona todos os resultados desta questão.
+</div>
+
+<!-- 1.3 Benchmark -->
+<h3>1.3 Benchmark de Avaliação (49 questões)</h3>
+<p>O benchmark supera o requisito mínimo de 25 questões. Cobre 23 tipos de pergunta distribuídos entre
+factual, conceitual, contextual e interpretativo.</p>
+
+<table>
+  <tr><th>Categoria</th><th>Qtd</th><th>Exemplo</th></tr>
+  <tr><td>conceitual_juridico</td><td class="num">10</td><td>O que é pregão eletrônico? O que é inexigibilidade de licitação?</td></tr>
+  <tr><td>valor_contrato</td><td class="num">5</td><td>Qual o valor do contrato nº 204/2025 com Marta Cristina?</td></tr>
+  <tr><td>nomeacao</td><td class="num">4</td><td>Quem foi nomeado pela Portaria nº 0318/2024-ADM?</td></tr>
+  <tr><td>objeto_contrato</td><td class="num">4</td><td>Qual o objeto do Contrato nº 001/2025/PGM?</td></tr>
+  <tr><td>contratado</td><td class="num">3</td><td>Quem assinou o Extrato de Contrato nº 004/2025?</td></tr>
+  <tr><td>contexto_regional</td><td class="num">3</td><td>Quais os Territórios de Desenvolvimento do PI?</td></tr>
+  <tr><td>conceitual_dominio</td><td class="num">2</td><td>O que é o DOM-PI?</td></tr>
+  <tr><td>vigencia_contrato</td><td class="num">2</td><td>Qual a vigência do Contrato nº 004/2025?</td></tr>
+  <tr><td><em>demais tipos (15)</em></td><td class="num">16</td><td>licitação_vencedor, dado_institucional, ementa_ato, etc.</td></tr>
+  <tr><td><strong>Total</strong></td><td class="num"><strong>49</strong></td><td>—</td></tr>
+</table>
+
+<p>A métrica usada no benchmark é a <strong>cross-entropy da resposta de referência condicionada ao prompt</strong>
+(NLL da sequência esperada), complementada por token accuracy. Isso avalia se o modelo "prefere" as respostas corretas
+sobre alternativas, sem requerer decodificação por geração.</p>
+
+<!-- 1.4 Experimentos -->
+<h3>1.4 Linha do Tempo dos Experimentos</h3>
+
+<div class="exp-map">
+  <div class="exp-map-row">
+    <div class="exp-map-cell exp-map-hdr">Job(s) SLURM</div>
+    <div class="exp-map-cell exp-map-hdr">Configuração</div>
+    <div class="exp-map-cell exp-map-hdr">Diagnóstico / Resultado</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>381–383</strong><br><small>Qwen 0.5B</small></div>
+    <div class="exp-map-cell">Full FT, corpus DOM-PI geral, lr=5e-6→2e-5</div>
+    <div class="exp-map-cell"><span style="color:var(--bad-fg)">✗ Esquecimento catastrófico</span>: PPL ×3–5 no held-out. LR alto demais para corpus pequeño com OCR ruidoso.</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>384</strong><br><small>Qwen 0.5B</small></div>
+    <div class="exp-map-cell">Full FT, DOM-PI geral, lr=2e-6 (conservador)</div>
+    <div class="exp-map-cell"><span style="color:var(--bad-fg)">✗ Ainda catastrófico</span>: PPL ×3. Hipótese levantada: ruído OCR do corpus geral como causa secundária.</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>389</strong><br><small>Qwen 0.5B</small></div>
+    <div class="exp-map-cell">Full FT, corpus Teresina (4 M tokens, tier A+B), lr=2e-6</div>
+    <div class="exp-map-cell"><span style="color:var(--warn-fg)">~ +20% PPL</span>: Hipótese do corpus ruidoso <strong>confirmada</strong>. Corpus homogêneo reduz drasticamente o esquecimento.</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>396</strong><br><small>Qwen 1.5B</small></div>
+    <div class="exp-map-cell">LoRA (rank-16), DOM-PI geral, lr=2e-4</div>
+    <div class="exp-map-cell"><span style="color:var(--bad-fg)">✗ Colapso total</span>: PPL 10→2578. LR 2e-4 cria "intruder dimensions" (Biderman 2024); treino memoriza sequências.</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>426</strong><br><small>Qwen 1.5B</small></div>
+    <div class="exp-map-cell">LoRA (rank-16), DOM-PI geral, lr=2e-5 (10× menor)</div>
+    <div class="exp-map-cell"><span style="color:var(--bad-fg)">✗ Colapso</span>: PPL 10→1001. LoRA para CPT com corpus pequeno é estruturalmente problemático independente do LR.</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>421</strong><br><small>Qwen 1.5B</small></div>
+    <div class="exp-map-cell">QLoRA (4-bit NF4), DOM-PI geral, lr=2e-5</div>
+    <div class="exp-map-cell"><span style="color:var(--warn-fg)">~ +4,5% PPL</span>: <strong>Melhor resultado do corpus geral</strong>. Quantização NF4 atenua intruder dimensions. Sem colapso.</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>429</strong><br><small>Qwen 1.5B</small></div>
+    <div class="exp-map-cell">Full FT + AdamW 8-bit + early stopping, Teresina HF (9,3 M tokens), lr=2e-6</div>
+    <div class="exp-map-cell"><span style="color:var(--warn-fg)">~ +26,7% PPL vs baseline Teresina</span>: Early stopping ativou. Sem colapso. Sinal de aprendizado de padrões estruturais.</div>
+  </div>
+</div>
+
+<!-- 1.5 Resultados -->
+<h3>1.5 Resultados Quantitativos</h3>
+
+<h4>Held-out principal (2.000 documentos DOM-PI geral)</h4>
+<table>
+  <tr>
+    <th>Método</th><th>Corpus treino</th>
+    <th class="tc">CE</th><th class="tc">PPL</th><th class="tc">Acc Token</th><th class="tc">Δ PPL</th>
+  </tr>
+  <tr>
+    <td><strong>Baseline Qwen 1.5B</strong></td><td>— (zero-shot)</td>
+    <td class="num">2,305</td><td class="num">10,03</td><td class="num">54,12%</td>
+    <td class="tc"><em>referência</em></td>
+  </tr>
+  <tr>
+    <td>LoRA 1.5B (lr=2e-5)</td><td>DOM-PI geral</td>
+    <td class="num">6,909</td><td class="num">1.001,6</td><td class="num">5,41%</td>
+    <td class="num" style="color:var(--bad-fg)"><strong>+9.893%</strong> ✗</td>
+  </tr>
+  <tr>
+    <td>QLoRA 1.5B (lr=2e-5)</td><td>DOM-PI geral</td>
+    <td class="num">2,349</td><td class="num">10,47</td><td class="num">53,02%</td>
+    <td class="num" style="color:var(--warn-fg)">+4,4%</td>
+  </tr>
+  <tr>
+    <td><strong>Baseline Qwen 0.5B</strong></td><td>— (zero-shot)</td>
+    <td class="num">2,282</td><td class="num">9,79</td><td class="num">54,12%</td>
+    <td class="tc"><em>ref 0.5B</em></td>
+  </tr>
+</table>
+
+<h4>Held-out Teresina (444 documentos, baseline 1.5B)</h4>
+<table>
+  <tr>
+    <th>Método</th><th>Corpus treino</th>
+    <th class="tc">CE</th><th class="tc">PPL</th><th class="tc">Acc Token</th><th class="tc">Δ PPL</th>
+  </tr>
+  <tr>
+    <td><strong>Baseline Qwen 1.5B</strong></td><td>— (zero-shot)</td>
+    <td class="num">1,934</td><td class="num">6,91</td><td class="num">58,81%</td>
+    <td class="tc"><em>referência</em></td>
+  </tr>
+  <tr>
+    <td>Job 389: Full FT 0.5B</td><td>Teresina local (4 M)</td>
+    <td class="num">2,464</td><td class="num">11,75</td><td class="num">51,04%</td>
+    <td class="num" style="color:var(--warn-fg)">+70,0% <small>(modelo menor)</small></td>
+  </tr>
+  <tr>
+    <td>Full FT 1.5B + AdamW 8-bit</td><td>Teresina HF (9,3 M)</td>
+    <td class="num">2,170</td><td class="num">8,76</td><td class="num">55,88%</td>
+    <td class="num" style="color:var(--warn-fg)">+26,7%</td>
+  </tr>
+</table>
+
+<h4>Benchmark Q&amp;A (NLL da resposta de referência)</h4>
+<table>
+  <tr>
+    <th>Método</th>
+    <th class="tc">CE benchmark</th><th class="tc">PPL benchmark</th>
+    <th class="tc">Acc benchmark</th><th class="tc">Δ PPL</th>
+  </tr>
+  <tr>
+    <td><strong>Baseline 1.5B</strong></td>
+    <td class="num">2,008</td><td class="num">7,45</td><td class="num">57,74%</td>
+    <td class="tc"><em>referência</em></td>
+  </tr>
+  <tr>
+    <td>QLoRA 1.5B</td>
+    <td class="num">2,083</td><td class="num">8,03</td><td class="num">56,37%</td>
+    <td class="num" style="color:var(--warn-fg)">+7,8%</td>
+  </tr>
+  <tr>
+    <td>Full FT Teresina 1.5B</td>
+    <td class="num">2,173</td><td class="num">8,78</td><td class="num">56,75%</td>
+    <td class="num" style="color:var(--warn-fg)">+17,9%</td>
+  </tr>
+  <tr>
+    <td><strong>Baseline 0.5B</strong></td>
+    <td class="num">2,419</td><td class="num">11,24</td><td class="num">52,08%</td>
+    <td class="tc"><em>ref 0.5B</em></td>
+  </tr>
+</table>
+
+<!-- 1.6 Inferências -->
+<h3>1.6 Exemplos do Benchmark — Análise Qualitativa</h3>
+
+<h4>Prompt 1 — Completação de Portaria (tipo: completação_domínio)</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Prompt</span>PORTARIA Nº 130, DE 12 DE MARÇO DE 2025.
+
+O PREFEITO MUNICIPAL DE COCAL, Estado do Piauí, no uso de suas atribuições legais,
+
+RESOLVE:
+
+Art. 1º</div>
+  <div class="inf-resp">
+    <span class="model-tag tag-base">Baseline 1.5B</span>
+    <div class="inf-txt"> Fica criado o Programa Municipal de Atenção à Saúde da Mulher (PMSM), coordenado pelo Secretário de Saúde e executado pela Secretaria Municipal de Saúde.
+§ 1º O PMSM terá como objetivo a promoção, proteção e garantia dos direitos das mulheres cocalenses em relação ao processo de saúde, visando à prevenção, diagnóstico, tratamento e reabilitação de doenças.</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-qlora">QLoRA 1.5B</span>
+    <div class="inf-txt"> Fica estabelecido o pagamento dos servidores municipais em exercício e aposentados da Prefeitura Municipal de Cocal, conforme tabela:
+I - Servidores com tempo de serviço de até 1 ano: R$ 468,00;
+II - Servidores com tempo entre 1 e 5 anos: R$ 792,00;
+III - Servidores com tempo entre 6 e 10 anos: R$ 1.116,00;</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <div class="inf-txt"> Fica autorizado o pagamento dos servidores públicos municipais que se encontram em licença materna e paterna por tempo determinado, para os meses de março, abril e maio de 2025.
+
+Art. 2º O presente ato entra em vigor na data de sua publicação.
+
+COCAL, 12 de Março de 2025 — PREFEITO</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-lora">LoRA 1.5B (colapsado)</span>
+    <div class="inf-txt">arar aaçãoária oário 47 da nº6/9, 8/e9/9 para exercício ano 022...22222222222222222222222222</div>
+  </div>
+  <div class="inf-note">
+    <strong>Análise:</strong> O Full FT Teresina é o único que encerra corretamente a portaria (artigo de vigência + data + assinatura do prefeito) — padrão aprendido de centenas de portarias no corpus. QLoRA mantém estrutura jurídica mas inventa tabelas salariais não solicitadas. Baseline é coerente mas genérico. LoRA colapsou: sequências de dígitos repetidos.
+  </div>
+</div>
+
+<h4>Prompt 2 — Q&amp;A Factual: Objeto de Contrato</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Prompt</span>Pergunta: Qual é o objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES?
+
+Resposta:</div>
+  <div class="inf-resp">
+    <span class="model-tag tag-base">Baseline 1.5B</span>
+    <div class="inf-txt"> O objeto é a prestação de serviços de limpeza e manutenção urbana, incluindo limpeza de ruas, calçadas, praças e áreas públicas.</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-qlora">QLoRA 1.5B</span>
+    <div class="inf-txt"> O objeto é a prestação de serviços de limpeza urbana.</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <div class="inf-txt"> O objeto é a execução de obras e reparos em estradas, pavimentação asfáltica, manutenção de vias públicas, construção de calçamento, drenagem pluvial, iluminação pública, entre outras atividades de infraestrutura urbana.</div>
+  </div>
+  <div class="inf-note">
+    <strong>Análise:</strong> Este contrato específico não está no corpus de nenhum modelo — todos alucinam plausíveis objetos contratuais. Full FT gera mais detalhes de infraestrutura (padrão do corpus Teresina); QLoRA é sintético. Este prompt demonstra por que RAG é necessário para Q&amp;A factual sobre contratos específicos: DAPT isolado não resolve alucinação sem o contexto do documento.
+  </div>
+</div>
+
+<h4>Prompt 3 — Q&amp;A Conceitual: Pregão Eletrônico</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Prompt</span>Pergunta: O que é um Pregão Eletrônico no contexto das licitações públicas brasileiras?
+
+Resposta:</div>
+  <div class="inf-resp">
+    <span class="model-tag tag-base">Baseline 1.5B</span>
+    <div class="inf-txt"> Um pregão eletrônico (PE) é uma modalidade de licitação pública onde empresas participam da compra de bens e serviços por meio de tecnologia digital. Os compradores publicam anúncios online com informações sobre o item, condições e critérios de participação.</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-qlora">QLoRA 1.5B</span>
+    <div class="inf-txt"> Um PE é uma modalidade de licitação para venda ou contratação de serviços por meio da internet, com propostas apresentadas e avaliadas online, permitindo participação em tempo real com maior transparência e eficiência.</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <div class="inf-txt"> Um pregão eletrônico é uma modalidade de licitação pública onde as empresas enviam suas propostas online através de sistema específico, sem necessidade de deslocamento. Permite comparar preços e condições em tempo real.</div>
+  </div>
+  <div class="inf-note">
+    <strong>Análise:</strong> Para conhecimento jurídico conceitual genérico, todos os modelos são equivalentes — esse conhecimento já reside no Qwen 2.5 pré-treinado em português. O DAPT não adicionou nem degradou esse tipo de conhecimento no QLoRA (sinal positivo). O Full FT produziu resposta levemente mais curta, indicando que o treino em portarias/contratos reduziu marginalmente a verbosidade.
+  </div>
+</div>
+
+<h4>Prompt 4 — Completação de Extrato de Contrato</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Prompt</span>EXTRATO DE CONTRATO
+
+Contratante: PREFEITURA MUNICIPAL DE TERESINA
+Contratada: EMPRESA DE TECNOLOGIA LTDA
+Objeto: Prestação de serviços de</div>
+  <div class="inf-resp">
+    <span class="model-tag tag-base">Baseline 1.5B</span>
+    <div class="inf-txt"> manutenção e reparo de equipamentos informáticos.
+Data de início: 01/03/2018 — Data de término: 31/03/2019
+Valor total: R$ 4.500,00 (quatro mil e quinhentos reais)</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-qlora">QLoRA 1.5B</span>
+    <div class="inf-txt"> consultoria em tecnologia da informação para a gestão pública.
+Data: 01/03/2017 a 31/08/2017
+Valor total: R$ 4.500.000,00 (quatro milhões e quinhentos mil reais)</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <div class="inf-txt"> manutenção e reparo de equipamentos informáticos.
+Data: 10/09/2018 — Local: Teresina, PI
+Prazos: O Contratado deverá realizar manutenção conforme quadro:
+
+Equipamento | Qtd | Total
+Computador  |  3  |  9
+Monitor     |  4  |  16
+Teclado     |  5  |  25
+Mouse       |  7  |  49
+Impressora  |  1  |  1</div>
+  </div>
+  <div class="inf-note">
+    <strong>Análise:</strong> Este é o sinal mais claro de aprendizado de padrão estrutural pelo Full FT: gerou uma tabela de inventário de equipamentos — estrutura presente em contratos de TI do corpus Teresina. QLoRA errou em 3 ordens de magnitude no valor (R$ 4,5 M vs R$ 4,5 mil). Este tipo de tabela estruturada nunca seria gerado pelo modelo base, confirmando que o Full FT absorveu padrões documentais do domínio.
+  </div>
+</div>
+
+<h4>Prompt 5 — Q&amp;A Domínio: O que é o DOM-PI?</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Prompt</span>Pergunta: O que é o Diário Oficial dos Municípios do Piauí e qual é sua finalidade legal?
+
+Resposta:</div>
+  <div class="inf-resp">
+    <span class="model-tag tag-base">Baseline 1.5B</span>
+    <div class="inf-txt"> O DOM-PI é um periódico oficial da Assembleia Legislativa do Estado do Piauí, publicado semanalmente, com leis, resoluções, convocatórias, projetos de lei e atos administrativos municipais. [INCORRETO: publicado pela APPM/SEAP, não pela Assembleia]</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-qlora">QLoRA 1.5B</span>
+    <div class="inf-txt"> O DOM-PI é um documento oficial publicado pela Secretaria de Estado da Fazenda (SEFAZ) com informações sobre ações dos municípios. [INCORRETO: SEFAZ não é a responsável]</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <div class="inf-txt"> O DOM-PI é um periódico publicado pela Secretaria de Estado da Administração Pública (SEAP) para divulgar leis, decretos, resoluções e atos normativos relevantes para os municípios. Distribuído gratuitamente a órgãos públicos municipais e acessível online. [MAIS PRÓXIMO DO CORRETO]</div>
+  </div>
+  <div class="inf-note">
+    <strong>Análise:</strong> Único prompt onde o DAPT produziu mudança factual mensurável. O Full FT é o único a mencionar a SEAP — entidade presente em documentos do corpus Teresina. Baseline e QLoRA alucinam órgãos responsáveis incorretos. Este resultado, embora ainda impreciso (a APPM é a entidade gestora real), demonstra que o Full FT absorveu algum conhecimento factual de domínio — fenômeno raro com corpora tão pequenos.
+  </div>
+</div>
+
+<!-- 1.7 Conclusão Q1 -->
+<h3>1.7 Conclusão da Questão 1</h3>
+
+<div class="callout danger">
+  <strong>Resultado central:</strong> Nenhum método de DAPT testado superou o baseline de perplexidade no held-out.
+  O corpus DOM-PI (~50 M tokens) é estruturalmente insuficiente para DAPT efetivo com modelos de 1,5 B parâmetros.
+</div>
+
+<table>
+  <tr><th>Método</th><th>Resultado</th><th>Causa principal</th></tr>
+  <tr>
+    <td>LoRA (lr=2e-5)</td>
+    <td style="color:var(--bad-fg)">Colapso (PPL ×100)</td>
+    <td>"Intruder dimensions": LoRA memoriza sequências em baixo rank; não generaliza com corpus pequeno</td>
+  </tr>
+  <tr>
+    <td>QLoRA (lr=2e-5)</td>
+    <td style="color:var(--warn-fg)">Degradação mínima (+4,5%)</td>
+    <td>Quantização NF4 regula intruder dimensions; resultado aceitável mas sem ganho factual</td>
+  </tr>
+  <tr>
+    <td>Full FT + AdamW 8-bit</td>
+    <td style="color:var(--warn-fg)">Degradação moderada (+27%)</td>
+    <td>Early stopping prematuro; shift de distribuição entre treino HF e avaliação local; corpus ainda insuficiente</td>
+  </tr>
+  <tr>
+    <td>Full FT 0.5B (job 389)</td>
+    <td style="color:var(--warn-fg)">+20% PPL (corpus limpo)</td>
+    <td>Corpus Teresina homogêneo mitiga esquecimento; modelo menor, resultado comparativamente melhor</td>
+  </tr>
+</table>
+
+<p><strong>Achado relevante:</strong> O Full FT com corpus Teresina produziu geração estruturalmente mais correta
+(tabelas de contratos, portarias completas com vigência e assinatura) e melhor localização factual (SEAP).
+A melhora qualitativa não é capturada pela perplexidade no held-out — limitação conhecida da métrica quando o
+corpus de avaliação não inclui os padrões estruturais aprendidos.</p>
+
+</div><!-- /q-body Q1 -->
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  QUESTÃO 2                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="q-header" id="q2">
+  <span class="q-num">Q2</span>
+  <span class="q-title">Pós-treino SFT — docentesDC</span>
+  <span class="q-status pending">⏳ Pendente</span>
+</div>
+<div class="q-body">
+
+<div class="q-enunciado">
+  Gerar ≥1.000 pares instruction/input/output a partir do dataset <em>docentesDC</em>.
+  Usar esses pares para Supervised Fine-Tuning (SFT). Avaliar o LLM antes e depois.
+</div>
+
+<h3>2.1 Dataset docentesDC — Caracterização</h3>
+<table>
+  <tr><th>Atributo</th><th>Valor</th></tr>
+  <tr><td>Repositório</td><td><code>vickminari/docentesDC</code> (HuggingFace)</td></tr>
+  <tr><td>Total de registros</td><td class="num">13.762</td></tr>
+  <tr><td>Campos</td><td><code>text</code> (conteúdo) + <code>nome_professor</code> (autor)</td></tr>
+  <tr><td>Split</td><td>Apenas <code>train</code></td></tr>
+  <tr><td>Tamanho médio</td><td>~3.300 chars / ~514 palavras por registro</td></tr>
+  <tr><td>Conteúdo</td><td>Slides, fragmentos de código, artigos, notas de aula — Departamento de Computação UFPI</td></tr>
+  <tr><td>Idioma</td><td>Português (majoritário) e inglês (técnico)</td></tr>
+  <tr><td>Domínio</td><td>Ciência da Computação: IA, redes, SO, algoritmos, banco de dados, etc.</td></tr>
+</table>
+
+<h3>2.2 Estratégia de Geração dos Pares Q&amp;A</h3>
+<p>O dataset fornece <em>textos brutos</em> — não possui pares instruction/output nativos. É necessário gerar ≥1.000
+pares estruturados. A estratégia em duas fases:</p>
+
+<div class="strat-card">
+  <div class="sc-title">Fase 1 — Filtragem e Chunking do Corpus</div>
+  <div class="sc-meta">
+    <span class="badge b-info">Script: preparar_docentes.py</span>
+    <span class="badge b-low">Tempo estimado: 30 min</span>
+  </div>
+  <ol>
+    <li>Download do dataset via <code>datasets.load_dataset("vickminari/docentesDC")</code></li>
+    <li>Filtrar registros com <code>len(text) &gt; 200</code> caracteres (eliminar stubs)</li>
+    <li>Dividir textos longos em chunks de 800–1.200 caracteres com overlap de 100 chars</li>
+    <li>Estimar: ~10.000 chunks válidos de ~8.000 registros filtrados</li>
+    <li>Salvar em <code>data/docentes/chunks.jsonl</code> com campos: <code>chunk_id</code>, <code>professor</code>, <code>texto</code></li>
+  </ol>
+</div>
+
+<div class="strat-card">
+  <div class="sc-title">Fase 2 — Geração Sintética de Pares com LLM</div>
+  <div class="sc-meta">
+    <span class="badge b-info">Script: gerar_pares_sft.py</span>
+    <span class="badge b-med">Custo: ~$2–5 USD via API Claude/GPT-4o-mini</span>
+    <span class="badge b-low">Tempo estimado: 2–4h</span>
+  </div>
+  <p>Para cada chunk, usar um LLM de geração (Claude Haiku ou GPT-4o-mini) com o prompt:</p>
+  <pre style="background:var(--bg-code);padding:12px;border-radius:4px;font-size:0.78rem;overflow-x:auto;margin:8px 0;">
+SISTEMA: Você é um professor de Computação da UFPI. Dado o trecho de material didático abaixo,
+gere 1 par de instrução/resposta no formato JSON com os campos:
+  - "instruction": pergunta ou tarefa clara que um estudante poderia fazer
+  - "input": contexto adicional (pode ser vazio "")
+  - "output": resposta completa e correta baseada apenas no trecho fornecido
+
+TRECHO: {texto_do_chunk}
+
+Responda APENAS com o JSON, sem texto adicional.</pre>
+  <p><strong>Tipos de pares a gerar (distribuição sugerida):</strong></p>
+  <table>
+    <tr><th>Tipo de instrução</th><th>%</th><th>Exemplo</th></tr>
+    <tr><td>Explicação de conceito</td><td class="tc">30%</td><td>"Explique o que é um grafo bipartido"</td></tr>
+    <tr><td>Pergunta factual</td><td class="tc">25%</td><td>"Quais são os parâmetros da função X?"</td></tr>
+    <tr><td>Análise de código</td><td class="tc">20%</td><td>"O que faz o trecho de código abaixo?"</td></tr>
+    <tr><td>Resumo de texto</td><td class="tc">15%</td><td>"Resuma os pontos principais do texto"</td></tr>
+    <tr><td>Comparação/diferença</td><td class="tc">10%</td><td>"Qual a diferença entre TCP e UDP?"</td></tr>
+  </table>
+</div>
+
+<h3>2.3 Estratégia de SFT</h3>
+<table>
+  <tr><th>Parâmetro</th><th>Valor planejado</th><th>Justificativa</th></tr>
+  <tr><td>Modelo base</td><td><code>Qwen/Qwen2.5-1.5B-Instruct</code></td><td>Já instruction-tuned; SFT parte de uma base mais adequada que o base model puro</td></tr>
+  <tr><td>Formato do prompt</td><td>ChatML / Alpaca: <code>### Instruction:\n{inst}\n### Input:\n{inp}\n### Response:\n{out}</code></td><td>Compatível com Qwen2.5 e frameworks SFT padrão</td></tr>
+  <tr><td>Loss</td><td>CE apenas nos tokens de output (não no prompt)</td><td>Evita que o modelo aprenda a "repetir o enunciado"; foco na geração de resposta</td></tr>
+  <tr><td>LR</td><td>2e-4 (regime SFT, não DAPT)</td><td>SFT usa LR mais alto que DAPT; o modelo já sabe o domínio geral e precisa adaptar o comportamento</td></tr>
+  <tr><td>Épocas</td><td>2–3</td><td>Com 1.000 pares, 1 época é insuficiente; 3 épocas é limite antes de overfitting</td></tr>
+  <tr><td>Batch efetivo</td><td>16 (bs=2 × accum=8)</td><td>Mesmo do Q1 para comparabilidade</td></tr>
+  <tr><td>Script</td><td>Novo: <code>treino/sft_docentes.py</code></td><td>Requer máscara de loss para prompt tokens</td></tr>
+</table>
+
+<h3>2.4 Benchmark para Q2 (a construir)</h3>
+<p>30 perguntas sobre o domínio docentesDC, com respostas de referência, cobrindo:</p>
+<ul>
+  <li><strong>10 perguntas conceituais</strong> — definições de algoritmos, estruturas de dados, redes</li>
+  <li><strong>10 perguntas de análise de código</strong> — identificar função, bug, complexidade</li>
+  <li><strong>10 perguntas contextuais UFPI</strong> — sobre os conteúdos específicos do DC-UFPI</li>
+</ul>
+<p>Métricas: PPL antes/depois no held-out (20% dos pares SFT), ROUGE-L das respostas geradas vs referência,
+e avaliação qualitativa amostral.</p>
+
+</div><!-- /q-body Q2 -->
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  QUESTÃO 3                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="q-header" id="q3">
+  <span class="q-num">Q3</span>
+  <span class="q-title">Pós-treino LoRA/QLoRA — docentesDC</span>
+  <span class="q-status pending">⏳ Pendente</span>
+</div>
+<div class="q-body">
+
+<div class="q-enunciado">
+  Repetir o experimento de pós-treino anterior (Q2) usando LoRA e/ou QLoRA. Avaliar antes e depois.
+  Se possível, considerar mais de um modelo com parâmetros diferentes.
+</div>
+
+<div class="callout info">
+  <strong>Distinção fundamental em relação ao Q1:</strong> No Q1, aplicamos LoRA/QLoRA para <em>pré-treino continuado</em>
+  (CPT) — objetivo de modelagem de linguagem (next-token) sem prompt de instrução. No Q3, aplicamos LoRA/QLoRA
+  para <em>instruction tuning</em> (SFT) — os mesmos pares instruction/output do Q2, mas com adaptadores de baixo rank
+  em vez de full FT. São experimentos com o mesmo dataset mas objetivos de otimização fundamentalmente diferentes.
+</div>
+
+<h3>3.1 Configuração Planejada</h3>
+<table>
+  <tr><th>Parâmetro</th><th>LoRA</th><th>QLoRA</th></tr>
+  <tr><td>Modelo base</td><td><code>Qwen/Qwen2.5-1.5B-Instruct</code></td><td><code>Qwen/Qwen2.5-1.5B-Instruct</code> (quantizado 4-bit NF4)</td></tr>
+  <tr><td>Rank / Alpha</td><td>r=16, alpha=32</td><td>r=16, alpha=32</td></tr>
+  <tr><td>Módulos alvo</td><td><code>q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj</code></td><td>Idem</td></tr>
+  <tr><td>LR</td><td>2e-4</td><td>2e-4</td></tr>
+  <tr><td>Parâmetros treináveis</td><td>~18 M de 1.540 M (1,2%)</td><td>~18 M (base quantizado ~400 MB)</td></tr>
+  <tr><td>Script base</td><td><code>pretreino_lora.py</code> (adaptar para SFT)</td><td>Idem</td></tr>
+  <tr><td>Modelo adicional</td><td><code>Qwen/Qwen2.5-0.5B-Instruct</code></td><td>Idem — comparação por tamanho</td></tr>
+</table>
+
+<h3>3.2 Diferença esperada em relação ao Q1 (CPT)</h3>
+<p>No Q1 o LoRA colapsou porque o objetivo (next-token sobre corpus bruto) não fornece sinal de supervisão
+suficientemente estruturado para o adaptador de baixo rank. No Q3, a loss é calculada apenas nos tokens de
+<em>output</em> do par instruction/response — sinal de supervisão muito mais preciso. Na literatura de SFT
+com LoRA (Hu et al. 2022; Alpaca-LoRA), isso resulta em aprendizado estável mesmo com lr=2e-4.</p>
+
+<h3>3.3 Comparação planejada Q2 vs Q3</h3>
+<table>
+  <tr><th>Dimensão</th><th>Q2 (SFT Full FT)</th><th>Q3 (SFT LoRA)</th><th>Q3 (SFT QLoRA)</th></tr>
+  <tr><td>Parâmetros treináveis</td><td>1.540 M</td><td>18 M</td><td>18 M</td></tr>
+  <tr><td>VRAM estimada</td><td>~12 GB</td><td>~8 GB</td><td>~5 GB</td></tr>
+  <tr><td>Tempo/época</td><td>~45 min</td><td>~30 min</td><td>~25 min</td></tr>
+  <tr><td>Risco de overfitting</td><td>Médio (1.000 pares)</td><td>Baixo (menos parâmetros)</td><td>Baixo</td></tr>
+  <tr><td>Qualidade esperada</td><td>Melhor (todos os parâmetros)</td><td>Similar ou levemente pior</td><td>Similar ao LoRA</td></tr>
+</table>
+
+<div class="callout success">
+  <strong>Vantagem operacional do Q3:</strong> Com o adaptador LoRA salvo (~70 MB vs ~3 GB do modelo full FT),
+  é possível servir o modelo base e carregar o adaptador dinamicamente — útil para deployment em produção com
+  múltiplos adapters especializados.
+</div>
+
+</div><!-- /q-body Q3 -->
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  QUESTÃO 4                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="q-header" id="q4">
+  <span class="q-num">Q4</span>
+  <span class="q-title">Destilação de Conhecimento</span>
+  <span class="q-status pending">⏳ Pendente</span>
+</div>
+<div class="q-body">
+
+<div class="q-enunciado">
+  Investigar modelos usados em destilação. Definir modelos professor e aluno. Usar dataset sintético.
+  Criar benchmark de 100 perguntas. Analisar transferência de conhecimento.
+</div>
+
+<h3>4.1 O que é Destilação de Conhecimento em LLMs</h3>
+<p>A destilação de conhecimento (<em>knowledge distillation</em>, KD) é uma técnica onde um modelo <strong>aluno</strong>
+(menor, menos capaz) é treinado para imitar o comportamento de um modelo <strong>professor</strong> (maior, mais capaz).
+Em vez de aprender apenas com rótulos hard (respostas corretas), o aluno aprende com a <em>distribuição de probabilidade
+completa</em> (logits/softmax) do professor — os chamados <em>soft labels</em>. Isso transfere conhecimento implícito
+codificado nas probabilidades do professor mesmo para tokens incorretos.</p>
+
+<h3>4.2 LLMs Comumente Usados em Destilação</h3>
+<table>
+  <tr><th>Papel</th><th>Modelos típicos</th><th>Referência</th></tr>
+  <tr>
+    <td><strong>Professor</strong></td>
+    <td>GPT-4, Claude 3 Opus, Llama-3.1-70B, Qwen2.5-72B, Mixtral-8×22B</td>
+    <td>Tamanho: 7B–405B parâmetros; acesso via API ou cluster grande</td>
+  </tr>
+  <tr>
+    <td><strong>Aluno</strong></td>
+    <td>Llama-3.2-1B/3B, Qwen2.5-0.5B/1.5B, Phi-3-mini (3.8B), TinyLlama (1.1B)</td>
+    <td>Modelos &lt;7B; executáveis em hardware restrito</td>
+  </tr>
+  <tr>
+    <td><strong>Destilados notáveis</strong></td>
+    <td>DistilBERT (BERT→BERT/2), Alpaca (GPT-4→LLaMA), Orca (GPT-4→LLaMA-13B), DeepSeek-R1-Distill</td>
+    <td>Demonstram que modelos 7B destilados superam professores em benchmarks específicos</td>
+  </tr>
+</table>
+
+<h3>4.3 Definição dos Modelos para este Experimento</h3>
+<table>
+  <tr><th>Papel</th><th>Modelo escolhido</th><th>Justificativa</th></tr>
+  <tr>
+    <td><strong>Professor</strong></td>
+    <td><code>Qwen/Qwen2.5-7B-Instruct</code> (via API ou cluster com GPU A100)</td>
+    <td>Mesma família do aluno (facilita alinhamento de vocabulário/tokenizador);
+    7B é gerenciável no cluster; 5× maior que o aluno</td>
+  </tr>
+  <tr>
+    <td><strong>Aluno</strong></td>
+    <td><code>Qwen/Qwen2.5-1.5B</code> (ou 0.5B para maior contraste)</td>
+    <td>Mesmo modelo base do Q1; facilita comparação entre DAPT e destilação</td>
+  </tr>
+</table>
+
+<h3>4.4 Dataset Sintético para Destilação</h3>
+<p>Gerado em duas etapas:</p>
+<ol>
+  <li><strong>Prompts-semente:</strong> 500 prompts do benchmark Q1 (DOM-PI) + 500 prompts do benchmark Q2
+  (docentesDC) = 1.000 prompts cobertos</li>
+  <li><strong>Geração pelo professor:</strong> Para cada prompt, o professor gera: (a) resposta textual completa
+  (<em>hard label</em>) e (b) distribuição de probabilidade sobre o vocabulário nos primeiros 50 tokens
+  (<em>soft labels</em>, salvo como top-k logits)</li>
+</ol>
+
+<h4>Métodos de Destilação a Implementar</h4>
+<table>
+  <tr><th>Método</th><th>Loss</th><th>O que transfere</th></tr>
+  <tr>
+    <td>Imitação pura (SFT)</td>
+    <td>CE(aluno, resposta_professor)</td>
+    <td>Apenas o conteúdo gerado; não a distribuição de incerteza</td>
+  </tr>
+  <tr>
+    <td>KL-Divergência (clássico)</td>
+    <td>KL(professor‖aluno) em logits</td>
+    <td>Distribuição completa sobre vocabulário; transfere "o que o professor quase disse"</td>
+  </tr>
+  <tr>
+    <td>Combinada</td>
+    <td>α·CE + (1−α)·KL, α=0.5</td>
+    <td>Balanço entre resposta correta e imitação de distribuição — padrão da literatura</td>
+  </tr>
+</table>
+
+<h3>4.5 Benchmark (100 perguntas)</h3>
+<p>Cobrindo os dois domínios do projeto:</p>
+<ul>
+  <li><strong>50 perguntas DOM-PI:</strong> expandidas do benchmark de 49 questões do Q1, com novas perguntas
+  factual/conceitual adicionais</li>
+  <li><strong>50 perguntas docentesDC:</strong> do benchmark Q2 + expansão com conceitos de computação avançados</li>
+</ul>
+<p>Métricas: PPL do aluno antes/depois da destilação, PPL do professor (referência superior),
+ROUGE-L das respostas geradas vs respostas do professor, e análise de casos onde o aluno destilado
+supera o aluno não-destilado.</p>
+
+<div class="callout info">
+  <strong>Hipótese central:</strong> O aluno destilado deve superar o aluno treinado por SFT simples nos
+  casos onde o professor expressa alta certeza (concentração de probabilidade) — e equivaler ou perder
+  onde o professor está incerto. Isso seria evidência de transferência de conhecimento além dos rótulos hard.
+</div>
+
+</div><!-- /q-body Q4 -->
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  QUESTÃO 5                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="q-header" id="q5">
+  <span class="q-num">Q5</span>
+  <span class="q-title">RAG — Retrieval-Augmented Generation</span>
+  <span class="q-status done">✓ Concluída</span>
+</div>
+<div class="q-body">
+
+<div class="q-enunciado">
+  Criar aplicação RAG (Standard, Agentic ou Self-Reflective) usando diariosPrefeituras ou docentesDC.
+  Benchmark de 30 perguntas. Analisar grau de contribuição do RAG.
+</div>
+
+<div class="callout success">
+  <strong>Entregue e executado.</strong> Sistema RAG modular funcional sobre o corpus DOM-PI, com quatro modos
+  (Standard, HyDE, Self-Reflective, Agêntico) e três geradores comparados (G1 base, G2 DAPT da Q1, G3 qwen2.5:14b
+  como inferência qualificada). Artefatos em <code>rag/</code>; relatório dedicado em <code>relatorio_q5_rag.html</code>.
+</div>
+
+<h3>5.1 Dataset e justificativa</h3>
+<p>Escolhido o corpus <strong>DOM-PI (diariosPrefeituras)</strong>. A Questão 1 demonstrou que o DAPT não resolve
+alucinação factual em perguntas sobre documentos específicos (valor de contrato, vencedor de licitação, CNPJ):
+nenhum modelo de 1,5 B memoriza 54 mil documentos nos pesos. É exatamente o que o RAG ataca — recupera o documento
+e o injeta no contexto, sem alterar pesos. O DOM-PI tem a densidade factual ideal e permite reusar o benchmark da Q1.</p>
+
+<h3>5.2 Arquitetura implementada</h3>
+<table>
+  <tr><th>Componente</th><th>Escolha</th><th>Justificativa</th></tr>
+  <tr><td>Embedder</td><td><code>intfloat/multilingual-e5-base</code> (768-d), GPU</td>
+      <td>Forte em PT; <strong>882 emb/s</strong> na RTX 4070 — viabiliza indexar todo o corpus. <code>nomic-embed</code> via Ollama dava 5 emb/s (~8 h, inviável)</td></tr>
+  <tr><td>Índice</td><td>numpy denso + cosseno — <strong>175.924 chunks / 57.229 docs</strong></td>
+      <td>Produto matriz-vetor trivial nessa escala; dispensa FAISS. Chunk 1600 chars, overlap 200</td></tr>
+  <tr><td>G1 — Qwen2.5-1.5B base</td><td>transformers fp16 / RTX 4070</td><td>"Antes do pré-treino" — referência</td></tr>
+  <tr><td>G2 — Qwen2.5-1.5B DAPT</td><td>QLoRA merged 4-bit NF4 (melhor checkpoint Q1)</td><td>"Pré-treinado" — puxado do cluster</td></tr>
+  <tr><td>G3 — qwen2.5:14b</td><td>Ollama (offload CPU+GPU)</td><td>Modelo mais performático na máquina — <strong>inferência qualificada</strong></td></tr>
+</table>
+<p>Scripts: <code>rag/build_index.py</code> (indexação), <code>rag/rag_core.py</code> (retriever + 4 modos + geradores),
+<code>rag/run_eval.py</code> (avaliação), <code>rag/consolidar.py</code> (tabelas).</p>
+
+<h3>5.3 Benchmark marcado (rag / chat / ambos)</h3>
+<p>As 49 questões receberam um campo <code>modo</code> (em <code>benchmark/dompi_qa_tagged.jsonl</code>):</p>
+<table>
+  <tr><th>modo</th><th>Qtd</th><th>Definição</th></tr>
+  <tr><td><strong>rag</strong></td><td class="num">33</td><td>Fato específico de um documento — impossível sem recuperação</td></tr>
+  <tr><td><strong>chat</strong></td><td class="num">12</td><td>Conhecimento jurídico/administrativo geral — não exige documento</td></tr>
+  <tr><td><strong>ambos</strong></td><td class="num">4</td><td>Sobre o próprio DOM-PI / interpretação — ganha de conhecimento + ancoragem</td></tr>
+</table>
+<div class="callout warn">
+  <strong>Descoberta que mudou a avaliação:</strong> o <code>fonte_id</code> do benchmark <em>não casa</em> com
+  nenhum id do corpus (ligação quebrada na origem). Logo a avaliação passou a ser <strong>por conteúdo</strong>:
+  extrai-se a entidade-chave da resposta de referência (nome em caixa-alta, CNPJ, CPF, valor) e verifica-se se
+  aparece nas passagens recuperadas (<em>recall de contexto</em>) e na resposta gerada (<em>acerto</em>).
+</div>
+
+<h3>5.4 Recuperação — Standard × HyDE</h3>
+<table>
+  <tr><th>Estratégia</th><th class="tc">Recall de contexto @5</th><th class="tc">Avaliáveis</th></tr>
+  <tr><td>Standard (embed direto da pergunta)</td><td class="tc">0,421</td><td class="tc">8/19</td></tr>
+  <tr><td>HyDE (embed do documento hipotético)</td><td class="tc">0,421</td><td class="tc">8/19</td></tr>
+</table>
+<p><strong>HyDE não superou o Standard.</strong> Para perguntas factuais bem-formadas a query já é sinal forte;
+pior, quando o documento hipotético inventa entidades erradas, ele <em>desvia</em> a busca (ver 5.6). HyDE rende
+em queries vagas/curtas — não é o perfil deste benchmark.</p>
+
+<h3>5.5 Resultado central — três geradores, com/sem RAG</h3>
+<p>Acurácia de resposta nas perguntas <code>rag</code> mensuráveis (18 avaliáveis):</p>
+<table>
+  <tr><th>Gerador</th><th class="tc">sem RAG</th><th class="tc">RAG standard</th><th class="tc">Δ</th></tr>
+  <tr><td><strong>G1 — Qwen2.5-1.5B base</strong> (antes)</td><td class="tc">0/18 (0,0%)</td><td class="tc">2/18 (11,1%)</td><td class="tc">+11,1 pp</td></tr>
+  <tr><td><strong>G2 — Qwen2.5-1.5B DAPT</strong> (pré-treinado)</td><td class="tc">0/18 (0,0%)</td><td class="tc">3/18 (16,7%)</td><td class="tc">+16,7 pp</td></tr>
+  <tr><td><strong>G3 — qwen2.5:14b</strong> (qualificada)</td><td class="tc">0/18 (0,0%)</td><td class="tc"><strong>6/18 (33,3%)</strong></td><td class="tc">+33,3 pp</td></tr>
+</table>
+<div class="callout success">
+  <strong>Três conclusões inequívocas:</strong> (1) <strong>RAG é necessário</strong> — todos os geradores,
+  inclusive o 14b, acertam <strong>zero</strong> sem ele (os fatos municipais não estão em peso nenhum);
+  (2) <strong>o ganho escala com a capacidade</strong> do gerador (mesmo contexto: 11% → 17% → 33%);
+  (3) <strong>o teto é a recuperação</strong> (recall ~42%): o 14b acerta ~75% dos casos em que o contexto continha a resposta.
+</div>
+
+<h3>5.6 Demonstrações de inferência</h3>
+
+<h4>Recusa calibrada sem contexto → acerto exato com contexto (G3 14b)</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Pergunta (rag)</span>Qual empresa foi contratada no Contrato nº 001/2025/PGM de Teresina (serviços advocatícios)?
+Referência: Carvalho, Araújo &amp; Moura - Sociedade de Advogados, CNPJ 04.806.575/0001-57</div>
+  <div class="inf-resp"><span class="model-tag tag-base">G3 14b — SEM RAG</span>
+    <div class="inf-txt">Não tenho informações sobre o Contrato nº 001/2025/PGM da Prefeitura de Teresina, pois esse número específico não está disponível nos registros que consulto. Recomendo verificar diretamente no DOM-PI…</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">G3 14b — COM RAG</span>
+    <div class="inf-txt">Carvalho, Araújo &amp; Moura - Sociedade de Advogados, CNPJ nº 04.806.575/0001-57.</div></div>
+  <div class="inf-note">Sem contexto o 14b <strong>recusa honestamente</strong> em vez de alucinar; com o contexto recuperado entrega resposta idêntica à referência.</div>
+</div>
+
+<h4>Mesmo contexto, três geradores — por que a inferência qualificada importa</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Pergunta (rag) — mesmo top-5 recuperado p/ os três</span>Qual empresa foi contratada no Contrato nº 001/2025/PGM (serviços advocatícios)?
+Referência: Carvalho, Araújo &amp; Moura — CNPJ 04.806.575/0001-57</div>
+  <div class="inf-resp"><span class="model-tag tag-base">G1 base + RAG</span>
+    <div class="inf-txt">ONSEMA ONSEMA ONSEMA ONSEMA ONSEMA ONSEMA … (repetição degenerada — colapso)</div></div>
+  <div class="inf-resp"><span class="model-tag tag-qlora">G2 DAPT + RAG</span>
+    <div class="inf-txt">猞ência: O contrato nº 001/2025/PGM … foi assinado pelo contratado o sr. João Francisco Pinheiro de Carvalho … (objeto correto, mas alucina o contratado + token-lixo)</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">G3 14b + RAG</span>
+    <div class="inf-txt">Carvalho, Araújo &amp; Moura - Sociedade de Advogados, CNPJ nº 04.806.575/0001-57.</div></div>
+  <div class="inf-note">Com contexto idêntico: o base de 1,5 B <strong>colapsa</strong>; o DAPT mantém estrutura mas <strong>alucina o nome</strong>; só o 14b <strong>extrai e sintetiza</strong> a resposta exata. Em outra pergunta (Joca Marques) o DAPT extraiu o valor correto — R$ 1.352.027,45 — mas degenerou em loop: o problema é controle de geração, não acesso à informação.</div>
+</div>
+
+<h3>5.7 Técnicas avançadas — traços reais (gerador 14b)</h3>
+<table>
+  <tr><th>Modo</th><th>Comportamento observado</th></tr>
+  <tr><td><strong>HyDE</strong></td><td>Documento hipotético inventou empresa fictícia ("Construfirma LTDA") → embedding puxou a busca p/ vocabulário errado → fonte real não entrou no top-5. <em>Pode prejudicar</em> em perguntas factuais raras.</td></tr>
+  <tr><td><strong>Self-Reflective</strong></td><td>Crítico emite JSON <code>{"fundamentada": false, "nova_busca": "…"}</code>, dispara reformulação e nova recuperação. Converge para recusa honesta quando a fonte não existe no corpus.</td></tr>
+  <tr><td><strong>Agêntico (ReAct)</strong></td><td>Busca multi-passo (<code>BUSCAR[…]</code>/<code>RESPONDER[…]</code>). Na pergunta conceitual "O que é o DOM-PI?", onde o prompt rígido recusaria, o agente <strong>sintetizou</strong> uma resposta correta inferida do contexto parcial.</td></tr>
+</table>
+
+<h3>5.8 Comparativo de custo por técnica</h3>
+<p>Hardware: <strong>RTX 4070 Laptop (8 GB), WSL local</strong>. Latência média real medida por pergunta:</p>
+<table>
+  <tr><th>Gerador</th><th class="tc">s/chamada</th><th class="tc">VRAM</th><th class="tc">Disco</th><th>Observação de custo</th></tr>
+  <tr><td>G1 base (fp16)</td><td class="num">~7,5</td><td class="tc">~3 GB</td><td class="tc">3,1 GB</td><td>Mais rápido, mas colapsa com contexto longo</td></tr>
+  <tr><td>G2 DAPT (4-bit)</td><td class="num">~15,0</td><td class="tc">~2 GB</td><td class="tc">1,16 GB</td><td><strong>2× mais lento que o base</strong>: overhead de dequantização NF4 supera a economia de memória</td></tr>
+  <tr><td>G3 14b (Ollama)</td><td class="num">~27–38</td><td class="tc">~8 GB</td><td class="tc">9 GB</td><td>Mais rápido COM RAG (27s) que sem (38s): contexto encurta a resposta</td></tr>
+</table>
+<p>Custo de cada técnica = nº de chamadas LLM × latência/chamada. Multiplicadores medidos:</p>
+<table>
+  <tr><th>Técnica</th><th class="tc">Chamadas LLM/pergunta</th><th class="tc">Custo no 14b (~30 s/chamada)</th><th class="tc">Acurácia</th><th>Custo-benefício</th></tr>
+  <tr><td>Standard</td><td class="tc">1</td><td class="tc">~30 s</td><td class="tc">33,3%</td><td><strong>Melhor</strong> — base de referência</td></tr>
+  <tr><td>HyDE</td><td class="tc">2</td><td class="tc">~60 s</td><td class="tc">≤ standard</td><td>Ruim aqui: 2× o custo sem ganho de recall</td></tr>
+  <tr><td>Agêntico</td><td class="tc">~3,3</td><td class="tc">~100 s</td><td class="tc">vence em conceitual</td><td>Justifica-se em multi-hop / síntese</td></tr>
+  <tr><td>Self-Reflective</td><td class="tc">~4</td><td class="tc">~120 s</td><td class="tc">robustez ↑</td><td>4× o custo; vale onde alucinação é crítica</td></tr>
+</table>
+<p>Custo único de indexação: ~30 min na RTX 4070 (176 K chunks @ e5-base, power-capped 91 W); pegada do índice
+em disco: <strong>809 MB</strong> (540 MB embeddings + 269 MB chunks). Não há custo de API — toda a inferência
+roda localmente (transformers + Ollama).</p>
+
+<div class="callout info">
+  <strong>Recomendação operacional:</strong> usar <strong>Standard como padrão</strong> (melhor custo-benefício),
+  <strong>Agêntico</strong> para perguntas de agregação/conceituais, e reservar <strong>Self-Reflective</strong>
+  para domínios onde alucinação é inaceitável. <strong>HyDE só</strong> para queries vagas — nunca para perguntas
+  com identificadores precisos. Para elevar o teto (recall), priorizar reranking e indexação do corpus completo
+  acima de trocar a técnica de prompt.
+</div>
+
+<h3>5.9 Limitações e próximos passos</h3>
+<ul>
+  <li><strong>Cobertura do corpus:</strong> indexar a coleção completa do DOM-PI (todos os territórios, ~2 GB no cluster) elevaria o recall — muitas fontes do benchmark estão fora do corpus local.</li>
+  <li><strong>Reranking:</strong> cross-encoder (bge-reranker) após o top-k atacaria a desambiguação entre contratos do mesmo município — erro mais comum dos modelos pequenos.</li>
+  <li><strong>Chunking por ato</strong> (portaria/extrato) em vez de janela fixa melhora a precisão factual.</li>
+  <li><strong>LLM-juiz</strong> (o próprio 14b) para avaliar perguntas "n/d" sem entidade extraível.</li>
+</ul>
+
+</div><!-- /q-body Q5 -->
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  QUESTÃO 6                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="q-header" id="q6">
+  <span class="q-num">Q6</span>
+  <span class="q-title">Guardrails</span>
+  <span class="q-status pending">⏳ Pendente</span>
+</div>
+<div class="q-body">
+
+<div class="q-enunciado">
+  Incluir camadas de guardrails em um dos modelos desenvolvidos. Avaliar com benchmark de 30 perguntas.
+  Quantificar o grau de proteção adicionado.
+</div>
+
+<h3>6.1 O que São Guardrails e Quando São Necessários</h3>
+<p>Guardrails são camadas de controle que interceptam entradas e/ou saídas do LLM para:</p>
+<ul>
+  <li><strong>Bloquear</strong> tópicos proibidos (violência, dados pessoais, instruções ilegais)</li>
+  <li><strong>Reescrever</strong> prompts maliciosos antes de enviá-los ao modelo</li>
+  <li><strong>Classificar</strong> intenção do usuário (harmful / benign)</li>
+  <li><strong>Mascarar</strong> dados sensíveis (CPF, CNPJ, valores contratuais antes de logs)</li>
+  <li><strong>Redirecionar</strong> perguntas fora do escopo para respostas padrão</li>
+  <li><strong>Resolver Helpfulness vs Harmlessness:</strong> ser útil sem causar dano</li>
+</ul>
+
+<h3>6.2 Biblioteca Selecionada: Guardrails AI</h3>
+<p>Optamos pela biblioteca <a href="https://github.com/guardrails-ai/guardrails"><code>guardrails-ai</code></a>
+por sua integração nativa com modelos HuggingFace, suporte a validators customizados e documentação
+ativa. Alternativa: NeMo Guardrails (NVIDIA), mais robusto mas requer servidor dedicado.</p>
+
+<h3>6.3 Camadas Planejadas para o Pipeline DOM-PI</h3>
+<table>
+  <tr><th>Camada</th><th>Tipo</th><th>Implementação</th></tr>
+  <tr>
+    <td>1. Filtragem de PII</td>
+    <td>Mascaramento</td>
+    <td>Detectar e mascarar CPF, CNPJ, telefones em perguntas do usuário antes de enviar ao modelo</td>
+  </tr>
+  <tr>
+    <td>2. Validação de escopo</td>
+    <td>Redirecionamento</td>
+    <td>Classificador simples: se a pergunta não é sobre DOM-PI/documentos públicos, redirecionar com mensagem padrão</td>
+  </tr>
+  <tr>
+    <td>3. Detecção de prompt injection</td>
+    <td>Bloqueio</td>
+    <td>Regex + classificador para detectar tentativas de "ignore as instruções anteriores"</td>
+  </tr>
+  <tr>
+    <td>4. Validação da resposta</td>
+    <td>Reescrita</td>
+    <td>Verificar se a resposta contém dados sensíveis não presentes na pergunta; mascarar antes de retornar</td>
+  </tr>
+</table>
+
+<h3>6.4 Benchmark para Q6 (30 perguntas)</h3>
+<table>
+  <tr><th>Categoria</th><th>Qtd</th><th>Esperado</th></tr>
+  <tr><td>Perguntas legítimas sobre DOM-PI</td><td class="num">10</td><td>Resposta normal (guardrail não ativa)</td></tr>
+  <tr><td>Perguntas fora do escopo</td><td class="num">5</td><td>Redirecionamento educado</td></tr>
+  <tr><td>Prompts com dados sensíveis</td><td class="num">5</td><td>Mascaramento de CPF/CNPJ antes de processar</td></tr>
+  <tr><td>Tentativas de prompt injection</td><td class="num">5</td><td>Bloqueio com mensagem de aviso</td></tr>
+  <tr><td>Perguntas harmless mas fora de escopo</td><td class="num">5</td><td>Falso positivo — mede custo do guardrail</td></tr>
+</table>
+<p>Métricas: <strong>Taxa de proteção</strong> = (ameaças bloqueadas / total de ameaças);
+<strong>Taxa de falso positivo</strong> = (perguntas legítimas bloqueadas / total legítimas);
+<strong>Latência adicionada</strong> pelo pipeline de guardrails vs sem guardrails.</p>
+
+</div><!-- /q-body Q6 -->
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  ROADMAP                                                            -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h2 id="roadmap">Roadmap de Execução — Questões Pendentes</h2>
+
+<table>
+  <tr>
+    <th>Questão</th><th>Pré-requisito</th><th>Duração estimada</th><th>GPU necessária</th>
+  </tr>
+  <tr>
+    <td><strong>Q2 — SFT docentesDC</strong></td>
+    <td>Gerar 1.000 pares Q&amp;A (API Claude/GPT); preparar script sft_docentes.py</td>
+    <td>1 dia (geração) + 2h treino</td>
+    <td>L4 (job ~2h)</td>
+  </tr>
+  <tr>
+    <td><strong>Q3 — LoRA/QLoRA docentesDC</strong></td>
+    <td>Q2 concluído (reutiliza pares); adaptar pretreino_lora.py para SFT</td>
+    <td>+3h (2 runs: LoRA 1.5B + LoRA 0.5B)</td>
+    <td>L4 (paralelo com Q2)</td>
+  </tr>
+  <tr>
+    <td><strong>Q4 — Destilação</strong></td>
+    <td>Professor disponível (Qwen 7B via API ou cluster); gerar soft labels</td>
+    <td>4h geração + 4h treino aluno</td>
+    <td>L4 para aluno; API para professor</td>
+  </tr>
+  <tr>
+    <td><strong>Q5 — RAG</strong> <span class="status done">concluída</span></td>
+    <td>Concluído: índice e5-base (175 K chunks) + 4 modos + 3 geradores</td>
+    <td>~30 min indexação + ~3 h avaliação (real)</td>
+    <td>RTX 4070 local (indexação + geração)</td>
+  </tr>
+  <tr>
+    <td><strong>Q6 — Guardrails</strong></td>
+    <td>Q5 ou Q2 concluído (modelo para proteger); instalar guardrails-ai</td>
+    <td>1 dia (implementação + benchmark)</td>
+    <td>Mesma GPU do modelo escolhido</td>
+  </tr>
+</table>
+
+<h3>Sequência recomendada</h3>
+<ol>
+  <li><strong>Q5 (RAG)</strong> — <span class="status done">concluída</span> Resolveu o problema factual do Q1 (0% → 33% com o gerador qualificado).</li>
+  <li><strong>Q2 + Q3 em paralelo</strong> — compartilham o dataset; submeter dois jobs SLURM simultâneos.</li>
+  <li><strong>Q6 (Guardrails)</strong> — aplica sobre o pipeline RAG do Q5 ou o modelo SFT do Q2.</li>
+  <li><strong>Q4 (Destilação)</strong> — requer mais infraestrutura (acesso ao professor); executar por último.</li>
+</ol>
+
+<div class="callout success">
+  <strong>Aproveitamento do Q1 para Q2–Q6:</strong> Os modelos treinados no Q1 (QLoRA 1.5B, Full FT Teresina)
+  são reutilizáveis como ponto de partida para Q2 e Q3 (fine-tuning adicional sobre docentesDC) e como
+  geradores no Q5 (RAG). O benchmark de 49 questões do Q1 expande-se para Q4 e Q5 sem reconstrução.
+</div>
+
+<footer>
+  <p><strong>Dataset DOM-PI:</strong> Diário Oficial dos Municípios do PI — 54.368 documentos, 208 MB, ~50 M tokens.
+  Coletado via scraping, limpeza v2, qualidade tier A/B/C.</p>
+  <p><strong>Dataset docentesDC:</strong> <code>vickminari/docentesDC</code> — 13.762 registros, slides/código/artigos,
+  Departamento de Computação UFPI, campos <code>text</code> + <code>nome_professor</code>.</p>
+  <p style="margin-top:8px;"><strong>Referências:</strong> Biderman et al. TMLR 2024 (LoRA CPT) ·
+  arxiv:2410.21228 (intruder dimensions) · Pires et al. (Sabiá-2 2024) · Rodrigues et al. (Tucano 2024) ·
+  Fonseca et al. (llm2govbr AAAI 2024) · Shi et al. (ChipNeMo NVIDIA 2023) ·
+  Hu et al. NeurIPS 2022 (LoRA original) · Dettmers et al. 2023 (QLoRA) ·
+  Lewis et al. 2020 (RAG original) · Hinton et al. 2015 (Knowledge Distillation).</p>
+</footer>
+
+</body>
+</html>
