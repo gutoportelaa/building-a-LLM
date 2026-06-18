@@ -947,10 +947,15 @@ def run_orquestrador_pipeline(
             tipo_ato = classify_act_type(markdown_text, fallback_category=tipo_nome)
             # DATA: análise cronológica SOMENTE pelo nome do arquivo (ordem do
             # projeto). O texto traz datas de vigência/referência que poluem a
-            # partição (P-02). mês/dia exige mapeamento edição→data (P-03, pendente),
-            # por isso a partição usa ano=<AAAA>/mes=sem_mes.
+            # partição (P-02). Para DOM-Teresina ano_fn já é "DD/MM/AAAA";
+            # para DOM-PI municípios é só "AAAA". Em ambos os casos extraímos
+            # apenas o ano para a partição de diretório.
             data_pub = ano_fn or ""
-            ano = ano_fn or "sem_ano"
+            # Extrai ano da partição: "AAAA" direto ou últimos 4 chars de "DD/MM/AAAA"
+            if len(ano_fn) == 10 and ano_fn[2] == "/" and ano_fn[5] == "/":
+                ano = ano_fn[6:]   # DD/MM/AAAA → AAAA
+            else:
+                ano = ano_fn or "sem_ano"
             mes = "sem_mes"
 
             frontmatter = generate_frontmatter(

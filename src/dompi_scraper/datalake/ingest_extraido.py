@@ -88,10 +88,12 @@ def normalizar_para_extraido(df: pl.DataFrame, territorio: str, fonte: str) -> p
         texto=texto,
     )
 
-    # ano (partição): primeiros 4 dígitos de data_publicacao, senão "sem_ano".
+    # ano (partição): aceita "AAAA..." (ano direto) ou "DD/MM/AAAA" (DOM-Teresina).
     out = out.with_columns(
         ano=pl.when(pl.col("data_publicacao").str.contains(r"^\d{4}"))
         .then(pl.col("data_publicacao").str.slice(0, 4))
+        .when(pl.col("data_publicacao").str.contains(r"^\d{2}/\d{2}/\d{4}"))
+        .then(pl.col("data_publicacao").str.slice(6, 4))
         .otherwise(pl.lit("sem_ano"))
     )
 

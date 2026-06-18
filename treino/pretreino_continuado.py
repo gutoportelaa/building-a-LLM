@@ -96,11 +96,8 @@ class PackedTextDataset(IterableDataset):
                 input_ids = torch.tensor(block[:-1], dtype=torch.long)
                 labels = torch.tensor(block[1:], dtype=torch.long)
                 yield {"input_ids": input_ids, "labels": labels}
-        # bloco final parcial
-        if len(buffer) >= 8:
-            input_ids = torch.tensor(buffer[:-1], dtype=torch.long)
-            labels = torch.tensor(buffer[1:], dtype=torch.long)
-            yield {"input_ids": input_ids, "labels": labels}
+        # bloco parcial final descartado intencionalmente:
+        # tensores de tamanho misto causam RuntimeError no default_collate
 
 
 def count_blocks(jsonl_path: str, tokenizer, block_size: int, max_docs: int | None = None) -> int:
@@ -205,6 +202,9 @@ def train(args: argparse.Namespace) -> None:
     best_loss = float("inf")
     accum_loss = 0.0
     accum_count = 0
+    # acumula loss entre checkpoints para comparação robusta (evita selecionar batch fácil)
+    window_loss = 0.0
+    window_count = 0
 
     for epoch in range(1, args.epochs + 1):
         log.info("Época %d/%d iniciando...", epoch, args.epochs)
@@ -251,24 +251,30 @@ def train(args: argparse.Namespace) -> None:
                 accum_loss = 0.0
                 accum_count = 0
 
+                window_loss += avg_loss
+                window_count += 1
+
                 if global_step % args.log_every == 0:
                     ppl = math.exp(min(avg_loss, 20))
                     log.info("Época %d | step %d/%d | loss=%.4f | ppl=%.2f | lr=%.2e",
                              epoch, global_step, total_steps, avg_loss, ppl, lr_now)
 
-                # Checkpoint periódico
+                # Checkpoint periódico — usa média do intervalo para comparar (não o batch atual)
                 if global_step % args.save_every == 0:
                     ckpt_path = out_dir / f"checkpoint-step{global_step}"
                     model.save_pretrained(ckpt_path)
                     tokenizer.save_pretrained(ckpt_path)
                     log.info("Checkpoint salvo em %s", ckpt_path)
 
-                    if avg_loss < best_loss:
-                        best_loss = avg_loss
+                    interval_loss = window_loss / max(1, window_count)
+                    window_loss = 0.0
+                    window_count = 0
+                    if interval_loss < best_loss:
+                        best_loss = interval_loss
                         best_path = out_dir / "best"
                         model.save_pretrained(best_path)
                         tokenizer.save_pretrained(best_path)
-                        log.info("Melhor modelo atualizado em %s (loss=%.4f)", best_path, best_loss)
+                        log.info("Melhor modelo atualizado em %s (loss_intervalo=%.4f)", best_path, best_loss)
 
         log.info("Época %d finalizada. Salvando checkpoint...", epoch)
         epoch_path = out_dir / f"checkpoint-epoch{epoch}"

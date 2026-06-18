@@ -179,6 +179,8 @@ def classify_act_type(text: str, fallback_category: str = "") -> str:
 _RE_EDICAO = re.compile(r"^DM_(\d+)_", re.IGNORECASE)
 _RE_ANO_SUFIXO = re.compile(r"-(\d{2})(?:_|$)")        # padrão  -25_ ou -25
 _RE_ANO_4DIGITS = re.compile(r"_(\d{4})(?:_|$)")  # padrão  _2025_ ou _2025
+# Padrão DOM-Teresina: DOM3919-02012025.pdf ou DOM4025-05062025-EXTRA.pdf
+_RE_DOM_TERESINA = re.compile(r"^DOM\d+-(\d{2})(\d{2})(\d{4})", re.IGNORECASE)
 
 
 def extrair_edicao_filename(filename: str) -> str:
@@ -195,30 +197,34 @@ def extrair_edicao_filename(filename: str) -> str:
 
 def extrair_data_filename(filename: str) -> tuple[str, str]:
     """
-    Extrai o ano de publicação a partir do nome do arquivo DOM-PI.
+    Extrai a data de publicação a partir do nome do arquivo DOM-PI.
     Não lê nenhum conteúdo — opera apenas sobre o nome do arquivo.
 
-    Lógica:
-    1. Remove o sufixo "_pag_NNN" para evitar falsos positivos no número de página.
-    2. Remove o prefixo "DM_NNNN_MMM_" para evitar capturar a edição como ano.
-    3. Coleta todos os padrões "-NN_" e usa o ÚLTIMO (o ato mais à direita no
-       nome é o ato publicado; referências a processos antecedentes ficam antes).
-    4. Fallback: busca por "_AAAA_" (ano com 4 dígitos).
+    Padrões suportados:
+    - DOM-Teresina: DOM3919-02012025.pdf ou DOM4025-05062025-EXTRA.pdf
+      → retorna data completa "DD/MM/AAAA" (máxima confiança)
+    - DOM-PI municípios (DM_NNNN_...): extrai apenas o ANO via sufixo "-NN_"
+      ou padrão "_AAAA_" (como antes)
 
     Retorna:
-        (ano_iso, data_confianca)
-        - ano_iso:        "2025"  ou  ""  se não encontrado
-        - data_confianca: "filename_sufixo" | "filename_ano4d" | "ausente"
-
-    Atenção: retorna apenas o ANO. O mês/dia exato requer mapeamento de
-    edição→data que não está disponível localmente.
+        (data_ou_ano, data_confianca)
+        - data_ou_ano:    "DD/MM/AAAA" | "AAAA" | ""
+        - data_confianca: "dom_teresina" | "filename_sufixo" | "filename_ano4d" | "ausente"
     """
     basename = os.path.basename(filename)
+
+    # Padrão DOM-Teresina: data completa embutida no nome
+    m = _RE_DOM_TERESINA.match(basename)
+    if m:
+        dd, mm, yyyy = m.group(1), m.group(2), m.group(3)
+        if 2000 <= int(yyyy) <= 2099 and 1 <= int(mm) <= 12 and 1 <= int(dd) <= 31:
+            return f"{dd}/{mm}/{yyyy}", "dom_teresina"
+
     stem = os.path.splitext(basename)[0]
 
     # Remove _pag_NNN para não confundir número de página com ano
     stem = re.sub(r"_pag_\d+$", "", stem, flags=re.IGNORECASE)
-    
+
     # Remove o prefixo DM_NNNN_MMM_ para não confundir edição com ano
     stem = re.sub(r"^DM_\d+_\d+_", "", stem, flags=re.IGNORECASE)
 
@@ -226,9 +232,7 @@ def extrair_data_filename(filename: str) -> tuple[str, str]:
     matches = _RE_ANO_SUFIXO.findall(stem)
     if matches:
         year_2d = matches[-1]
-        # Converte 2 dígitos → 4 dígitos (assumindo século 21, válido para 00-99)
         year_4d = f"20{year_2d}"
-        # Sanidade: aceita apenas 2000–2099
         if 2000 <= int(year_4d) <= 2099:
             return year_4d, "filename_sufixo"
 

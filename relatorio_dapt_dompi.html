@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório Técnico — DAPT DOM-PI</title>
+<style>
+  :root {
+    --text: #1a1a1a;
+    --text-muted: #555;
+    --border: #d0d0d0;
+    --bg-alt: #f8f8f6;
+    --bg-code: #f2f2ef;
+    --accent: #2c4a7c;
+    --accent-light: #e8edf5;
+    --warn: #7a3a00;
+    --warn-bg: #fff5eb;
+    --ok: #1a4a1a;
+    --ok-bg: #ebf5eb;
+    --bad: #5a1a1a;
+    --bad-bg: #f5ebeb;
+    --neutral: #333;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: #fff;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+  h1, h2, h3, h4 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.3;
+  }
+  h1 { font-size: 1.75rem; border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 8px; }
+  h2 { font-size: 1.3rem; margin-top: 48px; margin-bottom: 12px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.05rem; margin-top: 28px; margin-bottom: 8px; color: var(--neutral); }
+  h4 { font-size: 0.95rem; margin-top: 18px; margin-bottom: 6px; color: var(--text-muted); font-style: italic; }
+  p { margin-bottom: 12px; }
+  ul, ol { margin: 8px 0 12px 24px; }
+  li { margin-bottom: 4px; }
+  a { color: var(--accent); }
+
+  .meta {
+    font-family: sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    margin-top: 4px;
+    border-left: 3px solid var(--border);
+    padding-left: 12px;
+  }
+  .meta span { margin-right: 20px; }
+
+  /* Tabelas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.84rem;
+    margin: 16px 0 24px;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 600;
+  }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg-alt); }
+  tr:hover td { background: var(--accent-light); }
+
+  .tag-bad { color: var(--bad); font-weight: 600; }
+  .tag-ok  { color: var(--ok);  font-weight: 600; }
+  .tag-warn{ color: var(--warn);font-weight: 600; }
+  .tag-neu { color: var(--text-muted); }
+
+  /* Badges de δ */
+  .delta { font-family: monospace; font-size: 0.82rem; white-space: nowrap; }
+  .delta-collapse { background: var(--bad-bg); color: var(--bad); padding: 1px 5px; border-radius: 3px; }
+  .delta-high  { background: var(--warn-bg); color: var(--warn); padding: 1px 5px; border-radius: 3px; }
+  .delta-low   { background: #fffbe6; color: #5a4a00; padding: 1px 5px; border-radius: 3px; }
+  .delta-ref   { color: var(--text-muted); }
+
+  /* Caixas de inferência */
+  .inference-block {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin: 18px 0 24px;
+    overflow: hidden;
+  }
+  .inference-prompt {
+    background: var(--bg-code);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    font-family: "Courier New", monospace;
+    font-size: 0.82rem;
+    color: #333;
+    white-space: pre-wrap;
+  }
+  .inference-prompt .label {
+    font-family: sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .inference-response {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .inference-response:last-child { border-bottom: none; }
+  .inference-response .model-tag {
+    font-family: sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+  }
+  .model-tag.baseline { background: #e8edf5; color: #2c4a7c; }
+  .model-tag.lora     { background: var(--bad-bg); color: var(--bad); }
+  .model-tag.qlora    { background: var(--warn-bg); color: var(--warn); }
+  .model-tag.fullft   { background: var(--ok-bg); color: var(--ok); }
+  .inference-response .text {
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    color: #222;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+
+  /* Callouts */
+  .callout {
+    border-left: 4px solid var(--border);
+    padding: 10px 16px;
+    margin: 16px 0;
+    font-family: sans-serif;
+    font-size: 0.88rem;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout.info    { border-color: var(--accent); background: var(--accent-light); }
+  .callout.warn    { border-color: #c07000; background: var(--warn-bg); }
+  .callout.danger  { border-color: #a00; background: var(--bad-bg); }
+  .callout.success { border-color: #2a7a2a; background: var(--ok-bg); }
+  .callout strong  { font-weight: 700; }
+
+  /* Seções de abordagens futuras */
+  .approach-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin: 12px 0;
+  }
+  .approach-card .title {
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .approach-card .meta-row {
+    font-family: sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    gap: 16px;
+  }
+  .badge {
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .badge.high   { border-color: #2a7a2a; color: var(--ok); }
+  .badge.medium { border-color: #c07000; color: var(--warn); }
+  .badge.low    { border-color: #aaa; color: #666; }
+
+  /* Rodapé */
+  footer {
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-family: sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .toc { font-family: sans-serif; font-size: 0.84rem; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc li { margin-bottom: 3px; }
+  .number { font-variant-numeric: tabular-nums; font-family: monospace; }
+</style>
+</head>
+<body>
+
+<h1>Relatório Técnico — DAPT no Corpus DOM-PI</h1>
+<div class="meta">
+  <span>Projeto: building-a-LLM</span>
+  <span>Emitido: junho de 2026</span>
+  <span>Modelo base: Qwen/Qwen2.5-1.5B</span>
+  <span>Corpus: Diário Oficial dos Municípios do Piauí</span>
+</div>
+
+<nav class="toc">
+  <strong>Índice</strong>
+  <ol style="margin-top:8px;">
+    <li><a href="#contexto">Contexto e Objetivo</a></li>
+    <li><a href="#corpus">Corpus e Dados</a></li>
+    <li><a href="#metodos">Métodos Testados</a></li>
+    <li><a href="#resultados">Resultados Quantitativos</a></li>
+    <li><a href="#inferencias">Exemplos de Inferência</a></li>
+    <li><a href="#analise">Análise e Diagnóstico</a></li>
+    <li><a href="#trabalhos">Trabalhos Relacionados</a></li>
+    <li><a href="#proximos">Próximas Abordagens</a></li>
+  </ol>
+</nav>
+
+<!-- ──────────────────────────────────────────── -->
+<h2 id="contexto">1. Contexto e Objetivo</h2>
+
+<p>Este relatório documenta a primeira rodada de experimentos de <strong>Domain-Adaptive Pre-Training (DAPT)</strong> sobre o corpus DOM-PI — textos extraídos do Diário Oficial dos Municípios do Piauí — com o objetivo de adaptar um modelo de linguagem de uso geral ao domínio jurídico-administrativo municipal piauiense.</p>
+
+<p>A questão central investigada foi: <em>é possível, com o corpus disponível e hardware de nível laboratorial (GPU NVIDIA L4, 22,5 GB de VRAM), melhorar a perplexidade e capacidade de geração de texto no domínio sem destruir o conhecimento geral do modelo?</em></p>
+
+<p>A motivação prática é a construção de um pipeline RAG ou modelo de geração de texto para consulta e automação de documentos municipais piauienses, onde o modelo base necessita conhecer vocabulário, estruturas documentais (portarias, contratos, extratos) e entidades locais (municípios, secretarias, legislação estadual).</p>
+
+<!-- ──────────────────────────────────────────── -->
+<h2 id="corpus">2. Corpus e Dados</h2>
+
+<h3>2.1 Corpus DOM-PI Geral</h3>
+<table>
+  <tr><th>Atributo</th><th>Valor</th></tr>
+  <tr><td>Documentos (treino)</td><td class="number">54.368</td></tr>
+  <tr><td>Documentos (held-out)</td><td class="number">2.000</td></tr>
+  <tr><td>Tamanho total (JSONL)</td><td class="number">208 MB</td></tr>
+  <tr><td>Tokens estimados</td><td class="number">~50 M</td></tr>
+  <tr><td>Municípios cobertos</td><td>Todos os 224 municípios do PI + capital</td></tr>
+  <tr><td>Período</td><td>Edições DOM-PI disponíveis via scraping</td></tr>
+  <tr><td>Qualidade</td><td>OCR misto — documentos tier A (limpo), B e C (ruído OCR)</td></tr>
+</table>
+
+<h3>2.2 Corpus Teresina (Isolado)</h3>
+<table>
+  <tr><th>Atributo</th><th>Fonte cluster local</th><th>Fonte HuggingFace (curated)</th></tr>
+  <tr><td>Documentos treino</td><td class="number">8.441</td><td class="number">~9.133 (tier A+B)</td></tr>
+  <tr><td>Documentos held-out</td><td class="number">444</td><td>mesmo held-out local</td></tr>
+  <tr><td>Tokens estimados</td><td class="number">~4 M</td><td class="number">~9,3 M</td></tr>
+  <tr><td>Qualidade</td><td>Tier A+B (limpeza v2)</td><td>Tier A: 95,6% / B: 4,3%</td></tr>
+  <tr><td>Dataset HF</td><td>—</td><td><code>gutoportelaa/dom-pi-teresina-2025</code></td></tr>
+</table>
+
+<div class="callout warn">
+  <strong>Limitação estrutural:</strong> O corpus DOM-PI total (~50 M tokens) é aproximadamente <strong>200× menor</strong> que o corpus de referência Sabiá-2 (10 B tokens). Sabiá e Tucano, os modelos brasileiros de referência, foram treinados com volumes na casa dos 200 B tokens. Esta assimetria é a causa raiz principal dos resultados observados.
+</div>
+
+<!-- ──────────────────────────────────────────── -->
+<h2 id="metodos">3. Métodos Testados</h2>
+
+<h3>3.1 Linha do Tempo dos Experimentos</h3>
+<table>
+  <tr><th>Job</th><th>Modelo</th><th>Método</th><th>Corpus</th><th>LR</th><th>Resultado</th></tr>
+  <tr>
+    <td>381–384</td><td>Qwen 0.5B</td><td>Full FT (pretreino_continuado)</td><td>DOM-PI geral</td><td>5e-6 → 2e-6</td>
+    <td><span class="tag-bad">Catastrófico (PPL ×3–5)</span></td>
+  </tr>
+  <tr>
+    <td>389</td><td>Qwen 0.5B</td><td>Full FT (pretreino_continuado)</td><td>Teresina local</td><td>2e-6</td>
+    <td><span class="tag-warn">+20% PPL — hipótese corpus confirmada</span></td>
+  </tr>
+  <tr>
+    <td>396</td><td>Qwen 1.5B</td><td>LoRA (lr=2e-4)</td><td>DOM-PI geral</td><td>2e-4</td>
+    <td><span class="tag-bad">Colapso (PPL 10→2578)</span></td>
+  </tr>
+  <tr>
+    <td>421</td><td>Qwen 1.5B</td><td>QLoRA (4-bit NF4)</td><td>DOM-PI geral</td><td>2e-5</td>
+    <td><span class="tag-warn">+4,5% PPL — melhor resultado Q2</span></td>
+  </tr>
+  <tr>
+    <td>426</td><td>Qwen 1.5B</td><td>LoRA (lr corrigido)</td><td>DOM-PI geral</td><td>2e-5</td>
+    <td><span class="tag-bad">Colapso (PPL 10→1001)</span></td>
+  </tr>
+  <tr>
+    <td>429</td><td>Qwen 1.5B</td><td>Full FT + AdamW 8-bit + early stopping</td><td>Teresina HF</td><td>2e-6</td>
+    <td><span class="tag-warn">+26,7% PPL — sem colapso</span></td>
+  </tr>
+</table>
+
+<h3>3.2 Configuração dos Métodos Principais (Q2 e Q3)</h3>
+<table>
+  <tr><th>Parâmetro</th><th>Q2 LoRA</th><th>Q2 QLoRA</th><th>Q3 Full FT</th></tr>
+  <tr><td>Parâmetros treináveis</td><td>~18 M (rank-16)</td><td>~18 M (rank-16, base 4-bit)</td><td>1.540 M (todos)</td></tr>
+  <tr><td>Otimizador</td><td>AdamW fp32</td><td>PagedAdamW 32-bit</td><td>AdamW 8-bit (bnb)</td></tr>
+  <tr><td>LR (pico)</td><td>2e-5</td><td>2e-5</td><td>2e-6</td></tr>
+  <tr><td>block_size</td><td>1024</td><td>1024</td><td>512</td></tr>
+  <tr><td>Batch efetivo</td><td>16 blocos (bs=2 × acc=8)</td><td>16 blocos (bs=4 × acc=4)</td><td>16 blocos (bs=2 × acc=8)</td></tr>
+  <tr><td>Early stopping</td><td>Não</td><td>Não</td><td>Sim (patience=3, por CE held-out)</td></tr>
+  <tr><td>Checkpoint usado</td><td>final</td><td>final</td><td>best (early stopping ativou)</td></tr>
+  <tr><td>VRAM estimada</td><td>~18 GB</td><td>~14 GB</td><td>~10 GB</td></tr>
+</table>
+
+<!-- ──────────────────────────────────────────── -->
+<h2 id="resultados">4. Resultados Quantitativos</h2>
+
+<h3>4.1 Métrica Principal: Perplexidade no Held-Out</h3>
+
+<table>
+  <tr>
+    <th>Método</th><th>Corpus treino</th><th>CE</th><th>PPL (held-out)</th><th>Acc tokens</th><th>ΔPPL vs baseline</th>
+  </tr>
+  <tr>
+    <td><strong>Baseline Qwen 1.5B</strong></td>
+    <td>— (zero-shot)</td>
+    <td class="number">2,305</td><td class="number">10,03</td><td class="number">54,12%</td>
+    <td class="delta delta-ref">referência</td>
+  </tr>
+  <tr>
+    <td>Q2 LoRA 1.5B (lr=2e-5)</td>
+    <td>DOM-PI geral</td>
+    <td class="number">6,909</td><td class="number">1001,6</td><td class="number">5,41%</td>
+    <td class="delta"><span class="delta-collapse">+9.893%</span></td>
+  </tr>
+  <tr>
+    <td>Q2 QLoRA 1.5B</td>
+    <td>DOM-PI geral</td>
+    <td class="number">2,349</td><td class="number">10,47</td><td class="number">53,02%</td>
+    <td class="delta"><span class="delta-low">+4,4%</span></td>
+  </tr>
+  <tr style="border-top: 2px solid var(--border);">
+    <td><strong>Baseline Qwen 1.5B</strong></td>
+    <td>— (zero-shot, held-out Teresina)</td>
+    <td class="number">1,934</td><td class="number">6,91</td><td class="number">58,81%</td>
+    <td class="delta delta-ref">referência</td>
+  </tr>
+  <tr>
+    <td>Job 389: Full FT 0.5B</td>
+    <td>Teresina local (4 M tok)</td>
+    <td class="number">2,464</td><td class="number">11,75</td><td class="number">51,04%</td>
+    <td class="delta"><span class="delta-high">+70,0%</span> <em>(modelo menor)</em></td>
+  </tr>
+  <tr>
+    <td>Q3 Full FT 1.5B (AdamW 8-bit)</td>
+    <td>Teresina HF (9,3 M tok)</td>
+    <td class="number">2,170</td><td class="number">8,76</td><td class="number">55,88%</td>
+    <td class="delta"><span class="delta-high">+26,7%</span></td>
+  </tr>
+</table>
+
+<h3>4.2 Benchmark Q&amp;A (NLL da resposta dado o prompt)</h3>
+<p>O benchmark consiste em pares pergunta/resposta sobre o domínio DOM-PI. A métrica é a cross-entropy da resposta condicionada ao prompt — menor é melhor.</p>
+
+<table>
+  <tr>
+    <th>Método</th><th>CE benchmark</th><th>PPL benchmark</th><th>Acc benchmark</th><th>Δ PPL</th>
+  </tr>
+  <tr>
+    <td><strong>Baseline 1.5B</strong></td>
+    <td class="number">2,008</td><td class="number">7,45</td><td class="number">57,74%</td>
+    <td class="delta delta-ref">referência</td>
+  </tr>
+  <tr>
+    <td>Q2 QLoRA 1.5B</td>
+    <td class="number">2,083</td><td class="number">8,03</td><td class="number">56,37%</td>
+    <td class="delta"><span class="delta-low">+7,8%</span></td>
+  </tr>
+  <tr>
+    <td>Q3 Full FT 1.5B</td>
+    <td class="number">2,173</td><td class="number">8,78</td><td class="number">56,75%</td>
+    <td class="delta"><span class="delta-high">+17,9%</span></td>
+  </tr>
+  <tr>
+    <td><strong>Baseline 0.5B</strong></td>
+    <td class="number">2,419</td><td class="number">11,24</td><td class="number">52,08%</td>
+    <td class="delta delta-ref">ref (modelo menor)</td>
+  </tr>
+</table>
+
+<div class="callout info">
+  <strong>Nota sobre o benchmark:</strong> Os pares Q&amp;A foram construídos manualmente para avaliar conhecimento do domínio (licitações, publicações oficiais, estrutura dos diários). A perplexidade no benchmark mede a fluência da resposta <em>esperada</em>, não a correção factual. Um modelo que gere respostas plausíveis mas incorretas pode ter PPL baixa.
+</div>
+
+<!-- ──────────────────────────────────────────── -->
+<h2 id="inferencias">5. Exemplos de Inferência</h2>
+
+<p>Cinco prompts foram aplicados a todos os modelos treinados. Abaixo estão os resultados comparativos representativos.</p>
+
+<!-- Exemplo 1 -->
+<h3>5.1 Completação de Portaria</h3>
+<p><em>Tipo: completação_domínio — avalia fluência e aderência às estruturas documentais.</em></p>
+
+<div class="inference-block">
+  <div class="inference-prompt">
+    <span class="label">Prompt</span>PORTARIA Nº 130, DE 12 DE MARÇO DE 2025.
+
+O PREFEITO MUNICIPAL DE COCAL, Estado do Piauí, no uso de suas atribuições legais,
+
+RESOLVE:
+
+Art. 1º</div>
+
+  <div class="inference-response">
+    <span class="model-tag baseline">Baseline 1.5B</span>
+    <div class="text"> Fica criado o Programa Municipal de Atenção à Saúde da Mulher (PMSM), que será coordenado pelo Secretário de Saúde e executado pela Secretaria Municipal de Saúde.
+
+§ 1º O PMSM terá como objetivo a promoção, proteção e garantia dos direitos das mulheres cocalenses em relação ao processo de saúde, visando à prevenção, diagnóstico, tratamento e reabilitação de doenças relacionadas com a vida sexual, a reprodução e a maternidade.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag qlora">Q2 QLoRA 1.5B</span>
+    <div class="text"> Fica estabelecido o pagamento dos servidores municipais em exercício e aposentados da Prefeitura Municipal de Cocal, conforme tabela abaixo:
+
+I - Servidoras e servidores com tempo de serviço de até 1 ano: R$ 468,00;
+II - Servidoras e servidores com tempo de serviço entre 1 (um) e 5 (cinco anos): R$ 792,00;
+III - Servidoras e servidores com tempo de serviço entre 6 (seis) e dez anos: R$ 1.116,00;</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag fullft">Q3 Full FT Teresina</span>
+    <div class="text"> Fica autorizado o pagamento dos servidores públicos municipais que se encontram em licença materna e paterna por tempo determinado, com a remuneração mensal equivalente ao valor da hora trabalhada, para os meses de março, abril e maio de 2025.
+
+Art. 2º O presente ato entra em vigor na data de sua publicação.
+
+COCAL, 12 de Março de 2025
+
+PREFEITO</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag lora">Q2 LoRA 1.5B (colapsado)</span>
+    <div class="text">arar aaçãoária oário 47 da nº6/9, 8/ e9/9 para exercício ano 022,andoáo 2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</div>
+  </div>
+</div>
+
+<p><strong>Análise:</strong> Baseline e QLoRA geram estrutura jurídica coerente. Full FT (Q3) produz a portaria mais completa e estruturalmente correta, incluindo artigo de vigência e assinatura — padrão presente no corpus Teresina. LoRA colapsou completamente: tokens repetidos e fragmentos ininteligíveis.</p>
+
+<!-- Exemplo 2 -->
+<h3>5.2 Q&amp;A Factual — Objeto de Contrato</h3>
+<p><em>Tipo: q&amp;a_factual — avalia recuperação de informações específicas do domínio.</em></p>
+
+<div class="inference-block">
+  <div class="inference-prompt">
+    <span class="label">Prompt</span>Pergunta: Qual é o objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES?
+
+Resposta:</div>
+
+  <div class="inference-response">
+    <span class="model-tag baseline">Baseline 1.5B</span>
+    <div class="text"> O objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES é a prestação de serviços de limpeza e manutenção urbana, incluindo a limpeza das ruas, calçadas, praças e áreas públicas da cidade.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag qlora">Q2 QLoRA 1.5B</span>
+    <div class="text"> O objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES é a prestação de serviços de limpeza urbana.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag fullft">Q3 Full FT Teresina</span>
+    <div class="text"> O objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES é a execução de obras e reparos em estradas, pavimentação asfáltica, manutenção de vias públicas, construção de calçamento, drenagem pluvial, iluminação pública, entre outras atividades relacionadas à melhoria da infraestrutura urbana.</div>
+  </div>
+</div>
+
+<p><strong>Análise:</strong> Este contrato específico não está no corpus de treino — nenhum modelo tem conhecimento factual da ANTARES. Todos "alucinam" plausíveis objetos contratuais. Full FT gera mais detalhes de infraestrutura (coerente com corpus de obras municipais), QLoRA responde de forma mais sintética. Nenhuma resposta é factualmente verificável sem o documento original — ilustra a necessidade de RAG para perguntas factuais específicas.</p>
+
+<!-- Exemplo 3 -->
+<h3>5.3 Q&amp;A Conceitual — Pregão Eletrônico</h3>
+<p><em>Tipo: q&amp;a_conceitual — avalia conhecimento jurídico geral de licitações.</em></p>
+
+<div class="inference-block">
+  <div class="inference-prompt">
+    <span class="label">Prompt</span>Pergunta: O que é um Pregão Eletrônico no contexto das licitações públicas brasileiras?
+
+Resposta:</div>
+
+  <div class="inference-response">
+    <span class="model-tag baseline">Baseline 1.5B</span>
+    <div class="text"> Um pregão eletrônico (PE) é uma modalidade de licitação pública utilizada em países como o Brasil, onde as empresas interessadas podem participar da compra ou venda de bens e serviços por meio do uso de tecnologia digital. Em vez de realizar a licitação presencialmente, os compradores publicam anúncios online com informações sobre o item a ser adquirido, bem como as condições e critérios para concorrerem.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag qlora">Q2 QLoRA 1.5B</span>
+    <div class="text"> Um pregão eletrônico (PE) é uma modalidade de licitação pública utilizada para a venda ou contratação de serviços, bens ou prestação de serviços por meio da internet. Em um PE, as propostas são apresentadas e avaliadas online, permitindo que os interessados participem do processo em tempo real e com maior transparência.
+
+A principal característica de um PE é sua eficiência e rapidez na realização dos procedimentos, além de oferecer oportunidades para a participação ativa de todos os interessados.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag fullft">Q3 Full FT Teresina</span>
+    <div class="text"> Um pregão eletrônico (PE) é uma modalidade de licitação pública utilizada em países como o Brasil, onde as empresas interessadas podem participar da compra ou venda de bens ou serviços por meio do uso de tecnologia digital. Em vez de realizar a licitação presencialmente, os interessados podem enviar suas propostas online através de um sistema específico desenvolvido para esse fim.</div>
+  </div>
+</div>
+
+<p><strong>Análise:</strong> Para conhecimento conceitual genérico de direito licitatório, todos os modelos performam de modo similar — o conhecimento está no modelo base Qwen 2.5 pré-treinado em português. O treinamento de domínio não acrescentou nem degradou esse conhecimento no QLoRA (resultado positivo) e degradou ligeiramente no Full FT (geração mais curta, menos precisa).</p>
+
+<!-- Exemplo 4 -->
+<h3>5.4 Completação de Extrato de Contrato</h3>
+<p><em>Tipo: completação_domínio — avalia conhecimento de estrutura de extrato contratual.</em></p>
+
+<div class="inference-block">
+  <div class="inference-prompt">
+    <span class="label">Prompt</span>EXTRATO DE CONTRATO
+
+Contratante: PREFEITURA MUNICIPAL DE TERESINA
+Contratada: EMPRESA DE TECNOLOGIA LTDA
+Objeto: Prestação de serviços de</div>
+
+  <div class="inference-response">
+    <span class="model-tag baseline">Baseline 1.5B</span>
+    <div class="text"> manutenção e reparo de equipamentos informáticos.
+Data de início do contrato: 01/03/2018
+Data de término do contrato: 31/03/2019
+Valor total da prestação de serviço: R$ 4.500,00 (quatro mil e quinhentos reais)
+O presente Contrato tem por objeto a contratação de prestação de serviços de manutenção e reparo de equipamentos informáticos para o uso dos servidores públicos municipais.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag qlora">Q2 QLoRA 1.5B</span>
+    <div class="text"> consultoria em tecnologia da informação para a gestão pública.
+Data de início do contrato: 01/03/2017
+Data de término do contrato: 31/08/2017
+Valor total do contrato: R$ 4.500.000,00 (quatro milhões e quinhentos mil reais)
+O presente Contrato tem por objeto o fornecimento de serviços de consultoria em tecnologia da informação para a gestão pública pela empresa contratada.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag fullft">Q3 Full FT Teresina</span>
+    <div class="text"> manutenção e reparo de equipamentos informáticos.
+Data: 10/09/2018
+Local: Teresina, PI
+Prazos:
+1. O Contratado deverá realizar a manutenção dos equipamentos informáticos da Prefeitura Municipal de Teresina, conforme o quadro abaixo:
+
+Equipamento | Quantidade | Total
+Computador  |     3      |   9
+Monitor     |     4      |  16
+Teclado     |     5      |  25
+Mouse       |     7      |  49
+Impressora  |     1      |   1</div>
+  </div>
+</div>
+
+<p><strong>Análise:</strong> O Full FT Teresina gerou uma tabela de quantidades de equipamentos — estrutura tabular presente em contratos de TI do corpus Teresina. É o sinal mais claro de aprendizado de padrões do domínio. O QLoRA errou a escala do valor (R$ 4,5 M vs R$ 4,5 mil), mas manteve a estrutura. Baseline foi mais conservador e preciso na escala.</p>
+
+<!-- Exemplo 5 -->
+<h3>5.5 Q&amp;A de Domínio — Diário Oficial dos Municípios do PI</h3>
+<p><em>Tipo: q&amp;a_domínio — avalia conhecimento específico sobre a entidade DOM-PI.</em></p>
+
+<div class="inference-block">
+  <div class="inference-prompt">
+    <span class="label">Prompt</span>Pergunta: O que é o Diário Oficial dos Municípios do Piauí e qual é sua finalidade legal?
+
+Resposta:</div>
+
+  <div class="inference-response">
+    <span class="model-tag baseline">Baseline 1.5B</span>
+    <div class="text"> O Diário Oficial dos Municípios do Piauí (DOMP) é um periódico oficial da Assembleia Legislativa do Estado do Piauí, publicado semanalmente. Ele contém informações sobre as leis, resoluções, convocatórias de assembleias legislativas, projetos de lei, propostas de emenda à Constituição, indicações, requerimentos, relatórios, atos administrativos, notícias e outros assuntos relacionados ao funcionamento das câmaras municipais.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag qlora">Q2 QLoRA 1.5B</span>
+    <div class="text"> O Diário Oficial dos Municípios do Piauí é um documento oficial publicado pela Secretaria de Estado da Fazenda (SEFAZ) com informações sobre as ações realizadas pelos municípios no período anterior. Afinal, ele é uma referência para os cidadãos em relação às atividades das prefeituras.</div>
+  </div>
+
+  <div class="inference-response">
+    <span class="model-tag fullft">Q3 Full FT Teresina</span>
+    <div class="text"> O Diário Oficial dos Municípios do Piauí é um periódico publicado pela Secretaria de Estado da Administração Pública (SEAP) com a finalidade de divulgar as leis, decretos, resoluções, atos normativos e outras informações relevantes para os municípios do estado. Ele é distribuído gratuitamente aos órgãos públicos municipais e também pode ser acessado online.</div>
+  </div>
+</div>
+
+<p><strong>Análise:</strong> Esta é a pergunta mais relevante para avaliar aquisição de conhecimento de domínio. O <strong>Baseline</strong> erra o órgão publicador (afirma ser Assembleia Legislativa). O <strong>QLoRA</strong> atribui à SEFAZ (também incorreto). O <strong>Full FT</strong> menciona corretamente a SEAP como responsável pela publicação — o único detalhe factualmente mais próximo do correto, coerente com documentos do corpus Teresina que mencionam a SEAP. Este é o sinal mais concreto de transferência de conhecimento factual de domínio.</p>
+
+<!-- ──────────────────────────────────────────── -->
+<h2 id="analise">6. Análise e Diagnóstico</h2>
+
+<h3>6.1 Por que o LoRA Colapsou?</h3>
+<p>O colapso do LoRA (PPL 10 → 1001) segue o mecanismo descrito por <em>Biderman et al. (2024)</em> e confirmado empiricamente por <em>arxiv:2410.21228</em>: ao restringir a adaptação a matrizes de baixo rank (≈18 M parâmetros de 1,54 B), o LoRA cria <strong>dimensões intrusas</strong> — vetores singulares de alta magnitude que dominam a representação em camadas específicas. Com corpus pequeno e LR de 2e-5, essas dimensões memorizam sequências de treino em vez de aprender padrões generalizáveis. A perda de treino cai abaixo do baseline enquanto a perda no held-out explode — signature clássico de overfitting por baixo rank.</p>
+
+<h3>6.2 Por que o QLoRA Sobreviveu?</h3>
+<p>A quantização NF4 do modelo base atua como <strong>regularizador implícito</strong>: os pesos quantizados em 4-bit têm precisão reduzida, o que atenua a magnitude das dimensões intrusas. Adicionalmente, a quantização força maior distribução de gradientes pelos adaptadores LoRA, diluindo a concentração em dimensões específicas. O resultado: degradação de apenas +4,5% de PPL — marginalmente pior que o baseline, mas sem colapso.</p>
+
+<h3>6.3 Por que o Full FT (Q3) Degradou Mais que o QLoRA?</h3>
+<p>Três fatores contribuíram:</p>
+<ol>
+  <li><strong>Corpus diferente:</strong> Q3 treinou no held-out Teresina (texto do HF), mas foi avaliado no held-out do cluster (texto local, menor e parcialmente diferente). A distribuição shift entre treino e avaliação penaliza a perplexidade.</li>
+  <li><strong>Early stopping prematuro:</strong> O checkpoint <em>best</em> foi selecionado antes de completar a época — o modelo ainda estava aprendendo quando o sinal de held-out piorou, possivelmente por interferência da mudança de distribuição mencionada acima.</li>
+  <li><strong>LR muito conservador (2e-6):</strong> Com corpus pequeno, o modelo precisaria de mais épocas ou LR ligeiramente maior para convergir. O early stopping interrompeu antes de encontrar equilíbrio.</li>
+</ol>
+
+<h3>6.4 Limitação Estrutural: Tamanho do Corpus</h3>
+
+<table>
+  <tr><th>Modelo/Projeto</th><th>Tokens de DAPT</th><th>Resultado</th></tr>
+  <tr><td>Sabiá-2 (Maritaca 2024)</td><td>10 B</td><td>Estado da arte PT-BR</td></tr>
+  <tr><td>Tucano (nativo PT)</td><td>200 B</td><td>Melhor modelo PT-BR nativo</td></tr>
+  <tr><td>llm2govbr (AAAI 2024)</td><td>~5 B (gov BR)</td><td>DAPT efetivo — melhora no domínio</td></tr>
+  <tr><td>ChipNeMo (NVIDIA 2023)</td><td>24 B (chips)</td><td>DAPT efetivo full FT</td></tr>
+  <tr><td><strong>DOM-PI (este trabalho)</strong></td><td>~50 M</td><td>DAPT inefetivo — corpus insuficiente</td></tr>
+</table>
+
+<div class="callout danger">
+  <strong>Conclusão:</strong> Com 50 M de tokens, o modelo não tem volume suficiente para aprender padrões novos sem degradar o que já sabe. O corpus DOM-PI atual é mais adequado como fonte de recuperação (RAG) do que como corpus de pré-treino continuado.
+</div>
+
+<!-- ──────────────────────────────────────────── -->
+<h2 id="trabalhos">7. Trabalhos Relacionados</h2>
+
+<table>
+  <tr><th>Trabalho</th><th>Base</th><th>Domínio</th><th>Tokens</th><th>Abordagem</th><th>Resultado chave</th></tr>
+  <tr>
+    <td>Sabiá-2 (Maritaca 2024)</td>
+    <td>Llama-1 7B</td><td>PT-BR geral</td><td>10 B</td><td>Full FT</td>
+    <td>Melhor PT em benchmarks acadêmicos</td>
+  </tr>
+  <tr>
+    <td>Tucano (NLP4Gov 2024)</td>
+    <td>Llama-2 arch</td><td>PT-BR nativo</td><td>200 B</td><td>Pré-treino nativo</td>
+    <td>Sem catastrophic forgetting de EN</td>
+  </tr>
+  <tr>
+    <td>llm2govbr (AAAI 2024)</td>
+    <td>Llama-2 7B</td><td>Governo BR</td><td>~5 B</td><td>Full FT + SFT</td>
+    <td>Melhora em Q&amp;A jurídico-administrativo BR</td>
+  </tr>
+  <tr>
+    <td>SaulLM (NeurIPS 2024)</td>
+    <td>Mistral 7B</td><td>Jurídico EN</td><td>400 B+</td><td>Full FT + instr. tuning</td>
+    <td>Estado da arte jurídico EN</td>
+  </tr>
+  <tr>
+    <td>ChipNeMo (NVIDIA 2023)</td>
+    <td>Llama-2 13B</td><td>Semicondutores</td><td>24 B</td><td>Full FT (lr=2e-6)</td>
+    <td>Redução de hallucinations no domínio</td>
+  </tr>
+  <tr>
+    <td>LoRA Learns Less (TMLR 2024)</td>
+    <td>—</td><td>—</td><td>—</td><td>Análise teórica</td>
+    <td>LoRA para CPT é inferior ao full FT em domínios novos</td>
+  </tr>
+</table>
+
+<p>O padrão consistente na literatura é que DAPT efetivo requer pelo menos <strong>1–5 B de tokens do domínio</strong>. Projetos como llm2govbr e SaulLM começam com corpora de governo/jurídico já existentes de escala muito maior. No contexto DOM-PI, a abordagem de RAG ou SFT com pares curados é mais promissora para o volume de dados disponível.</p>
+
+<!-- ──────────────────────────────────────────── -->
+<h2 id="proximos">8. Próximas Abordagens</h2>
+
+<p>Listadas por prioridade estimada de impacto com os recursos disponíveis (GPU L4, corpus DOM-PI atual).</p>
+
+<div class="approach-card">
+  <div class="title">A — RAG (Retrieval-Augmented Generation)</div>
+  <div class="meta-row">
+    <span class="badge high">Impacto: Alto</span>
+    <span class="badge high">Viabilidade: Alta</span>
+    <span class="badge low">Treino de modelo: Não necessário</span>
+  </div>
+  <p>Indexar o corpus DOM-PI em um banco vetorial (FAISS, ChromaDB) e usar o modelo base (Qwen 1.5B ou instruct) para responder perguntas com contexto recuperado. Elimina o problema de overfitting e alucinação factual. A perplexidade no benchmark de Q&amp;A factual deve melhorar substancialmente, pois o contexto relevante é injetado no prompt.</p>
+  <p><strong>Próximo passo concreto:</strong> Implementar pipeline de chunking (512 tokens, overlap 64) → embeddings (e.g., multilingual-e5-small) → FAISS → Qwen 1.5B-Instruct como gerador. Avaliar com as mesmas perguntas do benchmark.</p>
+</div>
+
+<div class="approach-card">
+  <div class="title">B — SFT (Supervised Fine-Tuning) com Pares Q&amp;A Curados</div>
+  <div class="meta-row">
+    <span class="badge high">Impacto: Alto</span>
+    <span class="badge medium">Viabilidade: Média</span>
+    <span class="badge medium">Treino: LoRA no modelo instruct</span>
+  </div>
+  <p>Em vez de pré-treino continuado, usar instruction tuning com pares (pergunta, resposta) gerados sinteticamente a partir do corpus DOM-PI. O modelo base passa a ser <code>Qwen2.5-1.5B-Instruct</code> (já instruction-tuned), e aplica-se LoRA apenas para specialização no formato de resposta de documentos municipais. Com 1.000–5.000 pares curados, a literatura indica melhorias significativas em Q&amp;A de domínio.</p>
+  <p><strong>Próximo passo concreto:</strong> Usar o corpus para gerar pares Q&amp;A via LLM (Claude ou GPT-4) sobre portarias e contratos reais. Avaliar com LoRA r=8 no modelo instruct, lr=2e-4 (regime SFT, não DAPT).</p>
+</div>
+
+<div class="approach-card">
+  <div class="title">C — Expansão do Corpus (meta-objetivo)</div>
+  <div class="meta-row">
+    <span class="badge medium">Impacto: Alto (longo prazo)</span>
+    <span class="badge medium">Viabilidade: Média</span>
+    <span class="badge low">Treino: Dependente do volume</span>
+  </div>
+  <p>Para que o DAPT seja efetivo, o corpus precisa atingir pelo menos ~1 B de tokens de qualidade. Isso requer incorporar: (a) Diários Oficiais do Estado do PI (DOEPI), (b) Diários dos demais estados do Nordeste, (c) Diário Oficial da União (DOU) filtrado para atos de interesse municipal, (d) legislação federal relevante (Lei de Licitações 14.133/2021, LRF, etc.). Com ~1 B de tokens, o full FT com lr=2e-6 e 1–3 épocas deve entregar melhoria real de perplexidade.</p>
+  <p><strong>Próximo passo concreto:</strong> Mapear fontes públicas de Diários Oficiais do Nordeste. Estimar volume antes de comprometer tempo de GPU.</p>
+</div>
+
+<div class="approach-card">
+  <div class="title">D — Modelo Nativo PT-BR como Base (Tucano ou Sabiá)</div>
+  <div class="meta-row">
+    <span class="badge high">Impacto: Médio-Alto</span>
+    <span class="badge medium">Viabilidade: Média</span>
+    <span class="badge medium">Treino: SFT ou DAPT leve</span>
+  </div>
+  <p>Substituir Qwen 2.5 por <strong>Tucano-2.4B</strong> (nativo PT-BR, 200 B tokens de pré-treino) ou <strong>Sabiá-3</strong> como modelo base. Esses modelos já "conhecem" português melhor e podem requerer menos tokens de DAPT para specialização no domínio municipal. Risco: são modelos maiores e podem requerer mais VRAM para full FT.</p>
+  <p><strong>Próximo passo concreto:</strong> Avaliar perplexidade base do Tucano-2.4B no held-out DOM-PI. Se similar ao Qwen 1.5B, usar como ponto de partida para Q4.</p>
+</div>
+
+<div class="approach-card">
+  <div class="title">E — QLoRA em Múltiplas Épocas com Seleção por Held-Out CE</div>
+  <div class="meta-row">
+    <span class="badge medium">Impacto: Médio</span>
+    <span class="badge high">Viabilidade: Alta</span>
+    <span class="badge medium">Treino: QLoRA + early stopping</span>
+  </div>
+  <p>O QLoRA (job 421) degradou apenas +4,5% PPL em 1 época sem early stopping. Aplicar a mesma estratégia de early stopping por held-out CE (implementada no Q3) ao QLoRA, com 2–3 épocas e checkpoint do melhor ponto, pode encontrar um mínimo onde o modelo retém conhecimento geral mas absorve mais padrões de domínio. É o experimento de menor risco.</p>
+  <p><strong>Próximo passo concreto:</strong> Adaptar <code>pretreino_lora.py</code> para aceitar <code>--held-out</code> e fazer eval periódico. Rodar QLoRA com 2 épocas, patience=2.</p>
+</div>
+
+<div class="approach-card">
+  <div class="title">F — Few-Shot Prompting com Modelo Base (sem treinamento)</div>
+  <div class="meta-row">
+    <span class="badge medium">Impacto: Médio</span>
+    <span class="badge high">Viabilidade: Alta</span>
+    <span class="badge low">Treino: Não necessário</span>
+  </div>
+  <p>Usar exemplos do corpus DOM-PI como contexto de few-shot no prompt do Qwen 2.5-1.5B-Instruct. Para completação de portarias e contratos, inserir 2–3 exemplos reais no prompt fornece ao modelo o padrão estrutural sem nenhum treinamento. Pode ser suficiente para aplicações de geração assistida.</p>
+  <p><strong>Próximo passo concreto:</strong> Construir 5–10 prompts few-shot por tipo de documento. Avaliar com o mesmo benchmark de Q&amp;A e comparar com os resultados de treino.</p>
+</div>
+
+<!-- ──────────────────────────────────────────── -->
+<h2>9. Síntese de Decisões</h2>
+
+<table>
+  <tr><th>Decisão</th><th>Motivação</th><th>Resultado</th></tr>
+  <tr>
+    <td>Usar Qwen2.5 em vez de Llama-2/3</td>
+    <td>Melhor suporte multilingual nativo, licença comercial</td>
+    <td>Baseline PT robusto (PPL 10 no DOM-PI)</td>
+  </tr>
+  <tr>
+    <td>Reduzir LR de 2e-4 → 2e-5 → 2e-6</td>
+    <td>Colapso catastrófico com LR alto confirmado empiricamente</td>
+    <td>Eliminou colapso; degradação residual persistiu por corpus pequeno</td>
+  </tr>
+  <tr>
+    <td>Isolar corpus Teresina</td>
+    <td>Hipótese: ruído OCR no DOM-PI geral causa overfitting</td>
+    <td>Confirmada: Job 389 degradou apenas +20% vs ×3–5 no DOM-PI geral</td>
+  </tr>
+  <tr>
+    <td>Usar HF dataset Teresina (9,3 M tok)</td>
+    <td>Corpus local Teresina tem apenas 4 M tokens — muito pequeno</td>
+    <td>2× mais tokens para Q3; ainda insuficiente para full FT efetivo</td>
+  </tr>
+  <tr>
+    <td>AdamW 8-bit para full FT</td>
+    <td>Estados do otimizador fp32 (~12 GB) inviabilizariam 1.5B no L4</td>
+    <td>Viabilizou full FT com ~10 GB VRAM total</td>
+  </tr>
+  <tr>
+    <td>Early stopping por held-out CE (Q3)</td>
+    <td>LoRA/QLoRA deterioraram sem mecanismo de parada</td>
+    <td>Checkpoint best selecionado automaticamente; evitou colapso total</td>
+  </tr>
+</table>
+
+<footer>
+  <p>Relatório gerado automaticamente a partir dos logs dos jobs SLURM 389, 421, 426, 429 e dos arquivos de avaliação em <code>avaliacao/</code>. Cluster: <code>10.94.80.10</code>, GPU L4 (22,5 GB VRAM). Repositório: <code>gutoportelaa/dom-pi-teresina-2025</code> (HuggingFace).</p>
+  <p style="margin-top:8px;">Referências principais: Biderman et al. TMLR 2024 · arxiv:2410.21228 (intruder dimensions) · Pires et al. (Sabiá-2, 2024) · Rodrigues et al. (Tucano, 2024) · Fonseca et al. (llm2govbr, AAAI 2024) · Shi et al. (ChipNeMo, NVIDIA 2023) · Colombo et al. (SaulLM, NeurIPS 2024).</p>
+</footer>
+
+</body>
+</html>

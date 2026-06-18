@@ -40,8 +40,8 @@ $PYTHON avaliacao/avaliar_modelo.py \
     --output avaliacao/resultados_baseline.json
 
 # Passo 3: pré-treino continuado
-# LR schedule manual (Apêndice D do Raschka): warmup linear 3% → cosine decay
-# peak_lr=5e-6 conservador para DAPT sem esquecimento catastrófico
+# LR schedule manual (Apêndice D do Raschka): warmup linear 5% → cosine decay
+# peak_lr=1e-6 (5x menor que tentativa anterior) para reduzir esquecimento catastrófico
 # 1 época (Raschka: "common to train for only one epoch" em corpus grande)
 echo "--- Iniciando pré-treino..."
 $PYTHON treino/pretreino_continuado.py \
@@ -52,8 +52,8 @@ $PYTHON treino/pretreino_continuado.py \
     --block-size 1024 \
     --batch-size 4 \
     --grad-accum 4 \
-    --lr 5e-6 \
-    --warmup-fraction 0.03
+    --lr 2e-6 \
+    --warmup-fraction 0.05
 
 # Passo 4: avaliação pós-treino (usa final se existir, senão best)
 echo "--- Avaliando pós-treino..."

@@ -113,4 +113,8 @@ rag/index/chunks.jsonl
 rag/__pycache__/
 trabalho-final/**/index/embeddings.npy
 trabalho-final/**/index/chunks.jsonl
+
+# Snapshots de dataset HF / artefatos regeneráveis (vão pro HuggingFace, não pro git)
+hf_teresina/
+manifest.parquet
 **/__pycache__/
