@@ -12,6 +12,7 @@ Uso:
 """
 
 import argparse
+import html
 import logging
 import os
 import re
@@ -49,6 +50,56 @@ RE_HEADER_FOOTER = re.compile(r'(?i)(Diário Oficial dos Municípios|A prova doc
 RE_SIGNATURE = re.compile(r'(?i)(PREFEITO(?: MUNICIPAL)?|SECRETARI[OA](?: MUNICIPAL)?|C[O]?TROLADOR(?:A)?(?: GERAL)?|\d{3}\.\d{3}\.\d{3}-\d{2})')
 RE_POSSIBLE_TABLE = re.compile(r'(\d{1,3}(?:\.\d{3})*,\d{2}\s+){1,}\d{1,3}(?:\.\d{3})*,\d{2}') # 2 ou mais valores monetários na linha
 RE_PIPE_TABLE = re.compile(r'\|.*\|')
+
+# ── Limpeza v2: boilerplate do diário, Id do ato, placeholders de imagem, QR/
+#    autenticidade e carimbo de assinatura digital (PKI) OCR-izado. CONSERVADORA:
+#    nunca remove linha com título de ato/data/valor (RE_V2_PROTECT). ──────────────
+RE_V2_IMG    = re.compile(r'--\s*image\s*-->|!\[[^\]]*\]\([^)]*\)|<image>')
+RE_V2_DIARIO = re.compile(r'(?im)^.*(?:Ano\s+[IVXLCDM]+\s*[·•«].*Edi[çc][ãa]o|Teresina\s*\(PI\)\s*-\s*\w+-?[Ff]eira|Di[áa]rio\s+Oficial\s+dos\s+Munic[ií]pios|A\s+prova\s+documental\s+dos\s+atos).*$')
+RE_V2_AUTEN  = re.compile(r'(?im)^.*(?:autenticidade|chave\s+de\s+acesso|assinad[oa]\s+digitalmente|QR\s*code|c[óo]digo\s+verificador|verifique\s+em|https?://\S+|www\.\S+).*$')
+# `_MD` = prefixo de heading/lista markdown opcional (o Docling vira "## ld:..." e "## pág.")
+_MD = r'(?:#{1,6}\s*|[-*+]\s+)?'
+RE_V2_ID     = re.compile(rf'(?im)^\s*{_MD}[l1I]d:\s*[0-9A-Fa-f][0-9A-Za-z ]{{8,}}[0-9A-Fa-f]\s*$')
+RE_V2_PAGNUM = re.compile(rf'(?im)^\s*{_MD}(?:p[áa]g(?:ina)?\.?\s*\d+|P[áa]gina\s+\d+\s+de\s+\d+)\s*$')
+RE_V2_STAMP  = re.compile(r"\d{1,2}:\d{2}:\d{2}\s*-?\s*\d*\s*['′]?\d*")  # 17:23:17-03'00'
+RE_V2_CERT   = re.compile(r':\d{6,}')                                     # BRITT0:009628733
+RE_V2_PROTECT = re.compile(r'(?i)(PORTARIA|DECRETO|\bLEI\b|RESOLU|EDITAL|CONTRATO|\bART\b|R\$|N[º°•o]\s*\d|\d{1,2}\s+de\s+\w+\s+de\s+\d{4})')
+_V2_WEIRD = set('~°ª¬=…¢£¥§')
+
+
+def _v2_junk_line(line: str) -> bool:
+    """True para resíduos de OCR (carimbo PKI, fragmentos simbólicos) — exceto linhas
+    protegidas (título/data/valor), que nunca são removidas."""
+    k = line.strip()
+    if not k or RE_V2_PROTECT.search(k):
+        return False
+    if RE_V2_STAMP.search(k) or RE_V2_CERT.search(k):
+        return True
+    if sum(c in _V2_WEIRD for c in k) >= 2:        # "Í _:~f=°"
+        return True
+    if not re.search(r'\w{3,}', k) and len(k) < 8:  # "p:", "&SI"
+        return True
+    return False
+
+
+def strip_boilerplate_v2(text: str) -> str:
+    """Remove boilerplate do diário/assinatura preservando o corpo do ato e tabelas."""
+    text = html.unescape(text)
+    text = RE_V2_IMG.sub(' ', text)
+    text = RE_V2_DIARIO.sub('', text)
+    text = RE_V2_AUTEN.sub('', text)
+    text = RE_V2_ID.sub('', text)
+    text = RE_V2_PAGNUM.sub('', text)
+    seen, out = set(), []
+    for ln in text.split('\n'):
+        if _v2_junk_line(ln):
+            continue
+        k = ln.strip()
+        if k and k in seen and len(k) > 20 and not k.startswith('|'):
+            continue  # linha longa repetida (cabeçalho de página), mas não tabela
+        seen.add(k)
+        out.append(ln)
+    return '\n'.join(out)
 
 def parse_markdown(content: str) -> tuple[str, str]:
     """
@@ -108,7 +159,10 @@ def clean_text(text: str) -> tuple[str, dict]:
     if RE_POSSIBLE_TABLE.search(text) or RE_PIPE_TABLE.search(text):
         stats["review_reasons"].add("tabela_achatada_detectada")
         
-    # Remover cabeçalhos e rodapés repetitivos
+    # Limpeza v2: boilerplate do diário/Id/imagem/QR/carimbo (conservadora)
+    text = strip_boilerplate_v2(text)
+
+    # Remover cabeçalhos e rodapés repetitivos (legado; v2 já cobre a maior parte)
     text = RE_HEADER_FOOTER.sub('', text)
     
     # Remover caracteres repetidos (ex: ======, -----)
@@ -167,8 +221,15 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
     
     processed_count = 0
     error_count = 0
+    duplicate_count = 0
     total_bytes_saved = 0
-    
+
+    # Dedup cross-file PÓS-limpeza (reforço do P-09): dois documentos que eram
+    # ligeiramente diferentes podem ficar IDÊNTICOS após remover ruído de OCR.
+    # Mantemos o hash do corpo limpo de cada arquivo já escrito e descartamos
+    # os subsequentes idênticos (em vez de só atualizar o id_publicacao).
+    seen_hashes: set[str] = set()
+
     for md_file in md_files:
         try:
             rel_path = md_file.relative_to(input_dir)
@@ -186,6 +247,14 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
                 
             cleaned_body, stats = clean_text(body)
 
+            # Hash do corpo limpo: base do dedup cross-file e do id_publicacao (P-09).
+            new_hash = compute_content_md5(cleaned_body)
+            if new_hash in seen_hashes:
+                duplicate_count += 1
+                log.debug(f"[{rel_path}] Duplicata pós-limpeza ({new_hash[:8]}…) — descartada")
+                continue
+            seen_hashes.add(new_hash)
+
             if stats.get("review_reasons"):
                 frontmatter = append_review_flags(frontmatter, stats["review_reasons"])
                 high = [r for r in stats["review_reasons"] if r in _HIGH_SEVERITY_REASONS]
@@ -196,7 +265,6 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
 
             # Recalcula id_publicacao com base no conteúdo limpo (P-09)
             if frontmatter:
-                new_hash = compute_content_md5(cleaned_body)
                 frontmatter = update_frontmatter_hash(frontmatter, new_hash)
 
             final_content = frontmatter + "\n" + cleaned_body if frontmatter else cleaned_body
@@ -221,6 +289,7 @@ def process_directory(input_dir: Path, output_dir: Path) -> None:
     log.info("RESUMO DA LIMPEZA")
     log.info("="*60)
     log.info(f"Arquivos processados: {processed_count}/{total_files}")
+    log.info(f"Duplicatas pós-limpeza descartadas: {duplicate_count}")
     log.info(f"Erros encontrados: {error_count}")
     log.info(f"Caracteres irrelevantes removidos no total: {total_bytes_saved}")
     log.info(f"Saída salva em: {output_dir}")

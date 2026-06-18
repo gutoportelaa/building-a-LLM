@@ -15,6 +15,7 @@ wheels/
 
 # Virtual environments
 .venv/
+.venv-paddle/
 venv/
 .env
 .env.*
@@ -46,9 +47,15 @@ dados_limpos/
 dados_benchmark/
 teste_extractor/
 
-# Corpus gerados (JSONL para fine-tuning e RAG)
+# Corpus gerados (JSONL/NDJSON para fine-tuning e RAG)
 corpus_*.jsonl
+corpus_*.ndjson
+*.ndjson
 corpus_final/
+
+# Data lake (camadas extraído/limpo/corpus/_catalog) — artefatos Parquet gerados.
+# Ancorado à raiz: NÃO ignorar o pacote de código src/dompi_scraper/datalake/.
+/datalake/
 
 # Bases de treinamento por território (DBs locais pesadas)
 db_treino_*/
@@ -75,3 +82,39 @@ data/*
 
 # Notebook checkpoints
 .ipynb_checkpoints/
+
+monitor.py
+dados_brutos_orquestrador/
+
+# Artefato de publicação no HuggingFace (regenerável a partir de datalake/corpus)
+/hf_corpus_dompi/
+
+# Área de staging do lab (logs SLURM, loghash.tsv, NDJSONs intermediários) — pesada
+/staging_lab/
+
+# Coleta de Parnaíba: stubs HTML quebrados (SPA Quasar), não são PDFs — descartável
+/diarios_parnaiba/
+
+# Configuração local do Claude Code (não compartilhada)
+.claude/
+# Material de referência do livro (Raschka) — não versionar (copyright/ambiente local)
+docs/referencia_raschka/
+
+# Coleta de Teresina (PDFs do diário próprio) — dados pesados
+diarios-teresina-2025/
+
+# ── Q5 RAG: binários pesados regeneráveis (NÃO versionar) ────────────────────
+# modelos/ = base Qwen2.5-1.5B (HF) + adapter DAPT (cluster); regeneráveis
+# rag/index/*.npy e chunks.jsonl = regeneráveis via rag/build_index.py
+# Versionados: rag/*.py, rag/resultados/*.json, rag/index/meta.json
+modelos/
+rag/index/embeddings.npy
+rag/index/chunks.jsonl
+rag/__pycache__/
+trabalho-final/**/index/embeddings.npy
+trabalho-final/**/index/chunks.jsonl
+
+# Snapshots de dataset HF / artefatos regeneráveis (vão pro HuggingFace, não pro git)
+hf_teresina/
+manifest.parquet
+**/__pycache__/

@@ -89,6 +89,22 @@ def compute_content_md5(raw_text: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# PALAVRAS-CHAVE DE DOCUMENTOS COM TABELAS / DADOS FISCAIS
+# ---------------------------------------------------------------------------
+# Fonte única usada tanto pelo extrator_paddle (no venv do paddle) quanto pelo
+# orquestrador (no venv do torch) para sinalizar documentos "complexos" que
+# valem o custo do Docling. Mantida aqui (módulo puro, sem dependências de GPU)
+# para ser importável em AMBOS os ambientes isolados.
+PALAVRAS_TABELA: frozenset[str] = frozenset({
+    "balanço", "rreo", "rgf", "orçamentária", "orçamento", "lrf",
+    "licitação", "anexo", "planilha", "dotação", "credito", "crédito",
+    "folha de pagamento", "demonstrativo", "despesa", "receita",
+    "contrato", "extrato", "rubrica", "suplementação", "empenho",
+    "liquidação", "pagamento", "receitas correntes", "despesas correntes",
+})
+
+
+# ---------------------------------------------------------------------------
 # CLASSIFICAÇÃO DE TIPO DE ATO GOVERNAMENTAL
 # ---------------------------------------------------------------------------
 
@@ -163,6 +179,8 @@ def classify_act_type(text: str, fallback_category: str = "") -> str:
 _RE_EDICAO = re.compile(r"^DM_(\d+)_", re.IGNORECASE)
 _RE_ANO_SUFIXO = re.compile(r"-(\d{2})(?:_|$)")        # padrão  -25_ ou -25
 _RE_ANO_4DIGITS = re.compile(r"_(\d{4})(?:_|$)")  # padrão  _2025_ ou _2025
+# Padrão DOM-Teresina: DOM3919-02012025.pdf ou DOM4025-05062025-EXTRA.pdf
+_RE_DOM_TERESINA = re.compile(r"^DOM\d+-(\d{2})(\d{2})(\d{4})", re.IGNORECASE)
 
 
 def extrair_edicao_filename(filename: str) -> str:
@@ -179,30 +197,34 @@ def extrair_edicao_filename(filename: str) -> str:
 
 def extrair_data_filename(filename: str) -> tuple[str, str]:
     """
-    Extrai o ano de publicação a partir do nome do arquivo DOM-PI.
+    Extrai a data de publicação a partir do nome do arquivo DOM-PI.
     Não lê nenhum conteúdo — opera apenas sobre o nome do arquivo.
 
-    Lógica:
-    1. Remove o sufixo "_pag_NNN" para evitar falsos positivos no número de página.
-    2. Remove o prefixo "DM_NNNN_MMM_" para evitar capturar a edição como ano.
-    3. Coleta todos os padrões "-NN_" e usa o ÚLTIMO (o ato mais à direita no
-       nome é o ato publicado; referências a processos antecedentes ficam antes).
-    4. Fallback: busca por "_AAAA_" (ano com 4 dígitos).
+    Padrões suportados:
+    - DOM-Teresina: DOM3919-02012025.pdf ou DOM4025-05062025-EXTRA.pdf
+      → retorna data completa "DD/MM/AAAA" (máxima confiança)
+    - DOM-PI municípios (DM_NNNN_...): extrai apenas o ANO via sufixo "-NN_"
+      ou padrão "_AAAA_" (como antes)
 
     Retorna:
-        (ano_iso, data_confianca)
-        - ano_iso:        "2025"  ou  ""  se não encontrado
-        - data_confianca: "filename_sufixo" | "filename_ano4d" | "ausente"
-
-    Atenção: retorna apenas o ANO. O mês/dia exato requer mapeamento de
-    edição→data que não está disponível localmente.
+        (data_ou_ano, data_confianca)
+        - data_ou_ano:    "DD/MM/AAAA" | "AAAA" | ""
+        - data_confianca: "dom_teresina" | "filename_sufixo" | "filename_ano4d" | "ausente"
     """
     basename = os.path.basename(filename)
+
+    # Padrão DOM-Teresina: data completa embutida no nome
+    m = _RE_DOM_TERESINA.match(basename)
+    if m:
+        dd, mm, yyyy = m.group(1), m.group(2), m.group(3)
+        if 2000 <= int(yyyy) <= 2099 and 1 <= int(mm) <= 12 and 1 <= int(dd) <= 31:
+            return f"{dd}/{mm}/{yyyy}", "dom_teresina"
+
     stem = os.path.splitext(basename)[0]
 
     # Remove _pag_NNN para não confundir número de página com ano
     stem = re.sub(r"_pag_\d+$", "", stem, flags=re.IGNORECASE)
-    
+
     # Remove o prefixo DM_NNNN_MMM_ para não confundir edição com ano
     stem = re.sub(r"^DM_\d+_\d+_", "", stem, flags=re.IGNORECASE)
 
@@ -210,9 +232,7 @@ def extrair_data_filename(filename: str) -> tuple[str, str]:
     matches = _RE_ANO_SUFIXO.findall(stem)
     if matches:
         year_2d = matches[-1]
-        # Converte 2 dígitos → 4 dígitos (assumindo século 21, válido para 00-99)
         year_4d = f"20{year_2d}"
-        # Sanidade: aceita apenas 2000–2099
         if 2000 <= int(year_4d) <= 2099:
             return year_4d, "filename_sufixo"
 
@@ -223,6 +243,74 @@ def extrair_data_filename(filename: str) -> tuple[str, str]:
         return valid[-1], "filename_ano4d"
 
     return "", "ausente"
+
+
+# ---------------------------------------------------------------------------
+# ROTEAMENTO POR NOME DE ARQUIVO (pré-processamento de extração)
+# ---------------------------------------------------------------------------
+# O nome do PDF DOM-PI codifica o tipo de ato (ex.:
+#   DM_5336_515_Urucui_Licitacao_Dispensa_012-25_Ata_pag_79.pdf).
+#
+# CALIBRAÇÃO (medida em 1.028 docs reais): rotular TODA licitação/contrato como
+# "tem tabela" estava errado — só 52% das licitações e 16% dos contratos têm
+# tabela de fato no conteúdo. Já os RELATÓRIOS FISCAIS (LRF/RREO/RGF/balanço/
+# PPA/LDO/LOA/anexo/planilha) são tabelões por natureza (~100% têm tabela).
+#
+# Logo, a rota "fiscal" (→ Docling) por NOME é reservada aos relatórios fiscais.
+# Os demais (licitação, contrato, portaria, ...) são roteados pela DETECÇÃO de
+# tabela no conteúdo (is_complex). Assim o motor leve (PaddleOCR/PyMuPDF) atende
+# a maioria (~59%) e o Docling fica reservado ao que realmente tem tabela.
+
+# Relatórios/peças orçamentário-fiscais — tabelões garantidos → SEMPRE Docling.
+_RELATORIO_FISCAL_TOKENS: tuple[str, ...] = (
+    "lrf", "rreo", "rgf", "balanco", "balancete", "demonstrativo",
+    "ppa", "ldo", "loa", "orcament", "anexo", "planilha",
+    "empenho", "suplementacao", "dotacao",
+)
+
+# Demais tipos reconhecidos no nome (auditoria/relatório). NÃO forçam Docling —
+# vão pela detecção de tabela no conteúdo. Ordem = prioridade do "tipo primário".
+_ATO_OUTROS_TOKENS: tuple[str, ...] = (
+    "licitacao", "pregao", "dispensa", "inexigibilidade", "concorrencia",
+    "tomada", "credenciamento", "chamada_publica", "chamamento",
+    "homologacao", "ratificacao", "adjudicacao", "adesao_arp",
+    "contrato", "aditivo", "extrato", "apostilamento", "rescisao",
+    "portaria", "decreto", "lei", "resolucao", "ata", "aviso",
+    "edital", "termo", "oficio", "certidao", "convocacao", "errata",
+)
+
+
+def tipo_ato_por_nome(filename: str) -> str:
+    """
+    Tipo de ato PRIMÁRIO detectado no nome (para roteamento e auditoria). Os tipos
+    de ato comuns (licitação, contrato...) têm prioridade sobre tokens de relatório
+    fiscal que apareçam mais à frente no nome — ex.: 'Licitacao_..._Anexo' → 'licitacao'.
+    Não lê o conteúdo.
+    """
+    base = strip_accents(os.path.basename(filename or "")).lower()
+    for tok in _ATO_OUTROS_TOKENS:
+        if tok in base:
+            return tok
+    for tok in _RELATORIO_FISCAL_TOKENS:
+        if tok in base:
+            return tok
+    return ""
+
+
+def rota_por_nome(filename: str) -> str:
+    """
+    Rota baseada SOMENTE no nome: "fiscal" (→ Docling) apenas para relatórios
+    orçamentário-fiscais (tabelões garantidos); "comum" para todo o resto (que
+    será refinado pela detecção de tabela no conteúdo). Não lê o conteúdo.
+
+    >>> rota_por_nome("DM_5405_220_Marcos_Parente_LRF_RGF_2_Quadrimestre_2025.pdf")
+    'fiscal'
+    >>> rota_por_nome("DM_5268_209_BGR_Contrato_147-25.pdf")   # contrato → conteúdo decide
+    'comum'
+    """
+    if tipo_ato_por_nome(filename) in _RELATORIO_FISCAL_TOKENS:
+        return "fiscal"
+    return "comum"
 
 
 _MESES_PT = {

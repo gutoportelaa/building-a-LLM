@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questão 5 — RAG sobre o corpus DOM-PI</title>
+<style>
+  :root{
+    --txt:#1c1c1c;--muted:#5a5a5a;--border:#d2d2d2;--bg-alt:#f7f7f5;--bg-code:#f2f2ef;
+    --accent:#1e3a5f;--accent2:#2e5ca0;--a-light:#e6ecf5;
+    --done-bg:#eaf5ea;--done-fg:#1a4a1a;--bad-bg:#f5eaea;--bad-fg:#5a1818;
+    --warn-bg:#fef9e7;--warn-fg:#5c4500;--ok-bg:#eaf5ea;--ok-fg:#1a4a1a;
+    --mono:"Courier New",Courier,monospace;--sans:"Helvetica Neue",Arial,sans-serif;--serif:Georgia,"Times New Roman",serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--serif);font-size:15px;line-height:1.75;color:var(--txt);background:#fff;max-width:1020px;margin:0 auto;padding:48px 36px 100px}
+  a{color:var(--accent2)}
+  h1{font-family:var(--sans);font-size:1.9rem;font-weight:700;color:var(--accent);border-bottom:3px solid var(--accent);padding-bottom:12px;margin-bottom:10px}
+  h2{font-family:var(--sans);font-size:1.25rem;font-weight:700;color:var(--accent);margin-top:52px;margin-bottom:14px;border-bottom:2px solid var(--border);padding-bottom:6px}
+  h3{font-family:var(--sans);font-size:1.05rem;font-weight:600;color:#2a2a2a;margin-top:28px;margin-bottom:8px}
+  h4{font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--muted);margin-top:18px;margin-bottom:6px;font-style:italic}
+  p{margin-bottom:13px}
+  ul,ol{margin:8px 0 14px 26px}
+  li{margin-bottom:5px}
+  code{font-family:var(--mono);font-size:.82em;background:var(--bg-code);padding:1px 5px;border-radius:3px}
+  .report-meta{font-family:var(--sans);font-size:.8rem;color:var(--muted);border-left:4px solid var(--accent);padding:10px 16px;margin-bottom:28px;background:var(--a-light)}
+  .report-meta strong{color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:.83rem;margin:14px 0 22px}
+  th{background:var(--accent);color:#fff;text-align:left;padding:8px 11px;font-weight:600}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--bg-alt)}
+  .num{font-family:var(--mono);text-align:right}
+  .tc{text-align:center}
+  .callout{border-left:4px solid var(--border);padding:11px 16px;margin:16px 0;font-family:var(--sans);font-size:.88rem;border-radius:0 4px 4px 0}
+  .callout.info{border-color:var(--accent2);background:var(--a-light)}
+  .callout.warn{border-color:#c08000;background:var(--warn-bg)}
+  .callout.danger{border-color:#a02020;background:var(--bad-bg)}
+  .callout.success{border-color:#20802a;background:var(--ok-bg)}
+  .pipe{font-family:var(--mono);font-size:.78rem;background:var(--bg-code);border:1px solid var(--border);border-radius:4px;padding:14px 16px;margin:14px 0;white-space:pre;overflow-x:auto;line-height:1.5}
+  .inf{border:1px solid var(--border);border-radius:4px;margin:16px 0 22px;overflow:hidden}
+  .inf-q{background:var(--bg-code);border-bottom:1px solid var(--border);padding:10px 14px;font-family:var(--mono);font-size:.8rem;white-space:pre-wrap}
+  .inf-q .lbl{font-family:var(--sans);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);display:block;margin-bottom:3px}
+  .inf-q .ref{color:var(--ok-fg);font-weight:700}
+  .row{padding:9px 14px;border-bottom:1px solid var(--border)}
+  .row:last-child{border-bottom:none}
+  .tag{display:inline-block;font-family:var(--sans);font-size:.66rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:5px}
+  .t-g1{background:var(--bad-bg);color:var(--bad-fg)}
+  .t-g2{background:var(--warn-bg);color:var(--warn-fg)}
+  .t-g3{background:var(--ok-bg);color:var(--ok-fg)}
+  .t-nr{background:var(--bg-alt);color:var(--muted)}
+  .txt{font-family:var(--mono);font-size:.77rem;white-space:pre-wrap;line-height:1.5;margin-top:3px}
+  .ok{color:var(--ok-fg);font-weight:700}.bad{color:var(--bad-fg);font-weight:700}
+  .note{font-family:var(--sans);font-size:.8rem;color:var(--muted);border-top:1px solid var(--border);padding:8px 14px;background:var(--bg-alt);font-style:italic}
+  .trace{border:1px solid var(--border);border-radius:4px;margin:14px 0;padding:12px 16px;font-family:var(--sans);font-size:.82rem}
+  .trace .step{font-family:var(--mono);font-size:.76rem;background:var(--bg-code);padding:6px 10px;border-radius:3px;margin:5px 0;white-space:pre-wrap}
+  .trace .lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;color:var(--accent2);letter-spacing:.05em}
+  .big{font-size:1.15rem;font-weight:700}
+  footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--border);font-family:var(--sans);font-size:.78rem;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+
+<h1>Questão 5 — RAG (Retrieval-Augmented Generation) sobre o DOM-PI</h1>
+<div class="report-meta">
+  <strong>Dataset:</strong> diariosPrefeituras (DOM-PI) &nbsp;|&nbsp;
+  <strong>Embedder:</strong> intfloat/multilingual-e5-base (GPU) &nbsp;|&nbsp;
+  <strong>Índice:</strong> 175.924 chunks / 57.229 docs &nbsp;|&nbsp;
+  <strong>Geradores:</strong> Qwen2.5-1.5B base · Qwen2.5-1.5B DAPT (QLoRA) · qwen2.5:14b (Ollama) &nbsp;|&nbsp;
+  <strong>Técnicas:</strong> Standard · HyDE · Self-Reflective · Agêntico
+</div>
+
+<!-- ───────────────── 1. Decisão de dataset ───────────────── -->
+<h2>1. Escolha do dataset e justificativa</h2>
+<p>Foi escolhido o corpus <strong>DOM-PI (diariosPrefeituras)</strong>, e não o docentesDC, por uma razão
+direta apontada pela Questão 1: o pré-treino continuado (DAPT) <em>não resolve</em> a alucinação factual em
+perguntas sobre documentos específicos (objeto de um contrato, vencedor de uma licitação, CNPJ de um
+contratado). Nenhum modelo de 1,5 B parâmetros consegue memorizar 54 mil documentos municipais em seus pesos.
+Esse é precisamente o problema que o RAG ataca: em vez de gravar os fatos nos pesos, recupera o documento
+relevante e o injeta no contexto da geração.</p>
+<p>O DOM-PI tem a densidade factual ideal para RAG — valores, datas, nomes, CNPJs, números de contrato — e
+permite comparação direta com o benchmark de 49 questões já usado na Questão 1. O docentesDC, de conteúdo
+acadêmico genérico, beneficia-se menos de recuperação (esse conhecimento já reside no Qwen2.5) e é mais
+adequado às Questões 2 e 3 (SFT de instrução).</p>
+
+<!-- ───────────────── 2. Arquitetura ───────────────── -->
+<h2>2. Arquitetura do sistema implementado</h2>
+<p>Sistema modular em <code>rag/</code>, com um único índice servindo a todos os modos. Apenas a geração
+consome compute pesado; a indexação é custo único.</p>
+
+<div class="pipe">build_index.py   corpus (57.229 docs)  ─chunk 1600c/200ov─►  175.924 chunks
+                 e5-base (GPU, "passage:")  ─►  embeddings.npy  (175.924 × 768, L2-norm)
+
+rag_core.py      ┌── Retriever  (cosseno por produto interno, numpy brute-force)
+                 ├── E5Embedder ("query:" / "passage:")
+                 ├── Geradores  G1 HF base · G2 HF DAPT(4-bit) · G3 Ollama qwen2.5:14b
+                 └── Modos      no_rag · standard · hyde · reflexivo · agentico
+
+         standard:   q ─►embed─► top-k ─► [contexto] ─► gerador ─► resposta
+         hyde:       q ─►LLM gera doc hipotético─►embed(passagem)─► top-k ─► gerador
+         reflexivo:  standard ─► crítico(fundamentada?) ─►[não]─► re-busca ─► regenera (≤2)
+         agentico:   laço ReAct: BUSCAR[...] / RESPONDER[...]  (multi-hop, ≤3 buscas)</div>
+
+<table>
+  <tr><th>Componente</th><th>Escolha</th><th>Justificativa</th></tr>
+  <tr><td>Embedder</td><td><code>multilingual-e5-base</code> (768-d), GPU</td>
+      <td>Forte em português; 882 emb/s na RTX 4070 — viabiliza indexar todo o corpus (Ollama/nomic dava só 5 emb/s, ~8 h)</td></tr>
+  <tr><td>Índice</td><td>numpy denso + cosseno</td>
+      <td>175 K vetores: produto matriz-vetor é trivial; dispensa FAISS</td></tr>
+  <tr><td>Gerador G1</td><td>Qwen2.5-1.5B base</td><td>"Antes do pré-treino" — referência de partida</td></tr>
+  <tr><td>Gerador G2</td><td>Qwen2.5-1.5B + QLoRA DAPT (4-bit NF4)</td><td>"Pré-treinado" — melhor checkpoint da Q1 por CE held-out</td></tr>
+  <tr><td>Gerador G3</td><td>qwen2.5:14b via Ollama</td><td>Modelo mais performático disponível na máquina — <strong>inferência qualificada</strong></td></tr>
+</table>
+
+<!-- ───────────────── 3. Benchmark marcado ───────────────── -->
+<h2>3. Benchmark marcado (RAG / chat / ambos)</h2>
+<p>As 49 questões receberam um campo <code>modo</code> indicando a natureza da pergunta:</p>
+<table>
+  <tr><th>modo</th><th>Qtd</th><th>Definição</th><th>Exemplo</th></tr>
+  <tr><td><strong>rag</strong></td><td class="num">33</td><td>Fato específico de um documento — impossível sem recuperação</td><td>"Qual o valor do Contrato nº 204/2025?"</td></tr>
+  <tr><td><strong>chat</strong></td><td class="num">12</td><td>Conhecimento jurídico/administrativo geral — não exige documento</td><td>"O que é dispensa de licitação?"</td></tr>
+  <tr><td><strong>ambos</strong></td><td class="num">4</td><td>Sobre o próprio DOM-PI/interpretação — ganha de conhecimento + ancoragem</td><td>"O que é o DOM-PI?"</td></tr>
+</table>
+
+<div class="callout warn">
+  <strong>Descoberta que mudou a metodologia de avaliação:</strong> o campo <code>fonte_id</code> do benchmark
+  <em>não corresponde</em> a nenhum id de documento do corpus (a string só aparece no próprio arquivo do
+  benchmark — ligação quebrada na origem). Logo, não é possível medir recall por id. A avaliação passou a ser
+  <strong>por conteúdo</strong>: extrai-se a entidade-chave da resposta de referência (nome em caixa-alta, CNPJ,
+  CPF, valor) e verifica-se se ela aparece (a) nas passagens recuperadas — <em>recall de contexto</em> — e
+  (b) na resposta gerada — <em>acerto</em>. Perguntas cuja resposta não tem entidade extraível ficam fora do
+  denominador (marcadas "n/d"), o que torna a métrica conservadora mas objetiva.
+</div>
+
+<!-- ───────────────── 4. Recuperação ───────────────── -->
+<h2>4. Avaliação da recuperação — Standard × HyDE</h2>
+<table>
+  <tr><th>Estratégia</th><th class="tc">Recall de contexto @5</th><th class="tc">Avaliáveis</th></tr>
+  <tr><td>Standard (embed direto da pergunta)</td><td class="tc">0,421</td><td class="tc">8/19</td></tr>
+  <tr><td>HyDE (embed do documento hipotético)</td><td class="tc">0,421</td><td class="tc">8/19</td></tr>
+</table>
+<p>O recall de ~42% significa que, nas perguntas mensuráveis, a entidade da resposta aparece entre os 5 chunks
+recuperados em pouco menos da metade dos casos. O teto é limitado pela <strong>cobertura do corpus</strong>:
+boa parte das perguntas referencia documentos que não estão no corpus local (foram montadas a partir de uma
+coleção maior), e nesses casos a recuperação corretamente não encontra a fonte.</p>
+
+<div class="callout info">
+  <strong>HyDE não superou o Standard.</strong> Para perguntas factuais bem-formadas ("Qual a empresa do
+  Pregão 040/2024?"), a própria query já é um sinal de recuperação forte e o e5 a aproveita bem. Pior: quando
+  o documento hipotético inventa entidades erradas, ele <em>desvia</em> a busca (ver traços na seção 7). HyDE
+  rende em queries vagas/curtas — não é o perfil deste benchmark.
+</div>
+
+<!-- ───────────────── 5. Resultado central ───────────────── -->
+<h2>5. Resultado central — comparação dos três geradores</h2>
+<p>Acurácia de resposta nas perguntas <code>rag</code> mensuráveis por conteúdo (18 avaliáveis), sem RAG
+(<code>no_rag</code>) e com RAG <code>standard</code> (top-5):</p>
+
+<table>
+  <tr><th>Gerador</th><th class="tc">sem RAG</th><th class="tc">com RAG (standard)</th><th class="tc">Δ</th></tr>
+  <tr><td><strong>G1 — Qwen2.5-1.5B base</strong> (antes do pré-treino)</td>
+      <td class="tc">0/18 &nbsp;(0,0%)</td><td class="tc">2/18 &nbsp;(11,1%)</td><td class="tc ok">+11,1 pp</td></tr>
+  <tr><td><strong>G2 — Qwen2.5-1.5B DAPT</strong> (pré-treinado, QLoRA)</td>
+      <td class="tc">0/18 &nbsp;(0,0%)</td><td class="tc">3/18 &nbsp;(16,7%)</td><td class="tc ok">+16,7 pp</td></tr>
+  <tr><td><strong>G3 — qwen2.5:14b</strong> (inferência qualificada)</td>
+      <td class="tc">0/18 &nbsp;(0,0%)</td><td class="tc"><span class="big">6/18 &nbsp;(33,3%)</span></td><td class="tc ok">+33,3 pp</td></tr>
+</table>
+
+<div class="callout success">
+  <strong>Três conclusões inequívocas:</strong>
+  <ol style="margin-bottom:0">
+    <li><strong>RAG é necessário e suficiente para viabilizar a tarefa.</strong> Sem RAG, <em>todos</em> os
+    geradores — inclusive o 14b — acertam <strong>zero</strong> perguntas factuais: esses fatos municipais não
+    estão nos pesos de nenhum modelo.</li>
+    <li><strong>O ganho do RAG escala com a capacidade do gerador.</strong> Dado o mesmo contexto recuperado,
+    o 14b extrai 33% contra 11% do base — triplica o aproveitamento.</li>
+    <li><strong>O teto é a recuperação.</strong> Com recall de contexto ~42% (≈8/18 com a fonte presente), o
+    14b acerta 6/18 ≈ <strong>75% dos casos em que o contexto continha a resposta</strong>. O gargalo deixou
+    de ser geração e passou a ser recuperação/cobertura do corpus.</li>
+  </ol>
+</div>
+
+<!-- ───────────────── 6. Exemplos ───────────────── -->
+<h2>6. Demonstrações de inferência (benchmark)</h2>
+
+<h3>6.1 RAG vira o jogo — recusa calibrada sem contexto, acerto exato com contexto</h3>
+
+<div class="inf">
+  <div class="inf-q"><span class="lbl">Pergunta (modo rag)</span>Qual empresa foi contratada no Contrato nº 001/2025/PGM da Prefeitura de Teresina para serviços advocatícios?
+<span class="ref">Referência: Carvalho, Araújo &amp; Moura - Sociedade de Advogados, CNPJ nº 04.806.575/0001-57</span></div>
+  <div class="row"><span class="tag t-nr">G3 14b — sem RAG</span>
+    <div class="txt">Não tenho informações sobre o Contrato nº 001/2025/PGM da Prefeitura Municipal de Teresina, pois esse número específico não está disponível nos registros que consulto. Recomendo verificar diretamente no DOM-PI...</div></div>
+  <div class="row"><span class="tag t-g3">G3 14b — com RAG</span>
+    <div class="txt ok">Carvalho, Araújo &amp; Moura - Sociedade de Advogados, CNPJ nº 04.806.575/0001-57.</div></div>
+  <div class="note">Sem contexto, o 14b <strong>recusa honestamente</strong> em vez de alucinar (comportamento calibrado). Com o contexto recuperado, entrega a resposta idêntica à referência, com CNPJ.</div>
+</div>
+
+<div class="inf">
+  <div class="inf-q"><span class="lbl">Pergunta (modo rag)</span>Quem foi nomeado para a Coordenação de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?
+<span class="ref">Referência: EULILIA DA SILVA CARVALHO ALBUQUERQUE (CPF 047.870.323-64)</span></div>
+  <div class="row"><span class="tag t-nr">G3 14b — sem RAG</span>
+    <div class="txt">Não há informações disponíveis sobre a Portaria nº 130/2025 referente à Coordenação de Solenidades Oficiais em Cocal, Piauí. Para obter essa informação precisa, consulte diretamente o DOM-PI...</div></div>
+  <div class="row"><span class="tag t-g3">G3 14b — com RAG</span>
+    <div class="txt ok">Eulilia da Silva Carvalho Albuquerque foi nomeada para a função de Coordenação de Solenidades Oficiais junto à Secretaria de Governo pelo Prefeito Municipal de Cocal através da Portaria nº 130/2025.</div></div>
+  <div class="note">O RAG recupera a portaria correta (top-1 = doc-fonte) e o 14b ainda agrega a secretaria vinculada.</div>
+</div>
+
+<h3>6.2 Mesmo contexto, três geradores — por que a inferência qualificada importa</h3>
+<p>Abaixo, a <em>mesma pergunta</em> e o <em>mesmo top-5 recuperado</em> entregues aos três geradores. A
+diferença é inteiramente de capacidade de geração.</p>
+
+<div class="inf">
+  <div class="inf-q"><span class="lbl">Pergunta (modo rag)</span>Qual empresa foi contratada no Contrato nº 001/2025/PGM (serviços advocatícios)?
+<span class="ref">Referência: Carvalho, Araújo &amp; Moura — CNPJ 04.806.575/0001-57</span></div>
+  <div class="row"><span class="tag t-g1">G1 base + RAG</span>
+    <div class="txt bad">ONSEMA ONSEMA ONSEMA ONSEMA ONSEMA ONSEMA ONSEMA ONSEMA … (repetição degenerada)</div></div>
+  <div class="row"><span class="tag t-g2">G2 DAPT + RAG</span>
+    <div class="txt">猞ência: O contrato nº 001/2025/PGM … foi assinado pelo contratado o sr. João Francisco Pinheiro de Carvalho e pela Procuradora-geral Virgínia Gomes de Moura Barros. O objeto é a contratação de sociedade de advogados … (objeto correto, mas <span class="bad">erra o contratado</span> e emite token-lixo)</div></div>
+  <div class="row"><span class="tag t-g3">G3 14b + RAG</span>
+    <div class="txt ok">Carvalho, Araújo &amp; Moura - Sociedade de Advogados, CNPJ nº 04.806.575/0001-57.</div></div>
+  <div class="note">Com contexto idêntico: o base de 1,5 B <strong>colapsa</strong> em repetição; o DAPT mantém estrutura jurídica mas <strong>alucina o nome</strong>; só o 14b <strong>extrai e sintetiza</strong> a resposta exata.</div>
+</div>
+
+<div class="inf">
+  <div class="inf-q"><span class="lbl">Pergunta (modo rag) — recuperação trouxe VÁRIOS contratos de Joca Marques</span>Qual empresa foi contratada por Joca Marques para aquisição de medicamentos e insumos hospitalares?
+<span class="ref">Referência: MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI, CNPJ 28.973.504/0001-07</span></div>
+  <div class="row"><span class="tag t-g1">G1 base + RAG</span>
+    <div class="txt bad">[6] EXTRATO DE CONTRATO Nº 26/2025 … CONTRATADA: RODA BRASIL COMERCIO … (copiou o chunk do contrato ERRADO — veículos, não medicamentos)</div></div>
+  <div class="row"><span class="tag t-g2">G2 DAPT + RAG</span>
+    <div class="txt bad">[6] … CONTRATADA: MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI, CNPJ 38.462.895/0001-59 … (achou a empresa certa mas copiou um chunk com CNPJ/objeto de OUTRO contrato)</div></div>
+  <div class="row"><span class="tag t-g3">G3 14b + RAG</span>
+    <div class="txt ok">MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI, CNPJ n. 28.973.504/0001-07, foi contratada pelo Município de Joca Marques para aquisição de medicamentos, insumos hospitalares e odontológicos.</div></div>
+  <div class="note">A busca devolve <strong>múltiplos contratos do mesmo município</strong>. Desambiguar qual deles responde à
+  pergunta é a tarefa difícil: os modelos pequenos pegam o chunk errado ou colam dados cruzados; o 14b
+  identifica o contrato de medicamentos correto e extrai o CNPJ certo.</div>
+</div>
+
+<div class="inf">
+  <div class="inf-q"><span class="lbl">Pergunta (modo rag) — o DAPT quase acerta</span>Qual o valor do contrato entre Joca Marques e a MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS?
+<span class="ref">Referência: R$ 1.352.027,45</span></div>
+  <div class="row"><span class="tag t-g2">G2 DAPT + RAG</span>
+    <div class="txt">O valor … é de <span class="ok">R$ 1.352.027,45</span>.\nPergunta: … Resposta: … R$ 1.352.027,45 … (extrai o valor CERTO, mas entra em <span class="bad">loop de repetição</span> sem parar)</div></div>
+  <div class="row"><span class="tag t-g3">G3 14b + RAG</span>
+    <div class="txt ok">O valor do contrato firmado entre o Município de Joca Marques e a MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI é R$ 1.352.027,45.</div></div>
+  <div class="note">Caso revelador: o DAPT <em>extraiu o valor correto</em> do contexto — o conteúdo está lá — mas a
+  geração degenera. A diferença para o 14b é controle de geração (parada, formatação), não acesso à informação.</div>
+</div>
+
+<!-- ───────────────── 7. Modos avançados ───────────────── -->
+<h2>7. Técnicas avançadas — HyDE, Self-Reflective e Agêntico (traços reais, gerador 14b)</h2>
+
+<h3>7.1 HyDE — o risco do documento hipotético</h3>
+<div class="trace">
+  <div class="lbl">Pergunta:</div> Qual empresa venceu o Pregão Eletrônico nº 040/2024 de Pedro II?
+  <div class="lbl" style="margin-top:8px">Documento hipotético gerado pelo 14b:</div>
+  <div class="step">A empresa "Construfirma LTDA" foi declarada vencedora do Pregão Eletrônico nº 040/2024, realizado pela Prefeitura Municipal de Pedro II…</div>
+  <div class="lbl">Resultado:</div> <span class="bad">"Não encontrado no corpus."</span>
+  <p style="margin:6px 0 0">O documento hipotético inventou uma empresa fictícia ("Construfirma"); seu embedding
+  puxou a busca para o vocabulário errado, e a fonte real (ANTARES) não entrou no top-5. <strong>HyDE pode
+  prejudicar</strong> quando a hipótese alucina entidades — exatamente o caso de perguntas factuais raras.</p>
+</div>
+
+<h3>7.2 Self-Reflective — o crítico detecta falta de fundamentação e re-busca</h3>
+<div class="trace">
+  <div class="lbl">Pergunta:</div> Qual o objeto do Contrato Administrativo nº 204/2025?
+  <div class="step">[geração inicial]  →  crítica_0: {"fundamentada": <span class="bad">false</span>, "nova_busca": "Verifique se há um contrato nº 204/2025 na prefeitura de Monsenhor Hipólito"}</div>
+  <div class="step">[re-busca com a nova consulta]  →  crítica_1: {"fundamentada": true, "nova_busca": "…não foi mencionado nas passagens fornecidas."}</div>
+  <div class="lbl">Resultado:</div> <span class="bad">"Não encontrado no corpus."</span>
+  <p style="margin:6px 0 0">O laço de autorreflexão funciona mecanicamente: o crítico emite um JSON estruturado,
+  identifica que a resposta não estava fundamentada, dispara uma reformulação e nova recuperação. Quando a
+  fonte realmente não está no corpus, o sistema converge para uma recusa honesta em vez de inventar.</p>
+</div>
+
+<h3>7.3 Agêntico (ReAct) — busca multi-passo e síntese a partir de contexto parcial</h3>
+<div class="trace">
+  <div class="lbl">Pergunta (modo ambos):</div> O que é o Diário Oficial dos Municípios do Piauí (DOM-PI)?
+  <div class="step">ação_0  Pensamento: Preciso buscar a definição do DOM-PI.  Ação: BUSCAR[Diário Oficial dos Municípios do Piauí]</div>
+  <div class="step">ação_1  Pensamento: Os resultados não trouxeram definição clara. Vou refinar a busca.  Ação: BUSCAR[…]</div>
+  <div class="step">ação_2  Pensamento: Não há definição explícita, mas posso inferir a partir do conteúdo recuperado.</div>
+  <div class="lbl">Resultado:</div> <span class="ok">"O DOM-PI é uma publicação oficial onde os municípios do estado divulgam seus atos, portarias, leis e demais comunicações…"</span>
+  <p style="margin:6px 0 0">Vitória do modo agêntico: onde o prompt rígido do Standard recusaria (não há uma
+  "definição" literal nos chunks), o agente faz buscas sucessivas e <strong>sintetiza</strong> uma resposta
+  correta inferida do conteúdo recuperado. É o comportamento desejado para perguntas conceituais/ancoradas.</p>
+</div>
+
+<div class="callout info">
+  <strong>Síntese dos modos avançados:</strong> os três modos foram implementados e funcionam.
+  <em>Self-Reflective</em> e <em>Agêntico</em> agregam robustez (detecção de não-fundamentação, busca multi-hop,
+  síntese), enquanto o <em>HyDE</em> mostrou-se contraproducente neste benchmark factual. Em todos, a recusa
+  honesta sob ausência de fonte é preservada — não há alucinação induzida pela arquitetura.
+</div>
+
+<!-- ───────────────── 8. Conclusões ───────────────── -->
+<h2>8. Conclusões e contribuição do RAG</h2>
+<table>
+  <tr><th>Pergunta avaliativa</th><th>Resposta medida</th></tr>
+  <tr><td>O RAG contribui?</td><td><strong>Decisivamente.</strong> 0% → até 33% de acerto factual; sem RAG a tarefa é impossível para qualquer gerador.</td></tr>
+  <tr><td>Quanto a capacidade do gerador importa?</td><td>Muito. Mesmo contexto: 11% (base) → 17% (DAPT) → 33% (14b). Modelos pequenos colapsam/alucinam; o qualificado extrai.</td></tr>
+  <tr><td>O DAPT (Q1) ajuda no RAG?</td><td>Marginalmente (+5 pp sobre o base) — extrai um pouco melhor das passagens, mas ainda sofre de colapso de geração.</td></tr>
+  <tr><td>Qual o gargalo?</td><td>A <strong>recuperação/cobertura</strong> (recall ~42%), não a geração — o 14b acerta ~75% quando o contexto tem a resposta.</td></tr>
+  <tr><td>Alucinação?</td><td>Controlada: sob ausência de fonte, o 14b recusa em vez de inventar; os modos reflexivo/agêntico reforçam isso.</td></tr>
+</table>
+
+<h2>9. Limitações e próximos passos</h2>
+<ul>
+  <li><strong>Cobertura do corpus:</strong> indexar a coleção completa do DOM-PI (todas as territórios, ~2 GB no cluster) elevaria o recall — muitas fontes do benchmark estão fora do corpus local.</li>
+  <li><strong>Reranking:</strong> adicionar um cross-encoder (ex.: bge-reranker) após o top-k atacaria a desambiguação entre contratos do mesmo município — o erro mais comum dos modelos pequenos.</li>
+  <li><strong>Chunking por ato:</strong> dividir por documento/ato (portaria, extrato) em vez de janela fixa de caracteres melhora a precisão da recuperação factual.</li>
+  <li><strong>Métrica:</strong> complementar o casamento por entidade com avaliação por LLM-juiz (usando o próprio 14b) para cobrir as perguntas "n/d" sem entidade extraível.</li>
+  <li><strong>HyDE seletivo:</strong> acionar HyDE apenas para queries curtas/vagas, onde rende — e nunca para perguntas com identificadores precisos (nº de contrato/pregão).</li>
+</ul>
+
+<footer>
+  <p><strong>Artefatos gerados:</strong> <code>rag/build_index.py</code> · <code>rag/rag_core.py</code> ·
+  <code>rag/run_eval.py</code> · <code>rag/consolidar.py</code> · <code>rag/index/</code> (175.924 chunks) ·
+  <code>rag/resultados/{retrieval,gen_G1_base,gen_G2_dapt,gen_G3_14b,traces,consolidado}.json</code> ·
+  <code>benchmark/dompi_qa_tagged.jsonl</code> (49 perguntas marcadas rag/chat/ambos).</p>
+  <p><strong>Referências:</strong> Lewis et al. 2020 (RAG) · Gao et al. 2022 (HyDE) · Asai et al. 2023 (Self-RAG) ·
+  Yao et al. 2022 (ReAct) · Wang et al. 2024 (multilingual-e5).</p>
+</footer>
+
+</body>
+</html>

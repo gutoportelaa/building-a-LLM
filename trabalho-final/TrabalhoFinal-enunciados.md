@@ -1,0 +1,13 @@
+# **ǪUESTÕES:**
+
+1. **Pré-Treino:** Considerando o *dataset* unificado de diários das prefeituras *diariosPefeituras*, fazer pré-treinamento continuado de um LLM e avaliar a qualidade do modelo antes e depois do treinamento. Cada grupo deve escolher um LLM diferente (da mesma família ou de famílias diferentes). Sugestão: Criar um *benchmark* com pelo menos 25 perguntas e as respostas de referências. Considerar como métricas de avaliação a *perplexidade*, *entropia cruzada* e *acurácia* de previsão de tokens.
+
+2. **Pós-Treino:** Considerando o *dataset docentesDC,* gerar pelo menos 1.000 pares de perguntas e respostas (dicionário *Python* com: *instruction*, *input (opt)* e *output*). Usar as perguntas geradas para fazer pós-treino*, usando SFT (Supervised Fine-Tuning)*. Avaliar o LLM usado antes e depois do *fine-tuning*. Se possível, considerar mais de um modelo LLM com parâmetros diferentes.
+
+3. **Pós-Treino:** Repetir o experimento anterior usando as técnicas LoRA e/ou ǪLora. Avaliar o LLM usado antes e depois do *fine-tuning*. Se possível, considerar mais de um modelo LLM com parâmetros diferentes.
+
+4. **Destilação de Conhecimento:** Investigar quais os LLMs são normalmente usados para a destilação LLMs. Definir os modelos para serem usados como *professor (teacher model)* e *aluno (student)*. Usando um *dataset* gerado sinteticamente fazer o processo de destilação do modelo professor para o aluno. Criar um *benchmark com 100 perguntas* para avaliar a qualidade do professor e do aluno antes e depois do processo de destilação. Analisar se houve ou não transferência de conhecimento.
+
+5. ***RAG:*** Sabendo que RAG é essencial para assistentes e agentes, que expande a capacidade do LLM utilizando um recurso menos custoso, e adicionando potencial aos modelos, criar uma aplicação usando um tipo de RAG para fornecer respostas rápidas *(Standard)*, múltiplos agentes *(Agentic)* ou auto-reflexão *(Self-Reffective)*. Usar os dados dos *datasets docentesDC* ou *diariosPrefeituras* para criar a solução de IA. Criar um *benchmark com 30 perguntas* para avaliar a qualidade da solução antes e depois do processo de RAG. Analisar o grau de contribuição do RAG.
+
+6. ***Guardrails:** Guardrails* são camadas de controle que podem bloquear, reescrever, classificar, mascarar dados sensíveis, redirecionar o fluxo, exigir confirmação humana e impedir chamadas perigosas de ferramentas. Ele também é usado para resolver o problema de *Helpfulness vs Harmlessness*, que é o dilema entre ser útil e ser seguro. Incluir camadas de *guardrails* em um dos modelos desenvolvidos e avaliá-lo com um *benchmark de 30 perguntas*. Ǫual o grau de proteção foi adicionado com a camada de *guardrails* implementada?

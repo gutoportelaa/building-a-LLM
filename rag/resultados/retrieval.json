@@ -1,0 +1,726 @@
+{
+  "task": "retrieval",
+  "k": 5,
+  "summary": {
+    "standard": {
+      "recall": 0.421,
+      "hits": 8,
+      "avaliaveis": 19
+    },
+    "hyde": {
+      "recall": 0.421,
+      "hits": 8,
+      "avaliaveis": 19
+    }
+  },
+  "results": [
+    {
+      "pergunta": "Qual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?",
+      "tipo": "licitacao_vencedor",
+      "modo": "rag",
+      "resposta_ref": "ANTARES COMERCIO ATACADISTA LTDA (CNPJ 28.766.496/0001-28)",
+      "keyterms": [
+        "ANTARES COMERCIO ATACADISTA LTDA",
+        "28.766.496/0001-28"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "2f4dc0279b5f95c46527b3be4b062cb4",
+        "top_score": 0.868
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "7b2ea0dbf11ec0310fabb54ff7c1848c",
+        "top_score": 0.901,
+        "hyde_doc": "**Diário Oficial**\n\n**Edição 12345, Data: 15 de Março de 2024**\n\n**PREGÃO ELETRÔNICO Nº 040/2024 - CONTRATAÇÃO DE SERVIÇOS DE MANUTENÇÃO MÉCANICA**\n\nA Prefeitura de Pedro II informa que o Pregão Eletrônico nº 040/2024 foi vencido pela empresa \"Tecnologia e Manutenção S.A.\" (TECMAN), com um valor tot"
+      }
+    },
+    {
+      "pergunta": "Quem foi nomeado para a função de Coordenação de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?",
+      "tipo": "nomeacao",
+      "modo": "rag",
+      "resposta_ref": "EULILIA DA SILVA CARVALHO ALBUQUERQUE (CPF 047.870.323-64)",
+      "keyterms": [
+        "EULILIA DA SILVA CARVALHO ALBUQUERQUE",
+        "047.870.323-64"
+      ],
+      "standard": {
+        "hit": true,
+        "top_doc": "855b1dd537a7c3900f97b2eecb32ea80",
+        "top_score": 0.88
+      },
+      "hyde": {
+        "hit": true,
+        "top_doc": "855b1dd537a7c3900f97b2eecb32ea80",
+        "top_score": 0.896,
+        "hyde_doc": "Diário Oficial\n\nNÚMERO 123, SESSÃO 15, DE 10 DE MARÇO DE 2025\n\nPORTARIA Nº 130/2025\n\nPublica-se a nomeação do Sr. João Silva da Silva para a função de Coordenação de Solenidades Oficiais de Cocal, conforme disposto no artigo 3º da Lei nº 8.666/1993.\n\nO Sr. João Silva da Silva, com mandato de 4 anos,"
+      }
+    },
+    {
+      "pergunta": "De que trata a Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025?",
+      "tipo": "ementa_ato",
+      "modo": "rag",
+      "resposta_ref": "Dispõe sobre a nomeação para cargos de provimento em comissão e de funções de confiança e gratificadas, integrantes da estrutura organizacional da Administração Direta e Indireta do Poder Executivo do Município de Cocal/PI.",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "d1e621dc9b4b43fc87ad874ee26a5203",
+        "top_score": 0.891
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "855b1dd537a7c3900f97b2eecb32ea80",
+        "top_score": 0.887,
+        "hyde_doc": "Diário Oficial do Município de Cocal - Edição 01/01/2025\n\nPORTARIA Nº 130/2025\n\nPublicada em: 02 de janeiro de 2025\n\nA partir da publicação desta Portaria, é estabelecido o prazo de 30 dias para a implementação do Programa de Limpeza e Manutenção Urbana (PLMU) no Município de Cocal. O PLMU visa melh"
+      }
+    },
+    {
+      "pergunta": "A qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?",
+      "tipo": "detalhe_nomeacao",
+      "modo": "rag",
+      "resposta_ref": "Secretaria de Governo",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "855b1dd537a7c3900f97b2eecb32ea80",
+        "top_score": 0.868
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "c391b0074e28d87f006c7a66f2eec850",
+        "top_score": 0.909,
+        "hyde_doc": "Diário Oficial\n\nSEÇÃO DE NOTÍCIAS OFICIAIS\n\nNÚMERO 1234, EDIÇÃO DA SEMANA\nDE 10 A 16 DE MARÇO DE 2025\n\nVINCULAÇÃO DE FUNÇÕES\n\nPursante o disposto no artigo 12 da Lei nº 8.666/1993, a Prefeitura Municipal de Cocal, por meio da Portaria nº 130/2025, de data 10 de março de 2025, vinculou a função de Co"
+      }
+    },
+    {
+      "pergunta": "Qual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?",
+      "tipo": "valor_contrato",
+      "modo": "rag",
+      "resposta_ref": "R$ 25.536,00 (vinte e cinco mil, quinhentos e trinta e seis reais)",
+      "keyterms": [
+        "R$ 25.536,00"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "6a66b8492023ccc4c4f449b750425a11",
+        "top_score": 0.887
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "6a66b8492023ccc4c4f449b750425a11",
+        "top_score": 0.898,
+        "hyde_doc": "**Diário Oficial**\n\n**Edição 1234, Data: 15 de Março de 2024**\n\n**PREGÃO ELETRÔNICO Nº 040/2024 - CONTRATO DE SERVIÇOS TÉCNICOS E DE MANTENIMENTO PARA O SISTEMA DE ÁGUA DA PREFEITURA MUNICIPAL DE PEDRO II**\n\nConforme o resultado do Pregão Eletrônico nº 040/2024, a Prefeitura Municipal de Pedro II co"
+      }
+    },
+    {
+      "pergunta": "Qual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Prefeitura de Pedro II?",
+      "tipo": "dado_empresa",
+      "modo": "rag",
+      "resposta_ref": "28.766.496/0001-28",
+      "keyterms": [
+        "28.766.496/0001-28"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "7b2ea0dbf11ec0310fabb54ff7c1848c",
+        "top_score": 0.879
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "7b2ea0dbf11ec0310fabb54ff7c1848c",
+        "top_score": 0.887,
+        "hyde_doc": "Lamento, mas não posso fornecer informações confidenciais ou sensíveis, como o CNPJ de uma empresa específica. No entanto, posso oferecer um exemplo de como poderia ser estruturado um trecho do Diário Oficial que responda à pergunta de forma geral:\n\n\"Diário Oficial da Prefeitura de Pedro II\n\nNº 040/"
+      }
+    },
+    {
+      "pergunta": "Quem assinou o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?",
+      "tipo": "contratado",
+      "modo": "rag",
+      "resposta_ref": "CAIO HENRIQUE BRAGA PAES (CPF 111.256.935-92)",
+      "keyterms": [
+        "CAIO HENRIQUE BRAGA PAES",
+        "111.256.935-92"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "ba63a063f1d0a04e409c8f4a5cdaea7b",
+        "top_score": 0.885
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "47f5a8220f5a1443a842a065778a2106",
+        "top_score": 0.899,
+        "hyde_doc": "Diário Oficial da Prefeitura Municipal de Várzea Branca\n\nN.º 001/2026 - Edição Ordinária\n\nPÚBLICO-SE AQUI O EXTRATO DE CONTRATO Nº 004/2025, CONCEDENDO LOCÁCIO DE IMÓVEL DA PREFEITURA MUNICIPAL DE VÁRZEA BRANCA.\n\nO contrato foi assinado pelo Prefeito Municipal, João Silva da Costa, que autorizou a l"
+      }
+    },
+    {
+      "pergunta": "Qual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?",
+      "tipo": "valor_contrato",
+      "modo": "rag",
+      "resposta_ref": "R$ 500,00 (quinhentos reais) por mês",
+      "keyterms": [
+        "R$ 500,00"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "ba63a063f1d0a04e409c8f4a5cdaea7b",
+        "top_score": 0.88
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "99bbfc9d502be6401a506c3a4bcd2789",
+        "top_score": 0.898,
+        "hyde_doc": "Diário Oficial da Prefeitura Municipal de Várzea Branca - Edição 1234, Data: 15 de Março de 2023\n\nARTIGO 1º - O valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca é de R$ 2.500,00 (dois mil e quinhentos reais), paga em dia 10 do mês subsequ"
+      }
+    },
+    {
+      "pergunta": "Qual a vigência do Contrato nº 004/2025 de locação da Prefeitura de Várzea Branca?",
+      "tipo": "vigencia_contrato",
+      "modo": "rag",
+      "resposta_ref": "12 (doze) meses, podendo ser prorrogado de acordo com a legislação vigente",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "ba63a063f1d0a04e409c8f4a5cdaea7b",
+        "top_score": 0.881
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "d4a5f5821dc8ba1a1a93aa1024060476",
+        "top_score": 0.903,
+        "hyde_doc": "**Diário Oficial**\n\n**Edição Nº 001/2025**\n\n**SEÇÃO DE NOTÍCIAS OFiciais**\n\n**CONTRATOS PÚBLICOS**\n\nPursante o disposto no artigo 24 da Lei nº 8.666/1993, a Prefeitura de Várzea Branca informa que o Contrato nº 004/2025 de locação, assinado em data de 15 de janeiro de 2025, entre a Prefeitura Munici"
+      }
+    },
+    {
+      "pergunta": "Quem foi nomeado pela Portaria nº 0318/2024-ADM da Câmara Municipal de Teresina para o cargo de Assessor Especial da Presidência Nível II?",
+      "tipo": "nomeacao",
+      "modo": "rag",
+      "resposta_ref": "LEONARDO WELLINGTON DE MORAIS FERREIRA, cargo de provimento comissionado de simbologia DAL-IV",
+      "keyterms": [
+        "LEONARDO WELLINGTON DE MORAIS FERREIRA"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "f8a4a2c4761e704e6793122394ebd944",
+        "top_score": 0.894
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "0ce302588774d933f3568cf0103be7af",
+        "top_score": 0.913,
+        "hyde_doc": "Lamento, mas não tenho acesso a informações em tempo real ou específicas sobre ações administrativas recentes. No entanto, posso criar um exemplo hipotético de como poderia ser estruturado um trecho do Diário Oficial que responderia à pergunta:\n\n\"Diário Oficial da Câmara Municipal de Teresina\n\nNº 03"
+      }
+    },
+    {
+      "pergunta": "Quem foi nomeado pela Portaria nº 257/2025 ADM-GP da Câmara Municipal de Teresina?",
+      "tipo": "nomeacao",
+      "modo": "rag",
+      "resposta_ref": "LETICIA VIRGINIA COSTA DE MELO, Assessor da Presidência - Nível III, cargo de provimento comissionado",
+      "keyterms": [
+        "LETICIA VIRGINIA COSTA DE MELO"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "6b2f8350cde0a6e3a4eb79c2f34b9d6a",
+        "top_score": 0.9
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "38e82b80e8fe11c180cf3b5e0891830e",
+        "top_score": 0.908,
+        "hyde_doc": "Lamento, mas não tenho acesso a informações em tempo real ou específicas sobre documentos oficiais como a Portaria nº 257/2025 ADM-GP da Câmara Municipal de Teresina. No entanto, posso fornecer um exemplo genérico de como uma resposta poderia ser estruturada:\n\n\"Diário Oficial - Edição nº 1234, de 15"
+      }
+    },
+    {
+      "pergunta": "Qual o objeto do Contrato Administrativo nº 204/2025 da Prefeitura Municipal de Monsenhor Hipólito?",
+      "tipo": "objeto_contrato",
+      "modo": "rag",
+      "resposta_ref": "Prestação de serviços como Professora de Educação Infantil no Município de Monsenhor Hipólito - PI",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "8d0b576b923e458327c01ed59e35a213",
+        "top_score": 0.9
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "78931e81a2d1356ca748a94a53a57897",
+        "top_score": 0.891,
+        "hyde_doc": "Diário Oficial - Edição Anual Nº 12, de 15 de Março de 2026\n\nARTIGO 3º - O objeto do Contrato Administrativo nº 204/2025, assinado entre a Prefeitura Municipal de Monsenhor Hipólito e a Empresa \"Inovação e Tecnologia em Serviços Públicos\" (INTEP), foi a implementação de um sistema de gestão de resíd"
+      }
+    },
+    {
+      "pergunta": "Qual o valor global do Contrato nº 204/2025 firmado pela Prefeitura de Monsenhor Hipólito com Marta Cristina de Carvalho Silva?",
+      "tipo": "valor_contrato",
+      "modo": "rag",
+      "resposta_ref": "R$ 22.902,80 (vinte e dois mil, novecentos e dois reais e oitenta centavos)",
+      "keyterms": [
+        "R$ 22.902,80"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "8d0b576b923e458327c01ed59e35a213",
+        "top_score": 0.897
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "8d0b576b923e458327c01ed59e35a213",
+        "top_score": 0.904,
+        "hyde_doc": "Diário Oficial - Edição 234, Sexta-feira, 13 de Março de 2026\n\nSEÇÃO DE NOTÍCIAS OFiciais\n\nCONTRATOS PÚBLICOS\n\nContrato nº 204/2025: \"Serviços de Consultoria em Planejamento Urbano\"\n\nO valor total do Contrato nº 204/2025, firmado pela Prefeitura de Monsenhor Hipólito com Marta Cristina de Carvalho S"
+      }
+    },
+    {
+      "pergunta": "Qual é a duração do contrato nº 204/2025 da Prefeitura de Monsenhor Hipólito com Marta Cristina de Carvalho Silva?",
+      "tipo": "vigencia_contrato",
+      "modo": "rag",
+      "resposta_ref": "01 de março de 2025 a 31 de dezembro de 2025",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "8d0b576b923e458327c01ed59e35a213",
+        "top_score": 0.891
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "8d0b576b923e458327c01ed59e35a213",
+        "top_score": 0.92,
+        "hyde_doc": "Diário Oficial - Edição 234, data 15 de março de 2025\n\nCONTRATO Nº 204/2025\n\nPREFEITURA MUNICIPAL DE MONSENHOR HIPÓLITO\n\nCOM O OBJETO DE FORNECER SERVIÇOS DE CONSULTORIA EM ANÁLISES DE RISCOS E AUDITORIA INTERNA.\n\nO contrato nº 204/2025, celebrado entre a Prefeitura Municipal de Monsenhor Hipólito e"
+      }
+    },
+    {
+      "pergunta": "Qual empresa foi contratada no Contrato nº 001/2025/PGM da Prefeitura Municipal de Teresina para serviços advocatícios?",
+      "tipo": "contratado",
+      "modo": "rag",
+      "resposta_ref": "Carvalho, Araújo & Moura - Sociedade de Advogados, CNPJ nº 04.806.575/0001-57",
+      "keyterms": [
+        "04.806.575/0001-57"
+      ],
+      "standard": {
+        "hit": true,
+        "top_doc": "53d8d5031ffa949ef1bd1ab4708803bb",
+        "top_score": 0.894
+      },
+      "hyde": {
+        "hit": true,
+        "top_doc": "53d8d5031ffa949ef1bd1ab4708803bb",
+        "top_score": 0.899,
+        "hyde_doc": "Lamento, mas não tenho acesso a informações em tempo real ou específicas sobre contratos públicos. No entanto, posso criar um exemplo hipotético de como poderia ser estruturado um trecho do Diário Oficial que responda à sua pergunta:\n\n\"Diário Oficial da Prefeitura Municipal de Teresina\n\nNº 001/2025/"
+      }
+    },
+    {
+      "pergunta": "Qual o objeto do Contrato nº 001/2025/PGM celebrado pela Prefeitura de Teresina com Carvalho, Araújo & Moura?",
+      "tipo": "objeto_contrato",
+      "modo": "rag",
+      "resposta_ref": "Contratação de sociedade de advogados especializada para continuidade de prestação de serviços advocatícios singulares, com o ajuizamento e acompanhamento de processos nas esferas administrativa e judicial, com o escopo de manter/elevar os repasses do FPM para Teresina/PI",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "53d8d5031ffa949ef1bd1ab4708803bb",
+        "top_score": 0.898
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "87268c33f868da8eb4fa9558631f216c",
+        "top_score": 0.904,
+        "hyde_doc": "Diário Oficial da Prefeitura de Teresina - Edição 1234, data 15 de março de 2025\n\nCONTRATO Nº 001/2025/PGM\n\nPelo termo adotado em 10 de fevereiro de 2025, a Prefeitura de Teresina (a \"Contratante\") e Carvalho, Araújo & Moura (a \"Contratada\"), celebraram o Contrato nº 001/2025/PGM, cujo objeto é a co"
+      }
+    },
+    {
+      "pergunta": "Qual empresa foi contratada pelo Município de Joca Marques para aquisição de medicamentos e insumos hospitalares?",
+      "tipo": "contratado",
+      "modo": "rag",
+      "resposta_ref": "MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI, CNPJ 28.973.504/0001-07",
+      "keyterms": [
+        "28.973.504/0001-07",
+        "MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI"
+      ],
+      "standard": {
+        "hit": true,
+        "top_doc": "cebfbb8b69daefe0e835b788b14bd4bf",
+        "top_score": 0.882
+      },
+      "hyde": {
+        "hit": true,
+        "top_doc": "0aaf821546459df2c55bf1e35a58de25",
+        "top_score": 0.912,
+        "hyde_doc": "**Diário Oficial**\n\n**Edição Nº 1234, Data: 15/04/2023**\n\n**CONTRATOS PÚBLICOS**\n\nO Município de Joca Marques informa que, em conformidade com o disposto no artigo 24 da Lei nº 8.666/1993, foi realizada a licitação pública para a aquisição de medicamentos e insumos hospitalares.\n\nA empresa contratad"
+      }
+    },
+    {
+      "pergunta": "Qual o valor do contrato firmado entre o Município de Joca Marques e a MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI?",
+      "tipo": "valor_contrato",
+      "modo": "rag",
+      "resposta_ref": "R$ 1.352.027,45 (um milhão, trezentos e cinquenta e dois mil, vinte e sete reais e quarenta e cinco centavos)",
+      "keyterms": [
+        "R$ 1.352.027,45"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "567c1c49a1e71317d88c9a5f2d475f9a",
+        "top_score": 0.904
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "567c1c49a1e71317d88c9a5f2d475f9a",
+        "top_score": 0.902,
+        "hyde_doc": "Diário Oficial - Edição 1234, Sexta-feira, 12 de Maio de 2023\n\nCONTRATO Nº 001/2023\n\nEntre o Município de Joca Marques ( aqui designado por \"O Município\") e a MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI ( aqui designada por \"A Empresária\"), foi firmado um contrato para a compra de medicamentos e p"
+      }
+    },
+    {
+      "pergunta": "Com qual entidade a Prefeitura Municipal de Teresina celebrou o Termo de Fomento nº 29/2025-SEMEL?",
+      "tipo": "beneficiario_fomento",
+      "modo": "rag",
+      "resposta_ref": "Instituto Culturartes, CNPJ 13.770.738/0001-80",
+      "keyterms": [
+        "13.770.738/0001-80"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "d764dab2bb3d12bb544252ed79f6b45e",
+        "top_score": 0.903
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "44a5c5e4c1928272105940c2ec57703c",
+        "top_score": 0.905,
+        "hyde_doc": "Diário Oficial da Prefeitura Municipal de Teresina - Edição 1234, Data: 15 de Março de 2025\n\nCOMUNICAÇÃO Nº 001/2025\n\nPelo Termo de Fomento nº 29/2025-SEMEL, a Prefeitura Municipal de Teresina celebrou parceria com a Empresa Estadual de Desenvolvimento Econômico e Social do Tocantins (SEDEST) para o"
+      }
+    },
+    {
+      "pergunta": "A qual emenda parlamentar está vinculado o Termo de Fomento nº 29/2025 da SEMEL de Teresina?",
+      "tipo": "detalhe_contrato",
+      "modo": "rag",
+      "resposta_ref": "Emenda parlamentar nº 09/2025 do Vereador Deolindo",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "664df25ab6fbae6f76c5674ae5b10f4b",
+        "top_score": 0.901
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "9a95a0d5cf57d414ffb8afd62d6eeae9",
+        "top_score": 0.902,
+        "hyde_doc": "Diário Oficial\n\nNÚMERO 234, SESSÃO 15 DE MARÇO DE 2025\n\nVINCULAÇÃO DA EMENDA Nº 456/2024 AO TERMO DE FOMENTO Nº 29/2025 DA SEMEL DE TERESINA\n\nPursante o disposto no artigo 27, inciso III, da Constituição Federal e o termo de fomento nº 29/2025 da SEMEL de Teresina, é vinculado à Emenda Nº 456/2024, "
+      }
+    },
+    {
+      "pergunta": "Qual o objeto do Contrato nº 034-PMB/2025 da Prefeitura de Vila Nova do Piauí?",
+      "tipo": "objeto_contrato",
+      "modo": "rag",
+      "resposta_ref": "Concessão de bolsa no âmbito do Programa Municipal de Bolsas de Monitoria, para desempenhar atividades de monitoria de transporte escolar e serviços complementares na U.E. Zacarias Manoel da Silva",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "25539d6acb84bd682eff18bc9703f96a",
+        "top_score": 0.882
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "932d368ee5047e02ea0f7d703eec784d",
+        "top_score": 0.914,
+        "hyde_doc": "**Diário Oficial**\n\n**Nº 012, de 15 de Fevereiro de 2025**\n\n**Publicação de Contratos**\n\nPelo termo aditivo nº 01 ao Contrato nº 034-PMB/2025, entre a Prefeitura Municipal de Vila Nova do Piauí e a Empresa X, Ltda., foi acordado o fornecimento de 500 unidades de iluminação pública, com entrega previ"
+      }
+    },
+    {
+      "pergunta": "Qual o prefeito municipal de Vila Nova do Piauí signatário do Contrato nº 034-PMB/2025?",
+      "tipo": "signatario",
+      "modo": "rag",
+      "resposta_ref": "MANOEL BERNARDO LEAL",
+      "keyterms": [
+        "MANOEL BERNARDO LEAL"
+      ],
+      "standard": {
+        "hit": true,
+        "top_doc": "65457a2c380fa3c24aee5ede4f620748",
+        "top_score": 0.885
+      },
+      "hyde": {
+        "hit": true,
+        "top_doc": "0a3ef57553e23bfa01c4795a335e109e",
+        "top_score": 0.905,
+        "hyde_doc": "Diário Oficial da Prefeitura Municipal de Vila Nova do Piauí\n\nNº 001, Edição Ordinária, Ano 2023\n\nSEÇÃO DE NOTÍCIAS OFiciais\n\nCONTRATOS E APROVAÇÕES\n\nContrato nº 034-PMB/2025 - Serviços de Manutenção e Limpeza Pública\n\nO prefeito municipal, João Silva da Cunha, assinou o Contrato nº 034-PMB/2025, qu"
+      }
+    },
+    {
+      "pergunta": "Qual é a modalidade e o número do edital do certame licitatório homologado para a ANTARES COMERCIO ATACADISTA LTDA em Pedro II?",
+      "tipo": "modalidade_licitacao",
+      "modo": "rag",
+      "resposta_ref": "Pregão (Setor público), Edital nº 040/2024, Processo nº 6220/2024",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "d1fee21eaf32c4637678d29f9c791d56",
+        "top_score": 0.873
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "553f5d9417ae19e0907807ef71b8f971",
+        "top_score": 0.88,
+        "hyde_doc": "**Diário Oficial**\n\n**Edital nº 001/2023 - Certame Licitatório Homologado**\n\nPurs ante, o Certame Licitatório Homologado para a ANTARES COMERCIO ATACADISTA LTDA, com sede em Pedro II, foi homologado pela Autoridade Competente.\n\nA modalidade do certame foi a de Leilão Aberto e o número do edital é 00"
+      }
+    },
+    {
+      "pergunta": "Quem é a autoridade competente que homologou o Pregão nº 040/2024 da Prefeitura de Pedro II?",
+      "tipo": "autoridade_competente",
+      "modo": "rag",
+      "resposta_ref": "Elisabete Rodrigues de Oliveira Nunes Brandão",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "721f0faf860f708a0a5a5b7d4279e923",
+        "top_score": 0.872
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "d14e8d46e758dd898dd8726b1a214a09",
+        "top_score": 0.886,
+        "hyde_doc": "Diário Oficial - Edição 2345, Sexta-feira, 15 de Março de 2024\n\nSEÇÃO DE NOTÍCIAS OFiciais\n\nPREGÃO Nº 040/2024 DA PREFEITURA DE PEDRO II\n\nHomologação do Pregão nº 040/2024 da Prefeitura de Pedro II.\n\nO Pregão nº 040/2024, que visa a contratação de serviços de manutenção preventiva para equipamentos "
+      }
+    },
+    {
+      "pergunta": "Qual a legislação de referência utilizada no Contrato nº 004/2025 de locação de imóvel da Prefeitura de Várzea Branca?",
+      "tipo": "fundamento_legal",
+      "modo": "rag",
+      "resposta_ref": "Artigo 37, Inciso IX da Constituição Federal",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "ba63a063f1d0a04e409c8f4a5cdaea7b",
+        "top_score": 0.865
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "004a14922b8364378d9930fa38747a58",
+        "top_score": 0.885,
+        "hyde_doc": "**Diário Oficial**\n\n**Edição 1234, Data: 15 de Março de 2025**\n\n**Lei nº 012/2019 - Lei Geral de Locação de Imóveis**\n\nO Contrato nº 004/2025 de locação de imóvel da Prefeitura de Várzea Branca foi elaborado e assinado em conformidade com a Lei nº 012/2019, que regula as condições gerais de locação "
+      }
+    },
+    {
+      "pergunta": "Qual o número de processo administrativo referenciado no Contrato nº 001/2025/PGM de Teresina com escritório de advocacia?",
+      "tipo": "processo_administrativo",
+      "modo": "rag",
+      "resposta_ref": "Processo Administrativo SEI nº 00045.009320/2025-93 (referenciado no contexto da FMS) / Ação Ordinária Proc. 1029891-09.2023.4.01.4000 (5ª Vara Federal do Piauí)",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "e1444a85606d4de5d6c24545a5c060e8",
+        "top_score": 0.891
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "7b7a24952e0354357a4d8bd22315aaf5",
+        "top_score": 0.906,
+        "hyde_doc": "**Diário Oficial**\n\n**Edição Nº 1234, Sexta-feira, 13 de Março de 2026**\n\n**REGISTRO DE PROCEDIMENTOS ADMINISTRATIVOS**\n\n**Contrato nº 001/2025/PGM - Teresina**\n\nPursante o disposto no artigo 12, inciso III, da Lei nº 8.666/1993, é comunicado que o processo administrativo referenciado no Contrato nº"
+      }
+    },
+    {
+      "pergunta": "Qual cargo de provimento comissionado foi atribuído a Giordanni Leo Batista Lustosa na Portaria nº 576/2024 ADM-GP da Câmara Municipal de Teresina?",
+      "tipo": "nomeacao",
+      "modo": "rag",
+      "resposta_ref": "Assessor da Diretoria Legislativa - Nível I, cargo de provimento comissionado",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "8210184f56644e15254f4f0272e43011",
+        "top_score": 0.896
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "ef5d940e1532523a88f3b05e59d27ebc",
+        "top_score": 0.921,
+        "hyde_doc": "Diário Oficial da Câmara Municipal de Teresina, Edição nº 1238, data de 15 de março de 2024.\n\nArtigo 3º - Fica aprovada a nomeação do Sr. Giordanni Leo Batista Lustosa ao cargo de Secretário Executivo da Câmara Municipal de Teresina, comprovando o ato de provimento comissionado."
+      }
+    },
+    {
+      "pergunta": "Qual o CNPJ da Prefeitura Municipal de Cocal, Estado do Piauí?",
+      "tipo": "dado_institucional",
+      "modo": "rag",
+      "resposta_ref": "06.553.895/0001-78",
+      "keyterms": [
+        "06.553.895/0001-78"
+      ],
+      "standard": {
+        "hit": true,
+        "top_doc": "3b032f7f35acb2e5aeec1d5227411844",
+        "top_score": 0.891
+      },
+      "hyde": {
+        "hit": true,
+        "top_doc": "3b032f7f35acb2e5aeec1d5227411844",
+        "top_score": 0.901,
+        "hyde_doc": "Lamento, mas não posso fornecer informações específicas como o CNPJ da Prefeitura Municipal de Cocal, Estado do Piauí, pois essa informação é pública e pode estar disponível em registros oficiais ou no site da prefeitura. No entanto, posso sugerir uma abordagem para encontrar a resposta:\n\n\"Diário Of"
+      }
+    },
+    {
+      "pergunta": "Qual o objeto do Contrato de Prestação de Serviços nº 096/2025 da Prefeitura de Paulistana com Zirlandia Santana de Macedo?",
+      "tipo": "objeto_contrato",
+      "modo": "rag",
+      "resposta_ref": "Prestação de serviços temporários no âmbito do serviço público municipal, com pagamento mensal de R$ 2.433,50",
+      "keyterms": [
+        "R$ 2.433,50"
+      ],
+      "standard": {
+        "hit": true,
+        "top_doc": "6d48bc397d403671a388990abe6ed63f",
+        "top_score": 0.881
+      },
+      "hyde": {
+        "hit": true,
+        "top_doc": "6d48bc397d403671a388990abe6ed63f",
+        "top_score": 0.901,
+        "hyde_doc": "Diário Oficial da Prefeitura de Paulistana - Edição 1234, Data: 15 de Março de 2023\n\n**CONTRATO DE PRESTAÇÃO DE SERVIÇOS Nº 096/2025**\n\nO objeto do Contrato de Prestação de Serviços nº 096/2025 da Prefeitura de Paulistana com Zirlandia Santana de Macedo é a contratação de serviços de consultoria em "
+      }
+    },
+    {
+      "pergunta": "Qual o valor mensal pago pela Prefeitura de Paulistana a Zirlandia Santana de Macedo no Contrato nº 096/2025?",
+      "tipo": "valor_contrato",
+      "modo": "rag",
+      "resposta_ref": "R$ 2.433,50 (dois mil, quatrocentos e trinta e três reais e cinquenta centavos)",
+      "keyterms": [
+        "R$ 2.433,50"
+      ],
+      "standard": {
+        "hit": true,
+        "top_doc": "6d48bc397d403671a388990abe6ed63f",
+        "top_score": 0.898
+      },
+      "hyde": {
+        "hit": true,
+        "top_doc": "c8a6232942edc7baf23d51af4f8f7905",
+        "top_score": 0.9,
+        "hyde_doc": "Diário Oficial da Prefeitura Municipal de Paulistana\n\nNÚMERO 001 - EDIÇÃO MENSAL DE MARCO DE FEVEREIRO DE 2023\n\nSEGREDA DE FINANÇAS\n\nCONTRATOS E APROVAÇÕES\n\nContrato nº 096/2025, assinado em 15 de janeiro de 2023, entre a Prefeitura Municipal de Paulistana e Zirlandia Santana de Macedo, prevê o paga"
+      }
+    },
+    {
+      "pergunta": "Qual o CNPJ da Prefeitura Municipal de Várzea Branca, Piauí?",
+      "tipo": "dado_institucional",
+      "modo": "rag",
+      "resposta_ref": "41.522.103/0001-07",
+      "keyterms": [
+        "41.522.103/0001-07"
+      ],
+      "standard": {
+        "hit": true,
+        "top_doc": "d9af16bea562ba10671af869c9cb888d",
+        "top_score": 0.886
+      },
+      "hyde": {
+        "hit": true,
+        "top_doc": "f20154ec4b56f198dbdd8332b52ea6dc",
+        "top_score": 0.91,
+        "hyde_doc": "Não posso fornecer informações específicas sobre a Prefeitura Municipal de Várzea Branca, Piauí, incluindo o CNPJ. No entanto, posso sugerir como você pode encontrar essa informação:\n\nA Prefeitura Municipal de Várzea Branca é um órgão público localizado na cidade de Várzea Branca, no estado do Piauí"
+      }
+    },
+    {
+      "pergunta": "Qual lei municipal de Riacho Frio foi alterada pela Lei nº 165/2025, de 04 de fevereiro de 2025?",
+      "tipo": "referencia_legal",
+      "modo": "rag",
+      "resposta_ref": "Lei municipal nº 132/2023, que modificou a estrutura da Administração Pública Municipal de Riacho Frio",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "441d9d502db506102766c65f216f0a97",
+        "top_score": 0.89
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "441d9d502db506102766c65f216f0a97",
+        "top_score": 0.896,
+        "hyde_doc": "Diário Oficial da Câmara Municipal de Riacho Frio - Edição 1234, data: 05 de fevereiro de 2025.\n\nLei nº 165/2025, publicada no Diário Oficial desta data, altera a Lei nº 42/2018, que regula a circulação de veículos motorizados na Avenida Principal da cidade. A nova lei estabelece regras mais rigoros"
+      }
+    },
+    {
+      "pergunta": "Qual programa educacional foi instituído pela Lei Municipal de Floresta do Piauí mencionada no Diário Oficial dos Municípios em abril de 2025?",
+      "tipo": "objeto_lei",
+      "modo": "rag",
+      "resposta_ref": "Programa Municipal de Bolsa de Incentivo à Educação de Jovens e Adultos (EJA), com o objetivo de estimular a permanência e conclusão dos estudos por alunos matriculados na modalidade EJA na rede pública municipal",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "488c87fe3f111ae0bab4a0b0931494f9",
+        "top_score": 0.886
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "488c87fe3f111ae0bab4a0b0931494f9",
+        "top_score": 0.899,
+        "hyde_doc": "\"Diário Oficial dos Municípios de Floresta do Piauí, Edição nº 1234, de 15 de abril de 2025.\n\nPelo artigo 3º da Lei nº 1234/2025, a Prefeitura Municipal de Floresta do Piauí institui o Programa \"Educação Ambiental Sustentável\" (PES), com o objetivo de promover a conscientização e a educação ambienta"
+      }
+    },
+    {
+      "pergunta": "O que é o Diário Oficial dos Municípios do Piauí (DOM-PI)?",
+      "tipo": "conceitual_dominio",
+      "modo": "ambos",
+      "resposta_ref": "O Diário Oficial dos Municípios do Piauí (DOM-PI) é o veículo oficial de publicação dos atos administrativos dos municípios piauienses. Nele são publicadas portarias, decretos, leis, editais de licitação, contratos, termos aditivos e demais atos do poder executivo e legislativo municipal, conferindo publicidade e validade jurídica a esses documentos.",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "1c01fac12c597dfa70c831b1f6354caa",
+        "top_score": 0.874
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "48a8ea8fdae2375a3ed5d1eb034e2844",
+        "top_score": 0.906,
+        "hyde_doc": "\"ARTIGO 1º - O Diário Oficial dos Municípios do Piauí (DOM-PI) é a publicação oficial que contém as notícias, decisões e atos administrativos de todos os municípios do estado do Piauí. Publicado semanaismente, o DOM-PI é responsável por divulgar as informações mais relevantes sobre a administração m"
+      }
+    },
+    {
+      "pergunta": "Quais tipos de atos administrativos são tipicamente publicados no Diário Oficial dos Municípios do Piauí?",
+      "tipo": "conceitual_dominio",
+      "modo": "ambos",
+      "resposta_ref": "O DOM-PI publica principalmente: Portarias (nomeações, exonerações, designações, licenças), Decretos (regulamentações, ponto facultativo, programas), Leis municipais, Editais de licitação (pregão, concorrência, dispensa, inexigibilidade), Contratos e Termos Aditivos, Atas de Registro de Preços, Termos de Homologação de licitações, Relatórios de Gestão Fiscal (RGF/RREO), Chamadas Públicas e Resoluções de conselhos municipais.",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "11aa77555d146c933421ec9bc13a0981",
+        "top_score": 0.867
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "eead2c09d0b4a4d6cdc3b286971b4dab",
+        "top_score": 0.905,
+        "hyde_doc": "**ATOS ADMINISTRATIVOS PÚBLICOS PUBLICADOS NO DIÁRIO OFICIAL DOS MUNÍCIPIOS DO PIAUI**\n\nDe acordo com a Lei nº 9.504, de 23 de fevereiro de 1997, o Diário Oficial dos Municípios do Piauí é o órgão oficial que publica atos administrativos de interesse público, entre os quais estão:\n\n* Atos normativos"
+      }
+    },
+    {
+      "pergunta": "Quais são os Territórios de Desenvolvimento do Piauí e como eles se relacionam com o DOM-PI?",
+      "tipo": "contexto_regional",
+      "modo": "ambos",
+      "resposta_ref": "O Piauí está dividido em 12 Territórios de Desenvolvimento (agrupamentos regionais de municípios com características socioeconômicas similares), como Tabuleiros do Alto Parnaíba, Cocais, Carnaubais, Entre Rios, Serra da Capivara, entre outros. O DOM-PI organiza suas publicações por esses territórios, e municípios de um mesmo território podem compartilhar edições. Teresina (capital) tem diário próprio (DOM-Teresina) e constitui o 13º território no corpus DOM-PI.",
+      "keyterms": [],
+      "standard": {
+        "hit": null,
+        "top_doc": "1c96d0b19d825f061b0ad84f6075c70c",
+        "top_score": 0.852
+      },
+      "hyde": {
+        "hit": null,
+        "top_doc": "b5a8d58a8fff1277458e6d87119767bd",
+        "top_score": 0.894,
+        "hyde_doc": "**Diário Oficial do Estado do Piauí**\n\n**SEÇÃO DE Planejamento e Desenvolvimento**\n\n**RESOLUÇÃO Nº 001/2023**\n\nPublicada em: 10 de janeiro de 2023\n\nO Legislativo do Estado do Piauí, reunido em sessão ordinária, articular-se-á para aprovagem da Resolução nº 001/2023, que estabelece os Territórios de "
+      }
+    },
+    {
+      "pergunta": "Me explique como interpretar um extrato de portaria de nomeação no DOM-PI.",
+      "tipo": "interpretacao_documento",
+      "modo": "ambos",
+      "resposta_ref": "Uma portaria de nomeação no DOM-PI tipicamente contém: o número e data da portaria, o nome da autoridade que a expede (ex: 'O PREFEITO MUNICIPAL DE X'), a base legal (Lei Orgânica, decreto de estrutura administrativa), o nome completo do nomeado com CPF, o cargo de provimento em comissão ou função de confiança, a secretaria ou órgão de lotação, e a data de vigência (geralmente 'entra em vigor na data de sua publicação'). O cargo comissionado é identificado por símbolos como DAL-I, DAS-II ou equivalentes definidos na lei de estrutura do município.",
+      "keyterms": [
+        "PREFEITO MUNICIPAL DE"
+      ],
+      "standard": {
+        "hit": false,
+        "top_doc": "9534f7007762a527e43bbc21122172e5",
+        "top_score": 0.855
+      },
+      "hyde": {
+        "hit": false,
+        "top_doc": "b924f7c02fa4a5b25595337cebf421df",
+        "top_score": 0.878,
+        "hyde_doc": "**EXTRATO DE PORTARIA DE NOMINAÇÃO**\n\n**Nº 001/2023 - Portaria Nº 001/2023, de 10 de janeiro de 2023**\n\n**DECRETA A NOMINAÇÃO DO SENHOR MIGUEL ANGEL SILVA DA SILVA, CEDERIÃO, como Diretor Executivo da Empresa X, com base na aprovação do Conselho de Administração, em 09/01/2023.**\n\n**PRAZO DE VALIDAD"
+      }
+    }
+  ]
+}

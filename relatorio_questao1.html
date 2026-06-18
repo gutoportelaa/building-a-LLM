@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questão 1 — Pré-treino Continuado Qwen2.5-0.5B no Corpus DOM-PI</title>
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent: #2e7d9e;
+    --light: #f4f8fb;
+    --border: #cdd9e5;
+    --good: #1e6e3e;
+    --good-bg: #d4edda;
+    --bad: #7b2d2d;
+    --bad-bg: #f8d7da;
+    --warn: #7a5a00;
+    --warn-bg: #fff3cd;
+    --neutral: #374151;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+    --shadow: 0 2px 8px rgba(0,0,0,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f0f4f8;
+    color: var(--neutral);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    padding: 2.5rem 2rem 2rem;
+    box-shadow: var(--shadow);
+  }
+  header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.3rem; }
+  header .subtitle { font-size: 1rem; opacity: 0.85; }
+  header .meta { margin-top: 1rem; font-size: 0.85rem; opacity: 0.7; display: flex; gap: 2rem; flex-wrap: wrap; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .toc {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+  }
+  .toc h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.7rem; }
+  .toc ol { padding-left: 1.2rem; }
+  .toc li { margin: 0.25rem 0; }
+  .toc a { color: var(--primary); text-decoration: none; font-size: 0.9rem; }
+  .toc a:hover { text-decoration: underline; }
+
+  section { margin-bottom: 2.5rem; }
+  section h2 {
+    font-size: 1.25rem;
+    color: var(--primary);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  section h2 .num {
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 1.7rem;
+    height: 1.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  section h3 { font-size: 1rem; color: var(--primary); margin: 1.2rem 0 0.5rem; }
+
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+  }
+
+  p { margin-bottom: 0.8rem; }
+  ul, ol { padding-left: 1.3rem; margin-bottom: 0.8rem; }
+  li { margin: 0.3rem 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin: 1rem 0;
+  }
+  th {
+    background: var(--primary);
+    color: white;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--light); }
+  .center { text-align: center; }
+
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .badge-good { background: var(--good-bg); color: var(--good); }
+  .badge-bad  { background: var(--bad-bg);  color: var(--bad); }
+  .badge-warn { background: var(--warn-bg); color: var(--warn); }
+  .badge-info { background: #d1ecf1; color: #0c5460; }
+
+  .delta-bad  { color: var(--bad); font-weight: 700; }
+  .delta-good { color: var(--good); font-weight: 700; }
+  .delta-warn { color: var(--warn); font-weight: 600; }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    margin: 0.8rem 0;
+  }
+  code {
+    background: #e8eef4;
+    color: var(--primary);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-family: 'Fira Code', 'Consolas', monospace;
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media(max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  .inference-block {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.2rem;
+  }
+  .inference-header {
+    background: var(--light);
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .inference-body { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  @media(max-width: 900px) { .inference-body { grid-template-columns: 1fr 1fr; } }
+  @media(max-width: 600px) { .inference-body { grid-template-columns: 1fr; } }
+  .inference-pane { padding: 0.9rem 1rem; }
+  .inference-pane + .inference-pane { border-left: 1px solid var(--border); }
+  .inference-pane .label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+  .inference-pane.base .label { color: #2e7d9e; }
+  .inference-pane.mid  .label { color: #b35a00; }
+  .inference-pane.pos  .label { color: var(--bad); }
+  .inference-pane .text {
+    font-size: 0.83rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    background: #fafbfc;
+    padding: 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    max-height: 180px;
+    overflow-y: auto;
+    font-family: Georgia, serif;
+  }
+  .inference-pane.mid .text { background: #fff8f0; border-color: #ffd8a8; }
+  .inference-pane.pos .text { background: #fff5f5; border-color: #f5c6cb; }
+
+  .prompt-box {
+    background: #f8f9fa;
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 1rem;
+    font-size: 0.83rem;
+    margin-bottom: 0.8rem;
+    font-family: Georgia, serif;
+    white-space: pre-wrap;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.8rem;
+    margin: 1rem 0;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .stat-card .val { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+  .stat-card .lbl { font-size: 0.75rem; color: #6b7280; margin-top: 0.2rem; }
+  .stat-card .delta { font-size: 0.82rem; margin-top: 0.3rem; }
+
+  .callout {
+    border-radius: 6px;
+    padding: 0.9rem 1.1rem;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+    border-left: 4px solid;
+  }
+  .callout-warn  { background: var(--warn-bg);  border-color: #f0ad4e; color: var(--warn); }
+  .callout-good  { background: var(--good-bg);  border-color: #28a745; color: var(--good); }
+  .callout-bad   { background: var(--bad-bg);   border-color: #dc3545; color: var(--bad); }
+  .callout-info  { background: #d1ecf1;          border-color: #17a2b8; color: #0c5460; }
+
+  .lr-map {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+  .lr-zone {
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+  }
+  .lr-zone .lr-val { font-size: 1rem; font-weight: 700; font-family: monospace; margin-bottom: 0.3rem; }
+  .lr-zone .lr-label { font-size: 0.8rem; margin-bottom: 0.5rem; }
+  .lr-zone .lr-metrics { font-size: 0.78rem; line-height: 1.4; }
+  .lr-safe  { background: #d4edda; border-right: 1px solid #c3e6cb; }
+  .lr-mid   { background: #fff3cd; border-right: 1px solid #ffeeba; }
+  .lr-catas { background: #f8d7da; }
+
+  .bm-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 0.7rem;
+    overflow: hidden;
+  }
+  .bm-q {
+    background: var(--light);
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border);
+  }
+  .bm-a {
+    padding: 0.5rem 1rem;
+    font-size: 0.83rem;
+    font-style: italic;
+    color: #374151;
+  }
+  .bm-type {
+    float: right;
+    font-size: 0.72rem;
+    font-weight: 400;
+    font-style: normal;
+    color: #6b7280;
+    background: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Questão 1 — Pré-treino Continuado de LLM no Corpus DOM-PI</h1>
+  <div class="subtitle">Domain-Adaptive Pre-Training (DAPT) · Qwen2.5-0.5B · Diário Oficial dos Municípios do Piauí</div>
+  <div class="meta">
+    <span>Modelo base: Qwen/Qwen2.5-0.5B</span>
+    <span>Dataset: gutoportelaa/dom-pi-corpus-2025</span>
+    <span>Cluster: SLURM / NVIDIA L4 23.9 GB</span>
+    <span>Gerado: Junho 2026</span>
+  </div>
+</header>
+
+<div class="container">
+
+<div class="toc">
+  <h3>Sumário</h3>
+  <ol>
+    <li><a href="#objetivo">Objetivo e Formulação da Questão</a></li>
+    <li><a href="#corpus">Corpus e Dataset</a></li>
+    <li><a href="#modelo">Modelo Base e Justificativa</a></li>
+    <li><a href="#metodologia">Metodologia de Pré-treino Continuado</a></li>
+    <li><a href="#implementacao">Implementação e Decisões Técnicas</a></li>
+    <li><a href="#experimentos">Experimentos e Resultados por Job</a></li>
+    <li><a href="#metricas">Métricas de Avaliação</a></li>
+    <li><a href="#benchmark">Benchmark DOM-PI Q&A</a></li>
+    <li><a href="#inferencias">Inferências Comparativas (Qualitativa)</a></li>
+    <li><a href="#diagnostico">Diagnóstico e Análise</a></li>
+    <li><a href="#proximos">Próximos Passos</a></li>
+  </ol>
+</div>
+
+<!-- =========================================================== -->
+<section id="objetivo">
+  <h2><span class="num">1</span> Objetivo e Formulação da Questão</h2>
+  <div class="card">
+    <p>A <strong>Questão 1</strong> consiste em aplicar <em>continued pre-training</em> (pré-treino continuado, também denominado DAPT — Domain-Adaptive Pre-Training) a um modelo de linguagem de pequeno porte sobre o corpus do <strong>Diário Oficial dos Municípios do Piauí (DOM-PI)</strong>, avaliando se o modelo adquire conhecimento de domínio mensurável após o treinamento.</p>
+
+    <h3>Definição formal</h3>
+    <p>Dado um modelo de linguagem <em>M</em> pré-treinado no corpus geral da internet, aplica-se treinamento adicional sobre um corpus de domínio <em>D</em> (publicações oficiais municipais piauienses), minimizando a loss de modelagem de linguagem causal:</p>
+    <pre><code>L = − (1/T) Σ log P(xₜ | x₁, …, xₜ₋₁ ; θ)</code></pre>
+    <p>O objetivo é reduzir a perplexidade do modelo sobre textos do domínio jurídico-administrativo piauiense, sem destruir o conhecimento geral adquirido no pré-treino original (evitar <em>catastrophic forgetting</em>).</p>
+
+    <div class="callout callout-info">
+      <strong>Nota metodológica:</strong> A abordagem é <strong>full fine-tuning</strong> (todos os pesos atualizados), não LoRA/QLoRA. A escolha segue os estudos de Gururangan et al. (2020) que demonstram que DAPT com pesos completos supera adapters para ganhos de domínio com corpora grandes.
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="corpus">
+  <h2><span class="num">2</span> Corpus e Dataset</h2>
+  <div class="card">
+    <h3>Fonte dos dados</h3>
+    <p>O corpus foi coletado do DOM-PI por scraping dos PDFs publicados, seguido de extração de texto via OCR (pdfplumber/pytesseract) e limpeza em múltiplas passagens.</p>
+
+    <div class="two-col">
+      <div>
+        <h3>Dataset publicado no HuggingFace</h3>
+        <table>
+          <tr><th>Propriedade</th><th>Valor</th></tr>
+          <tr><td>Repositório</td><td><code>gutoportelaa/dom-pi-corpus-2025</code></td></tr>
+          <tr><td>Total de documentos</td><td>80.788 docs</td></tr>
+          <tr><td>Total de tokens</td><td>~178,8 M tokens</td></tr>
+          <tr><td>Territórios cobertos</td><td>13 (12 + Teresina)</td></tr>
+          <tr><td>Config usada no treino</td><td><code>curated</code> (Tier A+B)</td></tr>
+          <tr><td>Docs de treino (Tier A+B)</td><td>54.368 docs</td></tr>
+          <tr><td>Tokens de treino estimados</td><td>~86 M tokens</td></tr>
+          <tr><td>Held-out (5%, seed=42)</td><td>2.861 docs</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3>Tiers de qualidade</h3>
+        <table>
+          <tr><th>Tier</th><th>Critério</th><th>Uso</th></tr>
+          <tr><td><span class="badge badge-good">A</span></td><td>Alta qualidade OCR, sem boilerplate</td><td>Treino + benchmark</td></tr>
+          <tr><td><span class="badge badge-warn">B</span></td><td>Qualidade média</td><td>Treino</td></tr>
+          <tr><td><span class="badge badge-bad">C</span></td><td>OCR corrompido / ruído alto</td><td>Excluído</td></tr>
+        </table>
+
+        <h3 style="margin-top:1rem">Tipos de atos publicados</h3>
+        <ul>
+          <li>Portarias (nomeações, exonerações, licenças)</li>
+          <li>Decretos e Leis municipais</li>
+          <li>Editais e extratos de licitação</li>
+          <li>Contratos e Termos Aditivos</li>
+          <li>Relatórios de gestão fiscal (RGF/RREO)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <strong>Problema identificado:</strong> O campo <code>texto</code> do config <code>curated</code> contém resíduos de OCR corrompido (ex: "AnoXxIlI", "VCccXLVI", "CRIADOPEL.SEIN01915195"). Como resultado, a loss inicial do modelo nesse corpus é ~9,98 — próxima à entropia máxima para o vocabulário de 150K tokens (log(150K) ≈ 11,9) —, tornando os updates iniciais quase aleatórios e destrutivos.
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="modelo">
+  <h2><span class="num">3</span> Modelo Base e Justificativa</h2>
+  <div class="card">
+    <h3>Qwen2.5-0.5B — por que este modelo?</h3>
+    <div class="two-col">
+      <div>
+        <table>
+          <tr><th>Atributo</th><th>Valor</th></tr>
+          <tr><td>Parâmetros</td><td>494 M (~0,5B)</td></tr>
+          <tr><td>Vocabulário</td><td>151.936 tokens</td></tr>
+          <tr><td>Camadas</td><td>24</td></tr>
+          <tr><td>Heads de atenção</td><td>14</td></tr>
+          <tr><td>Contexto máximo</td><td>131.072 tokens</td></tr>
+          <tr><td>Precisão de treino</td><td>bfloat16</td></tr>
+          <tr><td>VRAM necessária (full-FT)</td><td>~12 GB (bf16 + grad ckpt)</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3>Justificativa da escolha</h3>
+        <ul>
+          <li><strong>Custo computacional:</strong> Cabe na L4 (23,9 GB) em full-FT com bf16 + gradient checkpointing, sem necessidade de paralelismo</li>
+          <li><strong>Tokenizador:</strong> Vocabulário de 151K tokens com cobertura multilingual robusta para português brasileiro</li>
+          <li><strong>Baseline razoável:</strong> CE held-out = 2,63 no domínio DOM-PI sem qualquer treino específico, indicando compreensão básica de português jurídico</li>
+          <li><strong>Referência didática:</strong> Compatível com o fluxo do livro <em>Build a Large Language Model from Scratch</em> (Raschka, 2024)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="metodologia">
+  <h2><span class="num">4</span> Metodologia de Pré-treino Continuado</h2>
+  <div class="card">
+    <h3>4.1 Packed Causal Language Modeling</h3>
+    <p>Para maximizar a eficiência de GPU e eliminar padding, adotou-se a técnica de <em>packing</em>: documentos são concatenados com o token EOS entre si e divididos em blocos fixos de <code>block_size=1024</code> tokens. Blocos parciais ao final do corpus são descartados.</p>
+    <pre><code>[doc₁ tokens] [EOS] [doc₂ tokens] [EOS] [doc₃ tok... | bloco 1024 | bloco 1024 | ...]</code></pre>
+    <p>O objetivo é o next-token prediction padrão: dado o input <code>x[0:1023]</code>, prever <code>x[1:1024]</code>.</p>
+
+    <div class="callout callout-info">
+      <strong>Bug corrigido (Job 381):</strong> A implementação original emitia um bloco parcial final (ex: 928 tokens) que causava <code>RuntimeError: stack expects each tensor to be equal size</code> no <code>default_collate</code>. O bloco parcial foi descartado intencionalmente, conforme recomendação de prática padrão em packing.
+    </div>
+
+    <h3>4.2 LR Schedule Manual — Apêndice D (Raschka 2024)</h3>
+    <p>O schedule foi implementado manualmente seguindo o Apêndice D do livro de referência, com três fases:</p>
+    <div class="two-col">
+      <div>
+        <pre><code># Fase 1: Warmup linear
+initial_lr = 0.01 × peak_lr
+lr_now = initial_lr + step × (peak_lr - initial_lr) / warmup_steps
+
+# Fase 2: Cosine decay
+progress = (step - warmup_steps) / (total_steps - warmup_steps)
+progress = min(progress, 1.0)  # sem wrap-around
+lr_now = min_lr + (peak_lr - min_lr) × 0.5 × (1 + cos(π × progress))
+
+# min_lr = 0.1 × peak_lr</code></pre>
+      </div>
+      <div>
+        <h3>Parâmetros do schedule</h3>
+        <table>
+          <tr><th>Parâmetro</th><th>Valor</th><th>Referência</th></tr>
+          <tr><td><code>initial_lr</code></td><td>1% do peak</td><td>Raschka D.1</td></tr>
+          <tr><td><code>min_lr</code></td><td>10% do peak</td><td>Raschka D.2</td></tr>
+          <tr><td><code>warmup_fraction</code></td><td>5% dos steps</td><td>Raschka D.1</td></tr>
+          <tr><td>Clamp de progress</td><td><code>min(p, 1.0)</code></td><td>Evita wrap-around</td></tr>
+        </table>
+        <p style="margin-top:0.5rem; font-size:0.85rem">O clamp <code>min(progress, 1.0)</code> foi adicionado para evitar que o schedule continue decaindo além de <code>total_steps</code>, comportamento que ocorria na implementação original do Raschka.</p>
+      </div>
+    </div>
+
+    <h3>4.3 Otimizador e Hiperparâmetros Gerais</h3>
+    <table>
+      <tr><th>Hiperparâmetro</th><th>Valor</th><th>Justificativa</th></tr>
+      <tr><td>Otimizador</td><td>AdamW</td><td>Padrão para LLMs; correção de weight decay em Adam desacoplada (Loshchilov &amp; Hutter, 2019)</td></tr>
+      <tr><td><code>weight_decay</code></td><td>0,1</td><td>Raschka Apêndice D; regularização moderada para DAPT</td></tr>
+      <tr><td><code>betas</code></td><td>(0.9, 0.95)</td><td>β₂=0.95 recomendado por Raschka para estabilizar estimativas de segundo momento em corpus grande</td></tr>
+      <tr><td><code>grad_clip</code></td><td>1,0</td><td>Clipping de gradiente padrão; evita explosão de gradiente com loss alta (inicial ~10)</td></tr>
+      <tr><td><code>batch_size</code></td><td>4</td><td>Limitado pela VRAM da L4 com blocos de 1024 tokens em bf16</td></tr>
+      <tr><td><code>grad_accum</code></td><td>4</td><td>Batch efetivo = 16 × 1024 = 16.384 tokens/step</td></tr>
+      <tr><td><code>block_size</code></td><td>1024 tokens</td><td>Contexto standard para 0.5B; custo quadrático da atenção</td></tr>
+      <tr><td><code>epochs</code></td><td>1</td><td>Raschka: "common to train for only one epoch" em corpus grande para evitar overfitting</td></tr>
+      <tr><td><code>precision</code></td><td>bfloat16</td><td>Mantém range dinâmico de float32; preferível a float16 para treinamento</td></tr>
+      <tr><td>Gradient checkpointing</td><td>ativado</td><td>Reduz VRAM ~60% à custa de ~30% de tempo; necessário para full-FT na L4</td></tr>
+    </table>
+
+    <h3>4.4 Seleção do Melhor Checkpoint</h3>
+    <p>O checkpoint <code>best</code> é salvo a cada <code>save_every=500</code> steps usando a <strong>perda média do intervalo</strong> (window_loss), não o loss do batch atual. Isso evita selecionar um checkpoint de um batch acidentalmente fácil.</p>
+    <div class="callout callout-info">
+      <strong>Bug corrigido (Job 381):</strong> A implementação original comparava <code>avg_loss</code> do batch atual no checkpoint. No step 500, um batch de fácil (loss=3,08) foi selecionado como <code>best</code>, resultando em avaliação de um modelo quase não-treinado. A correção usa <code>window_loss / window_count</code> calculado ao longo dos 500 steps do intervalo.
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="implementacao">
+  <h2><span class="num">5</span> Implementação e Decisões Técnicas</h2>
+  <div class="card">
+    <h3>Estrutura do pipeline</h3>
+    <div class="two-col">
+      <div>
+        <table>
+          <tr><th>Arquivo</th><th>Função</th></tr>
+          <tr><td><code>preparar_held_out.py</code></td><td>Split 95/5% fixo (seed=42) do HF Hub</td></tr>
+          <tr><td><code>pretreino_continuado.py</code></td><td>Loop de treino full-FT com packed LM</td></tr>
+          <tr><td><code>avaliar_modelo.py</code></td><td>CE, PPL, TokenAcc no held-out + benchmark</td></tr>
+          <tr><td><code>comparar_resultados.py</code></td><td>Tabela antes×depois com Δ</td></tr>
+          <tr><td><code>run_pretreino.sbatch</code></td><td>Orquestração SLURM (4 passos)</td></tr>
+          <tr><td><code>inferencia_comparativa.py</code></td><td>Geração de texto greedy (qualitativa)</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3>Fluxo do sbatch</h3>
+        <pre><code>Passo 1: preparar_held_out.py --from-hub
+  ↓ gera data/held_out.jsonl + train_corpus.jsonl
+
+Passo 2: avaliar_modelo.py (baseline)
+  ↓ gera resultados_baseline.json
+
+Passo 3: pretreino_continuado.py
+  ↓ gera checkpoints/ (best + final)
+
+Passo 4: avaliar_modelo.py (pós-treino)
+  ↓ gera resultados_postreino.json
+
+Passo 5: comparar_resultados.py
+  ↓ imprime tabela no log SLURM</code></pre>
+      </div>
+    </div>
+
+    <h3>Avaliação — Sliding Window no held-out</h3>
+    <p>O held-out é avaliado com janela deslizante de <code>max_len=512</code> tokens com stride de 256 tokens (50%). Cada chunk é avaliado independentemente e a perda é acumulada sobre todos os tokens não-padded. Isso garante cobertura total dos documentos sem truncagem arbitrária.</p>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="experimentos">
+  <h2><span class="num">6</span> Experimentos e Resultados por Job</h2>
+  <div class="card">
+    <h3>6.1 Baseline — Qwen2.5-0.5B sem treino de domínio</h3>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="val">2,6337</div>
+        <div class="lbl">CE Held-out</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">13,93</div>
+        <div class="lbl">PPL Held-out</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">49,53%</div>
+        <div class="lbl">TokenAcc Held-out</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">2,4192</div>
+        <div class="lbl">CE Benchmark</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">11,24</div>
+        <div class="lbl">PPL Benchmark</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">52,08%</div>
+        <div class="lbl">TokenAcc Benchmark</div>
+      </div>
+    </div>
+
+    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border);">
+
+    <h3>6.2 Comparativo Completo dos Jobs</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Job</th>
+          <th>peak_lr</th>
+          <th>Warmup</th>
+          <th>CE held-out</th>
+          <th>Δ CE</th>
+          <th>PPL held-out</th>
+          <th>Δ PPL</th>
+          <th>CE benchmark</th>
+          <th>Diagnóstico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Baseline</strong></td>
+          <td>—</td><td>—</td>
+          <td>2,6337</td><td>—</td>
+          <td>13,93</td><td>—</td>
+          <td>2,4192</td>
+          <td><span class="badge badge-info">Referência</span></td>
+        </tr>
+        <tr>
+          <td><strong>Job 381</strong></td>
+          <td><code>5e-6</code></td><td>3%</td>
+          <td>5,29</td>
+          <td><span class="delta-bad">+2,65</span></td>
+          <td>197,8</td>
+          <td><span class="delta-bad">+183,9</span></td>
+          <td>—*</td>
+          <td><span class="badge badge-bad">Esq. catastrófico</span></td>
+        </tr>
+        <tr>
+          <td><strong>Job 383</strong></td>
+          <td><code>1e-6</code></td><td>5%</td>
+          <td>2,73</td>
+          <td><span class="delta-warn">+0,096</span></td>
+          <td>15,3</td>
+          <td><span class="delta-warn">+1,4</span></td>
+          <td>2,45 (+0,03)</td>
+          <td><span class="badge badge-warn">Sem aprendizado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Job 384</strong></td>
+          <td><code>2e-6</code></td><td>5%</td>
+          <td>3,74</td>
+          <td><span class="delta-bad">+1,107</span></td>
+          <td>42,1</td>
+          <td><span class="delta-bad">+28,2</span></td>
+          <td>2,90 (+0,48)</td>
+          <td><span class="badge badge-bad">Esq. moderado</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.8rem;color:#6b7280">* Job 381: avaliação usou checkpoint <code>best</code> (step 500, praticamente não-treinado) devido a dois bugs; <code>final</code> não foi salvo por crash no bloco parcial.</p>
+
+    <h3>6.3 Mapa do Espaço de LR</h3>
+    <div class="lr-map">
+      <div class="lr-zone lr-safe">
+        <div class="lr-val">1e-6</div>
+        <div class="lr-label">Zona Segura</div>
+        <div class="lr-metrics">
+          Loss: estagna em ~7,5<br>
+          CE Δ: <strong>+0,096</strong><br>
+          PPL Δ: <strong>+1,4</strong><br>
+          <em>Sem aprendizado</em>
+        </div>
+      </div>
+      <div class="lr-zone lr-mid">
+        <div class="lr-val">2e-6</div>
+        <div class="lr-label">Zona Intermediária</div>
+        <div class="lr-metrics">
+          Loss: 9,2 → 5,3<br>
+          CE Δ: <strong>+1,107</strong><br>
+          PPL Δ: <strong>+28,2</strong><br>
+          <em>Degradação moderada</em>
+        </div>
+      </div>
+      <div class="lr-zone lr-catas">
+        <div class="lr-val">5e-6</div>
+        <div class="lr-label">Zona Catastrófica</div>
+        <div class="lr-metrics">
+          Loss: 9,98 → 3,5<br>
+          CE Δ: <strong>+2,65</strong><br>
+          PPL Δ: <strong>+183,9</strong><br>
+          <em>Forgetting total</em>
+        </div>
+      </div>
+    </div>
+
+    <h3>6.4 Evolução da Loss de Treino (Job 384 — peak_lr=2e-6)</h3>
+    <table>
+      <tr><th>Step</th><th>Loss</th><th>PPL (treino)</th><th>LR atual</th><th>Observação</th></tr>
+      <tr><td>0</td><td>~9,98</td><td>~21.500</td><td>2,0e-8</td><td>Início (LR mínimo no warmup)</td></tr>
+      <tr><td>220</td><td>9,21</td><td>9.986</td><td>1,67e-6</td><td>Warmup em progresso</td></tr>
+      <tr><td>500</td><td>5,03</td><td>153,6</td><td>1,99e-6</td><td>Fim do warmup; 1º checkpoint</td></tr>
+      <tr><td>1.000</td><td>5,62</td><td>274,7</td><td>1,91e-6</td><td>loss_intervalo=5,60 → novo best</td></tr>
+      <tr><td>1.500</td><td>~5,4</td><td>~221</td><td>1,74e-6</td><td>loss_intervalo=5,31 → novo best</td></tr>
+      <tr><td>2.500</td><td>5,27</td><td>194,1</td><td>1,25e-6</td><td>loss_intervalo=5,28 → <strong>melhor final</strong></td></tr>
+      <tr><td>4.000</td><td>4,89</td><td>132,3</td><td>4,73e-7</td><td>Checkpoint periódico (sem best update)</td></tr>
+      <tr><td>5.274</td><td>~5,5</td><td>~245</td><td>2,00e-7</td><td>Fim da época; final salvo</td></tr>
+    </table>
+    <p style="font-size:0.82rem;color:#6b7280">A loss oscila fortemente devido ao OCR corrompido — batches com texto limpo têm loss ~4,6 enquanto batches com texto degradado chegam a ~6,3.</p>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="metricas">
+  <h2><span class="num">7</span> Métricas de Avaliação</h2>
+  <div class="card">
+    <h3>7.1 Definições</h3>
+    <div class="two-col">
+      <div>
+        <h3>Cross-Entropy (CE)</h3>
+        <p>Medida de surpresa média do modelo por token:</p>
+        <pre><code>CE = −(1/N) Σ log P(xₜ | x&lt;ₜ)</code></pre>
+        <p>Calculada com <code>reduction="none"</code> sobre tokens não-padded (atenção mascarada). <strong>Menor é melhor.</strong></p>
+
+        <h3>Perplexidade (PPL)</h3>
+        <pre><code>PPL = exp(CE)</code></pre>
+        <p>Interpreta-se como o número de opções igualmente prováveis que o modelo considera em cada posição. PPL=13,93 (baseline) significa que o modelo é equivalente a escolher uniformemente entre ~14 opções por token. <strong>Menor é melhor.</strong></p>
+      </div>
+      <div>
+        <h3>Token Accuracy</h3>
+        <pre><code>TokenAcc = #{argmax(logits) == label} / N_tokens</code></pre>
+        <p>Fração de posições em que o modelo escolhe o token correto via greedy. Complementa CE pois é não-contínua. <strong>Maior é melhor.</strong></p>
+
+        <h3>CE Benchmark (NLL da resposta)</h3>
+        <p>Para cada par (pergunta, resposta_ref) do benchmark, calcula-se a NLL apenas sobre os tokens da resposta, condicionada ao prompt:</p>
+        <pre><code>CE_bm = −(1/|resp|) Σ log P(resp_t | prompt + resp&lt;t)</code></pre>
+        <p>Mede se o modelo atribui alta probabilidade às respostas corretas de domínio. <strong>Menor é melhor.</strong></p>
+      </div>
+    </div>
+
+    <h3>7.2 Resultados Finais — Baseline vs Job 384 (lr=2e-6)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Métrica</th>
+          <th class="center">Baseline</th>
+          <th class="center">Pós-treino (J384)</th>
+          <th class="center">Δ Absoluto</th>
+          <th class="center">Avaliação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="5" style="background:#f4f8fb;font-weight:700;font-size:0.82rem;color:#374151;padding:0.4rem 0.8rem">HELD-OUT (2.861 docs, 13.318 exemplos de 512 tokens)</td>
+        </tr>
+        <tr>
+          <td>Cross-Entropy</td>
+          <td class="center">2,6337</td>
+          <td class="center">3,7407</td>
+          <td class="center"><span class="delta-bad">↑ +1,1070</span></td>
+          <td class="center"><span class="badge badge-bad">Piorou</span></td>
+        </tr>
+        <tr>
+          <td>Perplexidade</td>
+          <td class="center">13,93</td>
+          <td class="center">42,13</td>
+          <td class="center"><span class="delta-bad">↑ +28,20</span></td>
+          <td class="center"><span class="badge badge-bad">Piorou</span></td>
+        </tr>
+        <tr>
+          <td>Token Accuracy</td>
+          <td class="center">49,53%</td>
+          <td class="center">33,90%</td>
+          <td class="center"><span class="delta-bad">↓ −15,63 pp</span></td>
+          <td class="center"><span class="badge badge-bad">Piorou</span></td>
+        </tr>
+        <tr>
+          <td colspan="5" style="background:#f4f8fb;font-weight:700;font-size:0.82rem;color:#374151;padding:0.4rem 0.8rem">BENCHMARK Q&A (33 pares, NLL da resposta dado o prompt)</td>
+        </tr>
+        <tr>
+          <td>Cross-Entropy</td>
+          <td class="center">2,4192</td>
+          <td class="center">2,8996</td>
+          <td class="center"><span class="delta-bad">↑ +0,4804</span></td>
+          <td class="center"><span class="badge badge-bad">Piorou</span></td>
+        </tr>
+        <tr>
+          <td>Perplexidade</td>
+          <td class="center">11,24</td>
+          <td class="center">18,17</td>
+          <td class="center"><span class="delta-bad">↑ +6,93</span></td>
+          <td class="center"><span class="badge badge-bad">Piorou</span></td>
+        </tr>
+        <tr>
+          <td>Token Accuracy</td>
+          <td class="center">52,08%</td>
+          <td class="center">45,26%</td>
+          <td class="center"><span class="delta-bad">↓ −6,82 pp</span></td>
+          <td class="center"><span class="badge badge-bad">Piorou</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="benchmark">
+  <h2><span class="num">8</span> Benchmark DOM-PI Q&A</h2>
+  <div class="card">
+    <p>O benchmark é composto por <strong>33 pares pergunta-resposta</strong> criados a partir de documentos Tier A do corpus. Cobre 6 categorias de conhecimento de domínio. A avaliação é feita pela NLL da resposta de referência dado o prompt — não por geração.</p>
+
+    <div class="two-col" style="margin-bottom:1rem">
+      <div>
+        <h3>Distribuição por tipo</h3>
+        <table>
+          <tr><th>Tipo</th><th>Qtd</th><th>Exemplo de cobertura</th></tr>
+          <tr><td>licitacao_vencedor</td><td>4</td><td>Empresa vencedora, edital, processo</td></tr>
+          <tr><td>nomeacao</td><td>4</td><td>Cargo, CPF, secretaria</td></tr>
+          <tr><td>valor_contrato</td><td>5</td><td>Valor total ou mensal de contratos</td></tr>
+          <tr><td>objeto_contrato</td><td>4</td><td>Descrição do serviço contratado</td></tr>
+          <tr><td>conceitual_juridico</td><td>8</td><td>Definições (pregão, dispensa, etc.)</td></tr>
+          <tr><td>contexto_regional</td><td>4</td><td>FPM, territórios do Piauí, estrutura</td></tr>
+          <tr><td>interpretacao_documento</td><td>4</td><td>Como ler portaria, extrato, RGF</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3>Resultado por modelo</h3>
+        <table>
+          <tr><th>Modelo</th><th>CE Benchmark</th><th>PPL</th><th>TokenAcc</th></tr>
+          <tr><td>Baseline (sem treino)</td><td>2,4192</td><td>11,24</td><td>52,08%</td></tr>
+          <tr><td>Job 383 (lr=1e-6)</td><td>2,45</td><td>11,59</td><td>~51%</td></tr>
+          <tr><td>Job 384 (lr=2e-6)</td><td>2,8996</td><td>18,17</td><td>45,26%</td></tr>
+        </table>
+        <div class="callout callout-warn" style="margin-top:0.8rem">
+          Nenhum job conseguiu reduzir a CE do benchmark abaixo do baseline. O pré-treino no corpus ruidoso <em>degradou</em> a capacidade do modelo de atribuir probabilidade correta às respostas de referência.
+        </div>
+      </div>
+    </div>
+
+    <h3>Amostra das perguntas do benchmark</h3>
+
+    <div class="bm-item">
+      <div class="bm-q"><span class="bm-type">licitação</span>Qual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?</div>
+      <div class="bm-a">ANTARES COMERCIO ATACADISTA LTDA (CNPJ 28.766.496/0001-28)</div>
+    </div>
+    <div class="bm-item">
+      <div class="bm-q"><span class="bm-type">nomeação</span>Quem foi nomeado para a função de Coordenação de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?</div>
+      <div class="bm-a">EULILIA DA SILVA CARVALHO ALBUQUERQUE (CPF 047.870.323-64)</div>
+    </div>
+    <div class="bm-item">
+      <div class="bm-q"><span class="bm-type">valor_contrato</span>Qual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?</div>
+      <div class="bm-a">R$ 25.536,00 (vinte e cinco mil, quinhentos e trinta e seis reais)</div>
+    </div>
+    <div class="bm-item">
+      <div class="bm-q"><span class="bm-type">conceitual_jurídico</span>O que é um Pregão Eletrônico no contexto das licitações públicas brasileiras?</div>
+      <div class="bm-a">O pregão eletrônico é uma modalidade licitatória realizada por meio de plataformas digitais, obrigatória para aquisição de bens e serviços comuns. O processo ocorre em duas fases: habilitação e disputa de preços em sessão pública online. Vence a proposta de menor preço que atenda às especificações do edital.</div>
+    </div>
+    <div class="bm-item">
+      <div class="bm-q"><span class="bm-type">contexto_regional</span>Quais são os Territórios de Desenvolvimento do Piauí e como eles se relacionam com o DOM-PI?</div>
+      <div class="bm-a">O Piauí está dividido em 12 Territórios de Desenvolvimento. O DOM-PI organiza suas publicações por esses territórios. Teresina (capital) tem diário próprio (DOM-Teresina) e constitui o 13º território no corpus DOM-PI.</div>
+    </div>
+    <div class="bm-item">
+      <div class="bm-q"><span class="bm-type">conceitual_jurídico</span>O que é cargo em comissão na administração pública municipal?</div>
+      <div class="bm-a">Cargo em comissão é aquele de livre nomeação e exoneração pelo Chefe do Executivo, destinado a funções de direção, chefia e assessoramento. Diferente do cargo efetivo (concurso público), pode ser exonerado a qualquer momento.</div>
+    </div>
+    <div class="bm-item">
+      <div class="bm-q"><span class="bm-type">conceitual_jurídico</span>O que é o Fundo de Participação dos Municípios (FPM) e qual sua importância para as finanças municipais do Piauí?</div>
+      <div class="bm-a">O FPM é uma transferência constitucional obrigatória da União para os municípios, composta por 22,5% da arrecadação do IR e IPI. Para municípios pequenos do Piauí representa frequentemente mais de 80% da receita total.</div>
+    </div>
+    <div class="bm-item">
+      <div class="bm-q"><span class="bm-type">interpretação</span>Me explique como interpretar um extrato de portaria de nomeação no DOM-PI.</div>
+      <div class="bm-a">Uma portaria de nomeação contém: número e data, nome da autoridade, base legal, nome completo do nomeado com CPF, cargo comissionado (ex: DAL-I, DAS-II), secretaria de lotação e data de vigência.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="inferencias">
+  <h2><span class="num">9</span> Inferências Comparativas — Análise Qualitativa</h2>
+  <div class="card">
+    <div class="callout callout-warn">
+      <strong>Três modelos comparados:</strong>
+      <ul style="margin-top:0.4rem">
+        <li><strong style="color:#2e7d9e">Baseline</strong> — Qwen2.5-0.5B original, sem fine-tuning</li>
+        <li><strong style="color:#b35a00">Job 384 — Intermediário</strong> (lr=2e-6) — esquecimento moderado: CE +1,1, PPL ×3. Checkpoint <code>final</code> disponível.</li>
+        <li><strong style="color:#7b2d2d">Job 381 — Catastrófico</strong> (lr=5e-6) — colapso completo: CE +2,65, PPL ×14. Nota: checkpoint do Job 383 (lr=1e-6, seguro) foi sobrescrito e não está disponível para inferência.</li>
+      </ul>
+      Geração: greedy decoding, <code>max_new_tokens=200</code>, <code>repetition_penalty=1.1</code>.
+    </div>
+
+    <!-- Prompt 1 -->
+    <div class="inference-block">
+      <div class="inference-header">
+        <span>completar_portaria — Completação de Domínio</span>
+        <span class="badge badge-info">Jurídico-Administrativo</span>
+      </div>
+      <div class="prompt-box">PORTARIA Nº 130, DE 12 DE MARÇO DE 2025.
+
+O PREFEITO MUNICIPAL DE COCAL, Estado do Piauí, no uso de suas atribuições legais,
+
+RESOLVE:
+
+Art. 1º</div>
+      <div class="inference-body">
+        <div class="inference-pane base">
+          <div class="label">Baseline (Qwen2.5-0.5B sem domínio)</div>
+          <div class="text">- A Prefeitura Municipal de Coçal (PREFEITURA) promoverá a realização de um
+programa de formação e capacitação profissional para os servidores públicos municipais,
+com o objetivo de fortalecer as competências dos mesmos, com vistas à melhoria da qualidade
+de vida das pessoas que trabalham na Administração Pública Municipal.
+
+Art. 2º - O Programa de Formação e Capacitação Profissional será desenvolvido em
+forma integrada, com o apoio de instituições de ensino superior e de outras entidades
+individuais ou corporativas, com o intuito de oferecer aos servidores públicos uma form</div>
+        </div>
+        <div class="inference-pane mid">
+          <div class="label">Job 384 — Intermediário (lr=2e-6)</div>
+          <div class="text">A Prefe Municipal de Coa, em consonância com o art. 4 da Lei nº 69/87, e a lei nº 10/00, instito que é deu de lei nº 13/0, de 12 de mar de 020, autoriza ao cadao decoar de sua cidade de coa estado p
+
+<em style="color:#888;font-size:0.85em">[Degradação visível: palavras truncadas ("Prefe", "Coa"), datas corrompidas ("mar de 020"), estrutura coerente mas conteúdo inconsistente — reflexo do OCR do corpus de treino]</em></div>
+        </div>
+        <div class="inference-pane pos">
+          <div class="label">Job 381 — Catastrófico (lr=5e-6)</div>
+          <div class="text">Nome o....................................................................................................................................................</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prompt 2 -->
+    <div class="inference-block">
+      <div class="inference-header">
+        <span>resposta_licitacao — Q&A Factual</span>
+        <span class="badge badge-info">Recuperação de Fato</span>
+      </div>
+      <div class="prompt-box">Pergunta: Qual é o objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES?
+
+Resposta:</div>
+      <div class="inference-body">
+        <div class="inference-pane base">
+          <div class="label">Baseline</div>
+          <div class="text">O objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES é a prestação de serviços para a cidade.</div>
+        </div>
+        <div class="inference-pane mid">
+          <div class="label">Job 384 — Intermediário (lr=2e-6)</div>
+          <div class="text">O objeto do contrato de prestação de serviços firmado pela Prefe Municipal Pedro II com a empresa ANTARES é a prestação de serviços para a cidade de Pedro II.
+
+<em style="color:#888;font-size:0.85em">[Quase correto — "Prefe" em vez de "Prefeitura" (abreviação OCR do corpus); resposta coerente com leve interferência do domínio]</em></div>
+        </div>
+        <div class="inference-pane pos">
+          <div class="label">Job 381 — Catastrófico (lr=5e-6)</div>
+          <div class="text"> objeto prest de serviços MICOSA, atendo Secret Municipal Saúde Pedro.
+
+Puntaa
+
+ Pça................................................................................................................................</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prompt 3 -->
+    <div class="inference-block">
+      <div class="inference-header">
+        <span>conceito_juridico — Q&A Conceitual</span>
+        <span class="badge badge-info">Conhecimento Jurídico</span>
+      </div>
+      <div class="prompt-box">Pergunta: O que é um Pregão Eletrônico no contexto das licitações públicas brasileiras?
+
+Resposta:</div>
+      <div class="inference-body">
+        <div class="inference-pane base">
+          <div class="label">Baseline</div>
+          <div class="text">Um pregão eletrônico é uma forma de solicitar a prestação de serviços ou produtos, como em licitações públicas, através do envio de pedidos por meio de computadores e internet. Em outras palavras, é o processo de solicitação de bens ou serviços para empresas ou particulares, realizados pela Internet.
+
+O pregão eletrônico permite que as empresas possam realizar suas propostas sem necessidade de terem contato pessoalmente com os órgãos competentes.</div>
+        </div>
+        <div class="inference-pane mid">
+          <div class="label">Job 384 — Intermediário (lr=2e-6)</div>
+          <div class="text">Um pregão eletrônico é uma forma de licitação pública em que os processos são realizados através do Internet. Essa modalidade permite a transmissão dos documentos, como contratos e ofertas, para que os licitantes possam participar do processo sem precisar estar presentes fisicamente.
+
+<em style="color:#888;font-size:0.85em">[Resposta razoável — mantém coerência jurídica básica; "através do Internet" é traço do corpus OCR]</em></div>
+        </div>
+        <div class="inference-pane pos">
+          <div class="label">Job 381 — Catastrófico (lr=5e-6)</div>
+          <div class="text"> o é umreg eleônicoo público, como aação administr,ado de comão eaidadeativa queõeá aata dearêio,ando a deção deosesososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososososos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prompt 4 -->
+    <div class="inference-block">
+      <div class="inference-header">
+        <span>completar_contrato — Completação de Extrato</span>
+        <span class="badge badge-info">Formato Oficial</span>
+      </div>
+      <div class="prompt-box">EXTRATO DE CONTRATO
+
+Contratante: PREFEITURA MUNICIPAL DE TERESINA
+Contratada: EMPRESA DE TECNOLOGIA LTDA
+Objeto: Prestação de serviços de</div>
+      <div class="inference-body">
+        <div class="inference-pane base">
+          <div class="label">Baseline</div>
+          <div class="text">manutenção e reparos em equipamentos de energia elétrica, para uso da Prefeitura Municipal de Teresina.
+Valor do Contrato: R$ 1.000,00
+Data de Contratação: 25/03/2019
+Data de Vencimento: 24/06/2020
+Data de Pagamento: 24/06/2020
+Data de Recolhimento: 24/06/2020</div>
+        </div>
+        <div class="inference-pane mid">
+          <div class="label">Job 384 — Intermediário (lr=2e-6)</div>
+          <div class="text">contrato
+Data: 01/02/2023
+Valor: R$5.000,00
+Valor do contrato:R$5000,00
+Valor da prestacao:R$5000,00
+Valor do valor:R$5000,00
+valor do valor:R$5000,00
+valor do valor:R$5000,00
+
+<em style="color:#888;font-size:0.85em">[Loop de repetição de campos — "Valor do valor" revela assimilação de padrões repetitivos OCR do corpus; formato de extrato reconhecível mas conteúdo degenerado]</em></div>
+        </div>
+        <div class="inference-pane pos">
+          <div class="label">Job 381 — Catastrófico (lr=5e-6)</div>
+          <div class="text">uten de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de de</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prompt 5 -->
+    <div class="inference-block">
+      <div class="inference-header">
+        <span>pergunta_diario — Q&A de Domínio</span>
+        <span class="badge badge-info">Conhecimento Institucional</span>
+      </div>
+      <div class="prompt-box">Pergunta: O que é o Diário Oficial dos Municípios do Piauí e qual é sua finalidade legal?
+
+Resposta:</div>
+      <div class="inference-body">
+        <div class="inference-pane base">
+          <div class="label">Baseline</div>
+          <div class="text">O Diário Oficial dos Municípios do Piauí (Dofim) é um órgão oficial da República Federativa do Brasil, cuja finalidade é publicar notícias sobre as atividades das secretarias municipais, ações públicas e outras informações relevantes para os cidadãos. Ele é regulado pela Lei 12.034/2015, de 27 de dezembro, e tem como objetivo garantir a transparência e a confiabilidade na gestão pública.</div>
+        </div>
+        <div class="inference-pane mid">
+          <div class="label">Job 384 — Intermediário (lr=2e-6)</div>
+          <div class="text">O Diário Oficial dos Municípios do Piauí é um documento oficial de registro público, emitido pelo município ou órgão municipal. Ele tem como objetivo registrar os atos públicos realizados no município de Piauí, como licitações, portarias e outros atos administrativos.
+
+<em style="color:#888;font-size:0.85em">[Resposta funcional — conceito básico preservado; "município de Piauí" em vez de "municípios do Piauí" indica contaminação do padrão de texto do corpus]</em></div>
+        </div>
+        <div class="inference-pane pos">
+          <div class="label">Job 381 — Catastrófico (lr=5e-6)</div>
+          <div class="text"> Di Of dosunicios Míisais Pui, a dea de10001222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-bad">
+      <strong>Interpretação das inferências:</strong>
+      <ul style="margin-top:0.4rem">
+        <li><strong>Job 381 (catastrófico):</strong> Colapso completo — loops de "de de de…", tokens fragmentados, sequências numéricas. O modelo sobreescreveu as distribuições gerais de linguagem com ruído OCR.</li>
+        <li><strong>Job 384 (intermediário):</strong> Degradação parcial — estrutura textual preservada, mas com vazamento de padrões do corpus: abreviações OCR ("Prefe", "Coa"), loops de campos ("Valor do valor"), erros gramaticais leves. Em respostas conceituais simples, a qualidade é próxima do baseline.</li>
+        <li><strong>Gradiente de degradação:</strong> A severidade escala com o LR. Mesmo o nível intermediário (lr=2e-6) já evidencia assimilação dos artefatos OCR — confirmando que o problema é o corpus, não a técnica.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="diagnostico">
+  <h2><span class="num">10</span> Diagnóstico e Análise</h2>
+  <div class="card">
+    <h3>10.1 Por que o DAPT falhou nesta configuração?</h3>
+    <p>A causa raiz não é o LR em si — é a <strong>qualidade do corpus</strong>. O campo <code>texto</code> do config <code>curated</code> inclui resíduos de OCR corrompido que tornam o sinal de treino quase indistinguível de ruído. Isso cria um regime patológico:</p>
+
+    <div class="two-col">
+      <div>
+        <ul>
+          <li><strong>Loss inicial alta (~10):</strong> O modelo não consegue prever os tokens corrompidos, então os gradientes são enormes e destrutivos desde o primeiro step</li>
+          <li><strong>LR muito baixo (1e-6):</strong> Os gradientes grandes são amortecidos, mas o modelo também não consegue mover os pesos para nada útil — estagna em loss ~7,5</li>
+          <li><strong>LR moderado (2e-6):</strong> O modelo "aprende" o ruído OCR, corrompendo parcialmente as representações originais — CE held-out sobe de 2,63 para 3,74</li>
+          <li><strong>LR alto (5e-6):</strong> O modelo sobreescreve quase tudo com o padrão do ruído OCR — colapso completo das capacidades linguísticas gerais</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Evidência quantitativa do problema</h3>
+        <table>
+          <tr><th>Indicador</th><th>Valor</th><th>Significado</th></tr>
+          <tr><td>Loss inicial (corpus)</td><td>9,98</td><td>Próximo ao máximo teórico (log 150K ≈ 11,9)</td></tr>
+          <tr><td>Loss final Job 384</td><td>~5,3</td><td>Ainda muito alta — texto limpo tem loss ~2,5</td></tr>
+          <tr><td>Loss Job 383 (estagnada)</td><td>~7,5</td><td>Gradientes cancelados pelo ruído</td></tr>
+          <tr><td>CE held-out baseline</td><td>2,63</td><td>Modelo já entende português jurídico</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h3>10.2 Relação entre tokens treinados e melhoria esperada</h3>
+    <p>A melhoria de CE em DAPT escala aproximadamente com log(N_tokens), conforme Gururangan et al. (2020):</p>
+    <table>
+      <tr><th>Volume</th><th>N_tokens estimados</th><th>Δ CE esperado (corpus limpo)</th><th>Δ CE observado (corpus ruidoso)</th></tr>
+      <tr><td>1K docs</td><td>~700K</td><td>−0,05 a −0,10</td><td>N/A</td></tr>
+      <tr><td>10K docs</td><td>~7M</td><td>−0,10 a −0,20</td><td>N/A</td></tr>
+      <tr><td>54K docs (atual)</td><td>~86M</td><td>−0,20 a −0,40</td><td><span class="delta-bad">+1,107 (degradou)</span></td></tr>
+      <tr><td>54K docs (Teresina, limpo)</td><td>~86M (estimado)</td><td>−0,20 a −0,40 (projetado)</td><td><em>Não testado</em></td></tr>
+    </table>
+    <p>Com corpus limpo (loss inicial ~2,5–3,5), os gradientes seriam informativos e os updates menores — o mesmo LR de 2e-6 provavelmente produziria melhoria em vez de degradação.</p>
+
+    <h3>10.3 Análise dos bugs encontrados e corrigidos</h3>
+    <table>
+      <tr><th>Bug</th><th>Job</th><th>Impacto</th><th>Correção</th></tr>
+      <tr>
+        <td>Bloco parcial emitido pelo dataset</td>
+        <td>381</td>
+        <td>Crash ao final da época (RuntimeError no default_collate); checkpoint <code>final</code> não salvo</td>
+        <td>Bloco parcial descartado em <code>PackedTextDataset.__iter__</code></td>
+      </tr>
+      <tr>
+        <td>Best selecionado pelo loss do batch atual</td>
+        <td>381</td>
+        <td>Step 500 com batch fácil (loss=3,08) selecionado como best; avaliação usou modelo quase não-treinado</td>
+        <td>Best agora usa <code>window_loss/window_count</code> (média dos 500 steps do intervalo)</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<section id="proximos">
+  <h2><span class="num">11</span> Próximos Passos</h2>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h3>Prioridade Alta — Corpus mais limpo</h3>
+        <ol>
+          <li><strong>Treinar com corpus de Teresina</strong> (<code>dom-pi-teresina-2025</code>): texto mais limpo, mesmo LR de 1e-6 a 2e-6, esperando loss inicial ~3–4 em vez de ~10</li>
+          <li><strong>Limpeza adicional do corpus geral</strong>: filtrar documentos com razão de caracteres alfanuméricos &lt; 0,7 e remoção de sequências de OCR claramente corrompidas</li>
+          <li><strong>Re-extração OCR com pdfplumber + post-processamento</strong> para reduzir artefatos comuns (cabeçalhos, rodapés, números de página repetidos)</li>
+        </ol>
+      </div>
+      <div>
+        <h3>Prioridade Média — Estratégia alternativa</h3>
+        <ol>
+          <li><strong>LoRA em vez de full-FT</strong>: atualiza apenas ~1% dos pesos, reduz drasticamente o risco de esquecimento com corpus ruidoso</li>
+          <li><strong>Warm-up mais longo</strong>: aumentar <code>warmup_fraction</code> de 5% para 15–20% para amortizar os gradientes destrutivos da fase inicial</li>
+          <li><strong>LR ainda menor com mais épocas</strong>: 5e-7 por 3 épocas, monitorando CE no held-out a cada 1000 steps (early stopping)</li>
+          <li><strong>Instruction tuning</strong> sobre os 33 Q&A pós-DAPT bem-sucedido</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="callout callout-info" style="margin-top:1rem">
+      <strong>Hipótese para o próximo experimento:</strong> Com o corpus de Teresina (texto mais limpo), a loss inicial cairá de ~10 para ~3–4, os gradientes serão informativos, e um LR de 1e-6 a 2e-6 deverá produzir melhoria mensurável na CE do held-out (Δ CE esperado: −0,1 a −0,3). A razão de tokens de Teresina em relação ao corpus geral é menor, mas a qualidade do sinal compensa.
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer>
+  Relatório — Questão 1: Pré-treino Continuado DOM-PI &nbsp;·&nbsp; Modelo: Qwen2.5-0.5B &nbsp;·&nbsp; Junho 2026<br>
+  Dataset: <code>gutoportelaa/dom-pi-corpus-2025</code> (corpus geral) · <code>gutoportelaa/dom-pi-teresina-2025</code> (Job 389)<br>
+  Cluster: SLURM / NVIDIA L4 &nbsp;·&nbsp; Jobs SLURM: 381 (catastrófico) · 383 (seguro) · 384 (intermediário) · 385 (inferências) · 389 (Teresina — pendente)
+</footer>
+
+</body>
+</html>

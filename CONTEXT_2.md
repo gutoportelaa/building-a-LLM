@@ -1,56 +1,161 @@
-# Relatório de Triagem e Planejamento para Processamento Visual (VL/OCR Estrutural)
+# CONTEXTO 2 — Demandas de Limpeza do Dataset (HuggingFace)
 
-## 1. Estatísticas e Impressões da Triagem Atual
+Backlog de limpeza/qualidade do corpus **publicado** em
+[`gutoportelaa/dom-pi-corpus-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-corpus-2025)
+(~67,7 mil docs, ~195M tokens, 12 territórios, 2025). O panorama da arquitetura está em
+[`CONTEXT.md`](CONTEXT.md). Este documento lista o que **ainda precisa ser feito** para elevar
+a qualidade do dataset, priorizado por impacto.
 
-> [!NOTE]
-> **Contexto de Deduplicação Prévia**
-> O volume inicial capturado no scraping do DOM-PI passava de **12.000 publicações**. Antes da etapa de limpeza, aplicamos um processo de deduplicação rigoroso para isolar arquivos únicos (usando verificações de hash e metadados cruzados), o que reduziu a base bruta consolidada para os **7.565 arquivos únicos** atuais.
-
-Após rodarmos a versão atualizada do nosso script de limpeza com heurísticas de detecção de assinaturas e tabelas achatadas, obtivemos os seguintes resultados nos `dados_brutos`:
-- **Total de documentos analisados:** 7.565
-- **Documentos sinalizados para revisão (`needs_human_review: true`):** 7.172
-- **Taxa de retenção para revisão:** ~94,8%
-
-### O que isso significa?
-Quase **95%** das publicações do DOM-PI (Diário Oficial dos Municípios do Piauí) não são apenas "textos corridos". O Diário é massivamente composto por:
-1. Documentos fiscais e contábeis (Relatórios de Gestão Fiscal - RGF, Relatórios Resumidos de Execução Orçamentária - RREO).
-2. Avisos de licitação e contratos (que contêm planilhas de itens e valores).
-3. Portarias e Decretos (com assinaturas e validações CPF/CNPJ de gestores).
-
-**A extração textual bruta (via PyMuPDF) "achata" essas tabelas**, transformando colunas estruturadas em linhas soltas de números misturados. Passar esses dados pelo modelo `nomic-embed-text` usando LangChain causaria perda severa de semântica, impossibilitando que a IA no RAG responda corretamente a perguntas complexas como *"Qual o valor do orçamento interno de Jatobá em 2024?"*.
+> Histórico: este arquivo nasceu como o plano de triagem VLM/OCR (reconstruir ~7 mil docs
+> "achatados" do Carnaubais via Marker/VLM). Aquela direção foi **realizada** — a extração
+> hoje roteia páginas fiscais/tabelas para **Docling-CUDA** e o restante para **PaddleOCR-CUDA**
+> (ver `CONTEXT.md` §4). O que segue é o backlog remanescente sobre o corpus já gerado.
 
 ---
 
-## 2. Planejamento: Transição para Extração Visual/Estrutural
+## Estado de qualidade conhecido (limitações declaradas no dataset card)
 
-Para garantir que o nosso banco vetorial seja populado com dados semanticamente ricos e preservar a estrutura das tabelas do DOM-PI, precisamos substituir (ou aprimorar) a extração bruta por Modelos de Visão e Linguagem (VLM) ou pipelines de OCR estrutural.
+| Dimensão | Situação atual |
+|---|---|
+| Cobertura | **13 Territórios** (12 do DOM-PI + Teresina); **sem Parnaíba** |
+| Município | canonizado para 176 valores oficiais; **~3,2% (~2.147 docs) `DESCONHECIDO`** |
+| Data | **91% com `DD/MM/AAAA`**; ~9% só com o ano (`2025`) |
+| Dedup | só **exato** (pós-normalização); quase-duplicatas persistem |
+| Ruído OCR | cabeçalhos/assinaturas residuais; ~50% com `needs_review` interno (não exposto) |
+| Mega-documentos | edições/leis consolidadas muito longas (LOAs de centenas de páginas) |
 
-### Opções Tecnológicas
+---
 
-1. **Marker / Surya (Recomendado para Volume)**:
-   - Pipeline especializado que converte PDFs em Markdown de alta fidelidade.
-   - Usa o Surya por baixo para detecção avançada de layout (identifica exatamente onde começa e termina uma tabela).
-   - **Vantagem**: Funciona muito bem localmente (se houver GPU) e entrega o Markdown pronto para chunking.
-2. **Modelos VLM (Qwen-VL, DeepSeek-VL ou LLaVA)**:
-   - Podemos converter as páginas dos PDFs que falharam na triagem em imagens (PNG) e passá-las por um modelo VLM rodando via Ollama ou vLLM.
-   - **Vantagem**: São excepcionais em reconstruir estruturas quebradas. Você pode instruí-los com um prompt direto: *"Transcreva a imagem em Markdown preservando as tabelas e ignorando cabeçalhos repetitivos de páginas"*.
-   - **Desvantagem**: Processamento mais custoso e lento se comparado a pipelines focados em OCR.
+## ✅ Resolvido (implementado no `build_corpus`)
 
-### Novo Fluxo de Pipeline Proposto
+### D-1 · Quase-duplicatas (near-dups) — FEITO
+Módulo `datalake/dedup_aproximada.py`: **MinHash (128 perm) + LSH** sobre shingles de
+5-gramas de palavras do texto normalizado, limiar **Jaccard 0,85**; componentes conexos →
+clusters; elege 1 **canônico** por cluster (maior texto → menos flags → data mais antiga).
+Resultado: **863 redundantes removidos** (1,1%) em 756+ clusters — duplicatas reais (LRF
+curtos quase idênticos, pares de licitação/portaria). O split **`train`** mantém só
+canônicos; o **`raw`** preserva todos com `cluster_id`/`is_near_dup` (reversível). Lever:
+`--threshold 0.80` para mais recall. Catálogo em `datalake/_catalog/near_dup.parquet`.
 
-**Fase 1: Triagem Leve e Identificação (Já Implementada)**
-- Extração rápida com PyMuPDF.
-- O `limpeza_textos.py` flagra os documentos problemáticos (com assinaturas, tabelas mal formatadas ou alto ruído).
+### D-2 · Documentos longos — FEITO (com achado relevante)
+Módulo `datalake/fatiar_megadocs.py`. **Medição contradisse a premissa inicial:** os docs
+>32k tokens **não** são compilações de muitos atos — 76% são **documentos únicos** (orçamento,
+planilha de licitação, uma LOA). As compilações reais estão em **8k–32k**. Decisão: fatiar
+**todos os docs >8k** que sejam compilações, usando fronteira = **título de ato** (PORTARIA/
+DECRETO/LEI/… Nº em início de linha) — preciso e **seguro** (em tabela fiscal acha 0 fronteiras
+→ mantém intacto, não corta tabela). Resultado: **1.106 docs fatiados → 10.645 atos**; 1.770
+docs únicos longos mantidos intactos. Coluna **`tamanho_classe`** (normal/longo/mega) em todas
+as linhas: normal 74.757 · longo 1.850 · mega 532. Tokens preservados (~193,7M).
 
-**Fase 2: Processamento Profundo VLM/OCR (A Implementar)**
-- Criar um **Orquestrador Secundário** que lê apenas os arquivos com a flag `needs_human_review: true`.
-- Este orquestrador pega a página original do PDF daquele documento e aplica o **Marker** ou um modelo **VLM (ex: Qwen-VL)** para gerar o Markdown Estruturado (onde as tabelas tornam-se `| Coluna 1 | Coluna 2 |`).
+> Produto: `corpus/corpus_llm` (train, 76.276 docs) + `corpus/corpus_raw` (raw, 77.139).
+> Empacotamento reproduzível em `datalake/empacotar_hf.py` (gera `hf_corpus_dompi/` com
+> configs `default`/`raw`). **Re-publicação no HF é passo manual** (não automatizado).
 
-**Fase 3: Ingestão Vetorial e RAG (A Implementar)**
-- **Chunking Semântico**: Usar o `MarkdownHeaderTextSplitter` ou divisores que respeitem blocos de tabelas no Langchain.
-- **Embeddings**: Inserir no ChromaDB usando o `nomic-embed-text`. Como a estrutura tabular estará preservada como texto Markdown organizado, o embedding capturará adequadamente a relação entre as colunas e os números.
+## Análise de qualidade textual (2026-06-10) — base p/ níveis de limpeza
 
-## 3. Próximos Passos
-1. Escolher qual abordagem usar para reconstruir os ~7.000 documentos problemáticos (Marker ou um VLM hospedado localmente/API).
-2. Criar um script para converter os recortes originais do DOM-PI correspondentes aos arquivos flagados em imagens ou rodar diretamente sobre seus bytes no motor de extração estruturada.
-3. Avaliar a qualidade de 10 amostras antes de reprocessar toda a base.
+Inspeção do `texto` do corpus revelou **três tipos de ruído distintos**, com tratamentos diferentes:
+
+1. **Boilerplate** (≈50–56%): cabeçalho de diário (`Ano XXIII · Teresina (PI) - … · Edição V`),
+   placeholder `-- image -->`, linhas de QR/autenticidade/URL, assinaturas com `____`, nº de página.
+   **Removível por regex.** O `clean_text` atual NÃO pega o cabeçalho (a regra exige `«`, mas o
+   diário usa `·`/`•`). → **limpeza v2** corrige isso (boilerplate strip + dedup de linha repetida).
+2. **Corrupção de OCR no nível da palavra** (ex.: "Homo·oaacão", "ucuatórlo", "pUblleo",
+   "lndk:lldorN"): **não** conserta por regex. Parcialmente detectável por `real_word_ratio`
+   (dicionário PT via `wordfreq`).
+3. **Tabela fiscal achatada** (RGF/RREO/orçamento virados em sopa de números/códigos):
+   lexicamente "ok" (palavras reais), semanticamente inútil. **Não detectável por dicionário** —
+   só por sinal **estrutural** (densidade numérica). É problema de **re-extração** (Docling/VLM,
+   ver D-5/D-6), não de limpeza.
+
+**Tiers de qualidade** (amostra 9k, métrica `real_word_ratio` × densidade numérica):
+
+| Tier | Critério | % | Uso |
+|---|---|---|---|
+| **A · prosa limpa** | real_word ≥ 0,88 e numérico < 0,15 | **~52%** | SFT / instruction |
+| **B · média** | demais legíveis | ~35% | pré-treino |
+| **C · tabela achatada/ruim** | numérico ≥ 0,35 ou real_word < 0,78 | **~13%** | excluir do treino de prosa; re-extrair |
+
+O tier C concentra-se em **LRF (43%)**, Lei (14%), Decreto (11%) — os atos fiscais. Portaria/
+Contrato/Licitação são limpos (2–4% C). O conteúdo que interessa para Q&A (vencedores de
+licitação, valores) está nos tiers A/B (ex.: "Participante Vencedor: ANTARES … LTDA").
+
+**Veredito MLOps:** ~87% (A+B) é texto aproveitável; 193M tokens. **Suficiente para EXPERIMENTAR
+pré-treino** (escala Raschka) já — basta limpeza v2 + coluna `quality_tier`. Para **SFT/instruction**,
+usar **Tier A**. Tabela achatada (C) é re-extração, fora do escopo de limpeza.
+
+**Plano de níveis de limpeza → configs HF:** `extraido` (bruto, própria extração) · `pretrain`
+(limpeza v2, todos os tiers + coluna `quality_tier`) · `pretrain-curado` (Tier A+B) · `instruction`
+(futuro: Q&A gerado por LLM sobre Tier A — **não** templar de metadados, pois "proprietários de
+licitação" etc. estão só no texto).
+
+## ✅ Limpeza v2 + tiering — IMPLEMENTADO (corpus regenerado)
+
+- **`limpeza_textos.clean_text` v2** (conservadora + protetiva): remove cabeçalho do diário
+  (a regra antiga exigia `«`; corrigida p/ `·`/`•`), `-- image -->`, QR/autenticidade, **Id do
+  ato** (incl. forma heading markdown `## ld:…` que o Docling gera, e variantes com letra de
+  OCR), e carimbo de assinatura PKI. **Protege** linhas com título/data/valor/`Art.` (`RE_V2_PROTECT`).
+- **`datalake/qualidade.quality_tier`**: A/B/C por `real_word_ratio` (wordfreq) × densidade numérica.
+- **`build_corpus`** calcula `quality_tier` pós-fatiamento; **`empacotar_hf`** gera 3 configs.
+
+**Resultado (corpus regenerado):** boilerplate praticamente zerado — cabeçalho de diário e
+`-- image -->` **52%/55% → 0%**; Id do ato **38,5% → 4,2%**; **~24M tokens de boilerplate
+removidos** (193,6M → **169,5M**). A dedup exata pós-v2 absorveu a maioria dos near-dups
+(D-1 caiu de 863 → **209**). Números finais:
+
+| | docs | obs |
+|---|---|---|
+| `default`/train | **71.205** | dedup + fatiado + limpeza v2 |
+| `curated` (A+B) | **61.249** | prosa aproveitável p/ SFT |
+| `raw` | **71.414** | tudo + cluster_id/is_near_dup |
+
+Tiers: **A 37.903 (53%) · B 23.346 (33%) · C 9.956 (14%)**. Resíduo conhecido: erros de OCR no
+nível da palavra (`Art. 12`←`1º`) — não é limpeza, é re-extração (tier C / D-5).
+
+## Demandas priorizadas (pendentes)
+
+### D-3 · Município `DESCONHECIDO` (~3,2%) — MÉDIA
+**Problema:** ~2.147 docs não foram resolvidos contra a lista oficial por território.
+**Abordagem:** **fuzzy match** (Levenshtein/`rapidfuzz`) do nome OCR contra a lista oficial de
+`to-do_territorios.txt`, com limiar conservador; usar também o nome do arquivo (loghash) e o campo
+`municipio` do scraping. Meta: reduzir `DESCONHECIDO` para o irredutível (PDFs realmente multi-município).
+
+### D-4 · Datas incompletas (~9% só com ano) — MÉDIA
+**Problema:** ~9% dos docs têm apenas `2025` em `data_publicacao`.
+**Abordagem:** completar o mapa **edição→data** a partir dos metadados de scraping (e dos logs do lab),
+fechando os 1:1 faltantes; reprocessar via `corrigir_datas.py`. Habilita particionar/filtrar por mês.
+
+### D-5 · Ruído residual de OCR / `needs_review` — MÉDIA
+**Problema:** ~50% dos docs têm `needs_review` interno (não exposto no HF); restam cabeçalhos
+repetidos e assinaturas no `texto`.
+**Abordagem:** decidir a política de exposição — (a) **expor** colunas de qualidade
+(`needs_review`, `assinaturas_detectadas`, score OCR) para o consumidor filtrar; ou (b) oferecer um
+**split/config "curado"** já filtrado. Adicionar limpeza de cabeçalho/rodapé repetido por edição.
+
+### D-6 · Correção de raiz na extração (município/data da fonte, não do OCR) — MÉDIA/ESTRUTURAL
+**Problema:** `municipio`/`data` foram capturados do **conteúdo OCR**, exigindo correção posterior.
+**Abordagem:** alterar `orquestrador_extracao.py` para tomar `municipio`/`data` do **caminho/manifesto**
+(árvore território/município de `reconstruir_coleta.py` + edição→data), eliminando a origem do erro
+em futuras extrações. Torna D-3/D-4 desnecessárias daqui para frente.
+
+### D-7 · Cobertura: Teresina ✅ FEITO / Parnaíba pendente
+**Teresina (capital):** ✅ coletada (250 PDFs do DOM-Teresina), extraída (261 chunks → **9.583
+atos** após fatiamento; 95,6% Tier A — OCR Docling limpo) e **incrementada como 13º território**
+no corpus geral, **e** publicada em dataset isolado [`dom-pi-teresina-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-teresina-2025)
+(texto + PDFs no mesmo repo). Município fixado = "Teresina" (capital = 1 município).
+**Parnaíba:** pendente — **SPA Quasar ("DOMe")**, o download trouxe stubs HTML, não PDFs. Precisa
+descobrir a **API** ou usar **navegador headless** antes de passar pela pipeline.
+
+---
+
+## Sequência sugerida
+
+1. ✅ **D-1 + D-2 + limpeza v2 + tiering** — feitos; corpus **publicado** no HF (3 repos:
+   corpus, pdfs, teresina). 4 configs (`default`/`curated`/`raw`/`extraido`).
+2. ✅ **D-7 Teresina** — coletada, extraída, incrementada + dataset isolado.
+3. **D-3 + D-4** (fuzzy município + completar datas) → re-publicar.
+4. **D-5** decidir exposição de flags / split curado.
+5. **D-6** corrigir a raiz na extração (beneficia novas coletas).
+6. **D-7 Parnaíba** quando houver esforço para o SPA.
+
+> Todos os passos de D-1 a D-5 são **CPU-leves e locais** (Polars/DuckDB sobre texto), sem GPU.
+> Cada re-publicação regenera `hf_corpus_dompi/` (Parquet + shards) a partir de `datalake/corpus`.

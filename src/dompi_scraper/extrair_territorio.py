@@ -5,27 +5,34 @@ extrair_territorio.py — Script único de extração por território DOM-PI
 Lê os PDFs da pasta territorios/<slug>/pdfs/, executa o pipeline
 de extração e grava os resultados em extraidos/<slug>/.
 
-Stack de extração (sem Marker):
-  GPU (CUDA):
-    Triagem DLA (PyMuPDF) → PaddleOCR CUDA (simples) | Docling CUDA (tabelas)
-  CPU:
-    PyMuPDF (digital nativo) | Tesseract (escaneado) | PaddleOCR CPU (tabelas)
+A extração roda no ORQUESTRADOR HÍBRIDO (orquestrador_extracao.py), com motores
+pesados isolados em subprocessos (engine_worker.py) e venvs separados:
+  .venv         → torch + docling (engine Docling)  + orquestrador
+  .venv-paddle  → paddlepaddle + paddleocr (engine PaddleOCR)
+Monte os dois com: bash setup_venvs.sh   (NUNCA use 'uv run' para extrair).
+
+Stack adaptada ao hardware (detecção automática de GPU via torch):
+  GPU (CUDA):  PyMuPDF (nativo simples) | Docling-GPU (nativo+tabela) | PaddleOCR-GPU (escaneado)
+  Sem GPU:     PyMuPDF (nativo simples) | PaddleOCR-CPU (nativo+tabela) | Tesseract (escaneado)
 
 Modos de operação (--modo):
-  paddle  PaddleOCR PP-Structure paralelo. Detecta tabelas/figuras. (PADRÃO)
-  pymu    PyMuPDF direto — mais rápido, sem análise de layout avançada.
-  hibrido DESCONTINUADO → redireciona para paddle.
-  marker  DESCONTINUADO → redireciona para paddle.
+  paddle  Orquestrador híbrido (PADRÃO). Roteia por necessidade; anti-OOM por fatiamento.
+  pymu    PyMuPDF direto — mais rápido, sem análise de layout/OCR. Bom p/ corpus 100% nativo.
+  hibrido ALIAS → orquestrador (paddle).
+  marker  DESCONTINUADO → redireciona para o orquestrador (paddle).
 
-Uso:
-    # Padrão — PaddleOCR com detecção de layout
-    uv run python src/dompi_scraper/extrair_territorio.py --territorio tabuleiros_alto_parnaiba
+Uso (a partir da raiz do projeto):
+    # Padrão — orquestrador híbrido (detecta GPU automaticamente)
+    PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio tabuleiros_alto_parnaiba
+
+    # WSL com PaddleOCR build CPU: force paddle em CPU (escaneados são raros)
+    PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio carnaubais --gpu-paddle cpu
 
     # PyMuPDF apenas (mais rápido, sem análise de tabelas)
-    uv run python src/dompi_scraper/extrair_territorio.py --territorio carnaubais --modo pymu
+    PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio carnaubais --modo pymu
 
-    # Teste com 5 PDFs
-    uv run python src/dompi_scraper/extrair_territorio.py --territorio parnaiba --limite 5 --verbose
+    # Teste com 5 PDFs e log DEBUG (auditoria)
+    PYTHONPATH=src ./.venv/bin/python -m dompi_scraper.extrair_territorio --territorio parnaiba --limite 5 --verbose
 
 Territórios válidos:
     planice_litoran, cocais, carnaubais, entre_rios, vale_do_sambito,
@@ -40,14 +47,11 @@ import argparse
 import hashlib
 import json
 import logging
-import multiprocessing
 import os
-import psutil
 import re
 import sys
 import time
 import warnings
-from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 try:
@@ -91,7 +95,11 @@ def _configure_logging(verbose: bool = False, log_file: str | None = None) -> No
         Path(log_file).parent.mkdir(parents=True, exist_ok=True)
         fh = logging.FileHandler(log_file, encoding="utf-8")
         fh.setFormatter(fmt)
+        # O arquivo de log SEMPRE grava DEBUG (auditoria), mesmo sem --verbose no console.
+        fh.setLevel(logging.DEBUG)
         log.addHandler(fh)
+        log.setLevel(logging.DEBUG)  # nível do logger = mais permissivo dos handlers
+        ch.setLevel(level)           # console respeita --verbose
 
 
 def sha256_file(path: str) -> str:
@@ -131,11 +139,11 @@ def build_manifest_from_pdfs(
         # Ex: pdfs/marcos_parente/Prefeitura/file.pdf -> municipio="marcos_parente", entidade="Prefeitura"
         municipio_inferido = territorio_nome
         entidade_inferida = ""
-        
+
         # O caminho relativo ao diretório base de pdfs
         rel_path = pdf_path.relative_to(pdfs_dir)
         parts = rel_path.parts
-        
+
         if len(parts) >= 2:
             # Pelo menos um subdiretório (cidade)
             # Substitui '_' por espaço e capitaliza (ex: marcos_parente -> Marcos Parente)
@@ -144,7 +152,7 @@ def build_manifest_from_pdfs(
             for prep in [" Do ", " Da ", " De ", " Dos ", " Das "]:
                 cidade_dir = cidade_dir.replace(prep, prep.lower())
             municipio_inferido = cidade_dir
-            
+
             if len(parts) >= 3:
                 # Tem subdiretório de entidade também (cidade/entidade)
                 entidade_inferida = parts[1].replace("_", " ").title()
@@ -161,6 +169,7 @@ def build_manifest_from_pdfs(
             "documento": pdf_path.name,
         }
 
+    log.debug(f"  Manifesto construído com {len(manifest)} entradas (chave=SHA-256)")
     return manifest
 
 
@@ -243,6 +252,7 @@ def run_modo_pymu(
     if dedup_path.exists():
         with open(dedup_path, "r", encoding="utf-8") as f:
             dedup_registry = json.load(f)
+        log.debug(f"  Dedup PyMuPDF carregado: {len(dedup_registry)} hashes")
 
     os.makedirs(datalake_dir, exist_ok=True)
 
@@ -360,341 +370,93 @@ def run_modo_pymu(
 
 
 # ==============================================================================
-# MODO PADDLE — PaddleOCR PP-Structure + ProcessPoolExecutor
+# MODO PRINCIPAL — Orquestrador Híbrido (workers isolados, anti-OOM)
 # ==============================================================================
 
-# Engine global por processo worker (inicializado uma vez em _init_paddle_worker)
-_PADDLE_ENGINE = None
-
-
-def _init_paddle_worker() -> None:
-    """Inicializador de processo worker: cria o PP-Structure uma vez por processo."""
-    global _PADDLE_ENGINE
-    
-    import os
-    # Força as bibliotecas matemáticas subjacentes a usarem apenas 1 thread por worker.
-    # Sem isso, 10 workers * 22 cores = 220 threads, causando explosão de memória e crashes (OOM) no WSL.
-    os.environ["OMP_NUM_THREADS"] = "1"
-    os.environ["MKL_NUM_THREADS"] = "1"
-    os.environ["OPENBLAS_NUM_THREADS"] = "1"
-    os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
-    os.environ["NUMEXPR_NUM_THREADS"] = "1"
-    os.environ["MAX_JOBS"] = "1"         # Evita OOM caso haja compilação JIT de C++
-    os.environ["DISABLE_NINJA"] = "1"    # Desativa ninja para compilações pesadas em background
-    
-    # Suprime logs verbosos do Paddle nos workers
-    import logging as _logging
-    _logging.disable(_logging.WARNING)
-    try:
-        from dompi_scraper.extrator_paddle import criar_engine_paddle
-        _PADDLE_ENGINE = criar_engine_paddle(use_gpu=False)  # lang fixo em 'en' (restrição do PP-Structure)
-    except Exception as e:
-        # Worker continua sem engine — será reportado como erro no resultado
-        _PADDLE_ENGINE = None
-        import sys
-        print(f"[worker] Falha ao inicializar PP-Structure: {e}", file=sys.stderr)
-
-
-def _paddle_worker_task(task: tuple) -> dict | None:
+def _rotear_logs_orquestrador(verbose: bool) -> None:
     """
-    Função picklável executada por cada processo worker.
-    Processa um único PDF com o engine PP-Structure do processo.
-
-    Retorna um dict com o resultado ou None em caso de erro/duplicata.
+    Faz os loggers do orquestrador e do cliente de worker escreverem nos MESMOS
+    handlers deste script (stdout + arquivo de log do território). Garante que a
+    auditoria completa — incluindo stderr drenado dos workers — caia no .log.
     """
-    global _PADDLE_ENGINE
-
-    fid, entry, territorio_nome, datalake_dir, dedup_snapshot = task
-
-    if _PADDLE_ENGINE is None:
-        return {"erro": "engine_nao_inicializado", "fid": fid}
-
-    pdf_path = entry.get("path", "")
-    if not pdf_path or not os.path.exists(pdf_path):
-        return {"erro": "pdf_nao_encontrado", "fid": fid, "path": pdf_path}
-
-    try:
-        from dompi_scraper.extrator_paddle import extrair_pdf_paddle
-        from dompi_scraper.processar_pdfs import (
-            generate_frontmatter,
-            build_datalake_path,
-        )
-        from dompi_scraper.shared_utils import (
-            classify_act_type,
-            compute_content_md5,
-            extrair_data_filename,
-            extrair_edicao_filename,
-        )
-    except ImportError as e:
-        return {"erro": f"import: {e}", "fid": fid}
-
-    try:
-        doc_result = extrair_pdf_paddle(_PADDLE_ENGINE, pdf_path, dpi=200)
-    except Exception as e:
-        return {"erro": f"extracao: {e}", "fid": fid}
-
-    texto = doc_result.texto_completo
-    if not texto or len(texto.strip()) < 30:
-        return {"erro": "texto_vazio", "fid": fid}
-
-    content_hash = compute_content_md5(texto)
-    if content_hash in dedup_snapshot:
-        return {"duplicata": True, "fid": fid}
-
-    # Metadados do manifesto e do filename
-    municipio = entry.get("municipio", territorio_nome)
-    entidade = entry.get("entidade", "")
-    sha256_pdf = entry.get("sha256", fid)
-    data_ano, data_confianca = extrair_data_filename(pdf_path)
-    edicao_dom = extrair_edicao_filename(pdf_path)
-    tipo_ato = classify_act_type(texto)
-
-    # Salva .md no datalake
-    ano = data_ano or "sem_ano"
-    mes = "sem_mes"
-    frontmatter = generate_frontmatter(
-        content_hash=content_hash,
-        municipio=municipio,
-        entidade=entidade,
-        tipo_ato=tipo_ato,
-        data_publicacao=data_ano,
-        url_origem=entry.get("url", ""),
-        edicao=edicao_dom,
-        sha256_pdf=sha256_pdf,
-        has_tables=doc_result.has_tables,
-        has_figures=doc_result.has_figures,
-        table_pages=doc_result.table_pages or None,
-        figure_pages=doc_result.figure_pages or None,
-        valores_monetarios_total=doc_result.valores_monetarios_total,
-    )
-    md_path = build_datalake_path(datalake_dir, ano, mes, municipio, f"{content_hash}.md")
-    os.makedirs(os.path.dirname(md_path), exist_ok=True)
-    with open(md_path, "w", encoding="utf-8") as f:
-        f.write(frontmatter + texto)
-
-    # Monta registro JSONL
-    jsonl_record = {
-        "doc_id": sha256_pdf,
-        "territorio": territorio_nome,
-        "municipio": municipio,
-        "data_publicacao": data_ano,
-        "texto_markdown": texto,
-        "metadados_extraidos": {
-            "tipo_ato": tipo_ato,
-            "entidade": entidade,
-            "edicao_dom": edicao_dom,
-            "data_confianca": data_confianca,
-            "id_publicacao": content_hash,
-            "has_tables": doc_result.has_tables,
-            "has_figures": doc_result.has_figures,
-            "table_pages": doc_result.table_pages,
-            "figure_pages": doc_result.figure_pages,
-            "valores_monetarios_total": doc_result.valores_monetarios_total,
-        },
-        "engine_extracao": "PaddleOCR",
-        "needs_reprocessing": doc_result.has_tables or doc_result.has_figures,
-    }
-
-    # Entrada de reprocessamento (apenas se necessário)
-    reprocessar_entry = None
-    if doc_result.has_tables or doc_result.has_figures:
-        reprocessar_entry = {
-            "doc_id": sha256_pdf,
-            "path": pdf_path,
-            "municipio": municipio,
-            "territorio": territorio_nome,
-            "edicao_dom": edicao_dom,
-            "motivo": "tabela_ou_grafico_detectado",
-            "table_pages": doc_result.table_pages,
-            "figure_pages": doc_result.figure_pages,
-            "valores_monetarios": doc_result.todos_valores,
-            "valores_monetarios_total": doc_result.valores_monetarios_total,
-        }
-
-    return {
-        "ok": True,
-        "fid": fid,
-        "content_hash": content_hash,
-        "municipio": municipio,
-        "tipo_ato": tipo_ato,
-        "has_tables": doc_result.has_tables,
-        "has_figures": doc_result.has_figures,
-        "jsonl_record": jsonl_record,
-        "reprocessar_entry": reprocessar_entry,
-    }
+    for nome in ("orquestrador", "extrator_docling", "engine_worker"):
+        lg = logging.getLogger(nome)
+        lg.setLevel(logging.DEBUG if verbose else logging.INFO)
+        lg.handlers.clear()
+        for h in log.handlers:
+            lg.addHandler(h)
+        lg.propagate = False
 
 
-def calcular_limite_seguro_workers(use_gpu: bool = False) -> int:
-    """
-    Calcula um limite dinâmico seguro de processos para evitar crashes (OOM),
-    baseado na memória livre real da máquina e nos núcleos da CPU.
-    """
-    import platform
-    import platform
-    is_wsl = 'microsoft' in platform.uname().release.lower()
-    
-    limite_cpu = max(1, multiprocessing.cpu_count() - 1)
-    
-    try:
-        ram_livre_gb = psutil.virtual_memory().available / (1024**3)
-        
-        # O log de SO revelou que CADA instância do PP-Structure consome incríveis ~7.5 GB de RAM
-        # no boot devido ao multiprocessamento do PaddlePaddle no WSL.
-        ram_por_worker = 10.0 if is_wsl else 8.0
-        
-        limite_ram = max(1, int(ram_livre_gb / ram_por_worker))
-        # Hard cap: no CPU, nunca passar de 2 workers no WSL para evitar sobrecarga de barramento
-        limite_final = min(limite_cpu, limite_ram)
-        if is_wsl and not use_gpu:
-            limite_final = min(limite_final, 2)
-    except Exception as e:
-        log.warning(f"  [Aviso] Falha ao ler RAM via psutil ({e}). Usando limite da CPU.")
-        limite_final = limite_cpu
-
-    if use_gpu:
-        try:
-            import torch
-            vram_livre_gb = torch.cuda.mem_get_info()[0] / (1024**3)
-            # Assumimos conservadoramente ~1.5 GB de VRAM por worker
-            limite_vram = max(1, int(vram_livre_gb / 1.5))
-            limite_final = min(limite_final, limite_vram)
-        except Exception:
-            pass
-            
-    return limite_final
-
-
-def run_modo_paddle(
-    manifest: dict,
+def run_modo_orquestrador(
+    manifest_path: Path,
     output_dir: Path,
     slug: str,
     territorio_nome: str,
     limite: int,
     verbose: bool,
-    workers: int | None = None,
+    threshold: float,
+    dpi: int,
+    gpu_paddle: str | None,
+    gpu_docling: str | None,
+    python_paddle: str | None,
+    python_docling: str | None,
+    docling_max_paginas: int,
+    dry_run: bool = False,
 ) -> dict:
     """
-    Extração com PaddleOCR PP-Structure em paralelo (ProcessPoolExecutor).
+    Delega a extração ao orquestrador híbrido (orquestrador_extracao.py).
 
-    Cada processo worker inicializa seu próprio engine PP-Structure e processa
-    um PDF por vez. O processo principal coleta resultados e grava JSONL/dedup.
+    Os motores pesados (PaddleOCR/Docling) rodam em subprocessos isolados, em
+    venvs separados, com fatiamento por município/página (anti-OOM) e dedup
+    pré-extração persistente (retomada idempotente). Ver docs/BENCHMARK_OCR.md.
     """
-    if workers is None:
-        workers = calcular_limite_seguro_workers(use_gpu=False)
-        log.info(f"  [Auto-Scale] Limite dinâmico ajustado para {workers} workers (baseado em RAM/CPU/VRAM livres)")
+    try:
+        from dompi_scraper.orquestrador_extracao import run_orquestrador_pipeline
+    except ImportError as e:
+        log.error(f"Não foi possível importar o orquestrador: {e}")
+        raise
+
+    # Unifica os logs do orquestrador/worker no .log deste território (auditoria).
+    _rotear_logs_orquestrador(verbose)
 
     datalake_dir = str(output_dir / "datalake")
-    dedup_path = output_dir / "registro_dedup_paddle.json"
-    jsonl_path = output_dir / f"corpus_{slug}.jsonl"
-    reprocessar_path = output_dir / "reprocessamento_pendente.jsonl"
+    corpus_output = str(output_dir / f"corpus_{slug}.jsonl")
 
-    # Carrega dedup existente (permite retomada)
-    dedup_registry: dict = {}
-    if dedup_path.exists():
-        with open(dedup_path, "r", encoding="utf-8") as f:
-            dedup_registry = json.load(f)
+    log.info("-" * 65)
+    log.info("Delegando ao ORQUESTRADOR HÍBRIDO (workers isolados)")
+    log.debug(f"  manifest     = {manifest_path}")
+    log.debug(f"  datalake     = {datalake_dir}")
+    log.debug(f"  registry_dir = {output_dir}")
+    log.debug(f"  corpus       = {corpus_output}")
+    log.debug(f"  limite       = {limite}")
+    log.debug(f"  threshold    = {threshold} | dpi = {dpi}")
+    log.debug(f"  gpu_paddle   = {gpu_paddle!r} | gpu_docling = {gpu_docling!r}")
+    log.debug(f"  python_paddle  = {python_paddle or '(default .venv-paddle)'}")
+    log.debug(f"  python_docling = {python_docling or '(default .venv)'}")
+    log.debug(f"  docling_max_paginas = {docling_max_paginas} (cap anti-OOM por lote)")
+    log.info("-" * 65)
 
-    os.makedirs(datalake_dir, exist_ok=True)
-
-    entradas = list(manifest.items())[:limite]
-    total = len(entradas)
-    stats = {
-        "total": 0, "gerados": 0, "duplicatas": 0,
-        "com_tabela": 0, "com_figura": 0, "erros": 0,
-    }
-
-    log.info(f"  Modo PADDLE — {total} PDFs | {workers} workers")
-    log.info(f"  Cada worker inicializa PP-Structure (aguarde ~30s no startup)...")
-
-    # Snapshot imutável do dedup para enviar aos workers (evita pickle de dict mutável grande)
-    dedup_snapshot = set(dedup_registry.keys())
-
-    tasks = [
-        (fid, entry, territorio_nome, datalake_dir, dedup_snapshot)
-        for fid, entry in entradas
-    ]
-
-    checkpoint_every = 500  # salva dedup a cada N documentos processados
-
-    with (
-        open(jsonl_path, "a", encoding="utf-8") as jf,
-        open(reprocessar_path, "a", encoding="utf-8") as rf,
-        ProcessPoolExecutor(
-            max_workers=workers,
-            initializer=_init_paddle_worker,
-        ) as pool,
-    ):
-        futures = {pool.submit(_paddle_worker_task, task): task[0] for task in tasks}
-
-        for i, future in enumerate(as_completed(futures), 1):
-            stats["total"] += 1
-            try:
-                result = future.result()
-            except Exception as e:
-                log.error(f"  Worker exception: {e}")
-                stats["erros"] += 1
-                continue
-
-            if result is None:
-                stats["erros"] += 1
-                continue
-
-            if result.get("duplicata"):
-                stats["duplicatas"] += 1
-                continue
-
-            if result.get("erro"):
-                log.debug(f"  Erro [{result['fid'][:8]}]: {result['erro']}")
-                stats["erros"] += 1
-                continue
-
-            if result.get("ok"):
-                # Grava no JSONL
-                jf.write(json.dumps(result["jsonl_record"], ensure_ascii=False) + "\n")
-                stats["gerados"] += 1
-
-                if result.get("has_tables"):
-                    stats["com_tabela"] += 1
-                if result.get("has_figures"):
-                    stats["com_figura"] += 1
-
-                # Grava em reprocessamento_pendente se necessário
-                if result.get("reprocessar_entry"):
-                    rf.write(json.dumps(result["reprocessar_entry"], ensure_ascii=False) + "\n")
-
-                # Atualiza dedup em memória
-                content_hash = result["content_hash"]
-                dedup_registry[content_hash] = {
-                    "municipio": result["municipio"],
-                    "tipo_ato": result["tipo_ato"],
-                }
-                dedup_snapshot.add(content_hash)
-
-                if verbose:
-                    log.debug(
-                        f"  [{i}/{total}] {result['municipio']} | "
-                        f"tabela={result['has_tables']} | fig={result['has_figures']}"
-                    )
-
-            # Checkpoint periódico
-            if stats["total"] % checkpoint_every == 0:
-                _salvar_dedup(dedup_path, dedup_registry)
-                log.info(
-                    f"  ⏳ [{stats['total']}/{total}] "
-                    f"Gerados={stats['gerados']} | Tabelas={stats['com_tabela']} | "
-                    f"Erros={stats['erros']}"
-                )
-
-    _salvar_dedup(dedup_path, dedup_registry)
+    stats = run_orquestrador_pipeline(
+        manifest_path=str(manifest_path),
+        output_dir=datalake_dir,
+        registry_dir=str(output_dir),
+        limite=limite,
+        threshold=threshold,
+        corpus_output=corpus_output,
+        territorio=territorio_nome,
+        python_paddle=python_paddle,
+        python_docling=python_docling,
+        # Passagem direta: None = CPU (de '--gpu-paddle cpu'), "auto" = distribui,
+        # "0"/"1" = índice de GPU. NÃO converter None→"auto" (sobrescreveria o 'cpu').
+        gpu_paddle=gpu_paddle,
+        gpu_docling=gpu_docling,
+        dpi=dpi,
+        docling_max_paginas=docling_max_paginas,
+        dry_run=dry_run,
+        verbose=verbose,
+    )
     return stats
-
-
-def _salvar_dedup(path: Path, registry: dict) -> None:
-    """Salva o registro de deduplicação atomicamente (write + rename)."""
-    tmp = str(path) + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(registry, f, ensure_ascii=False)
-    os.replace(tmp, path)
 
 
 def run(args: argparse.Namespace) -> None:
@@ -714,7 +476,7 @@ def run(args: argparse.Namespace) -> None:
     log.info(f"  Slug:       {slug}")
     log.info(f"  PDFs:       {pdfs_dir}")
     log.info(f"  Saída:      {output_dir}")
-    log.info(f"  Log:        {log_file}")
+    log.info(f"  Log:        {log_file} (arquivo grava DEBUG sempre)")
     log.info("-" * 65)
 
     if not pdfs_dir.exists():
@@ -734,41 +496,58 @@ def run(args: argparse.Namespace) -> None:
 
     log.info(f"  PDFs encontrados: {len(pdfs)}")
 
-    # Constrói manifesto em memória.
-    # Aplica o limite no scan para modos sem GPU (evita hashing de 13k PDFs em testes).
-    scan_limite = args.limite if args.modo in ("pymu", "paddle") else 0
+    # Normaliza o modo: hibrido/marker são aliases do orquestrador (paddle).
+    modo = args.modo
+    if modo in ("marker", "hibrido"):
+        if modo == "marker":
+            warnings.warn(
+                "O modo 'marker' foi descontinuado. Use --modo paddle (padrão). "
+                "Redirecionando para o orquestrador.",
+                DeprecationWarning, stacklevel=2,
+            )
+        log.warning(f"Modo '{modo}' → redirecionando para o orquestrador (paddle).")
+        modo = "paddle"
+
+    # Constrói manifesto em memória (limita o scan para testes/lotes).
+    scan_limite = args.limite if args.limite and args.limite < 999_999 else 0
     manifest = build_manifest_from_pdfs(pdfs_dir, territorio_nome, limite=scan_limite)
 
-    # Salva manifesto para referência (usado pelo orquestrador legado)
+    # Salva manifesto (consumido pelo orquestrador).
     output_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = output_dir / "download_manifest.json"
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
     log.info(f"  Manifesto gerado: {manifest_path}")
-    log.info(f"  Modo:       {args.modo.upper()}")
+    log.info(f"  Modo:       {modo.upper()}")
 
-    # Importa e executa o pipeline
     try:
         t0 = time.time()
 
-        if args.modo == "paddle":
-            # ── MODO PRINCIPAL: PaddleOCR PP-Structure + ProcessPoolExecutor ──
-            stats = run_modo_paddle(
-                manifest=manifest,
+        if modo == "paddle":
+            # ── MODO PRINCIPAL: Orquestrador Híbrido (workers isolados) ──────
+            stats = run_modo_orquestrador(
+                manifest_path=manifest_path,
                 output_dir=output_dir,
                 slug=slug,
                 territorio_nome=territorio_nome,
                 limite=args.limite,
                 verbose=args.verbose,
-                workers=args.workers,
+                threshold=args.threshold,
+                dpi=args.dpi,
+                gpu_paddle=args.gpu_paddle,
+                gpu_docling=args.gpu_docling,
+                python_paddle=args.python_paddle,
+                python_docling=args.python_docling,
+                docling_max_paginas=args.docling_max_paginas,
+                dry_run=args.dry_run_rota,
             )
             elapsed = time.time() - t0
-            engine = f"PaddleOCR PP-Structure ({args.workers or 'auto'} workers)"
+            engine = "Orquestrador Híbrido (PyMuPDF + PaddleOCR/Docling/Tesseract)"
 
-        elif args.modo == "pymu":
-            # ── MODO LEGADO: PyMuPDF sem GPU ──────────────────────────────────
+        elif modo == "pymu":
+            # ── MODO RÁPIDO: PyMuPDF puro (sem GPU/OCR) ──────────────────────
             if fitz is None:
-                log.error("pymupdf não encontrado. Execute: uv add pymupdf")
+                log.error("pymupdf não encontrado. Rode: bash setup_venvs.sh")
                 sys.exit(1)
             stats = run_modo_pymu(
                 manifest=manifest,
@@ -779,56 +558,59 @@ def run(args: argparse.Namespace) -> None:
                 verbose=args.verbose,
             )
             elapsed = time.time() - t0
-            engine = "PyMuPDF (legado)"
-
-        elif args.modo in ("marker", "hibrido"):
-            # ── MODOS DESCONTINUADOS ──────────────────────────────────────────
-            warnings.warn(
-                f"O modo '{args.modo}' foi descontinuado. Use --modo paddle (padrão). "
-                "Redirecionando para o modo paddle.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
-            log.warning(f"Modo '{args.modo}' descontinuado → redirecionando para paddle.")
-            stats = run_modo_paddle(
-                manifest=manifest,
-                output_dir=output_dir,
-                slug=slug,
-                territorio_nome=territorio_nome,
-                limite=args.limite,
-                verbose=args.verbose,
-                workers=args.workers,
-            )
-            elapsed = time.time() - t0
-            engine = f"PaddleOCR PP-Structure (redirecionado de {args.modo})"
+            engine = "PyMuPDF (rápido, sem OCR)"
 
         else:
-            log.error(f"Modo desconhecido: {args.modo}")
+            log.error(f"Modo desconhecido: {modo}")
             sys.exit(1)
 
     except ImportError as e:
-        log.error(f"Erro de importação: {e}\nVerifique se executou: uv sync")
+        log.error(f"Erro de importação: {e}\nMonte os ambientes com: bash setup_venvs.sh")
         sys.exit(1)
 
-    # Relatório final
+    _imprimir_relatorio(modo, territorio_nome, engine, output_dir, stats, elapsed)
+    log.info(f"Log completo salvo em: {log_file}")
+
+
+def _imprimir_relatorio(modo, territorio_nome, engine, output_dir, stats, elapsed) -> None:
+    """Imprime o resumo final, adaptado ao schema de stats de cada modo."""
     elapsed_min = elapsed / 60
-    needs_reprocessing = stats.get("com_tabela", 0) + stats.get("com_figura", 0)
     print("\n" + "=" * 65)
     print(f"EXTRAÇÃO CONCLUÍDA — {territorio_nome}")
     print("=" * 65)
     print(f"  Tempo total:      {elapsed:.1f}s ({elapsed_min:.1f} min)")
     print(f"  Motor:            {engine}")
     print(f"  Saída:            {output_dir}/")
-    print(f"  Gerados:          {stats.get('gerados', 'N/A')}")
-    print(f"  Duplicatas:       {stats.get('duplicatas', 'N/A')}")
-    print(f"  Com tabela:       {stats.get('com_tabela', 'N/A')}")
-    print(f"  Com figura:       {stats.get('com_figura', 'N/A')}")
-    print(f"  Erros:            {stats.get('erros', 'N/A')}")
-    if needs_reprocessing > 0:
-        print(f"  Fila reprocess.:  {output_dir}/reprocessamento_pendente.jsonl")
-    print("=" * 65 + "\n")
 
-    log.info(f"Log completo salvo em: {log_file}")
+    if modo == "paddle" and stats.get("dry_run") is not None:
+        # Modo dry-run de rota (validação sem motores)
+        print(f"  [DRY-RUN] classificados: {stats.get('dry_run', 0)}")
+        print(f"  Por rota:         {stats.get('dry_por_rota', {})}")
+        print(f"  Relatório:        {output_dir}/relatorio_rota.ndjson")
+    elif modo == "paddle":
+        # Schema do orquestrador
+        salvos = stats.get("total", 0)
+        print(f"  Chunks salvos:    {salvos}")
+        print(f"  PyMuPDF:          {stats.get('pymupdf', 0)}")
+        print(f"  Docling CUDA:     {stats.get('docling_cuda', 0)}")
+        print(f"  Docling CPU:      {stats.get('docling_cpu', 0)}")
+        print(f"  PaddleOCR CUDA:   {stats.get('paddle_cuda', 0)}")
+        print(f"  PaddleOCR CPU:    {stats.get('paddle_cpu', 0)}")
+        print(f"  Tesseract:        {stats.get('tesseract', 0)}")
+        print(f"  Duplicatas:       {stats.get('duplicatas', 0)} "
+              f"(puladas pré-extração: {stats.get('dup_pre', 0)})")
+        print(f"  Erros:            {stats.get('erros', 0)}")
+        if salvos:
+            print(f"  Média:            {elapsed/max(1,salvos):.2f}s/chunk salvo")
+    else:
+        # Schema do PyMuPDF rápido
+        print(f"  Gerados:          {stats.get('gerados', 0)}")
+        print(f"  Duplicatas:       {stats.get('duplicatas', 0)}")
+        print(f"  Com tabela:       {stats.get('com_tabela', 0)}")
+        print(f"  Erros:            {stats.get('erros', 0)}")
+        if stats.get("com_tabela"):
+            print(f"  Fila reprocess.:  {output_dir}/reprocessamento_pendente.jsonl")
+    print("=" * 65 + "\n")
 
 
 def main() -> None:
@@ -838,7 +620,7 @@ def main() -> None:
         epilog=__doc__,
     )
     parser.add_argument(
-        "--territorio", required=True,
+        "--territorio", required=False, default=None,
         choices=list(TERRITORIOS.keys()),
         metavar="SLUG",
         help=(
@@ -850,43 +632,66 @@ def main() -> None:
         "--modo", default="paddle",
         choices=["paddle", "pymu", "hibrido", "marker"],
         help=(
-            "Modo de extração (stack sem Marker):\n"
-            "  paddle  → PaddleOCR PP-Structure paralelo (PADRÃO)\n"
-            "            Detecta tabelas/figuras com exatidão, grava flags no datalake.\n"
-            "  pymu    → PyMuPDF direto, mais rápido mas sem análise de layout avançada.\n"
-            "  hibrido → DESCONTINUADO. Redireciona para paddle.\n"
+            "Modo de extração:\n"
+            "  paddle  → Orquestrador híbrido (PADRÃO). Roteia por necessidade; anti-OOM.\n"
+            "  pymu    → PyMuPDF direto (rápido, sem OCR/layout). Ideal p/ corpus 100% nativo.\n"
+            "  hibrido → ALIAS de paddle.\n"
             "  marker  → DESCONTINUADO. Redireciona para paddle.\n"
             "Padrão: paddle"
         ),
     )
     parser.add_argument(
-        "--workers", type=int, default=None,
-        help="[Modo paddle] Número de processos paralelos. Padrão: cpu_count()-1.",
-    )
-    parser.add_argument(
         "--limite", type=int, default=999_999,
-        help="Máx. PDFs a processar (padrão: ilimitado). Use valores pequenos para testes.",
-    )
-    parser.add_argument(
-        "--threshold", type=float, default=0.70,
-        help="[Legado — ignorado] Score OCR para roteamento híbrido (padrão: 0.70).",
-    )
-    parser.add_argument(
-        "--force-ocr", action="store_true",
-        help="[Legado] Ignorado. Mantido por compatibilidade de scripts existentes.",
-    )
-    parser.add_argument(
-        "--min-variance", type=float, default=50.0,
-        help="[Legado — ignorado] Limiar de nitidez (era usado apenas pelo Marker).",
+        help="Máx. PDFs a processar (padrão: ilimitado). Use valores pequenos para testes/lotes.",
     )
     parser.add_argument(
         "--verbose", action="store_true",
-        help="Ativa logs detalhados (DEBUG).",
+        help="Ativa logs DEBUG no console (o arquivo de log já grava DEBUG sempre).",
     )
     parser.add_argument(
         "--listar", action="store_true",
         help="Lista todos os territórios disponíveis e sai.",
     )
+
+    # ── Parâmetros do orquestrador (modo paddle) ─────────────────────────────
+    g = parser.add_argument_group("Orquestrador (modo paddle)")
+    g.add_argument(
+        "--threshold", type=float, default=0.45,
+        help="Score de texto nativo: acima → nativo (PyMuPDF/Docling); abaixo → escaneado (PaddleOCR). Padrão 0.45.",
+    )
+    g.add_argument(
+        "--dpi", type=int, default=200,
+        help="DPI de rasterização para OCR nos workers. Padrão 200.",
+    )
+    g.add_argument(
+        "--docling-max-paginas", type=int, default=8,
+        help="Cap anti-OOM: nº máx. de páginas por chamada ao Docling (fatiamento). Padrão 8.",
+    )
+    g.add_argument(
+        "--dry-run-rota", action="store_true",
+        help="Só valida a ROTA de cada doc (nome→fiscal/comum), gera relatorio_rota.ndjson e NÃO roda motores.",
+    )
+    g.add_argument(
+        "--gpu-paddle", default="auto",
+        help="GPU do worker PaddleOCR: índice (ex '0'), 'cpu' ou 'auto'. Em WSL com paddle CPU use 'cpu'.",
+    )
+    g.add_argument(
+        "--gpu-docling", default="auto",
+        help="GPU do worker Docling: índice (ex '1'), 'cpu' ou 'auto'.",
+    )
+    g.add_argument(
+        "--python-paddle", default=None,
+        help="Interpretador do worker PaddleOCR (padrão: ./.venv-paddle/bin/python).",
+    )
+    g.add_argument(
+        "--python-docling", default=None,
+        help="Interpretador do worker Docling (padrão: ./.venv/bin/python).",
+    )
+
+    # ── Legados (ignorados; mantidos por compatibilidade de scripts) ─────────
+    parser.add_argument("--workers", type=int, default=None, help=argparse.SUPPRESS)
+    parser.add_argument("--force-ocr", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--min-variance", type=float, default=50.0, help=argparse.SUPPRESS)
 
     args = parser.parse_args()
 
@@ -897,9 +702,12 @@ def main() -> None:
         print()
         sys.exit(0)
 
-    # Compatibilidade: --force-ocr legado → modo marker
-    if args.force_ocr and args.modo == "pymu":
-        args.modo = "marker"
+    if not args.territorio:
+        parser.error("--territorio é obrigatório (ou use --listar para ver os slugs).")
+
+    # Normaliza "cpu" → None para o cliente de worker do orquestrador.
+    args.gpu_paddle = None if args.gpu_paddle == "cpu" else args.gpu_paddle
+    args.gpu_docling = None if args.gpu_docling == "cpu" else args.gpu_docling
 
     run(args)
 

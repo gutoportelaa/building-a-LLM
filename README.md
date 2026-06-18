@@ -2,72 +2,98 @@
   <img src="src/assets/scrapingToBLLM.png" width="900px" />
 </div>
 
+# DOM-PI — Corpus do Diário Oficial dos Municípios do Piauí
 
+Pipeline de construção de **corpus governamental em português** a partir das publicações
+do **Diário Oficial dos Municípios do Piauí (DOM-PI)**, para uso em **LLM/RAG**. Vai do
+*scraping* dos metadados e download dos PDFs à extração de texto acelerada por GPU e à
+estruturação num *data lake* colunar, terminando num dataset pronto para treino.
 
-# Projeto DOM-PI Scraper
+**Resultado atual:** ~**80,8 mil documentos** · **~179 milhões de tokens** · **13 Territórios
+de Desenvolvimento** (12 do DOM-PI dos Municípios **+ Teresina**, a capital) · publicações de
+**2025**. Publicado no HuggingFace:
+- [`gutoportelaa/dom-pi-corpus-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-corpus-2025) — corpus de texto (configs `default`/`curated`/`raw`/`extraido`)
+- [`gutoportelaa/dom-pi-pdfs-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-pdfs-2025) — PDFs-fonte (~66 GB)
+- [`gutoportelaa/dom-pi-teresina-2025`](https://huggingface.co/datasets/gutoportelaa/dom-pi-teresina-2025) — dataset isolado da capital (texto + PDFs)
 
-Repositório dedicado à automação da coleta e processamento de publicações do Diário Oficial dos Municípios do Piauí (DOM-PI), com escopo primário focado no Território de Desenvolvimento dos Carnaubais. O sistema realiza extração de metadados, download de publicações, processamento de PDFs com estratégias de deduplicação incremental e conversão estruturada.
+> Relatório técnico completo da construção do corpus: **[`RELATORIO_CORPUS_DOM-PI.md`](RELATORIO_CORPUS_DOM-PI.md)**.
 
-## Visão Arquitetural
+## Arquitetura do pipeline
 
-A arquitetura do projeto foi consolidada em uma pipeline unificada (*end-to-end*) sob a interface `pipeline.py`. Isso minimiza redundâncias operacionais, reduz alocações de I/O de rede desnecessárias e viabiliza um fluxo coerente:
-
-1. **Scraping Inicial:** Estabelecimento de sessões HTTP persistentes (`requests.Session`) para contornar protocolos restritivos do backend *Scriptcase*.
-2. **Parsing Estrutural:** Uso do `BeautifulSoup` na decodificação de DOM Trees fragmentadas e extração orientada por Expressões Regulares (Regex) em seletores ocultos.
-3. **Deduplicação de Artefatos:** Verificação nativa em memória no momento da varredura, prevenindo dowloads paralelos para arquivos de *hash/url* homólogo.
-4. **Conversão Textual (Markdown):** Transformação assíncrona baseada em heurísticas usando as bibliotecas associadas (`markitdown`, `pypdf`).
-5. **Relatórios Consolidativos:** Geração de *logs* vitais e emissão de um relatório executivo apontando volume das amostras, sucessos e ocorrências excepcionais (timeouts).
-
-## Estrutura do Repositório
-
-- `src/dompi_scraper/pipeline.py`: O núcleo de execução contendo orquestrador principal, crawling, parsing web e manipulação local (A Pipeline Unificada).
-- `src/dompi_scraper/schema_utils.py`: Transacionador de esquemas para manipulação persistente e padronizada das tabelas `CSV`.
-- `src/dompi_scraper/shared_utils.py`: Auxiliares computacionais abrangentes (tratadores de *slugs* e formatadores de sintaxe).
-- `docs/research/`: Camada contextual da engenharia reversa executada sobre o ecossistema DOM-PI.
-- `CONTEXT.md`: Regras de negócio essenciais e fundamentos didáticos da biblioteca adotada para instrução técnica de novos mantenedores.
-
-## Passo-a-Passo: Inicializando o Ambiente (Setup)
-
-O projeto é gerenciado rigorosamente pelo sistema **uv** (para empacotamento ultrarrápido). As etapas de configuração para replicação do ambiente de desenvolvimento são as seguintes:
-
-### Pré-Requisitos
-1. **Python 3.12** ou superior estar contido no seu `$PATH`.
-2. O gerenciador **uv** instalado na sua máquina (`curl -LsSf https://astral.sh/uv/install.sh | sh` no unix).
-
-### Etapa 1: Sincronização do Ambiente (`.venv`)
-Execute os comandos na raiz da infraestrutura para validar o lockfile versionado e construir o virtual environment isolado:
-
-```bash
-uv sync
 ```
-*O uso do comando `uv sync` certificará as dependências obrigatórias: `requests`, `beautifulsoup4`, `markitdown` e `pypdf` e criará o diretório `.venv` silenciosamente.*
-
-### Etapa 2: Validar Instalação
-Garanta que as bibliotecas e interpretadores estejam saudáveis consultando a invocação nativa do `help`:
-
-```bash
-uv run python src/dompi_scraper/pipeline.py --help
+scraping  →  download  →  reconstrução  →  EXTRAÇÃO (GPU/SLURM)  →  DATA LAKE  →  dataset
+(metadados)  (PDFs)      (manifesto→     PyMuPDF + PaddleOCR/      extraído→limpo→  HF / treino
+                          estrutura)      Docling (CUDA)            corpus
 ```
 
-## Execução da Pipeline Principal
+1. **Scraping** — `scraper_isolado.py` coleta metadados por município × entidade no portal DOM-PI (backend Scriptcase, sessões HTTP persistentes).
+2. **Download / reconstrução** — `scrape_demais.sh` / `download_demais.sh` e `reconstruir_coleta.py` baixam os PDFs e remontam a estrutura por território/município a partir do manifesto.
+3. **Extração (pesada, no cluster)** — `orquestrador_extracao.py` faz triagem com PyMuPDF e roteia para **PaddleOCR-CUDA** (escaneado) ou **Docling-CUDA** (fiscal/tabelas); roda no SLURM via `run_extracao.sbatch`.
+4. **Data lake (leve, local/CPU)** — pacote `src/dompi_scraper/datalake/` (DuckDB + Polars + Parquet/zstd), com as camadas **extraído → limpo → corpus**.
+5. **Publicação** — exporta Parquet + shards `.jsonl.zst` e sobe para o HuggingFace Hub.
 
-A execução primária se dá por ativação do script unificado e se modela através dos *flags* informados. Toda execução criará nativamente diretórios de metadados (`/pdfs_arquivos`, `/markdowns`), *logs* estruturados no padrão ANSI (`scraper_operacional.log`) e resultados de performance.
+## Estrutura do repositório
 
-### 1. Teste Focado por Entidade/Município
-Uma extração em amostra baseada em um município delimitado para fins de validação paralela e testes rápidos:
+| Caminho | Conteúdo |
+|---|---|
+| `src/dompi_scraper/` | Pacote principal: orquestração, extração, limpeza, utilitários compartilhados |
+| `src/dompi_scraper/datalake/` | Camadas do lake: `ingest_extraido`, `build_limpo`, `build_corpus`, `corrigir_datas`, `corrigir_municipios`, `query`, `catalog`, `io` |
+| `src/dompi_scraper/territorios_pi.py` | Registro dos 13 Territórios de Desenvolvimento e municípios |
+| `src/vector_db/` | Ingestão vetorial (ChromaDB / BM25) para RAG |
+| `scraper_isolado.py`, `*.sh`, `run_extracao.sbatch` | Scripts de coleta, setup e jobs SLURM |
+| `to-do_territorios.txt` | Lista oficial de municípios por território (fonte de canonização) |
+| `docs/`, `RELATORIO_CORPUS_DOM-PI.md`, `CONTEXT*.md` | Documentação e relatórios |
 
-```bash
-uv run python src/dompi_scraper/pipeline.py --municipio "Campo Maior" --inicio "01/01/2025" --fim "31/12/2025" --output "./resultado_local"
+> **Artefatos gerados não são versionados** (ver `.gitignore`): PDFs (`territorios/`), o data lake
+> (`datalake/`), bases de treino (`db_treino_*`), bases vetoriais (`chroma_db*`), staging do lab
+> (`staging_lab/`) e o pacote de publicação HF (`hf_corpus_dompi/`) são todos **regeneráveis** pela pipeline.
+
+## Camadas do data lake
+
+```
+datalake/
+  extraido/  territorio=<slug>/ano=<AAAA>/part-*.parquet   # 1 linha/doc + proveniência
+  limpo/     territorio=<slug>/ano=<AAAA>/part-*.parquet   # texto limpo, re-hash, dedup, flags
+  corpus/    corpus_llm/ part-*.parquet (+ shards .jsonl.zst)  # pronto p/ treino
+  _catalog/  manifest.parquet · dedup_global.parquet
 ```
 
-### 2. Job Executivo (Território Carnaubais em Lote)
-Para acionar a instrução abrangendo os 16 Municípios rastreados pelo polo de negócios de forma nativa e paralela:
+CLI (tudo CPU-leve, roda local):
 
 ```bash
-uv run python src/dompi_scraper/pipeline.py --territorio-carnaubais --inicio "01/01/2025" --fim "31/12/2025" --output "./saida_carnaubais"
+python -m dompi_scraper.datalake.ingest_extraido   --territorio <slug>   # ou --all
+python -m dompi_scraper.datalake.build_limpo        --territorio <slug>   # ou --all
+python -m dompi_scraper.datalake.build_corpus       # fatia compilações + dedup near-dup → train+raw
+python -m dompi_scraper.datalake.empacotar_hf       # empacota hf_corpus_dompi/ (upload manual)
+python -m dompi_scraper.datalake.query "SELECT territorio, count(*) FROM corpus GROUP BY 1"
 ```
 
-## Diretrizes e Políticas de Persistência
+## Setup do ambiente
 
-- **Carga Massiva (Cold Storage):** Nenhum arquivo de carga de processamento `.pdf`, transcrições espessas de `.md` ou logs contendo mais de mil interações não sumarizadas deverão transitar pelo repositório base. Use explicitamente os apontamentos em `.gitignore`.
-- **Evoluções da Malla:** Se mudanças nas regras do fornecedor (Scripcase/DOM-PI) inviabilizarem o funcionamento orgânico dos extratores (blocos BeautifulSoup), atente-se às documentações geradas nos metadados salvos ou revise os fundamentos explicitados em `CONTEXT.md`.
+Gerenciado com **uv** (Python ≥ 3.12).
+
+```bash
+uv sync                 # instala dependências a partir do uv.lock versionado
+```
+
+No cluster (GPU, sem AVX2), use `setup_venvs.sh` para os venvs `.venv` / `.venv-paddle`.
+**Atenção:** a extração nunca deve ser executada via `uv run`; use o interpretador do venv
+diretamente (`./.venv/bin/python -m ...`).
+
+## Dataset publicado
+
+```python
+from datasets import load_dataset
+ds = load_dataset("gutoportelaa/dom-pi-corpus-2025", split="train")
+ds = ds.filter(lambda r: r["territorio"] == "cocais")   # filtrar por território
+```
+
+Colunas: `id`, `territorio`, `municipio` (nome oficial canonizado), `tipo_ato`, `ano`,
+`data_publicacao`, `n_tokens`, `tamanho_classe`, `texto`. Config `default`/`train` é
+deduplicado (near-dups removidos) e com compilações fatiadas em atos; config `raw` traz
+tudo + `cluster_id`/`is_near_dup`. Licença **CC-BY-4.0**.
+
+## Licença
+
+Código sob a licença do arquivo [`LICENSE`](LICENSE). Os textos do corpus são atos oficiais
+públicos, redistribuídos sob CC-BY-4.0 — atribua à fonte (DOM-PI / municípios do Piauí).
