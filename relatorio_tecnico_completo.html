@@ -465,7 +465,79 @@ sobre alternativas, sem requerer decodificação por geração.</p>
 </table>
 
 <!-- 1.6 Inferências -->
+<h4>Diferenças de implementação entre as versões</h4>
+<p>Todas as variantes partem do mesmo <code>Qwen/Qwen2.5-1.5B</code>, lr=2e-6 (full FT) / 2e-5 (PEFT), AdamW 8-bit,
+block=512. O que muda entre elas:</p>
+<table>
+  <tr>
+    <th>Versão (job)</th><th>Corpus</th><th class="tc">Épocas</th><th>Objetivo de treino</th>
+    <th>Diferencial</th><th class="tc">held-out PPL</th><th class="tc">Δ</th>
+  </tr>
+  <tr>
+    <td><strong>Full FT unificado</strong> (487)</td><td>DOM-PI completo</td><td class="tc">1</td>
+    <td style="color:var(--bad-fg)">duplo shift (bug)</td><td>resposta canônica do enunciado</td>
+    <td class="num">22,22</td><td class="num" style="color:var(--bad-fg)">+121%</td>
+  </tr>
+  <tr>
+    <td>Full FT Teresina v1 (429)</td><td>Teresina curado</td><td class="tc">1</td>
+    <td style="color:var(--bad-fg)">duplo shift (bug)</td><td>1ª restrição ao corpus limpo</td>
+    <td class="num">8,76</td><td class="num" style="color:var(--warn-fg)">+27%</td>
+  </tr>
+  <tr>
+    <td>Full FT Teresina v2 (488)</td><td>Teresina curado</td><td class="tc">3</td>
+    <td style="color:var(--bad-fg)">duplo shift (bug)</td><td>+ <code>--freeze-embeddings</code> (recipe literatura)</td>
+    <td class="num">12,64</td><td class="num" style="color:var(--bad-fg)">+83%</td>
+  </tr>
+  <tr style="background:var(--ok-bg)">
+    <td><strong>Full FT Teresina v3</strong> (489)</td><td>Teresina curado</td><td class="tc">2</td>
+    <td style="color:var(--ok-fg)"><strong>corrigido</strong></td><td>+ early stopping com <code>--min-delta</code></td>
+    <td class="num"><strong>6,02</strong></td><td class="num" style="color:var(--ok-fg)"><strong>−12,9%</strong></td>
+  </tr>
+  <tr>
+    <td>QLoRA (421)</td><td>DOM-PI completo</td><td class="tc">1</td>
+    <td style="color:var(--bad-fg)">duplo shift (bug)</td><td>NF4 4-bit + adaptadores rank-16</td>
+    <td class="num">10,47</td><td class="num" style="color:var(--warn-fg)">+4,4%</td>
+  </tr>
+  <tr>
+    <td>LoRA (396/426)</td><td>DOM-PI completo</td><td class="tc">1</td>
+    <td style="color:var(--bad-fg)">duplo shift (bug)</td><td>adaptadores rank-16 (sem quantização)</td>
+    <td class="num">~1.000</td><td class="num" style="color:var(--bad-fg)">colapso</td>
+  </tr>
+</table>
+<p class="inf-note"><strong>Importante:</strong> o bug do duplo deslocamento de rótulos estava nos três scripts de treino
+(<code>pretreino_fullft.py</code>, <code>pretreino_continuado.py</code>, <code>pretreino_lora.py</code>) — portanto
+<em>todas</em> as rodadas exceto o v3 treinaram com o objetivo incorreto. Os números de QLoRA/LoRA/unificado são,
+assim, <em>limites inferiores</em>: uma re-execução com o objetivo corrigido provavelmente os melhoraria. Apenas o
+v3 foi treinado com o objetivo correto, e é o único com ganho real.</p>
+
 <h3>1.6 Exemplos do Benchmark — Análise Qualitativa</h3>
+
+<h4>Comparação entre versões — completar portaria (geração real)</h4>
+<p>Prompt: <em>"PORTARIA Nº 130, DE 12 DE MARÇO DE 2025. O PREFEITO MUNICIPAL DE COCAL… RESOLVE: Art. 1º"</em>.
+A degradação dos modelos com o objetivo bugado é <strong>visível no texto</strong> (palavras truncadas, OCR, zeros repetidos):</p>
+<div class="inf-block">
+  <div class="inf-resp">
+    <span class="model-tag tag-base">Baseline 1.5B</span>
+    <div class="inf-txt">Fica criado o Programa Municipal de Atenção à Saúde da Mulher (PMSM)… promoção, proteção e garantia dos direitos das mulheres cocalenses… — coerente, porém genérico (não segue o padrão "pagamento/exoneração" típico de portarias).</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-fullft">Full FT unificado <small>(canônico, degradado)</small></span>
+    <div class="inf-txt">"Fornecerá a licitação para o fornecimento de serviços de limpeza urbana e <strong>coletares resídeos</strong> domiciliares… Tabela Item Valor Limpas Urbana R$ 480,00 <strong>Coletes Resídeos</strong> R$ 70,00" — gramática e ortografia degradadas (ruído de OCR internalizado).</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-qlora">Full FT Teresina v2 <small>(bug + overfit)</small></span>
+    <div class="inf-txt">"…construção e operação da Usina Hidroelétrica de Cocal… ADEUS CONSTRUCAO E SERVICOS LTDA, com CNPJ/ME <strong>00000000000000</strong>, com endereço em Rua <strong>0000000…</strong>" — colapso em sequências repetidas.</div>
+  </div>
+  <div class="inf-resp">
+    <span class="model-tag tag-fullft">Full FT Teresina v3 <small>(objetivo corrigido)</small></span>
+    <div class="inf-txt">"Fica autorizado o pagamento da folha de pessoal dos servidores municipais… conforme <strong>Lei nº 4.679/2025</strong>, em regime de trabalho semanal de 40 horas, com vencimento mensal de R$ 8.000,00…" — fluente, no padrão de portaria e citando lei.</div>
+  </div>
+  <div class="inf-note">
+    <strong>Análise:</strong> o v3 é o único que combina fluência e estrutura de domínio sem degradação textual. Os
+    modelos com o objetivo bugado (unificado, v2) exibem erros lexicais/ortográficos e sequências repetidas — assinatura
+    do treino sobre um alvo incorreto. (Demais prompts comparativos abaixo.)
+  </div>
+</div>
 
 <h4>Prompt 1 — Completação de Portaria (tipo: completação_domínio)</h4>
 <div class="inf-block">
@@ -489,7 +561,7 @@ II - Servidores com tempo entre 1 e 5 anos: R$ 792,00;
 III - Servidores com tempo entre 6 e 10 anos: R$ 1.116,00;</div>
   </div>
   <div class="inf-resp">
-    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <span class="model-tag tag-fullft">Full FT Teresina v1</span>
     <div class="inf-txt"> Fica autorizado o pagamento dos servidores públicos municipais que se encontram em licença materna e paterna por tempo determinado, para os meses de março, abril e maio de 2025.
 
 Art. 2º O presente ato entra em vigor na data de sua publicação.
@@ -519,7 +591,7 @@ Resposta:</div>
     <div class="inf-txt"> O objeto é a prestação de serviços de limpeza urbana.</div>
   </div>
   <div class="inf-resp">
-    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <span class="model-tag tag-fullft">Full FT Teresina v1</span>
     <div class="inf-txt"> O objeto é a execução de obras e reparos em estradas, pavimentação asfáltica, manutenção de vias públicas, construção de calçamento, drenagem pluvial, iluminação pública, entre outras atividades de infraestrutura urbana.</div>
   </div>
   <div class="inf-note">
@@ -541,7 +613,7 @@ Resposta:</div>
     <div class="inf-txt"> Um PE é uma modalidade de licitação para venda ou contratação de serviços por meio da internet, com propostas apresentadas e avaliadas online, permitindo participação em tempo real com maior transparência e eficiência.</div>
   </div>
   <div class="inf-resp">
-    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <span class="model-tag tag-fullft">Full FT Teresina v1</span>
     <div class="inf-txt"> Um pregão eletrônico é uma modalidade de licitação pública onde as empresas enviam suas propostas online através de sistema específico, sem necessidade de deslocamento. Permite comparar preços e condições em tempo real.</div>
   </div>
   <div class="inf-note">
@@ -569,7 +641,7 @@ Data: 01/03/2017 a 31/08/2017
 Valor total: R$ 4.500.000,00 (quatro milhões e quinhentos mil reais)</div>
   </div>
   <div class="inf-resp">
-    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <span class="model-tag tag-fullft">Full FT Teresina v1</span>
     <div class="inf-txt"> manutenção e reparo de equipamentos informáticos.
 Data: 10/09/2018 — Local: Teresina, PI
 Prazos: O Contratado deverá realizar manutenção conforme quadro:
@@ -600,7 +672,7 @@ Resposta:</div>
     <div class="inf-txt"> O DOM-PI é um documento oficial publicado pela Secretaria de Estado da Fazenda (SEFAZ) com informações sobre ações dos municípios. [INCORRETO: SEFAZ não é a responsável]</div>
   </div>
   <div class="inf-resp">
-    <span class="model-tag tag-fullft">Full FT Teresina</span>
+    <span class="model-tag tag-fullft">Full FT Teresina v1</span>
     <div class="inf-txt"> O DOM-PI é um periódico publicado pela Secretaria de Estado da Administração Pública (SEAP) para divulgar leis, decretos, resoluções e atos normativos relevantes para os municípios. Distribuído gratuitamente a órgãos públicos municipais e acessível online. [MAIS PRÓXIMO DO CORRETO]</div>
   </div>
   <div class="inf-note">
@@ -611,12 +683,26 @@ Resposta:</div>
 <!-- 1.7 Conclusão Q1 -->
 <h3>1.7 Conclusão da Questão 1</h3>
 
+<div class="callout">
+  <strong>Duas respostas, por desenho.</strong> O enunciado pede o pré-treino com o <strong>dataset completo</strong>
+  do DOM-PI. Apresentamos, portanto, <strong>duas respostas complementares</strong>:
+  <ol style="margin:.4rem 0 0 1.1rem">
+    <li><strong>Resposta canônica (dataset completo):</strong> Full FT do Qwen2.5-1.5B sobre o corpus DOM-PI unificado
+        (224 municípios + capital). Apresentada <em>mesmo degradada</em> (+121% PPL) por ser literalmente o que o
+        enunciado pede e por evidenciar a dificuldade do full FT sobre um corpus grande e ruidoso (OCR).
+        HF: <code>gutoportelaa/qwen2.5-1.5b-dompi-fullft-unificado</code>.</li>
+    <li><strong>Resposta alternativa (tentativa de solução):</strong> restringir o pré-treino ao <strong>subcorpus
+        curado de Teresina</strong> e corrigir o pipeline. A progressão v1→v2→v3 mostra o diagnóstico; o
+        <strong>v3</strong> (objetivo de treino corrigido) é o primeiro a <strong>superar o baseline</strong>:
+        held-out PPL 6,91 → <strong>6,02 (−12,9%)</strong>, token-acc 58,8% → 60,8%, benchmark 7,45 → 7,24.
+        HF: <code>gutoportelaa/qwen2.5-1.5b-dompi-teresina-v3</code>.</li>
+  </ol>
+</div>
+
 <div class="callout success">
-  <strong>Resultado central:</strong> Com o objetivo de treino corrigido (job <strong>v3</strong>), o Full FT do
-  Qwen2.5-1.5B sobre o corpus curado de Teresina <strong>superou o baseline em todas as métricas</strong>:
-  held-out PPL 6,91 → <strong>6,02 (−12,9%)</strong>, token-accuracy 58,8% → 60,8%, e benchmark PPL 7,45 → 7,24 (−2,8%).
-  Este é o <strong>modelo final da Questão 1</strong>. A conclusão anterior ("nenhum método superou o baseline / corpus
-  insuficiente") estava <em>incorreta</em>: o gargalo não era o corpus, e sim um <strong>bug no objetivo de treino</strong>.
+  <strong>Conclusão científica:</strong> a tese inicial ("corpus insuficiente; nenhum método supera o baseline")
+  estava <em>incorreta</em>. O gargalo não era o corpus, e sim um <strong>bug no objetivo de treino</strong> (duplo
+  shift de rótulos). Corrigido, o DAPT sobre corpus curado entrega ganho real, exatamente como a teoria prevê.
 </div>
 
 <p><strong>A reviravolta — bug do duplo deslocamento.</strong> Investigando por que mais épocas <em>pioravam</em> o
@@ -629,6 +715,11 @@ em grande parte, <strong>artefatos desse bug</strong>.</p>
 
 <table>
   <tr><th>Método</th><th>Resultado (held-out)</th><th>Leitura</th></tr>
+  <tr>
+    <td><strong>Full FT — dataset COMPLETO</strong> <small>(resposta canônica)</small></td>
+    <td style="color:var(--bad-fg)">+121% (degradado)</td>
+    <td>Full parameter sobre o corpus unificado ruidoso (OCR): inviável. É a resposta literal ao enunciado, apresentada para evidenciar o problema</td>
+  </tr>
   <tr>
     <td>LoRA (lr=2e-5)</td>
     <td style="color:var(--bad-fg)">Colapso (PPL ×100)</td>

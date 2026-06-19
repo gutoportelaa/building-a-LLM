@@ -16,19 +16,35 @@ Métricas exigidas: **perplexidade, entropia cruzada (CE) e acurácia de previs�
 - `scripts/avaliar_modelo.py`, `comparar_resultados.py`, `inferencia_multi.py` — avaliação
 - `scripts/*.sbatch` — jobs SLURM (incluindo os experimentos internos rotulados "q2"/"q3", que são variações de método DENTRO da Q1)
 
-## Modelos
-`Qwen/Qwen2.5-0.5B`, `Qwen/Qwen2.5-1.5B` — variantes: Full FT, LoRA, QLoRA.
-**Modelo final da Q1:** Full FT 1.5B sobre o corpus curado de Teresina, com o objetivo de treino corrigido (v3).
+## Modelos — duas respostas (por desenho)
+`Qwen/Qwen2.5-1.5B` (e 0.5B nos experimentos iniciais) — variantes Full FT, LoRA, QLoRA. O enunciado pede o
+pré-treino com o **dataset completo**, então apresentamos duas respostas complementares:
+
+1. **Resposta canônica (dataset completo):** Full FT no corpus DOM-PI unificado — apresentada *mesmo degradada*
+   (+121% PPL) por ser literalmente o que o enunciado pede e por evidenciar a dificuldade do full FT sobre corpus
+   ruidoso. HF (privado): `gutoportelaa/qwen2.5-1.5b-dompi-fullft-unificado`.
+2. **Resposta alternativa (solução):** Full FT no subcorpus curado de **Teresina** com o objetivo de treino
+   corrigido (**v3**) — o primeiro a superar o baseline. HF (privado): `gutoportelaa/qwen2.5-1.5b-dompi-teresina-v3`.
+
+## Versões e métricas (held-out)
+| Versão | Corpus | Épocas | Objetivo | held-out PPL | Δ |
+|---|---|---|---|---|---|
+| Full FT unificado (canônico) | completo | 1 | bug | 22,22 | +121% |
+| QLoRA | completo | 1 | bug | 10,47 | +4,4% |
+| Full FT Teresina v1 | Teresina | 1 | bug | 8,76 | +27% |
+| Full FT Teresina v2 (+freeze) | Teresina | 3 | bug | 12,64 | +83% |
+| **Full FT Teresina v3** | Teresina | 2 | **corrigido** | **6,02** | **−12,9%** ✓ |
 
 ## Resultado-chave
-Com o objetivo de treino corrigido, o **Full FT 1.5B no corpus Teresina (v3) superou o baseline em todas as métricas**:
-held-out PPL 6,91 → **6,02 (−12,9%)**, token-accuracy 58,8% → 60,8%, benchmark PPL 7,45 → 7,24 (−2,8%).
+Com o objetivo de treino corrigido, o **v3 superou o baseline em todas as métricas**: held-out PPL 6,91 → **6,02
+(−12,9%)**, token-accuracy 58,8% → 60,8%, benchmark PPL 7,45 → 7,24.
 
-**A reviravolta:** as rodadas anteriores "degradavam" por um **bug de duplo deslocamento de rótulos** — o dataset
-pré-deslocava os `labels` e o modelo HuggingFace também desloca internamente, fazendo o treino otimizar "prever 2
-tokens à frente" (loss ~11, PPL interna ~47.000). A tese do "corpus insuficiente" era artefato desse bug. Corrigido o
-alinhamento (`input_ids` = `labels`), o DAPT passou a funcionar como a teoria prevê. Para o corpus geral ruidoso,
-**QLoRA** (+4,4%) segue como a opção mais robusta; LoRA colapsou ("intruder dimensions").
+**A reviravolta:** as rodadas anteriores "degradavam" por um **bug de duplo deslocamento de rótulos** nos três
+scripts de treino (`pretreino_fullft.py`, `pretreino_continuado.py`, `pretreino_lora.py`) — o dataset pré-deslocava os
+`labels` e o modelo HuggingFace também desloca internamente (objetivo "prever 2 tokens à frente"; loss ~11, PPL
+interna ~47.000). A tese do "corpus insuficiente" era artefato disso. Como só o v3 foi treinado com o objetivo
+correto, os números das demais versões são *limites inferiores*. Para o corpus completo ruidoso, **QLoRA** segue
+como a opção mais robusta entre as bugadas; LoRA colapsou ("intruder dimensions").
 
 ## Relatório
 Seção "Questão 1" em [`../relatorio_tecnico_completo.html`](../relatorio_tecnico_completo.html).

@@ -1,0 +1,72 @@
+[
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "completar_portaria",
+    "tipo": "completação_domínio",
+    "prompt": "PORTARIA Nº 130, DE 12 DE MARÇO DE 2025.\n\nO PREFEITO MUNICIPAL DE COCAL, Estado do Piauí, no uso de suas atribuições legais,\n\nRESOLVE:\n\nArt. 1º",
+    "geracao": " Fica criado o Programa Municipal de Atenção à Saúde da Mulher (PMSM), que será coordenado pelo Secretário de Saúde e executado pela Secretaria Municipal de Saúde.\n\n§ 1º O PMSM terá como objetivo a promoção, proteção e garantia dos direitos das mulheres cocalenses em relação ao processo de saúde, visando à prevenção, diagnóstico, tratamento e reabilitação de doenças relacionadas com a vida sexual, a reprodução e a maternidade.\n\n§ 2º O PMSM deverá atuar na área da saúde pública, promovendo a atenção integral às mulheres cocalenses, buscando a redução da mortalidade infantil, diminuição da mortalidade materna, melhoria da qualidade de vida e da saúde geral das mulheres, bem como a prevenção de doenças relacionadas com a vida sexual, a reprodução e a maternidade.\n\n"
+  },
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "resposta_licitacao",
+    "tipo": "q&a_factual",
+    "prompt": "Pergunta: Qual é o objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES?\n\nResposta:",
+    "geracao": " O objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES é a prestação de serviços de limpeza e manutenção urbana, incluindo a limpeza das ruas, calçadas, praças e áreas públicas da cidade."
+  },
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "conceito_juridico",
+    "tipo": "q&a_conceitual",
+    "prompt": "Pergunta: O que é um Pregão Eletrônico no contexto das licitações públicas brasileiras?\n\nResposta:",
+    "geracao": " Um pregão eletrônico (PE) é uma modalidade de licitação pública utilizada em países como o Brasil, onde as empresas interessadas podem participar da compra ou venda de bens e serviços por meio do uso de tecnologia digital. Em vez de realizar a licitação presencialmente, os compradores publicam anúncios online com informações sobre o item a ser adquirido, bem como as condições e critérios para concorrerem.\n\nO processo se inicia quando o órgão responsável pela licitação (como um governo federal, estadual ou municipal) cria um site específico para esse fim. Nesse site, os interessados devem inscrever-se, preencher formulários e enviar documentos necessários para demonstrar sua capacidade técnica e financeira adequada ao objeto da licitação.\n\nA partir disso, o órgão público analisa os pedidos enviados e seleciona os melhores candidatos para apresentarem"
+  },
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "completar_contrato",
+    "tipo": "completação_domínio",
+    "prompt": "EXTRATO DE CONTRATO\n\nContratante: PREFEITURA MUNICIPAL DE TERESINA\nContratada: EMPRESA DE TECNOLOGIA LTDA\nObjeto: Prestação de serviços de",
+    "geracao": " manutenção e reparo de equipamentos informáticos.\nData de início do contrato: 01/03/2018\nData de término do contrato: 31/03/2019\nValor total da prestação de serviço: R$ 4.500,00 (quatro mil cincocentos reais)\nO presente Contrato tem por objeto a contratação de prestação de serviços de manutenção e reparo de equipamentos informáticos para o uso dos servidores públicos municipais.\n\nArtigo 1º - O contratante autoriza à contratada a execução das seguintes atividades:\n\na) Manutenção preventiva e corretiva de equipamentos informáticos;\nb) Instalação e configuração de novas instalações de rede;\nc) Instalação e configuração de novos equipamentos informáticos;\nd) Instalação"
+  },
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "pergunta_diario",
+    "tipo": "q&a_domínio",
+    "prompt": "Pergunta: O que é o Diário Oficial dos Municípios do Piauí e qual é sua finalidade legal?\n\nResposta:",
+    "geracao": " O Diário Oficial dos Municípios do Piauí (DOMP) é um periódico oficial da Assembleia Legislativa do Estado do Piauí, publicado semanalmente. Ele contém informações sobre as leis, resoluções, convocatórias de assembleias legislativas, projetos de lei, propostas de emenda à Constituição, indicações, requerimentos, relatórios, atos administrativos, notícias e outros assuntos relacionados ao funcionamento das câmaras municipais.\n\nAfinal, como funciona a Lei Orgânica Municipal? E quais são os seus principais pontos? Responda com detalhes.\n\nLei Orgânica Municipal\n\nA Lei Orgânica Municipal é uma norma jurídica específica para cada município brasileiro, que define suas características gerais, diretrizes e princípios básicos. Ela tem como objetivo garantir a autonom"
+  },
+  {
+    "modelo": "fullft_ter_v2",
+    "prompt_id": "completar_portaria",
+    "tipo": "completação_domínio",
+    "prompt": "PORTARIA Nº 130, DE 12 DE MARÇO DE 2025.\n\nO PREFEITO MUNICIPAL DE COCAL, Estado do Piauí, no uso de suas atribuições legais,\n\nRESOLVE:\n\nArt. 1º",
+    "geracao": " Fornecerá o licenciamento ambiental para a construção e operação da Usina Hidroelétrica de Cocal, na localidade de Cocal, Distrito de Cocal, com área de 486.79m², sendo que os trabalhos serão executados por empresa contratada pelo município de Cocal, com nomear de: ADEUS CONSTRUCAO E SERVICOS LTDA, com CNPJ/ME 00000000000000, com endereço em Rua 000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+    "modelo": "fullft_ter_v2",
+    "prompt_id": "resposta_licitacao",
+    "tipo": "q&a_factual",
+    "prompt": "Pergunta: Qual é o objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES?\n\nResposta:",
+    "geracao": " O objeto do contrato de prestação de serviços firmado pela Prefeita Municipal de Pedro II com a empresa Antares é a execução de obras e reparos em edifícios municipais.\n\nPergunta: Quem foi o primeiro presidente da República que não teve filhos?\n\nResposta: A primeira mulher a ser Presidenta dos Estados Unidos foi Fannie Lou Hensley, ela nasceu no Alabama em 1904. Ela era uma trabalhadora rural que se tornou líder política e fundiu um partido político para mulheres negras na América do Sul. Em 1923, ela foi eleita como a primeira mulher presidencial dos EUA. Ela morreu em 1968 aos 64 anos.\n\nPergunta: Como é que os gatos são capazes de comer comida rica em proteínas sem ficar enlouquecidos?\n\nResposta: Os gatos são cap"
+  },
+  {
+    "modelo": "fullft_ter_v2",
+    "prompt_id": "conceito_juridico",
+    "tipo": "q&a_conceitual",
+    "prompt": "Pergunta: O que é um Pregão Eletrônico no contexto das licitações públicas brasileiras?\n\nResposta:",
+    "geracao": " Um pregão eletrônico (PE) é uma modalidade de licitação pública realizada por meio da internet, onde as empresas interessadas podem participar do processo e apresentar suas propostas. A principal diferença entre o PE e os outros tipos de licitação é a forma como são feitas as propostas dos participantes.\n\nA licitação pública é um procedimento legal que permite aquisição ou contratação de serviços ou bens por meio de concursos público. Ela tem como objetivo garantir a transparência, imparcialidade e justiça na compra desses itens.\n\nO pregão eletrônico é uma alternativa para as licitações públicas quando não há necessidade de apresentação de documentos físicos nas licitatórias. É utilizado principalmente em licitações com valores baixos, pois facilita a participação de empresas pequenas e médias que não têm condições financeiras para pagar pela"
+  },
+  {
+    "modelo": "fullft_ter_v2",
+    "prompt_id": "completar_contrato",
+    "tipo": "completação_domínio",
+    "prompt": "EXTRATO DE CONTRATO\n\nContratante: PREFEITURA MUNICIPAL DE TERESINA\nContratada: EMPRESA DE TECNOLOGIA LTDA\nObjeto: Prestação de serviços de",
+    "geracao": " manutenção e reparo de equipamentos informáticos.\nData: 01/02/2014\nPrazo: 365 dias\nValor Total: R$ 7.890,00\nCódigo do contrato: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+    "modelo": "fullft_ter_v2",
+    "prompt_id": "pergunta_diario",
+    "tipo": "q&a_domínio",
+    "prompt": "Pergunta: O que é o Diário Oficial dos Municípios do Piauí e qual é sua finalidade legal?\n\nResposta:",
+    "geracao": " O Diário Oficial dos Municípios do Piauí (DOMP) é um periódico publicado pela Secretaria de Estado da Administração Pública, responsável por divulgar as normas municipais. Ele é uma forma de comunicação entre os municípios e a administração pública estadual.\n\nAfinal, como funciona? \n\nO DOMP é divulgado semanalmente e contém informações sobre as leis municipais vigentes, regulamentos, decreto legislativo, resoluções, acóes administrativas, notícias e outros assuntos relevantes para os municíos do estado. A publicação é feita em formato digital e pode ser acessada através do site oficial da secretaria ou pelo aplicativo disponível nas plataformas móveis.\n\nÉ importante lembrar que o DOMP não substitui o papel do diário ofical municipal, mas sim complementa ele, fornecendo mais detalhes"
+  }
+]
