@@ -91,9 +91,10 @@ class PackedTextDataset(IterableDataset):
             if len(buffer) >= self.block_size + 1:
                 block = buffer[: self.block_size + 1]
                 buffer = buffer[self.block_size:]
+                # input_ids e labels ALINHADOS: o modelo HF faz o shift interno.
+                # Pré-deslocar causaria DUPLO shift → objetivo "prever 2 à frente" (bug corrigido).
                 input_ids = torch.tensor(block[:-1], dtype=torch.long)
-                labels = torch.tensor(block[1:], dtype=torch.long)
-                yield {"input_ids": input_ids, "labels": labels}
+                yield {"input_ids": input_ids, "labels": input_ids.clone()}
 
 
 def count_blocks(jsonl_path: str, tokenizer, block_size: int, max_docs=None) -> int:

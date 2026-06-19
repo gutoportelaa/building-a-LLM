@@ -118,3 +118,4 @@ trabalho-final/**/index/chunks.jsonl
 hf_teresina/
 manifest.parquet
 **/__pycache__/
+guardrails/log_eval_guardrails.txt

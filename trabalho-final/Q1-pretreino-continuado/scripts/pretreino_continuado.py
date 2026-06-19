@@ -93,9 +93,11 @@ class PackedTextDataset(IterableDataset):
             if len(buffer) >= self.block_size + 1:
                 block = buffer[: self.block_size + 1]
                 buffer = buffer[self.block_size:]
+                # input_ids e labels ALINHADOS: o modelo HF faz o shift interno
+                # (logits[:-1] vs labels[1:]). Pré-deslocar aqui causaria DUPLO shift
+                # → objetivo "prever 2 à frente" → loss ~aleatória (bug corrigido).
                 input_ids = torch.tensor(block[:-1], dtype=torch.long)
-                labels = torch.tensor(block[1:], dtype=torch.long)
-                yield {"input_ids": input_ids, "labels": labels}
+                yield {"input_ids": input_ids, "labels": input_ids.clone()}
         # bloco parcial final descartado intencionalmente:
         # tensores de tamanho misto causam RuntimeError no default_collate
 

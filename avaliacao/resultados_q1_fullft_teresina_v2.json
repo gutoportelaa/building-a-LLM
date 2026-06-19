@@ -1,0 +1,12 @@
+{
+  "model": "/home/aluno_matheus/building-a-LLM/treino/checkpoints_fullft_teresina_v2/best",
+  "held_out_path": "data/teresina/held_out.jsonl",
+  "held_out_n_docs": 444,
+  "held_out_n_examples": 1482,
+  "cross_entropy": 2.5369,
+  "perplexity": 12.6401,
+  "token_accuracy": 0.5264,
+  "bm_cross_entropy": 2.3725,
+  "bm_perplexity": 10.724,
+  "bm_token_accuracy": 0.5515
+}

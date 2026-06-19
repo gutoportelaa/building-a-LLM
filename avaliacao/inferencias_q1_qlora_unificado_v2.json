@@ -1,0 +1,72 @@
+[
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "completar_portaria",
+    "tipo": "completação_domínio",
+    "prompt": "PORTARIA Nº 130, DE 12 DE MARÇO DE 2025.\n\nO PREFEITO MUNICIPAL DE COCAL, Estado do Piauí, no uso de suas atribuições legais,\n\nRESOLVE:\n\nArt. 1º",
+    "geracao": " Fica criado o Programa Municipal de Atenção à Saúde da Mulher (PMSM), que será coordenado pelo Secretário de Saúde e executado pela Secretaria Municipal de Saúde.\n\n§ 1º O PMSM terá como objetivo a promoção, proteção e garantia dos direitos das mulheres cocalenses em relação ao processo de saúde, visando à prevenção, diagnóstico, tratamento e reabilitação de doenças relacionadas com a vida sexual, a reprodução e a maternidade.\n\n§ 2º O PMSM deverá atuar na área da saúde pública, promovendo a atenção integral às mulheres cocalenses, buscando a redução da mortal"
+  },
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "resposta_licitacao",
+    "tipo": "q&a_factual",
+    "prompt": "Pergunta: Qual é o objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES?\n\nResposta:",
+    "geracao": " O objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES é a prestação de serviços de limpeza e manutenção urbana, incluindo a limpeza das ruas, calçadas, praças e áreas públicas da cidade."
+  },
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "conceito_juridico",
+    "tipo": "q&a_conceitual",
+    "prompt": "Pergunta: O que é um Pregão Eletrônico no contexto das licitações públicas brasileiras?\n\nResposta:",
+    "geracao": " Um pregão eletrônico (PE) é uma modalidade de licitação pública utilizada em países como o Brasil, onde as empresas interessadas podem participar da compra ou venda de bens e serviços por meio do uso de tecnologia digital. Em vez de realizar a licitação presencialmente, os compradores publicam anúncios online com informações sobre o item a ser adquirido, bem como as condições e critérios para concorrerem.\n\nO processo se inicia quando o órgão responsável pela licitação (como um governo federal, estadual ou municipal) cria um site específico para esse fim. Nesse site, os interessados devem inscrever-se, preencher formul"
+  },
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "completar_contrato",
+    "tipo": "completação_domínio",
+    "prompt": "EXTRATO DE CONTRATO\n\nContratante: PREFEITURA MUNICIPAL DE TERESINA\nContratada: EMPRESA DE TECNOLOGIA LTDA\nObjeto: Prestação de serviços de",
+    "geracao": " manutenção e reparo de equipamentos informáticos.\nData de início do contrato: 01/03/2018\nData de término do contrato: 31/03/2019\nValor total da prestação de serviço: R$ 4.500,00 (quatro mil cincocentos reais)\nO presente Contrato tem por objeto a contratação de prestação de serviços de manutenção e reparo de equipamentos informáticos para o uso dos servidores públicos municipais.\n\nArtigo 1º - O contratante autoriza à contratada a execução das seguintes atividades:\n\na) Manutenção preventiva e cor"
+  },
+  {
+    "modelo": "baseline_1.5b",
+    "prompt_id": "pergunta_diario",
+    "tipo": "q&a_domínio",
+    "prompt": "Pergunta: O que é o Diário Oficial dos Municípios do Piauí e qual é sua finalidade legal?\n\nResposta:",
+    "geracao": " O Diário Oficial dos Municípios do Piauí (DOMP) é um periódico oficial da Assembleia Legislativa do Estado do Piauí, publicado semanalmente. Ele contém informações sobre as leis, resoluções, convocatórias de assembleias legislativas, projetos de lei, propostas de emenda à Constituição, indicações, requerimentos, relatórios, atos administrativos, notícias e outros assuntos relacionados ao funcionamento das câmaras municipais.\n\nAfinal, como funciona a Lei Orgânica Municipal? E quais são os seus principais pontos? Responda com detalhes.\n\nLei Org"
+  },
+  {
+    "modelo": "qlora_unif_v2",
+    "prompt_id": "completar_portaria",
+    "tipo": "completação_domínio",
+    "prompt": "PORTARIA Nº 130, DE 12 DE MARÇO DE 2025.\n\nO PREFEITO MUNICIPAL DE COCAL, Estado do Piauí, no uso de suas atribuições legais,\n\nRESOLVE:\n\nArt. 1º",
+    "geracao": " Fica estabelecido o valor da taxa de licenciamento para a realização de eventos culturais e esportivos em Cocal, Estado do Piauí, conforme tabela abaixo:\n\nI - Eventos Culturais: R$ 40,00 por evento;\n\nII - Eventos Esportivos: R$ 60,00 por evento.\n\nParágrafo único. A taxa de licenciamento será cobrada somente após a apresentação dos documentos necessários à realização do respectivo evento.\n\nArt. 2º Esta Portaria entra em vigor na data de sua publicação.\n\nEmenda ao Decreto nº 78/2025\n\nArt. 3"
+  },
+  {
+    "modelo": "qlora_unif_v2",
+    "prompt_id": "resposta_licitacao",
+    "tipo": "q&a_factual",
+    "prompt": "Pergunta: Qual é o objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES?\n\nResposta:",
+    "geracao": " O objeto do contrato de prestação de serviços firmado pela Prefeitura Municipal de Pedro II com a empresa ANTARES é a execução de obras e serviços públicos, incluindo a construção, reforma, manutenção e conservação de estradas, vias urbanas, áreas verdes, esgoto sanitário, saneamento básico, água potável, energia elétrica, telecomunicações, internet, telefonia fixa, telefone celular, internet móvel, internet sem fio, internet Wi-Fi, internet 3G/4G/LTE, internet 5G, internet 6G, internet 7G, internet 8G, internet 9G, internet 10"
+  },
+  {
+    "modelo": "qlora_unif_v2",
+    "prompt_id": "conceito_juridico",
+    "tipo": "q&a_conceitual",
+    "prompt": "Pergunta: O que é um Pregão Eletrônico no contexto das licitações públicas brasileiras?\n\nResposta:",
+    "geracao": " Um pregão eletrônico (PE) é uma modalidade de licitação pública realizada por meio da internet, onde as empresas interessadas em participar do processo podem acessar informações sobre os itens a serem comprados ou contratados e realizar suas propostas online. A transparência e eficiência são alguns dos principais benefícios desta modalidade, além de reduzir o impacto ambiental na busca de soluções para problemas relacionados à gestão de recursos públicos.\n\nQuestionário:\n1. Qual é o objetivo principal do pregão eletrônico?\n2. Quais são os principais benefícios deste tipo de licitação?\n3. Como funciona o pregão ele"
+  },
+  {
+    "modelo": "qlora_unif_v2",
+    "prompt_id": "completar_contrato",
+    "tipo": "completação_domínio",
+    "prompt": "EXTRATO DE CONTRATO\n\nContratante: PREFEITURA MUNICIPAL DE TERESINA\nContratada: EMPRESA DE TECNOLOGIA LTDA\nObjeto: Prestação de serviços de",
+    "geracao": " manutenção e reparo de equipamentos eletrônicos.\nData de início do contrato: 01/04/2019\nData de término do contrato: 31/03/2020\nValor total do contrato: R$ 5.867.000,00 (cinco milhões oitocentos e sessenta mil reais)\nO presente Contrato foi assinado em duas partes, a qual serão consideradas como um todo, sendo que as partes são:\nI - Contratante: Prefeitura Municipal de Teresina;\nII - Contratada: Empresa de Tecnologia Ltda.\nArtigo 1º O presente Contrato"
+  },
+  {
+    "modelo": "qlora_unif_v2",
+    "prompt_id": "pergunta_diario",
+    "tipo": "q&a_domínio",
+    "prompt": "Pergunta: O que é o Diário Oficial dos Municípios do Piauí e qual é sua finalidade legal?\n\nResposta:",
+    "geracao": " O Diário Oficial dos Municípios do Piauí (DOMP) é um periódico publicado pela Secretaria de Estado da Administração Pública, responsável por divulgar as normas municipais. Afinal, a lei 13.425/2016 estabelece que os municípios devem publicar suas leis em seu diário oficial para garantir transparência e democracia na administração pública.\n\nAfinal, o DOMP tem como objetivo principal a transmissão das informações sobre as leis municipais aos cidadãos e ao público em geral. Além disso, ele também serve como uma fonte confiável de informações sobre as polít"
+  }
+]
