@@ -346,7 +346,17 @@ sobre alternativas, sem requerer decodificação por geração.</p>
   <div class="exp-map-row">
     <div class="exp-map-cell"><strong>429</strong><br><small>Qwen 1.5B</small></div>
     <div class="exp-map-cell">Full FT + AdamW 8-bit + early stopping, Teresina HF (9,3 M tokens), lr=2e-6</div>
-    <div class="exp-map-cell"><span style="color:var(--warn-fg)">~ +26,7% PPL vs baseline Teresina</span>: Early stopping ativou. Sem colapso. Sinal de aprendizado de padrões estruturais.</div>
+    <div class="exp-map-cell"><span style="color:var(--warn-fg)">~ +26,7% PPL vs baseline Teresina</span>: Early stopping ativou. Sem colapso. Sinal de aprendizado de padrões estruturais. <em>(ainda com o bug do objetivo.)</em></div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>487 / 488</strong><br><small>Qwen 1.5B</small></div>
+    <div class="exp-map-cell">Full FT unificado (487) e Teresina v2 (488: 3 épocas + embeddings congeladas)</div>
+    <div class="exp-map-cell"><span style="color:var(--bad-fg)">✗ Pioraram</span>: unificado +121%, Teresina v2 +83%. As "melhorias" da literatura não transferiram — <strong>sob o objetivo bugado</strong>, mais épocas só amplificavam o dano.</div>
+  </div>
+  <div class="exp-map-row" style="background:var(--ok-bg)">
+    <div class="exp-map-cell"><strong>489 (v3)</strong><br><small>Qwen 1.5B</small></div>
+    <div class="exp-map-cell">Full FT Teresina, <strong>objetivo de treino corrigido</strong>, 2 épocas, early stopping por CE confiável, lr=2e-6</div>
+    <div class="exp-map-cell"><span style="color:var(--ok-fg)">✓ Ganho real: −12,9% PPL held-out</span> (6,91→6,02), token-acc +2 pts, benchmark −2,8%. Corrigido o duplo shift, o DAPT finalmente <em>melhora</em> o modelo. <strong>Modelo final da Q1.</strong></div>
   </div>
 </div>
 
@@ -398,11 +408,27 @@ sobre alternativas, sem requerer decodificação por geração.</p>
     <td class="num" style="color:var(--warn-fg)">+70,0% <small>(modelo menor)</small></td>
   </tr>
   <tr>
-    <td>Full FT 1.5B + AdamW 8-bit</td><td>Teresina HF (9,3 M)</td>
+    <td>Full FT 1.5B <small>(v1/v2, objetivo c/ bug)</small></td><td>Teresina HF (9,3 M)</td>
     <td class="num">2,170</td><td class="num">8,76</td><td class="num">55,88%</td>
     <td class="num" style="color:var(--warn-fg)">+26,7%</td>
   </tr>
+  <tr style="background:var(--ok-bg)">
+    <td><strong>Full FT 1.5B v3</strong> <small>(objetivo corrigido)</small></td><td>Teresina HF (9,3 M)</td>
+    <td class="num">1,796</td><td class="num"><strong>6,02</strong></td><td class="num">60,80%</td>
+    <td class="num" style="color:var(--ok-fg)"><strong>−12,9%</strong> ✓</td>
+  </tr>
 </table>
+<div class="inf-note" style="border-left:4px solid var(--ok-fg)">
+  <strong>Descoberta decisiva (bug do objetivo de treino).</strong> Todas as rodadas de Full FT acima (jobs 381–429)
+  treinaram com um <strong>duplo deslocamento de rótulos</strong>: o <code>PackedTextDataset</code> pré-deslocava os
+  <code>labels</code> (<code>block[1:]</code>) e o modelo HuggingFace <em>também</em> desloca internamente, fazendo o
+  treino otimizar "prever o token 2 posições à frente" — um objetivo incorreto. Isso inflava a loss de treino para
+  ~11 (≈aleatória sobre o vocabulário) e a perplexidade da eval interna para ~47.000. A "degradação catastrófica"
+  atribuída ao corpus ruidoso era, em boa parte, <strong>artefato desse bug</strong>. Corrigido o alinhamento
+  (<code>input_ids</code> e <code>labels</code> iguais; shift só interno), o job <strong>v3</strong> produziu o
+  <strong>primeiro ganho real do projeto</strong>: held-out PPL 6,91 → 6,02 (−12,9%) e token-accuracy 58,8% → 60,8%,
+  exatamente como a teoria de DAPT prevê para um corpus curado.
+</div>
 
 <h4>Benchmark Q&amp;A (NLL da resposta de referência)</h4>
 <table>
@@ -422,9 +448,14 @@ sobre alternativas, sem requerer decodificação por geração.</p>
     <td class="num" style="color:var(--warn-fg)">+7,8%</td>
   </tr>
   <tr>
-    <td>Full FT Teresina 1.5B</td>
+    <td>Full FT Teresina 1.5B <small>(objetivo c/ bug)</small></td>
     <td class="num">2,173</td><td class="num">8,78</td><td class="num">56,75%</td>
     <td class="num" style="color:var(--warn-fg)">+17,9%</td>
+  </tr>
+  <tr style="background:var(--ok-bg)">
+    <td><strong>Full FT Teresina 1.5B v3</strong> <small>(objetivo corrigido)</small></td>
+    <td class="num">1,980</td><td class="num"><strong>7,24</strong></td><td class="num">58,18%</td>
+    <td class="num" style="color:var(--ok-fg)"><strong>−2,8%</strong> ✓</td>
   </tr>
   <tr>
     <td><strong>Baseline 0.5B</strong></td>
@@ -580,39 +611,51 @@ Resposta:</div>
 <!-- 1.7 Conclusão Q1 -->
 <h3>1.7 Conclusão da Questão 1</h3>
 
-<div class="callout danger">
-  <strong>Resultado central:</strong> Nenhum método de DAPT testado superou o baseline de perplexidade no held-out.
-  O corpus DOM-PI (~50 M tokens) é estruturalmente insuficiente para DAPT efetivo com modelos de 1,5 B parâmetros.
+<div class="callout success">
+  <strong>Resultado central:</strong> Com o objetivo de treino corrigido (job <strong>v3</strong>), o Full FT do
+  Qwen2.5-1.5B sobre o corpus curado de Teresina <strong>superou o baseline em todas as métricas</strong>:
+  held-out PPL 6,91 → <strong>6,02 (−12,9%)</strong>, token-accuracy 58,8% → 60,8%, e benchmark PPL 7,45 → 7,24 (−2,8%).
+  Este é o <strong>modelo final da Questão 1</strong>. A conclusão anterior ("nenhum método superou o baseline / corpus
+  insuficiente") estava <em>incorreta</em>: o gargalo não era o corpus, e sim um <strong>bug no objetivo de treino</strong>.
 </div>
 
+<p><strong>A reviravolta — bug do duplo deslocamento.</strong> Investigando por que mais épocas <em>pioravam</em> o
+modelo (v2: +83%), descobriu-se que o <code>PackedTextDataset</code> pré-deslocava os <code>labels</code>
+(<code>block[1:]</code>) enquanto o modelo HuggingFace já desloca internamente — <strong>duplo shift</strong>. O treino
+otimizava "prever o token 2 posições à frente", um objetivo incorreto. Sintomas: loss de treino travada em ~11
+(≈log do vocabulário) e PPL da eval interna ~47.000. Todas as rodadas anteriores (jobs 381–488) sofriam disso e só
+não colapsavam porque o lr=2e-6 é minúsculo. A "degradação catastrófica" e a tese do "corpus insuficiente" eram,
+em grande parte, <strong>artefatos desse bug</strong>.</p>
+
 <table>
-  <tr><th>Método</th><th>Resultado</th><th>Causa principal</th></tr>
+  <tr><th>Método</th><th>Resultado (held-out)</th><th>Leitura</th></tr>
   <tr>
     <td>LoRA (lr=2e-5)</td>
     <td style="color:var(--bad-fg)">Colapso (PPL ×100)</td>
-    <td>"Intruder dimensions": LoRA memoriza sequências em baixo rank; não generaliza com corpus pequeno</td>
+    <td>"Intruder dimensions": LoRA memoriza sequências em baixo rank; instável para CPT com corpus pequeno</td>
   </tr>
   <tr>
     <td>QLoRA (lr=2e-5)</td>
-    <td style="color:var(--warn-fg)">Degradação mínima (+4,5%)</td>
-    <td>Quantização NF4 regula intruder dimensions; resultado aceitável mas sem ganho factual</td>
+    <td style="color:var(--warn-fg)">+4,4% (corpus geral)</td>
+    <td>Quantização NF4 regulariza; o mais robusto <em>no corpus unificado ruidoso</em>, mas sem ganho</td>
   </tr>
   <tr>
-    <td>Full FT + AdamW 8-bit</td>
-    <td style="color:var(--warn-fg)">Degradação moderada (+27%)</td>
-    <td>Early stopping prematuro; shift de distribuição entre treino HF e avaliação local; corpus ainda insuficiente</td>
+    <td>Full FT Teresina v1/v2 <small>(objetivo c/ bug)</small></td>
+    <td style="color:var(--warn-fg)">+27% / +83%</td>
+    <td>Objetivo incorreto; mais épocas amplificavam o dano em vez de ajudar</td>
   </tr>
-  <tr>
-    <td>Full FT 0.5B (job 389)</td>
-    <td style="color:var(--warn-fg)">+20% PPL (corpus limpo)</td>
-    <td>Corpus Teresina homogêneo mitiga esquecimento; modelo menor, resultado comparativamente melhor</td>
+  <tr style="background:var(--ok-bg)">
+    <td><strong>Full FT Teresina v3</strong> <small>(objetivo corrigido)</small></td>
+    <td style="color:var(--ok-fg)"><strong>−12,9% ✓ (ganho real)</strong></td>
+    <td>Corpus curado + objetivo correto + early stopping confiável: DAPT funciona como a teoria prevê</td>
   </tr>
 </table>
 
-<p><strong>Achado relevante:</strong> O Full FT com corpus Teresina produziu geração estruturalmente mais correta
-(tabelas de contratos, portarias completas com vigência e assinatura) e melhor localização factual (SEAP).
-A melhora qualitativa não é capturada pela perplexidade no held-out — limitação conhecida da métrica quando o
-corpus de avaliação não inclui os padrões estruturais aprendidos.</p>
+<p><strong>Lições.</strong> (1) <em>Qualidade &gt; quantidade</em>: o corpus curado de Teresina viabiliza o Full FT
+onde o unificado ruidoso falha. (2) <em>Validar o pipeline antes de culpar os dados</em>: meses de "esquecimento
+catastrófico" foram, na raiz, um bug de alinhamento de rótulos — a métrica de sanidade (baseline interno ≈ 6,9, e não
+47.000) o teria exposto cedo. (3) Para o corpus geral ruidoso, o PEFT (QLoRA) continua sendo a opção mais robusta;
+para um recorte limpo, o Full FT com o objetivo correto entrega ganho factual real.</p>
 
 </div><!-- /q-body Q1 -->
 

@@ -77,10 +77,11 @@ class PackedTextDataset(IterableDataset):
             if len(buf) >= self.block_size + 1:
                 block = buf[: self.block_size + 1]
                 buf = buf[self.block_size :]
-                yield {
-                    "input_ids": torch.tensor(block[:-1], dtype=torch.long),
-                    "labels": torch.tensor(block[1:], dtype=torch.long),
-                }
+                # input_ids e labels ALINHADOS (mesmos tokens): o modelo HF faz o
+                # shift interno (logits[:-1] vs labels[1:]). Pré-deslocar labels aqui
+                # causaria DUPLO shift → objetivo "prever 2 à frente" → loss ~aleatória.
+                ids = torch.tensor(block[:-1], dtype=torch.long)
+                yield {"input_ids": ids, "labels": ids.clone()}
 
 
 def count_blocks(path: str, tokenizer, block_size: int) -> int:
@@ -138,20 +139,40 @@ def train(args: argparse.Namespace) -> None:
         model.config.use_cache = False
         log.info("Gradient checkpointing ativado.")
 
-    n_params = sum(p.numel() for p in model.parameters())
-    log.info("Parâmetros totais: %.1fM (todos treináveis — full FT)", n_params / 1e6)
+    # Congela embeddings (recipe DAPT tokens-mínimos: preserva representações de
+    # token → retém conhecimento geral; arxiv:2507.02964). Em Qwen2.5 a lm_head é
+    # tied à embed_tokens, então congelar a entrada já congela a saída.
+    if args.freeze_embeddings:
+        emb = model.get_input_embeddings()
+        for p in emb.parameters():
+            p.requires_grad_(False)
+        out_emb = model.get_output_embeddings()
+        if out_emb is not None and out_emb.weight is not emb.weight:
+            for p in out_emb.parameters():
+                p.requires_grad_(False)
+        # gradient checkpointing precisa que a saída da embedding exija grad para
+        # propagar pelas camadas seguintes, mesmo com a embedding congelada.
+        if args.gradient_checkpointing:
+            model.enable_input_require_grads()
+        log.info("Embeddings congeladas (entrada + lm_head tied).")
+
+    n_total = sum(p.numel() for p in model.parameters())
+    trainable = [p for p in model.parameters() if p.requires_grad]
+    n_train = sum(p.numel() for p in trainable)
+    log.info("Parâmetros: %.1fM totais | %.1fM treináveis (%.1f%%)",
+             n_total / 1e6, n_train / 1e6, 100 * n_train / n_total)
 
     # AdamW 8-bit: estados m+v quantizados para int8 → ~3 GB vs ~12 GB fp32
     try:
         import bitsandbytes as bnb
         optimizer = bnb.optim.AdamW8bit(
-            model.parameters(), lr=args.lr * 0.01, weight_decay=0.1, betas=(0.9, 0.95)
+            trainable, lr=args.lr * 0.01, weight_decay=0.1, betas=(0.9, 0.95)
         )
         log.info("Otimizador: AdamW 8-bit (bitsandbytes)")
     except ImportError:
         log.warning("bitsandbytes não encontrado — usando AdamW fp32 (mais memória)")
         optimizer = torch.optim.AdamW(
-            model.parameters(), lr=args.lr * 0.01, weight_decay=0.1, betas=(0.9, 0.95)
+            trainable, lr=args.lr * 0.01, weight_decay=0.1, betas=(0.9, 0.95)
         )
 
     log.info("Contando blocos reais do corpus (para LR schedule preciso)...")
@@ -237,12 +258,18 @@ def train(args: argparse.Namespace) -> None:
                     ckpt = str(out_dir / f"step_{global_step:05d}")
                     save_ckpt(model, tokenizer, ckpt)
 
-                    if ho_ce < best_ho_ce:
+                    # Exige melhora > min_delta para resetar a paciência: micro-oscilações
+                    # na ~4ª casa não devem impedir o early stopping (visto no v3/job 489).
+                    if ho_ce < best_ho_ce - args.min_delta:
                         best_ho_ce = ho_ce
                         save_ckpt(model, tokenizer, str(out_dir / "best"))
                         bad_evals = 0
                         log.info("[best] Novo melhor checkpoint: CE=%.4f PPL=%.2f", best_ho_ce, ho_ppl)
                     else:
+                        # ainda salva como best se for o menor CE absoluto, sem resetar paciência
+                        if ho_ce < best_ho_ce:
+                            best_ho_ce = ho_ce
+                            save_ckpt(model, tokenizer, str(out_dir / "best"))
                         bad_evals += 1
                         log.warning("[aviso] Sem melhora no held-out: %d/%d evals consecutivas",
                                     bad_evals, args.patience)
@@ -281,10 +308,14 @@ def main() -> None:
     p.add_argument("--lr", type=float, default=2e-6)
     p.add_argument("--warmup-fraction", type=float, default=0.05)
     p.add_argument("--gradient-checkpointing", action="store_true", default=True)
+    p.add_argument("--freeze-embeddings", action="store_true", default=False,
+                   help="Congela embed_tokens (e lm_head tied) — recipe DAPT tokens-mínimos")
     p.add_argument("--log-every", type=int, default=20)
     p.add_argument("--save-every", type=int, default=200, help="Usado quando --held-out não especificado")
     p.add_argument("--eval-every", type=int, default=200, help="Steps entre eval held-out")
     p.add_argument("--patience", type=int, default=3, help="Evals consecutivas sem melhora antes de parar")
+    p.add_argument("--min-delta", type=float, default=1e-3,
+                   help="Melhora mínima de CE para resetar a paciência (evita reset por micro-oscilação)")
     args = p.parse_args()
 
     log.info("Full FT: model=%s | bs=%d | accum=%d | lr=%.2e | block=%d | eval_every=%d | patience=%d",

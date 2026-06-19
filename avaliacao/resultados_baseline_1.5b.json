@@ -1,0 +1,12 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B",
+  "held_out_path": "data/held_out.jsonl",
+  "held_out_n_docs": 2000,
+  "held_out_n_examples": 13318,
+  "cross_entropy": 2.3052,
+  "perplexity": 10.026,
+  "token_accuracy": 0.5412,
+  "bm_cross_entropy": 2.008,
+  "bm_perplexity": 7.4486,
+  "bm_token_accuracy": 0.5774
+}
