@@ -374,22 +374,39 @@ sobre alternativas, sem requerer decodificação por geração.</p>
     <td class="num">2,305</td><td class="num">10,03</td><td class="num">54,12%</td>
     <td class="tc"><em>referência</em></td>
   </tr>
-  <tr>
-    <td>LoRA 1.5B (lr=2e-5)</td><td>DOM-PI geral</td>
-    <td class="num">6,909</td><td class="num">1.001,6</td><td class="num">5,41%</td>
-    <td class="num" style="color:var(--bad-fg)"><strong>+9.893%</strong> ✗</td>
+  <tr style="background:var(--ok-bg)">
+    <td><strong>Full FT 1.5B v2</strong> <small>(objetivo corrigido)</small></td><td>DOM-PI completo</td>
+    <td class="num">2,186</td><td class="num"><strong>8,90</strong></td><td class="num">55,86%</td>
+    <td class="num" style="color:var(--ok-fg)"><strong>−11,3%</strong> ✓</td>
+  </tr>
+  <tr style="background:var(--ok-bg)">
+    <td><strong>QLoRA 1.5B v2</strong> <small>(objetivo corrigido)</small></td><td>DOM-PI completo</td>
+    <td class="num">2,291</td><td class="num"><strong>9,88</strong></td><td class="num">54,21%</td>
+    <td class="num" style="color:var(--ok-fg)"><strong>−1,4%</strong> ✓</td>
   </tr>
   <tr>
-    <td>QLoRA 1.5B (lr=2e-5)</td><td>DOM-PI geral</td>
+    <td>Full FT 1.5B <small>(objetivo c/ bug, job 487)</small></td><td>DOM-PI completo</td>
+    <td class="num">3,101</td><td class="num">22,22</td><td class="num">44,87%</td>
+    <td class="num" style="color:var(--bad-fg)">+121% ✗</td>
+  </tr>
+  <tr>
+    <td>QLoRA 1.5B <small>(objetivo c/ bug, job 421)</small></td><td>DOM-PI completo</td>
     <td class="num">2,349</td><td class="num">10,47</td><td class="num">53,02%</td>
     <td class="num" style="color:var(--warn-fg)">+4,4%</td>
   </tr>
   <tr>
-    <td><strong>Baseline Qwen 0.5B</strong></td><td>— (zero-shot)</td>
-    <td class="num">2,282</td><td class="num">9,79</td><td class="num">54,12%</td>
-    <td class="tc"><em>ref 0.5B</em></td>
+    <td>LoRA 1.5B <small>(objetivo c/ bug, lr=2e-5)</small></td><td>DOM-PI completo</td>
+    <td class="num">6,909</td><td class="num">1.001,6</td><td class="num">5,41%</td>
+    <td class="num" style="color:var(--bad-fg)">+9.893% ✗</td>
   </tr>
 </table>
+<div class="inf-note" style="border-left:4px solid var(--ok-fg)">
+  <strong>Resposta canônica corrigida.</strong> Com o objetivo de treino corrigido, o pré-treino no <strong>dataset
+  completo</strong> deixa de degradar e passa a <strong>melhorar</strong> o modelo: Full FT <strong>−11,3%</strong>,
+  QLoRA −1,4%. Isso <em>inverte</em> a conclusão obtida sob o bug (em que o full FT parecia catastrófico e o QLoRA
+  "vencia"): com o objetivo correto, o <strong>Full FT de parâmetros plenos supera o PEFT</strong> na adaptação ao
+  domínio — como a teoria de DAPT prevê. (Benchmark Q&A: Full FT 7,45→7,26; QLoRA 7,45→7,77.)
+</div>
 
 <h4>Held-out Teresina (444 documentos, baseline 1.5B)</h4>
 <table>
@@ -475,8 +492,18 @@ block=512. O que muda entre elas:</p>
   </tr>
   <tr>
     <td><strong>Full FT unificado</strong> (487)</td><td>DOM-PI completo</td><td class="tc">1</td>
-    <td style="color:var(--bad-fg)">duplo shift (bug)</td><td>resposta canônica do enunciado</td>
+    <td style="color:var(--bad-fg)">duplo shift (bug)</td><td>resposta canônica (1ª tentativa)</td>
     <td class="num">22,22</td><td class="num" style="color:var(--bad-fg)">+121%</td>
+  </tr>
+  <tr style="background:var(--ok-bg)">
+    <td><strong>Full FT unificado v2</strong> (491)</td><td>DOM-PI completo</td><td class="tc">1</td>
+    <td style="color:var(--ok-fg)"><strong>corrigido</strong></td><td>resposta canônica do enunciado (final)</td>
+    <td class="num"><strong>8,90</strong></td><td class="num" style="color:var(--ok-fg)"><strong>−11,3%</strong></td>
+  </tr>
+  <tr style="background:var(--ok-bg)">
+    <td><strong>QLoRA unificado v2</strong> (492)</td><td>DOM-PI completo</td><td class="tc">1</td>
+    <td style="color:var(--ok-fg)"><strong>corrigido</strong></td><td>NF4 4-bit + rank-16 (PEFT, dataset completo)</td>
+    <td class="num">9,88</td><td class="num" style="color:var(--ok-fg)">−1,4%</td>
   </tr>
   <tr>
     <td>Full FT Teresina v1 (429)</td><td>Teresina curado</td><td class="tc">1</td>
@@ -505,10 +532,10 @@ block=512. O que muda entre elas:</p>
   </tr>
 </table>
 <p class="inf-note"><strong>Importante:</strong> o bug do duplo deslocamento de rótulos estava nos três scripts de treino
-(<code>pretreino_fullft.py</code>, <code>pretreino_continuado.py</code>, <code>pretreino_lora.py</code>) — portanto
-<em>todas</em> as rodadas exceto o v3 treinaram com o objetivo incorreto. Os números de QLoRA/LoRA/unificado são,
-assim, <em>limites inferiores</em>: uma re-execução com o objetivo corrigido provavelmente os melhoraria. Apenas o
-v3 foi treinado com o objetivo correto, e é o único com ganho real.</p>
+(<code>pretreino_fullft.py</code>, <code>pretreino_continuado.py</code>, <code>pretreino_lora.py</code>). As três versões
+<strong>corrigidas</strong> (Teresina v3, Full FT unificado v2, QLoRA unificado v2) confirmam o diagnóstico: <em>todas</em>
+melhoram o baseline. As versões com bug (v1/v2, 487, 421, LoRA) ficam registradas para evidenciar o impacto do bug —
+a re-execução corrigida transformou o full FT unificado de +121% em <strong>−11,3%</strong>.</p>
 
 <h3>1.6 Exemplos do Benchmark — Análise Qualitativa</h3>
 
@@ -683,26 +710,28 @@ Resposta:</div>
 <!-- 1.7 Conclusão Q1 -->
 <h3>1.7 Conclusão da Questão 1</h3>
 
-<div class="callout">
-  <strong>Duas respostas, por desenho.</strong> O enunciado pede o pré-treino com o <strong>dataset completo</strong>
-  do DOM-PI. Apresentamos, portanto, <strong>duas respostas complementares</strong>:
+<div class="callout success">
+  <strong>Duas respostas, ambas positivas.</strong> O enunciado pede o pré-treino com o <strong>dataset completo</strong>
+  do DOM-PI. Com o objetivo de treino corrigido, apresentamos <strong>duas respostas complementares — ambas superam
+  o baseline</strong>:
   <ol style="margin:.4rem 0 0 1.1rem">
     <li><strong>Resposta canônica (dataset completo):</strong> Full FT do Qwen2.5-1.5B sobre o corpus DOM-PI unificado
-        (224 municípios + capital). Apresentada <em>mesmo degradada</em> (+121% PPL) por ser literalmente o que o
-        enunciado pede e por evidenciar a dificuldade do full FT sobre um corpus grande e ruidoso (OCR).
-        HF: <code>gutoportelaa/qwen2.5-1.5b-dompi-fullft-unificado</code>.</li>
-    <li><strong>Resposta alternativa (tentativa de solução):</strong> restringir o pré-treino ao <strong>subcorpus
-        curado de Teresina</strong> e corrigir o pipeline. A progressão v1→v2→v3 mostra o diagnóstico; o
-        <strong>v3</strong> (objetivo de treino corrigido) é o primeiro a <strong>superar o baseline</strong>:
-        held-out PPL 6,91 → <strong>6,02 (−12,9%)</strong>, token-acc 58,8% → 60,8%, benchmark 7,45 → 7,24.
+        (224 municípios + capital): held-out PPL 10,03 → <strong>8,90 (−11,3%)</strong>, token-acc 54,1% → 55,9%,
+        benchmark 7,45 → 7,26. É a resposta literal ao enunciado <em>e</em> o melhor resultado no held-out geral.
+        HF: <code>gutoportelaa/qwen2.5-1.5b-dompi-fullft-unificado</code> (v2 corrigido).</li>
+    <li><strong>Resposta alternativa (corpus curado):</strong> Full FT sobre o subcorpus de <strong>Teresina</strong>
+        (v1→v2→v3 mostram o diagnóstico): held-out PPL 6,91 → <strong>6,02 (−12,9%)</strong>, token-acc 58,8% → 60,8%.
         HF: <code>gutoportelaa/qwen2.5-1.5b-dompi-teresina-v3</code>.</li>
   </ol>
+  Em ambos os corpora, o <strong>Full FT de parâmetros plenos supera o PEFT</strong> (QLoRA unificado: apenas −1,4%) —
+  invertendo a conclusão obtida sob o bug, em que o full FT parecia catastrófico (+121%) e o QLoRA "vencia" (+4,4%).
 </div>
 
 <div class="callout success">
   <strong>Conclusão científica:</strong> a tese inicial ("corpus insuficiente; nenhum método supera o baseline")
-  estava <em>incorreta</em>. O gargalo não era o corpus, e sim um <strong>bug no objetivo de treino</strong> (duplo
-  shift de rótulos). Corrigido, o DAPT sobre corpus curado entrega ganho real, exatamente como a teoria prevê.
+  estava <em>incorreta</em>. O gargalo não era o corpus nem a escolha do método, e sim um <strong>bug no objetivo de
+  treino</strong> (duplo shift de rótulos). Corrigido, o DAPT entrega ganho real <em>tanto no dataset completo quanto
+  no curado</em>, e o full FT supera o PEFT — exatamente como a teoria prevê.
 </div>
 
 <p><strong>A reviravolta — bug do duplo deslocamento.</strong> Investigando por que mais épocas <em>pioravam</em> o
@@ -714,39 +743,34 @@ não colapsavam porque o lr=2e-6 é minúsculo. A "degradação catastrófica" e
 em grande parte, <strong>artefatos desse bug</strong>.</p>
 
 <table>
-  <tr><th>Método</th><th>Resultado (held-out)</th><th>Leitura</th></tr>
-  <tr>
+  <tr><th>Método</th><th>Held-out (bug → corrigido)</th><th>Leitura</th></tr>
+  <tr style="background:var(--ok-bg)">
     <td><strong>Full FT — dataset COMPLETO</strong> <small>(resposta canônica)</small></td>
-    <td style="color:var(--bad-fg)">+121% (degradado)</td>
-    <td>Full parameter sobre o corpus unificado ruidoso (OCR): inviável. É a resposta literal ao enunciado, apresentada para evidenciar o problema</td>
-  </tr>
-  <tr>
-    <td>LoRA (lr=2e-5)</td>
-    <td style="color:var(--bad-fg)">Colapso (PPL ×100)</td>
-    <td>"Intruder dimensions": LoRA memoriza sequências em baixo rank; instável para CPT com corpus pequeno</td>
-  </tr>
-  <tr>
-    <td>QLoRA (lr=2e-5)</td>
-    <td style="color:var(--warn-fg)">+4,4% (corpus geral)</td>
-    <td>Quantização NF4 regulariza; o mais robusto <em>no corpus unificado ruidoso</em>, mas sem ganho</td>
-  </tr>
-  <tr>
-    <td>Full FT Teresina v1/v2 <small>(objetivo c/ bug)</small></td>
-    <td style="color:var(--warn-fg)">+27% / +83%</td>
-    <td>Objetivo incorreto; mais épocas amplificavam o dano em vez de ajudar</td>
+    <td>+121% → <strong style="color:var(--ok-fg)">−11,3% ✓</strong></td>
+    <td>Com o objetivo correto, full parameter no corpus completo <strong>melhora</strong> e é o melhor no held-out geral. O +121% era artefato do bug</td>
   </tr>
   <tr style="background:var(--ok-bg)">
-    <td><strong>Full FT Teresina v3</strong> <small>(objetivo corrigido)</small></td>
-    <td style="color:var(--ok-fg)"><strong>−12,9% ✓ (ganho real)</strong></td>
-    <td>Corpus curado + objetivo correto + early stopping confiável: DAPT funciona como a teoria prevê</td>
+    <td><strong>Full FT — Teresina curado</strong> <small>(alternativa)</small></td>
+    <td>+27%/+83% → <strong style="color:var(--ok-fg)">−12,9% ✓</strong></td>
+    <td>v1/v2 (bug) → v3 (corrigido): corpus curado + objetivo correto + early stopping confiável</td>
+  </tr>
+  <tr>
+    <td>QLoRA (PEFT, dataset completo)</td>
+    <td>+4,4% → <span style="color:var(--ok-fg)">−1,4%</span></td>
+    <td>Melhora pouco: low-rank é conservador. Com o objetivo correto, <strong>perde para o full FT</strong></td>
+  </tr>
+  <tr>
+    <td>LoRA (sem quantização)</td>
+    <td style="color:var(--bad-fg)">Colapso (PPL ×100)</td>
+    <td>"Intruder dimensions" + objetivo bugado; instável para CPT</td>
   </tr>
 </table>
 
-<p><strong>Lições.</strong> (1) <em>Qualidade &gt; quantidade</em>: o corpus curado de Teresina viabiliza o Full FT
-onde o unificado ruidoso falha. (2) <em>Validar o pipeline antes de culpar os dados</em>: meses de "esquecimento
-catastrófico" foram, na raiz, um bug de alinhamento de rótulos — a métrica de sanidade (baseline interno ≈ 6,9, e não
-47.000) o teria exposto cedo. (3) Para o corpus geral ruidoso, o PEFT (QLoRA) continua sendo a opção mais robusta;
-para um recorte limpo, o Full FT com o objetivo correto entrega ganho factual real.</p>
+<p><strong>Lições.</strong> (1) <em>Validar o pipeline antes de culpar os dados</em>: o "esquecimento catastrófico"
+e a tese do "corpus insuficiente" eram, na raiz, um bug de alinhamento de rótulos — a métrica de sanidade (baseline
+interno ≈ 10, e não 47.000) o teria exposto cedo. (2) <em>Com o objetivo correto, o Full FT supera o PEFT</em> na
+adaptação de domínio, tanto no dataset completo (−11,3% vs −1,4%) quanto no curado — como a teoria de DAPT prevê.
+(3) O bug não só piorava os números: <em>invertia a conclusão</em> (fazia o QLoRA parecer melhor que o full FT).</p>
 
 </div><!-- /q-body Q1 -->
 

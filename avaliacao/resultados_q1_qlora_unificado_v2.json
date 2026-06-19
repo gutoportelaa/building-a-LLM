@@ -1,0 +1,12 @@
+{
+  "model": "/home/aluno_matheus/building-a-LLM/treino/checkpoints_qlora_1.5b_v2/final",
+  "held_out_path": "data/held_out.jsonl",
+  "held_out_n_docs": 2000,
+  "held_out_n_examples": 13318,
+  "cross_entropy": 2.2908,
+  "perplexity": 9.8824,
+  "token_accuracy": 0.5421,
+  "bm_cross_entropy": 2.0505,
+  "bm_perplexity": 7.7718,
+  "bm_token_accuracy": 0.5726
+}

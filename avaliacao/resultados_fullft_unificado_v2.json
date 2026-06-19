@@ -1,0 +1,12 @@
+{
+  "model": "/home/aluno_matheus/building-a-LLM/treino/checkpoints_fullft_unificado_v2/best",
+  "held_out_path": "data/held_out.jsonl",
+  "held_out_n_docs": 2000,
+  "held_out_n_examples": 13318,
+  "cross_entropy": 2.1857,
+  "perplexity": 8.8968,
+  "token_accuracy": 0.5586,
+  "bm_cross_entropy": 1.9827,
+  "bm_perplexity": 7.2622,
+  "bm_token_accuracy": 0.5832
+}
