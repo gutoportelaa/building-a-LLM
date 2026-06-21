@@ -142,6 +142,10 @@ def main() -> None:
     ap.add_argument("--max-new-tokens", type=int, default=256)
     ap.add_argument("--max-model-len", type=int, default=4096)
     ap.add_argument("--gpu-mem-util", type=float, default=0.90)
+    ap.add_argument("--enforce-eager", action="store_true", default=True,
+                    help="desliga torch.compile/CUDA-graphs do vLLM (evita dependência de 'ninja'); "
+                         "não afeta logprobs, só throughput")
+    ap.add_argument("--no-enforce-eager", dest="enforce_eager", action="store_false")
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
 
@@ -160,6 +164,7 @@ def main() -> None:
         gpu_memory_utilization=args.gpu_mem_util,
         max_model_len=args.max_model_len,
         max_logprobs=args.topk,          # vLLM default é 20; pedir top-50 exige elevar aqui
+        enforce_eager=args.enforce_eager,  # evita compilação (ninja) — robusto no cluster
         trust_remote_code=True,
         seed=args.seed,
     )
