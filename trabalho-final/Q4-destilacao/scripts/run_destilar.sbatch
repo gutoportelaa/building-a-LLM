@@ -9,9 +9,9 @@
 
 set -euo pipefail
 cd "$HOME/building-a-LLM"
-source .venv/bin/activate
 mkdir -p logs
 
+PY_TRAIN=.venv/bin/python         # ambiente de treino (torch + transformers)
 DADOS=trabalho-final/Q4-destilacao/dados
 MODELOS=trabalho-final/Q4-destilacao/modelos
 SCRIPT=trabalho-final/Q4-destilacao/scripts/destilar.py
@@ -31,7 +31,7 @@ for st in "${STUDENTS[@]}"; do
       [ "$m" != "ce" ] && logits_arg="--logits $DADOS/logits_${br}.jsonl"
       out="$MODELOS/aluno_${tag_st}_${br}_${m}"
       echo ">> [GPU $gpu] $out"
-      CUDA_VISIBLE_DEVICES=$gpu python "$SCRIPT" \
+      CUDA_VISIBLE_DEVICES=$gpu $PY_TRAIN "$SCRIPT" \
           --student "$st" --braco "$br" --method "$m" \
           --dataset "$DADOS/dataset_${br}.jsonl" $logits_arg \
           --out-dir "$out" &

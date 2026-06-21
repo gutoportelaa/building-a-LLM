@@ -13,15 +13,16 @@
 
 set -euo pipefail
 cd "$HOME/building-a-LLM"
-source .venv/bin/activate
 mkdir -p logs
 
+PY_GEN=.venv-q4gen/bin/python     # geração: tem vllm + sentence-transformers
+PY_TRAIN=.venv/bin/python         # destilação: ambiente de treino (torch + transformers)
 DS=trabalho-final/Q4-destilacao/dados_smoke
 MD=trabalho-final/Q4-destilacao/modelos_smoke
 SCR=trabalho-final/Q4-destilacao/scripts
 
 echo "=== [1/2] Geração mínima (braço A, 4+4 perguntas, top-50) ==="
-python "$SCR/gerar_dataset_destilacao.py" \
+$PY_GEN "$SCR/gerar_dataset_destilacao.py" \
     --teacher Qwen/Qwen2.5-14B-Instruct --tp 2 \
     --n-dompi 4 --n-docentes 4 --topk 50 --bracos A \
     --dompi-seeds data/held_out.jsonl \
@@ -32,7 +33,7 @@ for m in ce kl combined; do
   logits_arg=""
   [ "$m" != "ce" ] && logits_arg="--logits $DS/logits_A.jsonl"
   echo ">> método $m"
-  python "$SCR/destilar.py" \
+  $PY_TRAIN "$SCR/destilar.py" \
       --student Qwen/Qwen2.5-0.5B --braco A --method "$m" \
       --dataset "$DS/dataset_A.jsonl" $logits_arg \
       --out-dir "$MD/aluno_0.5b_A_$m" \
