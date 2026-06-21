@@ -17,7 +17,10 @@ mkdir -p logs
 
 PY_GEN=.venv-q4gen/bin/python     # geração: tem vllm + sentence-transformers
 PY_TRAIN=.venv/bin/python         # destilação: ambiente de treino (torch + transformers)
-export PATH="$HOME/building-a-LLM/.venv-q4gen/bin:$PATH"   # ninja no PATH p/ JIT do flashinfer (nvcc/gcc já no sistema)
+export PATH="$HOME/building-a-LLM/.venv-q4gen/bin:$PATH"   # ninja no PATH (fallback p/ qualquer JIT)
+# flashinfer 0.6.12 é INCOMPATÍVEL com o CUB do CUDA 13 (cub::BlockAdjacentDifference::FlagHeads removido):
+export VLLM_USE_FLASHINFER_SAMPLER=0      # usa sampler nativo do torch (sem JIT do sampling.cuh)
+export VLLM_ATTENTION_BACKEND=FLASH_ATTN  # atenção prebuilt, sem compilação
 DS=trabalho-final/Q4-destilacao/dados_smoke
 MD=trabalho-final/Q4-destilacao/modelos_smoke
 SCR=trabalho-final/Q4-destilacao/scripts

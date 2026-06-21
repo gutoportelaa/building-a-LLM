@@ -12,7 +12,10 @@ cd "$HOME/building-a-LLM"
 mkdir -p logs
 
 PY_GEN=.venv-q4gen/bin/python     # vllm (professor) + sentence-transformers (índice/recuperação)
-export PATH="$HOME/building-a-LLM/.venv-q4gen/bin:$PATH"   # ninja no PATH p/ JIT do flashinfer (nvcc/gcc já no sistema)
+export PATH="$HOME/building-a-LLM/.venv-q4gen/bin:$PATH"   # ninja no PATH (fallback p/ qualquer JIT)
+# flashinfer 0.6.12 é INCOMPATÍVEL com o CUB do CUDA 13 (cub::BlockAdjacentDifference::FlagHeads removido):
+export VLLM_USE_FLASHINFER_SAMPLER=0      # usa sampler nativo do torch (sem JIT do sampling.cuh)
+export VLLM_ATTENTION_BACKEND=FLASH_ATTN  # atenção prebuilt, sem compilação
 
 # Pré-requisito do braço B: índice RAG da Q5 (regenerável, ~30 min).
 # Rode UMA vez se rag/index/embeddings.npy não existir:
