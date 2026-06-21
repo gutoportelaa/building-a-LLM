@@ -12,6 +12,7 @@ cd "$HOME/building-a-LLM"
 mkdir -p logs
 
 PY_GEN=.venv-q4gen/bin/python     # vllm (professor) + sentence-transformers (índice/recuperação)
+export PATH="$HOME/building-a-LLM/.venv-q4gen/bin:$PATH"   # ninja no PATH p/ JIT do flashinfer (nvcc/gcc já no sistema)
 
 # Pré-requisito do braço B: índice RAG da Q5 (regenerável, ~30 min).
 # Rode UMA vez se rag/index/embeddings.npy não existir:
