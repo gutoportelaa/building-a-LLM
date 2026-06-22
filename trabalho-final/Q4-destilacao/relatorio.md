@@ -245,6 +245,39 @@ também o efeito de tamanho do professor.)*
 
 ---
 
+## 7. Extensão executada — Plano A: especialização temática por destilação de RACIOCÍNIO (jobs 508/509)
+
+Tema **Copa do Mundo 2026** (posterior ao corte de conhecimento → o aluno-base não sabe). **Destilação de raciocínio**
+(receita DeepSeek-R1): professor **`DeepSeek-R1-Distill-Qwen-14B`** — modelo *thinking* (`<think>`) sobre Qwen2.5-14B,
+**mesma família** dos alunos → habilita **white-box logit KD** (reusa o pipeline campeão da Q4). Corpus factual
+**ungated** coletado e indexado (`coletar_corpus_futebol.py` → 241 passagens: openfootball 2026 [grupos, jogos com
+placares/gols, elencos, estádios, seleções] + **classificação derivada dos jogos** + Wikipedia) — **sem Transfermarkt**.
+200 perguntas (self-instruct) × braços A (zerada) × B (RAG sobre o corpus), top-50 logits; destilação `combined`.
+
+Benchmark held-out de **41 fatos** (Copa 2026), referência = Qwen2.5-14B-Instruct + RAG (concisa):
+
+| Modelo | ROUGE-L | key_recall |
+|---|---|---|
+| base 1.5B | 0,122 | 0,476 |
+| fut_0.5b A (zerada) | 0,178 | 0,616 |
+| fut_0.5b B (RAG) | **0,403** | 0,628 |
+| fut_1.5b A (zerada) | 0,131 | 0,617 |
+| **🏆 fut_1.5b B (RAG)** | 0,209 | **0,640** |
+
+**Conclusões:** (1) a destilação de raciocínio **transfere o conhecimento da Copa 2026** — todos os alunos KR
+~0,62–0,64 vs base 0,476; (2) **professor com RAG (B) > zerada (A)** — para tema **pós-corte**, o professor "zerado"
+raciocina mas **não tem os fatos** (alucina); só o RAG os fornece (nítido no ROUGE-L: 0.5b_B 0,403 vs 0.5b_A 0,178);
+(3) **valida a estratégia de dados** (corpus ungated openfootball+Wikipedia, esforço moderado, sem scraping de
+Transfermarkt); (4) `key_recall` é a métrica robusta (os alunos emitem `<think>`, ruidificando o ROUGE-L vs a
+referência concisa). *Ressalvas:* base KR 0,476 não é 0 (perguntas tocam conhecimento geral de futebol + eco do
+enunciado); fatos voláteis (snapshot). Scripts: `coletar_corpus_futebol.py`, `run_futebol.sbatch`,
+`run_avaliar_futebol.sbatch`. Resultados em `resultados/avaliacao_futebol.json`.
+
+**Automação:** a cadeia 508→509 rodou via **dependência SLURM `afterok`** (geração+destilação → avaliação),
+mantendo as GPUs utilizadas sem intervenção manual.
+
+---
+
 ## Referências (além de Raschka)
 - Gemma 2: *Improving Open Language Models at a Practical Size* — arXiv:2408.00118
 - DeepSeek-R1 (distill report) — deepseek-ai/DeepSeek-R1-Distill-* (HF)
