@@ -1,6 +1,6 @@
 # Relatório — Questão 4: Destilação de Conhecimento
 
-## Status: 🔬 Estudo concluído · 🏗️ Implementação em curso
+## Status: ✅ Concluída (estudo + 12 alunos destilados + avaliação; melhor = 1.5B·B·combinado, +96%)
 
 ## 1. Enunciado
 Investigar quais LLMs são normalmente usados para destilação. Definir **professor** e **aluno**.
@@ -166,6 +166,54 @@ e torna o contraste A×B brutal (o professor "zerado" não tem como saber → s�
 
 ---
 
+## 5. Resultados (executado — jobs SLURM 502/503/504)
+
+Pipeline completo executado no cluster (gpunode01, 2× L4): geração do dataset (job 502, 1000 prompts ×
+braços A/B + top-50 logits), destilação dos 12 alunos (job 503) e avaliação (job 504). Métricas no benchmark
+held-out de 100 perguntas (50 DOM-PI + 50 docentesDC), **sem RAG na inferência** (testa o que ficou nos pesos).
+Referência = resposta do professor 14B **com RAG** (braço B). RG = ROUGE-L; KR = key-term recall.
+
+| Modelo | geral RG | geral KR | DOM RG | DOM KR | doc RG | doc KR |
+|---|---|---|---|---|---|---|
+| base 0.5B | 0,227 | 0,380 | 0,296 | 0,505 | 0,157 | 0,249 |
+| base 1.5B | 0,185 | 0,366 | 0,230 | 0,453 | 0,141 | 0,276 |
+| d_0.5b A ce | 0,220 | 0,550 | 0,244 | 0,642 | 0,196 | 0,453 |
+| d_0.5b A kl | 0,174 | 0,577 | 0,184 | 0,660 | 0,164 | 0,490 |
+| d_0.5b A comb | 0,194 | 0,563 | 0,214 | 0,654 | 0,174 | 0,469 |
+| d_0.5b B ce | 0,203 | 0,667 | 0,249 | 0,613 | 0,157 | 0,723 |
+| d_0.5b B kl | 0,224 | 0,598 | 0,267 | 0,630 | 0,181 | 0,564 |
+| d_0.5b B comb | 0,243 | 0,625 | 0,276 | 0,611 | 0,211 | 0,639 |
+| d_1.5b A ce | 0,244 | 0,617 | 0,293 | 0,661 | 0,196 | 0,570 |
+| d_1.5b A kl | 0,201 | 0,576 | 0,232 | 0,664 | 0,170 | 0,484 |
+| d_1.5b A comb | 0,208 | 0,582 | 0,241 | 0,619 | 0,176 | 0,544 |
+| d_1.5b B ce | 0,223 | 0,647 | 0,277 | 0,641 | 0,170 | 0,652 |
+| d_1.5b B kl | 0,350 | 0,689 | 0,380 | 0,654 | 0,320 | 0,725 |
+| **🏆 d_1.5b B comb** | **0,363** | **0,717** | **0,429** | 0,659 | 0,297 | **0,776** |
+
+### Conclusões — houve transferência de conhecimento?
+1. **Sim, inequívoca.** Os 12 alunos superam ambas as bases no `key_recall` (0,37–0,38 → 0,55–0,72). O aluno-base
+   quase não conhece os fatos; o destilado os internaliza nos pesos.
+2. **Melhor receita: aluno 1.5B · braço B · combinado** → ROUGE-L 0,363 e key_recall 0,717, **≈ +96%** sobre a
+   base 1.5B em ambos (quase dobra).
+3. **Professor aterrado com RAG (B) > "zerada" (A)** — confirma a ponte Q4↔Q5: o grounding transfere **mais fatos
+   corretos** aos pesos. Mais nítido em docentes (KR doc até 0,776 em B vs ~0,47–0,57 em A).
+4. **Soft labels (KL/combined) > CE puro na escala maior:** no 1.5B-B, combined (0,363) ≥ kl (0,350) ≫ ce (0,223).
+   Valida o sinal de logit KD white-box (§3.1) — o aluno aprende além do texto.
+5. **A destilação destrava o aluno maior:** a base 1.5B era *pior* que a 0.5B (RG 0,185 vs 0,227), mas, destilada,
+   torna-se a melhor — a capacidade extra só se realiza com o sinal do professor.
+
+### Ressalvas honestas
+- A **referência é a resposta do professor-B (com RAG)**, o que dá leve vantagem aos modelos do braço B no
+  ROUGE-L (mesma distribuição). Por isso o **`key_recall`** (presença de entidades/números) é o sinal mais neutro —
+  e nele B também vence. Não é circularidade: a referência é factual e o aluno responde *sem* RAG.
+- ROUGE-L permanece modesto em termos absolutos (respostas reformulam a frase); o ganho de conhecimento está
+  concentrado no conteúdo factual (key_recall), coerente com o objetivo de destilação.
+
+Artefatos: `dados/` (dataset + logits + benchmark), `modelos/aluno_qwen2.5-*_{A,B}_{ce,kl,combined}/` (12 alunos),
+`resultados/avaliacao.json` (métricas + respostas geradas). Melhor aluno publicado no HF (ver README).
+
+---
+
 ## Referências (além de Raschka)
 - Gemma 2: *Improving Open Language Models at a Practical Size* — arXiv:2408.00118
 - DeepSeek-R1 (distill report) — deepseek-ai/DeepSeek-R1-Distill-* (HF)
@@ -175,5 +223,3 @@ e torna o contraste A×B brutal (o professor "zerado" não tem como saber → s�
 - MiniLLM (reverse-KL on-policy); GKD (on/off-policy unificado)
 - *A Survey of On-Policy Distillation for LLMs* — arXiv:2604.00626
 - Frameworks: arcee-ai/DistillKit · modelscope/easydistill · TRL `GKDTrainer`
-</content>
-</invoke>

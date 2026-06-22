@@ -21,7 +21,7 @@ Pasta de entrega organizada por questão. Cada subpasta contém o **enunciado**,
 | **Q1** | Pré-treino continuado (DAPT) | DOM-PI | Qwen2.5-0.5B/1.5B · LoRA · QLoRA · Full FT | `pretreino_{continuado,lora,fullft}.py`, `avaliar_modelo.py`, `*.sbatch` | ✅ Concluída |
 | **Q2** | Pós-treino SFT | docentesDC | Qwen2.5-1.5B-Instruct | *(a criar)* `gerar_pares_sft.py`, `sft_docentes.py` | ⏳ Pendente |
 | **Q3** | Pós-treino LoRA/QLoRA | docentesDC | Qwen2.5-0.5B/1.5B-Instruct | *(a criar)* `pretreino_lora.py` adaptado p/ SFT | ⏳ Pendente |
-| **Q4** | Destilação de conhecimento | sintético | Professor Qwen2.5-7B → Aluno 1.5B/0.5B | *(a criar)* `destilar.py` | ⏳ Pendente |
+| **Q4** | Destilação de conhecimento (logit KD) | sintético DOM-PI+docentes | Professor Qwen2.5-**14B**-Instruct → Alunos 0.5B/1.5B | `gerar_dataset_destilacao.py`, `destilar.py`, `gerar_benchmark.py`, `avaliar_destilacao.py` | ✅ Concluída (12 alunos; melhor 1.5B·B·comb +96%) |
 | **Q5** | RAG (Standard/HyDE/Reflexivo/Agêntico) | DOM-PI | G1 base · G2 DAPT · G3 qwen2.5:14b · embedder e5-base | `build_index.py`, `rag_core.py`, `run_eval.py`, `consolidar.py` | ✅ Concluída |
 | **Q6** | Guardrails | DOM-PI | modelo da Q5 ou Q2 + guardrails-ai | *(a criar)* `guardrails_pipeline.py` | ⏳ Pendente |
 
