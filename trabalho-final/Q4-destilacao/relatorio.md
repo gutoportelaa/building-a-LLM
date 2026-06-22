@@ -278,6 +278,33 @@ mantendo as GPUs utilizadas sem intervenção manual.
 
 ---
 
+## 8. Extensão executada — DAPT-then-distill: o modelo da Q1 como ALUNO (jobs 510/511)
+
+Pergunta: o **priming de domínio** ajuda a destilação? Em vez de destilar para o `Qwen2.5-1.5B` base, destilamos
+para o **DAPT da Q1** (`checkpoints_fullft_unificado_v2/best`, Full FT v2, −11,3% PPL no domínio) — currículo
+"DAPT → destilação". Reusa `dataset_B`/`logits_B` (white-box) e `dataset_Bxf` (cross-família); só troca `--student`.
+(O modelo da Q1 NÃO é usado como professor — fraco demais; ver §2.5. Aqui ele é o *ponto de partida do aluno*.)
+
+| Aluno 1.5B | Início | Sinal | ROUGE-L | key_recall |
+|---|---|---|---|---|
+| base (referência) | base | — | 0,185 | 0,366 |
+| DAPT cru (Q1) | DAPT | — | 0,187 | 0,368 |
+| white-box, aluno **base** (`d_1.5b_B_combined`) | base | logits | **0,363** | **0,717** |
+| white-box, aluno **DAPT** (`dapt_B_combined`) | DAPT | logits | 0,326 | 0,694 |
+| cross-família, aluno **base** (`bxf_1.5b_ce`) | base | texto | 0,270 | 0,490 |
+| cross-família, aluno **DAPT** (`dapt_Bxf_ce`) | DAPT | texto | 0,262 | 0,478 |
+
+**Resultado (negativo, mas informativo): o priming de domínio NÃO ajudou** — DAPT-then-distill ficou ~0,02–0,04
+**pior** que base-then-distill em ambos os regimes. Razões: (1) o DAPT cru já é ~igual ao base no benchmark factual
+(KR 0,368 vs 0,366) — ele melhorou a *PPL/modelagem de linguagem* (Q1), não o Q&A factual; (2) a destilação
+**reescreve** o aluno na direção do professor, lavando o head-start. Isso reforça (por outro ângulo) a §2.5: o
+modelo fraco da Q1 (DAPT em OCR ruidoso) não agrega nem como ponto de partida — o base pristino é tão bom ou melhor.
+*Ressalva:* um DAPT mais limpo (Teresina v3, −12,9%) poderia render diferente; com este (corpus ruidoso), não há ganho.
+Scripts: `run_dapt_distill.sbatch`, `run_avaliar_dapt.sbatch` (rodaram no **gpunode02** — `gpu:1` sem fixar nó,
+aproveitando a 2ª GPU). Resultados em `resultados/avaliacao_dapt.json`.
+
+---
+
 ## Referências (além de Raschka)
 - Gemma 2: *Improving Open Language Models at a Practical Size* — arXiv:2408.00118
 - DeepSeek-R1 (distill report) — deepseek-ai/DeepSeek-R1-Distill-* (HF)
