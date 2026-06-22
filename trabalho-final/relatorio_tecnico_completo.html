@@ -219,7 +219,7 @@
     <li><a href="#q1">Questão 1 — Pré-treino Continuado (DAPT)</a> <span class="toc-status status done">concluída</span></li>
     <li><a href="#q2">Questão 2 — Pós-treino SFT com docentesDC</a> <span class="toc-status status pending">pendente</span></li>
     <li><a href="#q3">Questão 3 — Pós-treino LoRA/QLoRA com docentesDC</a> <span class="toc-status status pending">pendente</span></li>
-    <li><a href="#q4">Questão 4 — Destilação de Conhecimento</a> <span class="toc-status status pending">pendente</span></li>
+    <li><a href="#q4">Questão 4 — Destilação de Conhecimento</a> <span class="toc-status status done">concluída</span></li>
     <li><a href="#q5">Questão 5 — RAG (Standard/HyDE/Reflexivo/Agêntico)</a> <span class="toc-status status done">concluída</span></li>
     <li><a href="#q6">Questão 6 — Guardrails</a> <span class="toc-status status pending">pendente</span></li>
     <li><a href="#roadmap">Roadmap de Execução</a></li>
@@ -780,7 +780,7 @@ com LoRA (Hu et al. 2022; Alpaca-LoRA), isso resulta em aprendizado estável mes
 <div class="q-header" id="q4">
   <span class="q-num">Q4</span>
   <span class="q-title">Destilação de Conhecimento</span>
-  <span class="q-status pending">⏳ Pendente</span>
+  <span class="q-status done">✓ Concluída</span>
 </div>
 <div class="q-body">
 
@@ -821,9 +821,9 @@ codificado nas probabilidades do professor mesmo para tokens incorretos.</p>
   <tr><th>Papel</th><th>Modelo escolhido</th><th>Justificativa</th></tr>
   <tr>
     <td><strong>Professor</strong></td>
-    <td><code>Qwen/Qwen2.5-7B-Instruct</code> (via API ou cluster com GPU A100)</td>
-    <td>Mesma família do aluno (facilita alinhamento de vocabulário/tokenizador);
-    7B é gerenciável no cluster; 5× maior que o aluno</td>
+    <td><code>Qwen/Qwen2.5-14B-Instruct</code> (vLLM, tensor-parallel=2 em 2× L4)</td>
+    <td>Mesma família do aluno (tokenizador idêntico — requisito do logit KD); o mesmo gerador qualificado
+    da Q5 (G3); elevado de 7B→14B por caber nos 2 L4 do gpunode01</td>
   </tr>
   <tr>
     <td><strong>Aluno</strong></td>
@@ -873,11 +873,42 @@ codificado nas probabilidades do professor mesmo para tokens incorretos.</p>
 ROUGE-L das respostas geradas vs respostas do professor, e análise de casos onde o aluno destilado
 supera o aluno não-destilado.</p>
 
+<h3>4.6 Resultados (executado — jobs SLURM 502/503/504)</h3>
+<p>Eixo experimental adicional: o <strong>grounding do professor</strong> virou variável de estudo —
+<strong>braço A ("zerada")</strong> = professor responde só da memória paramétrica; <strong>braço B (RAG)</strong> =
+professor responde com contexto recuperado do índice DOM-PI da Q5. Matriz de <strong>12 alunos</strong>:
+{0.5B, 1.5B} × {ce, kl, combined} × {A, B}. Avaliação no benchmark held-out de 100 perguntas (50 DOM-PI + 50
+docentesDC), <strong>sem RAG na inferência</strong> (testa o que ficou nos pesos). Referência = resposta do
+professor 14B com RAG. RG = ROUGE-L; KR = key-term recall.</p>
+
+<table>
+  <tr><th>Modelo</th><th>geral RG</th><th>geral KR</th><th>DOM RG</th><th>DOM KR</th><th>doc RG</th><th>doc KR</th></tr>
+  <tr><td>base 0.5B</td><td>0,227</td><td>0,380</td><td>0,296</td><td>0,505</td><td>0,157</td><td>0,249</td></tr>
+  <tr><td>base 1.5B</td><td>0,185</td><td>0,366</td><td>0,230</td><td>0,453</td><td>0,141</td><td>0,276</td></tr>
+  <tr><td>d_0.5b A combined</td><td>0,194</td><td>0,563</td><td>0,214</td><td>0,654</td><td>0,174</td><td>0,469</td></tr>
+  <tr><td>d_0.5b B combined</td><td>0,243</td><td>0,625</td><td>0,276</td><td>0,611</td><td>0,211</td><td>0,639</td></tr>
+  <tr><td>d_1.5b B kl</td><td>0,350</td><td>0,689</td><td>0,380</td><td>0,654</td><td>0,320</td><td>0,725</td></tr>
+  <tr style="font-weight:bold;background:#eef7ee"><td>🏆 d_1.5b B combined</td><td>0,363</td><td>0,717</td><td>0,429</td><td>0,659</td><td>0,297</td><td>0,776</td></tr>
+</table>
+<p style="font-size:0.9em;color:#555">(Tabela completa dos 14 modelos em <code>trabalho-final/Q4-destilacao/relatorio.md</code> §5 e
+<code>resultados/avaliacao.json</code>.)</p>
+
 <div class="callout info">
-  <strong>Hipótese central:</strong> O aluno destilado deve superar o aluno treinado por SFT simples nos
-  casos onde o professor expressa alta certeza (concentração de probabilidade) — e equivaler ou perder
-  onde o professor está incerto. Isso seria evidência de transferência de conhecimento além dos rótulos hard.
+  <strong>Houve transferência de conhecimento? Sim, inequívoca.</strong>
+  <ol style="margin:6px 0 0 18px">
+    <li>Os 12 alunos superam ambas as bases no <strong>key_recall</strong> (0,37–0,38 → 0,55–0,72): o aluno-base quase
+    não conhece os fatos; o destilado os internaliza nos pesos.</li>
+    <li><strong>Melhor receita: 1.5B · braço B · combinado</strong> → ROUGE-L 0,363 e key_recall 0,717, <strong>≈ +96%</strong>
+    sobre a base 1.5B (quase dobra).</li>
+    <li><strong>Professor aterrado com RAG (B) &gt; "zerada" (A)</strong> — confirma a ponte Q4↔Q5: o grounding transfere
+    mais fatos corretos aos pesos (KR doc até 0,776 em B vs ~0,47–0,57 em A).</li>
+    <li><strong>Soft labels (KL/combined) &gt; CE puro na escala maior</strong> — valida o sinal de logit KD white-box.</li>
+    <li><strong>A destilação destrava o aluno maior:</strong> a base 1.5B era pior que a 0.5B, mas destilada vira a melhor.</li>
+  </ol>
 </div>
+<p style="font-size:0.9em;color:#555"><strong>Ressalva:</strong> a referência é a resposta do professor-B (com RAG), o que
+dá leve vantagem aos modelos do braço B no ROUGE-L; por isso o <code>key_recall</code> (entidades/números) é o sinal mais
+neutro — e nele B também vence. Melhor aluno publicado no HF (privado).</p>
 
 </div><!-- /q-body Q4 -->
 
