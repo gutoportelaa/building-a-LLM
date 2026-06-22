@@ -39,6 +39,9 @@ def main() -> None:
     ap.add_argument("--max-context-chars", type=int, default=6000)
     ap.add_argument("--max-new-tokens", type=int, default=256)
     ap.add_argument("--out", default="trabalho-final/Q4-destilacao/dados/dataset_Bxf.jsonl")
+    ap.add_argument("--topk", type=int, default=0,
+                    help=">0 captura top-k logprobs do professor (espaço-zephyr) p/ ULD → --logits-out")
+    ap.add_argument("--logits-out", default="trabalho-final/Q4-destilacao/dados/logits_Bxf.jsonl")
     ap.add_argument("--limit", type=int, default=0, help="0=todos; >0 para smoke")
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
@@ -61,9 +64,12 @@ def main() -> None:
 
     t_tok = AutoTokenizer.from_pretrained(args.teacher, trust_remote_code=True)
     s_tok = AutoTokenizer.from_pretrained(args.student_tokenizer, trust_remote_code=True)
-    llm = LLM(model=args.teacher, tensor_parallel_size=args.tp, dtype="bfloat16",
-              gpu_memory_utilization=args.gpu_mem_util, max_model_len=args.max_model_len,
-              enforce_eager=True, trust_remote_code=True, seed=args.seed)
+    llm_kwargs = dict(model=args.teacher, tensor_parallel_size=args.tp, dtype="bfloat16",
+                      gpu_memory_utilization=args.gpu_mem_util, max_model_len=args.max_model_len,
+                      enforce_eager=True, trust_remote_code=True, seed=args.seed)
+    if args.topk:
+        llm_kwargs["max_logprobs"] = args.topk          # vLLM default é 20
+    llm = LLM(**llm_kwargs)
 
     def teacher_prompt(q: str, c: str) -> str:
         # system mesclado no user — robusto p/ Gemma (que não aceita role 'system')
@@ -79,13 +85,23 @@ def main() -> None:
 
     ctxs = {i: ctx[i][: args.max_context_chars] for i in ids}
     prompts = [teacher_prompt(quest[i]["question"], ctxs[i]) for i in ids]
-    outs = llm.generate(prompts, SamplingParams(temperature=0.0, max_tokens=args.max_new_tokens, seed=args.seed))
+    sp = SamplingParams(temperature=0.0, max_tokens=args.max_new_tokens, seed=args.seed,
+                        logprobs=args.topk or None)
+    outs = llm.generate(prompts, sp)
 
-    out = Path(args.out)
-    out.parent.mkdir(parents=True, exist_ok=True)
+    def extrair_topk(comp, k):
+        out = []
+        for pos in (comp.logprobs or []):
+            ranked = sorted(pos.items(), key=lambda kv: kv[1].rank)[:k]
+            out.append([[int(tid), round(float(lp.logprob), 4)] for tid, lp in ranked])
+        return out
+
+    out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
+    flg = open(args.logits_out, "w", encoding="utf-8") if args.topk else None
     with open(out, "w", encoding="utf-8") as f:
         for i, o in zip(ids, outs):
-            ans = o.outputs[0].text.strip()
+            comp = o.outputs[0]
+            ans = comp.text.strip()
             rec = {
                 "id": i, "source": quest[i]["source"], "question": quest[i]["question"],
                 "context": ctxs[i], "prompt": student_prompt(quest[i]["question"], ctxs[i]),
@@ -93,7 +109,12 @@ def main() -> None:
                 "answer_token_ids": s_tok(ans, add_special_tokens=False).input_ids,  # re-tokeniza em espaço-Qwen
             }
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    print(f"OK — {len(ids)} exemplos cross-família ({args.teacher}) em {out}", flush=True)
+            if flg:  # top-k do professor em espaço-zephyr (p/ ULD; alinhamento posicional aproximado)
+                flg.write(json.dumps({"id": i, "topk": extrair_topk(comp, args.topk)}, ensure_ascii=False) + "\n")
+    if flg:
+        flg.close()
+    print(f"OK — {len(ids)} exemplos cross-família ({args.teacher}) em {out}"
+          + (f" + logits em {args.logits_out}" if args.topk else ""), flush=True)
 
 
 if __name__ == "__main__":

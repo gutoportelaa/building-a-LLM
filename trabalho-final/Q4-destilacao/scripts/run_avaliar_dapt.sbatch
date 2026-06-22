@@ -16,14 +16,15 @@ PY_EVAL=.venv/bin/python
 DADOS=trabalho-final/Q4-destilacao/dados
 MOD=trabalho-final/Q4-destilacao/modelos
 SCR=trabalho-final/Q4-destilacao/scripts
-DAPT="$HOME/building-a-LLM/treino/checkpoints_fullft_unificado_v2/best"
+DAPT="${DAPT_PATH:-$HOME/building-a-LLM/treino/checkpoints_fullft_unificado_v2/best}"
+TAG="${DAPT_TAG:-dapt}"
 
 ARGS=(--benchmark "$DADOS/benchmark_destilacao_100.jsonl" \
-      --out trabalho-final/Q4-destilacao/resultados/avaliacao_dapt.json \
+      --out "trabalho-final/Q4-destilacao/resultados/avaliacao_${TAG}.json" \
       --model "base_15=Qwen/Qwen2.5-1.5B" \
-      --model "dapt_raw=$DAPT")
-[ -d "$MOD/aluno_dapt_B_combined" ] && ARGS+=(--model "dapt_B_combined=$MOD/aluno_dapt_B_combined")
-[ -d "$MOD/aluno_dapt_Bxf_ce" ]     && ARGS+=(--model "dapt_Bxf_ce=$MOD/aluno_dapt_Bxf_ce")
+      --model "${TAG}_raw=$DAPT")
+[ -d "$MOD/aluno_${TAG}_B_combined" ] && ARGS+=(--model "${TAG}_B_combined=$MOD/aluno_${TAG}_B_combined")
+[ -d "$MOD/aluno_${TAG}_Bxf_ce" ]     && ARGS+=(--model "${TAG}_Bxf_ce=$MOD/aluno_${TAG}_Bxf_ce")
 
 $PY_EVAL "$SCR/avaliar_destilacao.py" "${ARGS[@]}"
 echo "=== avaliação DAPT-then-distill concluída → resultados/avaliacao_dapt.json ==="

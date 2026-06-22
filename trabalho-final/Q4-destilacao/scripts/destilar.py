@@ -115,6 +115,27 @@ def perda_kl_topk(student_ans_logits: torch.Tensor, topk: list, T: float) -> tor
     return total / n
 
 
+def perda_uld(student_ans_logits: torch.Tensor, topk: list) -> torch.Tensor:
+    """
+    ULD cross-tokenizer (Boizard et al., aprox.): compara as distribuições de probabilidade do aluno (Qwen)
+    e do professor (zephyr) por POSIÇÃO, sem vocabulário comum — ordena ambos os top-k de probabilidade
+    descendente e minimiza a L1 entre os vetores ordenados (Wasserstein-1 sobre probs ordenadas).
+    Alinhamento posição-a-posição entre tokenizadores distintos é APROXIMADO (truncado ao comprimento comum).
+    student_ans_logits: (ans_len, V); topk: lista (len=teacher_len) de [[tok_id, logprob_professor], ...].
+    """
+    n = min(student_ans_logits.size(0), len(topk))
+    if n == 0:
+        return student_ans_logits.sum() * 0.0
+    probs = F.softmax(student_ans_logits[:n].float(), dim=-1)            # (n, V)
+    total = student_ans_logits.new_zeros(())
+    for i in range(n):
+        k = len(topk[i])
+        s_sorted = torch.topk(probs[i], k).values                       # top-k do aluno, já descendente
+        t_sorted = torch.tensor([t[1] for t in topk[i]], device=probs.device).exp()  # probs do professor (desc.)
+        total = total + (s_sorted - t_sorted).abs().sum()
+    return total / n
+
+
 # --------------------------------------------------------------------------- #
 # Treino                                                                       #
 # --------------------------------------------------------------------------- #
@@ -125,7 +146,8 @@ def main() -> None:
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--logits", default=None, help="cache top-k (necessário p/ kl e combined)")
     ap.add_argument("--braco", choices=["A", "B"], required=True)
-    ap.add_argument("--method", choices=["ce", "kl", "combined"], required=True)
+    ap.add_argument("--method", choices=["ce", "kl", "combined", "uld", "uldcomb"], required=True,
+                    help="uld = ULD cross-tokenizer (probs ordenadas); uldcomb = α·CE+(1−α)·ULD")
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--alpha", type=float, default=0.5, help="peso da CE na combined")
     ap.add_argument("--temperature", type=float, default=2.0)
@@ -138,7 +160,7 @@ def main() -> None:
     args = ap.parse_args()
 
     torch.manual_seed(args.seed)
-    needs_logits = args.method in ("kl", "combined")
+    needs_logits = args.method in ("kl", "combined", "uld", "uldcomb")
     if needs_logits and not args.logits:
         ap.error(f"--method {args.method} exige --logits")
 
@@ -183,12 +205,15 @@ def main() -> None:
             ans_labels = ex["labels"][p:].to(DEVICE)                    # (a,)
 
             loss = ans_logits.new_zeros(())
-            if args.method in ("ce", "combined"):
+            if args.method in ("ce", "combined", "uldcomb"):
                 ce = F.cross_entropy(ans_logits.float(), ans_labels)
-                loss = loss + (alpha * ce if args.method == "combined" else ce)
+                loss = loss + (alpha * ce if args.method in ("combined", "uldcomb") else ce)
             if args.method in ("kl", "combined"):
                 kl = perda_kl_topk(ans_logits.float(), ex["topk"], T)
                 loss = loss + ((1 - alpha) * (T * T) * kl if args.method == "combined" else (T * T) * kl)
+            if args.method in ("uld", "uldcomb"):
+                uld = perda_uld(ans_logits, ex["topk"])
+                loss = loss + ((1 - alpha) * uld if args.method == "uldcomb" else uld)
 
             (loss / args.grad_accum).backward()
             run_loss += loss.item()
