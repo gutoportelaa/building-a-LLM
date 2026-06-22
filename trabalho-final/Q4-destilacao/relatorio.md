@@ -214,6 +214,37 @@ Artefatos: `dados/` (dataset + logits + benchmark), `modelos/aluno_qwen2.5-*_{A,
 
 ---
 
+## 6. Extensão executada — Plano B: cross-família black-box (job SLURM 506/507)
+
+Para contrastar **white-box (mesma família, com logits)** × **black-box (cross-família, só texto)**, destilamos um
+professor de **outra família** para o aluno Qwen via SFT no texto (sequence-KD), reusando as mesmas perguntas e o
+mesmo contexto B. Professor: **`HuggingFaceH4/zephyr-7b-beta`** (arquitetura Mistral, tokenizer ≠ Qwen; escolhido
+por ser *ungated* — Gemma-2 e Llama-3.1 são *gated* e bloquearam o download). Re-tokenização da resposta no espaço
+Qwen (`gerar_dataset_crossfamilia.py`); SFT método `ce`.
+
+| Arm (aluno 1.5B) | Professor | Sinal | ROUGE-L | key_recall |
+|---|---|---|---|---|
+| base | — | — | 0,185 | 0,366 |
+| cross-família black-box | zephyr-7B | texto | 0,270 | 0,490 |
+| mesma-família black-box | Qwen-14B | texto | 0,223 | 0,647 |
+| mesma-família white-box (kl) | Qwen-14B | logits | 0,350 | 0,689 |
+| **🏆 mesma-família white-box (comb)** | Qwen-14B | logits | **0,363** | **0,717** |
+
+(0.5B: `bxf_0.5b_ce` RG 0,348 / KR 0,523 vs `d_0.5b_B_ce` RG 0,203 / KR 0,667.)
+
+**Conclusões:** (1) **todos transferem** — a cross-família também (KR 0,49 ≫ base 0,37); (2) **logits/mesma-família
+entregam o máximo** (combined 0,717) — é o porquê de Gemma 2 / Llama 4 destilarem dentro da família; (3) a
+cross-família **perde recall**, mas em parte é **artefato** da referência ser o Qwen-14B (vantagem de casa em KR para
+a mesma família); (4) curiosamente a cross-família tem **ROUGE-L maior** que a mesma-família black-box — o zephyr é um
+instruct forte e fraseia mais perto da referência. Lição reproduzida da literatura: **white-box mesma-família quando
+possível; black-box cross-família (estilo DeepSeek-R1) só quando forçado** (vocabulário/tokenizador distintos).
+
+Scripts: `gerar_dataset_crossfamilia.py`, `run_crossfamilia.sbatch`, `run_avaliar_bxf.sbatch`. Resultados em
+`resultados/avaliacao_bxf.json`. *(Ressalva de tamanho: zephyr-7B < Qwen-14B → a comparação cross-família carrega
+também o efeito de tamanho do professor.)*
+
+---
+
 ## Referências (além de Raschka)
 - Gemma 2: *Improving Open Language Models at a Practical Size* — arXiv:2408.00118
 - DeepSeek-R1 (distill report) — deepseek-ai/DeepSeek-R1-Distill-* (HF)
