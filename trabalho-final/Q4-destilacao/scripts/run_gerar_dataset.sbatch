@@ -28,6 +28,7 @@ fi
 
 $PY_GEN trabalho-final/Q4-destilacao/scripts/gerar_dataset_destilacao.py \
     --teacher Qwen/Qwen2.5-14B-Instruct --tp 2 \
+    --max-model-len 8192 --max-context-chars 6000 \
     --n-dompi 500 --n-docentes 500 --topk 50 --bracos A B \
     --dompi-seeds data/held_out.jsonl \
     --index-dir rag/index \

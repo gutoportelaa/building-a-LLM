@@ -135,6 +135,8 @@ def main() -> None:
     ap.add_argument("--index-dir", default="rag/index", help="índice Q5 (braço B)")
     ap.add_argument("--rag-scripts", default="trabalho-final/Q5-rag/scripts")
     ap.add_argument("--rag-k", type=int, default=5)
+    ap.add_argument("--max-context-chars", type=int, default=6000,
+                    help="cap do contexto RAG (braço B) p/ não estourar a janela do professor")
     ap.add_argument("--embed-device", default="cpu",
                     help="device do e5 na recuperação; 'cpu' evita contenção com o vLLM nas GPUs")
     ap.add_argument("--out-dir", default="trabalho-final/Q4-destilacao/dados")
@@ -207,7 +209,8 @@ def main() -> None:
         for q in questoes:
             qvec = emb.encode_query(q["question"])
             passages = retr.search_vec(qvec, k=args.rag_k)
-            contexto[q["id"]] = _fmt_ctx(passages)
+            # cap de segurança: contexto não pode estourar a janela do professor
+            contexto[q["id"]] = _fmt_ctx(passages)[: args.max_context_chars]
         with open(out / "contexto_B.jsonl", "w", encoding="utf-8") as f:
             for q in questoes:
                 f.write(json.dumps({"id": q["id"], "context": contexto[q["id"]]}, ensure_ascii=False) + "\n")
