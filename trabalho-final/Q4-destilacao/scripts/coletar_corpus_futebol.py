@@ -34,6 +34,33 @@ def _ph(s: str) -> str:  # placar/half helper
     return f"{s[0]}–{s[1]}" if isinstance(s, list) and len(s) == 2 else "?"
 
 
+def _classificacao(matches: list[dict]) -> list[dict]:
+    """Calcula a classificação parcial de cada grupo a partir dos jogos já disputados."""
+    from collections import defaultdict
+    tab = defaultdict(lambda: {"grupo": "", "pts": 0, "gp": 0, "gc": 0, "j": 0})
+    for m in matches:
+        sc = m.get("score") or {}
+        if not sc.get("ft"):
+            continue
+        a, b = sc["ft"]
+        t1, t2, g = m["team1"], m["team2"], m.get("group", "")
+        for t, gf, ga in ((t1, a, b), (t2, b, a)):
+            r = tab[t]; r["grupo"] = g; r["j"] += 1; r["gp"] += gf; r["gc"] += ga
+            r["pts"] += 3 if gf > ga else (1 if gf == ga else 0)
+    out = []
+    grupos = defaultdict(list)
+    for t, r in tab.items():
+        grupos[r["grupo"]].append((t, r))
+    for g, times in sorted(grupos.items()):
+        ordenado = sorted(times, key=lambda x: (-x[1]["pts"], -(x[1]["gp"] - x[1]["gc"]), -x[1]["gp"]))
+        linhas = "; ".join(
+            f"{i+1}º {t} ({r['pts']}pts, {r['j']}j, saldo {r['gp']-r['gc']:+d})"
+            for i, (t, r) in enumerate(ordenado))
+        out.append({"source": "openfootball:standings",
+                    "texto": f"Classificação parcial do {g} na Copa 2026: {linhas}."})
+    return out
+
+
 def passagens_openfootball() -> list[dict]:
     out: list[dict] = []
 
@@ -49,8 +76,9 @@ def passagens_openfootball() -> list[dict]:
                              f"({str(s.get('cc','')).upper()}), capacidade {s.get('capacity','?')}, "
                              f"fuso {s.get('timezone','?')}."})
 
-    # jogos (jogados e agendados)
-    for m in get_json(f"{OF}/worldcup.json").get("matches", []):
+    # jogos (jogados e agendados) + classificação derivada
+    matches = get_json(f"{OF}/worldcup.json").get("matches", [])
+    for m in matches:
         base = (f"Copa 2026 — {m.get('round','')}, {m.get('group','')}, {m.get('date','')}: "
                 f"{m['team1']} x {m['team2']} em {m.get('ground','?')}")
         sc = m.get("score")
@@ -63,16 +91,24 @@ def passagens_openfootball() -> list[dict]:
         else:
             txt = f"{base} (agendado para {m.get('time','?')})."
         out.append({"source": "openfootball:matches", "texto": txt})
+    out.extend(_classificacao(matches))
 
-    # seleções (metadados, se houver)
-    try:
-        for t in get_json(f"{OF}/worldcup.teams.json").get("teams", []):
-            nome = t.get("name"); code = t.get("code", "")
-            if nome:
-                out.append({"source": "openfootball:teams",
-                            "texto": f"Seleção na Copa 2026: {nome} ({code})."})
-    except Exception:
-        pass
+    # seleções (metadados) — JSON é uma lista no topo
+    for t in get_json(f"{OF}/worldcup.teams.json"):
+        if t.get("name"):
+            out.append({"source": "openfootball:teams",
+                        "texto": f"Seleção na Copa 2026: {t['name']} ({t.get('fifa_code','')}), "
+                                 f"Grupo {t.get('group','?')}, confederação {t.get('confed','?')} "
+                                 f"({t.get('continent','?')})."})
+
+    # elencos — um passagem por seleção
+    for sq in get_json(f"{OF}/worldcup.squads.json"):
+        jog = "; ".join(
+            f"{p.get('pos','?')} {p.get('name','?')} ({(p.get('club') or {}).get('name','?')})"
+            for p in sq.get("players", []))
+        out.append({"source": "openfootball:squads",
+                    "texto": f"Elenco da seleção {sq.get('name','?')} (Grupo {sq.get('group','?')}) "
+                             f"na Copa 2026: {jog}."})
     return out
 
 
