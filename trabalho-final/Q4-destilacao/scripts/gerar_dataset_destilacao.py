@@ -40,14 +40,13 @@ from pathlib import Path
 # --------------------------------------------------------------------------- #
 
 QG_SYSTEM = (
-    "Você é um gerador de perguntas factuais sobre o Diário Oficial dos Municípios do Piauí. "
-    "Dada uma passagem, formule UMA única pergunta objetiva cuja resposta esteja contida na passagem "
-    "(nomes, números de atos, valores, datas, empresas, cargos). Responda apenas com a pergunta."
+    "Você é um gerador de perguntas factuais. Dada uma passagem, formule UMA única pergunta objetiva "
+    "cuja resposta esteja contida na passagem (nomes, números, valores, datas, definições, fatos). "
+    "Responda apenas com a pergunta, sem preâmbulo."
 )
 
 ANSWER_SYSTEM = (
-    "Você é um assistente factual e conciso sobre atos administrativos municipais do Piauí. "
-    "Responda de forma direta e objetiva."
+    "Você é um assistente factual e conciso. Responda de forma direta e objetiva."
 )
 
 ANSWER_SYSTEM_RAG = (
@@ -80,25 +79,25 @@ def carregar_seeds_dompi(path: Path, n: int, seed: int, min_chars: int = 400) ->
     return passages[:n]
 
 
-def carregar_perguntas_docentes(n: int, seed: int) -> list[dict]:
-    """Carrega n instruções do dataset HF vickminari/docentesDC."""
+def carregar_seeds_docentes(n: int, seed: int, min_chars: int = 400) -> list[str]:
+    """Amostra n passagens-semente do dataset HF vickminari/docentesDC (campo 'text').
+
+    NB: docentesDC NÃO é Q&A — colunas reais = ['text', 'nome_professor']. Tratamos como o DOM-PI:
+    passagem-semente → o professor gera a pergunta (self-instruct) na etapa de QG.
+    """
     from datasets import load_dataset
 
     ds = load_dataset("vickminari/docentesDC", split="train")
     idx = list(range(len(ds)))
-    random.Random(seed).shuffle(idx)
-    out = []
+    random.Random(seed + 1).shuffle(idx)   # seed distinto do DOM-PI
+    passages: list[str] = []
     for i in idx:
-        row = ds[i]
-        instr = (row.get("instruction") or "").strip()
-        inp = (row.get("input") or "").strip()
-        if not instr:
-            continue
-        question = f"{instr}\n{inp}".strip() if inp else instr
-        out.append({"source": "docentesDC", "question": question})
-        if len(out) >= n:
+        txt = (ds[i].get("text") or "").strip()
+        if len(txt) >= min_chars:
+            passages.append(txt[:1600])
+        if len(passages) >= n:
             break
-    return out
+    return passages
 
 
 # --------------------------------------------------------------------------- #
@@ -170,22 +169,23 @@ def main() -> None:
     )
 
     # ----- Etapa 1: perguntas ------------------------------------------------
-    print("[2/4] Construindo conjunto de perguntas...", flush=True)
-    questoes: list[dict] = []
+    # Ambas as fontes são tratadas como passagens-semente → o professor gera 1 pergunta por passagem
+    # (self-instruct grounded). docentesDC NÃO é Q&A (colunas: text, nome_professor).
+    print("[2/4] Construindo conjunto de perguntas (self-instruct nas 2 fontes)...", flush=True)
+    seeds: list[tuple[str, str]] = (
+        [("DOM-PI", p) for p in carregar_seeds_dompi(Path(args.dompi_seeds), args.n_dompi, args.seed)]
+        + [("docentesDC", p) for p in carregar_seeds_docentes(args.n_docentes, args.seed)]
+    )
 
-    # DOM-PI: gera 1 pergunta por passagem (self-instruct grounded)
-    seeds = carregar_seeds_dompi(Path(args.dompi_seeds), args.n_dompi, args.seed)
+    questoes: list[dict] = []
     if seeds:
-        qg_prompts = [montar_chat(tok, QG_SYSTEM, f"Passagem:\n{p}\n\nPergunta:") for p in seeds]
+        qg_prompts = [montar_chat(tok, QG_SYSTEM, f"Passagem:\n{p}\n\nPergunta:") for _, p in seeds]
         qg_sp = SamplingParams(temperature=0.0, max_tokens=64, seed=args.seed)
         qg_outs = llm.generate(qg_prompts, qg_sp)
-        for p, o in zip(seeds, qg_outs):
+        for (src, p), o in zip(seeds, qg_outs):
             q = o.outputs[0].text.strip().split("\n")[0].strip()
             if q:
-                questoes.append({"source": "DOM-PI", "question": q, "seed_passage": p})
-
-    # docentesDC: perguntas prontas
-    questoes.extend(carregar_perguntas_docentes(args.n_docentes, args.seed))
+                questoes.append({"source": src, "question": q, "seed_passage": p})
 
     for i, item in enumerate(questoes):
         item["id"] = f"q{i:05d}"
