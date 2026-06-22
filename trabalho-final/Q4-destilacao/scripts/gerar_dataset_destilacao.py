@@ -129,6 +129,8 @@ def main() -> None:
     ap.add_argument("--tp", type=int, default=2, help="tensor_parallel_size (2 L4 no gpunode01)")
     ap.add_argument("--n-dompi", type=int, default=500)
     ap.add_argument("--n-docentes", type=int, default=500)
+    ap.add_argument("--min-seed-chars", type=int, default=400,
+                    help="comprimento mínimo da passagem-semente (baixar p/ corpora de passagens curtas, ex. futebol)")
     ap.add_argument("--topk", type=int, default=50, help="top-k logprobs por token (soft labels)")
     ap.add_argument("--bracos", nargs="+", default=["A", "B"], choices=["A", "B"])
     ap.add_argument("--dompi-seeds", default="data/held_out.jsonl")
@@ -175,7 +177,8 @@ def main() -> None:
     # (self-instruct grounded). docentesDC NÃO é Q&A (colunas: text, nome_professor).
     print("[2/4] Construindo conjunto de perguntas (self-instruct nas 2 fontes)...", flush=True)
     seeds: list[tuple[str, str]] = (
-        [("DOM-PI", p) for p in carregar_seeds_dompi(Path(args.dompi_seeds), args.n_dompi, args.seed)]
+        [("DOM-PI", p) for p in carregar_seeds_dompi(Path(args.dompi_seeds), args.n_dompi, args.seed,
+                                                     min_chars=args.min_seed_chars)]
         + [("docentesDC", p) for p in carregar_seeds_docentes(args.n_docentes, args.seed)]
     )
 
