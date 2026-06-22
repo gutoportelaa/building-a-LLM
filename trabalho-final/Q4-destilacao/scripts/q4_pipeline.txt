@@ -1,0 +1,4 @@
+# Pipeline do orquestrador Q4 — uma linha por passo:  <caminho do sbatch> | <glob do output que marca conclusão>
+# O orquestrador submete o próximo passo cujo marker NÃO existe, sempre que as GPUs ficam livres.
+# Para adicionar trabalho: acrescente uma linha aqui (o orquestrador re-lê a cada ciclo).
+trabalho-final/Q4-destilacao/scripts/run_avaliar_futebol.sbatch | trabalho-final/Q4-destilacao/resultados/avaliacao_futebol.json

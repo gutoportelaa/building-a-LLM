@@ -49,15 +49,19 @@ def main() -> None:
     ap.add_argument("--max-context-chars", type=int, default=6000)
     ap.add_argument("--embed-device", default="cpu")
     ap.add_argument("--max-new-tokens", type=int, default=256)
+    ap.add_argument("--min-seed-chars", type=int, default=400)
+    ap.add_argument("--skip-docentes", action="store_true", help="só a fonte dompi-seeds (ex.: tema futebol)")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--out", default="trabalho-final/Q4-destilacao/dados/benchmark_destilacao_100.jsonl")
     args = ap.parse_args()
 
     # fatias HELD-OUT: [n_treino : n_treino + n_bench]  (disjuntas do treino, mesmo seed)
-    dompi = carregar_seeds_dompi(Path(args.dompi_seeds), args.n_treino_dompi + args.n_bench, args.seed)
-    doc = carregar_seeds_docentes(args.n_treino_docentes + args.n_bench, args.seed)
-    seeds = ([("DOM-PI", p) for p in dompi[args.n_treino_dompi:]]
-             + [("docentesDC", p) for p in doc[args.n_treino_docentes:]])
+    dompi = carregar_seeds_dompi(Path(args.dompi_seeds), args.n_treino_dompi + args.n_bench, args.seed,
+                                 min_chars=args.min_seed_chars)
+    seeds = [("DOM-PI", p) for p in dompi[args.n_treino_dompi:]]
+    if not args.skip_docentes:
+        doc = carregar_seeds_docentes(args.n_treino_docentes + args.n_bench, args.seed)
+        seeds += [("docentesDC", p) for p in doc[args.n_treino_docentes:]]
     print(f"{len(seeds)} sementes held-out "
           f"({sum(s=='DOM-PI' for s, _ in seeds)} DOM-PI + {sum(s=='docentesDC' for s, _ in seeds)} docentes)",
           flush=True)
