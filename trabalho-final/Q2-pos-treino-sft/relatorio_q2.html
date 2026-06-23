@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questão 2 — Pós-treino SFT | DOM-PI / UFPI-DC</title>
+<link rel="stylesheet" href="../assets/estilo.css">
+</head>
+<body>
+
+<h1>Questão 2 — Pós-treino SFT (docentesDC) <span class="status pending">planejada</span></h1>
+
+<div class="report-meta">
+  <strong>Dataset:</strong> vickminari/docentesDC (13.762 registros) · <strong>Base:</strong> Qwen2.5-1.5B ·
+  <strong>Técnica:</strong> Supervised Fine-Tuning (instruction) · <strong>Status:</strong> metodologia definida (a executar).
+</div>
+
+<div class="q-enunciado">
+  Gerar <strong>≥1.000 pares</strong> instruction/input/output a partir do dataset <em>docentesDC</em>. Usar para
+  <strong>Supervised Fine-Tuning (SFT)</strong>. Avaliar o LLM <strong>antes e depois</strong>.
+</div>
+
+<div class="callout warn">
+  <strong>Status:</strong> esta questão tem a <em>metodologia</em> e a infraestrutura definidas; a execução final fica
+  como trabalho a concluir. Os números abaixo são <strong>especificação</strong>, não resultados.
+</div>
+
+<h2>1. Fundamentos teóricos</h2>
+<p>O <strong>Supervised Fine-Tuning</strong> (instruction tuning; Raschka, cap. 7) adapta um LLM pré-treinado para
+<strong>seguir instruções</strong>: o modelo é treinado em pares <em>(instrução, resposta)</em> formatados num template,
+otimizando a entropia cruzada <strong>apenas sobre os tokens da resposta</strong> (a perda do prompt é mascarada com
+<code>-100</code>). Assim o modelo aprende a <em>responder</em>, não a repetir a pergunta.</p>
+<div class="callout info">
+  <strong>Pegadinha herdada da Q1:</strong> manter <code>input_ids</code> e <code>labels</code> alinhados — o bug de
+  duplo deslocamento de rótulos (ver Q1) também afeta SFT. Sanidade: loss inicial ~2-3, não ~11.
+</div>
+
+<h2>2. Dataset e geração dos pares (≥1.000)</h2>
+<p><code>vickminari/docentesDC</code>: 13.762 registros, campos <code>text</code> + <code>nome_professor</code>, domínio
+Ciência da Computação (UFPI). <strong>Não tem pares instruction/output nativos</strong> → precisam ser gerados em duas
+fases: (a) extrair trechos coerentes de <code>text</code>; (b) gerar pares (definição, explicação de código, Q&amp;A
+conceitual), com deduplicação e filtragem por tamanho/idioma.</p>
+
+<h2>3. Decisões de projeto e motivações</h2>
+<table>
+  <tr><th>Decisão</th><th>Motivação</th></tr>
+  <tr><td>Base <strong>Qwen2.5-1.5B</strong></td><td>Continuidade com Q1/Q4; cabe SFT na L4.</td></tr>
+  <tr><td><strong>Máscara de perda na resposta</strong></td><td>O modelo aprende a responder, não a ecoar o prompt (Raschka, cap. 7).</td></tr>
+  <tr><td>Mesmo conjunto de pares reusado na <strong>Q3</strong></td><td>Comparação controlada SFT-full × LoRA/QLoRA (só muda o método).</td></tr>
+</table>
+
+<h2>4. Métricas e avaliação</h2>
+<p>Benchmark próprio (CC/UFPI). Métricas: PPL/CE antes×depois, token-accuracy, avaliação qualitativa de instruções
+respondidas. Infra reutilizável: <code>avaliar_modelo.py</code>, <code>comparar_resultados.py</code>,
+<code>inferencia_multi.py</code>. Scripts previstos: <code>gerar_pares_docentes.py</code>, <code>sft_docentes.py</code>.</p>
+
+<footer>
+  Questão 2 — Pós-treino SFT · Trabalho Final "Construindo um LLM" (DOM-PI / UFPI-DC).
+  Relatório consolidado: <a href="../relatorio_tecnico_completo.html">relatorio_tecnico_completo.html</a>.
+</footer>
+
+</body>
+</html>

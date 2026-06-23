@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questão 3 — Pós-treino LoRA/QLoRA | DOM-PI / UFPI-DC</title>
+<link rel="stylesheet" href="../assets/estilo.css">
+</head>
+<body>
+
+<h1>Questão 3 — Pós-treino LoRA/QLoRA (docentesDC) <span class="status pending">planejada</span></h1>
+
+<div class="report-meta">
+  <strong>Dataset:</strong> mesmos ≥1.000 pares da Q2 · <strong>Base:</strong> Qwen2.5-1.5B ·
+  <strong>Técnica:</strong> LoRA (rank 16, α 32) / QLoRA (NF4 4-bit) · <strong>Status:</strong> metodologia definida.
+</div>
+
+<div class="q-enunciado">
+  Repetir o pós-treino da Q2 usando <strong>LoRA/QLoRA</strong> sobre o <em>docentesDC</em> e <strong>comparar</strong>
+  com o SFT full (full fine-tuning vs PEFT).
+</div>
+
+<div class="callout warn">
+  <strong>Status:</strong> metodologia e comparação especificadas; execução a concluir. Os valores abaixo são
+  <strong>hipóteses/especificação</strong>, não resultados medidos.
+</div>
+
+<h2>1. Fundamentos teóricos</h2>
+<p><strong>LoRA</strong> (<em>Low-Rank Adaptation</em>; Raschka, apêndice E) congela os pesos <code>W</code> do modelo e
+aprende uma <strong>atualização de baixo posto</strong> <code>ΔW = B·A</code> (com <code>A∈ℝ^{r×d}</code>,
+<code>B∈ℝ^{d×r}</code>, <code>r≪d</code>) — treina ~0,5–2% dos parâmetros. <strong>QLoRA</strong> adiciona quantização
+<strong>NF4</strong> (4-bit) dos pesos congelados, reduzindo drasticamente a memória (cabe folgado na L4). A hipótese da
+literatura: PEFT atinge boa fração do ganho do full-FT com custo muito menor.</p>
+
+<h2>2. Decisões de projeto e motivações</h2>
+<table>
+  <tr><th>Decisão</th><th>Motivação</th></tr>
+  <tr><td>Reusar <strong>os mesmos pares da Q2</strong></td><td>Comparação controlada: só muda o método (full × PEFT).</td></tr>
+  <tr><td>LoRA <strong>rank 16, α 32</strong>; QLoRA <strong>NF4</strong></td><td>Configuração padrão da literatura; objetivo corrigido (sem duplo shift — ver Q1).</td></tr>
+  <tr><td>Mesma máscara de perda na resposta</td><td>Consistência com a Q2.</td></tr>
+</table>
+
+<h2>3. Comparação planejada (Q2 vs Q3)</h2>
+<table>
+  <tr><th>Dimensão</th><th>SFT full (Q2)</th><th>LoRA/QLoRA (Q3)</th></tr>
+  <tr><td>Parâmetros treinados</td><td>todos (~1,5 B)</td><td>adaptadores (~0,5–2%)</td></tr>
+  <tr><td>Memória/custo</td><td>maior</td><td>menor (QLoRA cabe folgado no L4)</td></tr>
+  <tr><td>Risco</td><td>esquecimento</td><td>"intruder dimensions" se lr alto</td></tr>
+  <tr><td>Métrica esperada</td><td>melhor ajuste</td><td>quase-paridade com fração do custo</td></tr>
+</table>
+
+<h2>4. Métricas</h2>
+<p>PPL/CE/token-accuracy antes×depois no benchmark da Q2; custo (memória, tempo) e qualidade qualitativa.
+<strong>Hipótese:</strong> QLoRA atinge boa fração do ganho do SFT full com custo muito menor — análoga à lição da Q1
+(PEFT conservador; full-FT melhor quando viável). Script: <code>pretreino_lora.py</code> (objetivo corrigido) adaptado
+para formato instruction.</p>
+
+<footer>
+  Questão 3 — Pós-treino LoRA/QLoRA · Trabalho Final "Construindo um LLM" (DOM-PI / UFPI-DC).
+  Relatório consolidado: <a href="../relatorio_tecnico_completo.html">relatorio_tecnico_completo.html</a>.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questão 5 — RAG | DOM-PI / UFPI-DC</title>
+<link rel="stylesheet" href="../assets/estilo.css">
+</head>
+<body>
+
+<h1>Questão 5 — RAG (Retrieval-Augmented Generation) <span class="status done">concluída</span></h1>
+
+<div class="report-meta">
+  <strong>Dataset:</strong> DOM-PI · <strong>Índice:</strong> e5-base, 175.924 chunks / 57.229 docs ·
+  <strong>Geradores:</strong> G1 base · G2 DAPT · G3 qwen2.5:14b · <strong>Modos:</strong> Standard/HyDE/Reflexivo/Agêntico
+  · <strong>Resultado:</strong> acerto factual 0% → 11/17/33% com RAG. ·
+  <em>Relatório detalhado:</em> <a href="relatorio_q5_rag.html">relatorio_q5_rag.html</a>.
+</div>
+
+<div class="q-enunciado">
+  Criar uma aplicação de <strong>RAG</strong> (Standard, Agêntico ou Auto-reflexivo) sobre <em>docentesDC</em> ou
+  <em>diariosPrefeituras</em>. Benchmark de <strong>30 perguntas</strong> para avaliar antes/depois. Analisar o grau de
+  contribuição do RAG.
+</div>
+
+<h2>1. Fundamentos teóricos</h2>
+<p><strong>RAG</strong> (Lewis et al., 2020) acopla um <strong>recuperador</strong> (busca vetorial sobre um corpus)
+a um <strong>gerador</strong> (LLM): a query é embedada, recuperam-se as passagens mais similares e o LLM responde
+<em>condicionado</em> a elas. É uma forma de dar conhecimento ao modelo <strong>sem alterar seus pesos</strong> —
+complementar ao pré-treino (Q1) e à destilação (Q4). Diferente do livro de Raschka (que constrói o LLM "from scratch"),
+o RAG atua na <strong>inferência</strong>, expandindo a capacidade do modelo com um recurso barato e atualizável.</p>
+<ul>
+  <li><strong>Embeddings + similaridade de cosseno</strong> — representações densas; recuperação por vizinhança.</li>
+  <li><strong>Chunking</strong> — janelas de ~1600 chars com sobreposição preservam contexto factual.</li>
+  <li><strong>Variantes:</strong> HyDE (documento hipotético), auto-reflexão (crítica + re-busca), agêntico (ReAct).</li>
+</ul>
+
+<h2>2. Decisões de projeto e motivações</h2>
+<table>
+  <tr><th>Decisão</th><th>Motivação</th></tr>
+  <tr><td>Corpus <strong>DOM-PI</strong></td><td>Alta densidade factual (licitações, portarias, valores) — ideal para medir contribuição do RAG.</td></tr>
+  <tr><td>Embedder <strong>e5-base</strong> na GPU</td><td>~882 emb/s vs ~5 emb/s do nomic via Ollama (inviável).</td></tr>
+  <tr><td>Três geradores (G1/G2/G3)</td><td>Isolar o efeito da <strong>capacidade</strong> do gerador no ganho do RAG (base × DAPT × 14b).</td></tr>
+  <tr><td>Avaliação <strong>por conteúdo</strong> (entidade-chave)</td><td>O <code>fonte_id</code> do benchmark não casa com os ids do corpus → mede-se a presença do fato na resposta.</td></tr>
+</table>
+
+<h2>3. Metodologia</h2>
+<p>Índice vetorial e5-base (175.924 chunks). Quatro modos em <code>rag_core.py</code>: <strong>Standard</strong>
+(query→top-k→geração), <strong>HyDE</strong> (documento hipotético→busca), <strong>Self-reflective</strong>
+(gera→critica→re-busca, até 2 iter.), <strong>Agêntico</strong> (loop ReAct BUSCAR/RESPONDER, até 3 passos).
+Avaliação com <code>run_eval.py</code> (acerto factual por entidade-chave, sem→com RAG).</p>
+
+<h2>4. Resultados</h2>
+<table>
+  <tr><th>Gerador</th><th class="num">Sem RAG</th><th class="num">Com RAG (standard)</th></tr>
+  <tr><td>G1 base 1.5B</td><td class="num">0%</td><td class="num">11,1%</td></tr>
+  <tr><td>G2 DAPT 1.5B</td><td class="num">0%</td><td class="num">16,7%</td></tr>
+  <tr style="font-weight:bold;background:var(--ok-bg)"><td>G3 qwen2.5:14b</td><td class="num">0%</td><td class="num">33,3%</td></tr>
+</table>
+<div class="callout success">
+  <strong>RAG é necessário</strong> (todos 0% sem ele); o ganho <strong>escala com a capacidade do gerador</strong>; o
+  gargalo é o <strong>recall</strong> (~42%) — o 14b acerta ~75% quando o contexto traz a resposta, enquanto modelos
+  1.5B colapsam/alucinam mesmo com contexto.
+</div>
+
+<h2>5. Descobertas não-óbvias</h2>
+<ul>
+  <li><strong>HyDE não superou o standard</strong> — o documento hipotético alucina entidades e desvia a busca; só rende
+  em queries vagas.</li>
+  <li><strong>Custo ≈ nº de chamadas LLM</strong>: standard (1) &lt; reflexivo/HyDE (2-3) &lt; agêntico (≈3+).
+  Recomendação operacional: <strong>Standard como padrão</strong>; agêntico só em multi-hop/síntese.</li>
+</ul>
+
+<h2>6. Reprodução</h2>
+<p><code>build_index.py</code> → <code>run_eval.py</code> → <code>consolidar.py</code>. Índice publicado no HF (privado):
+<code>gutoportelaa/dompi-rag-index-e5</code>. Resultados em <code>resultados/</code>. Relatório detalhado:
+<a href="relatorio_q5_rag.html">relatorio_q5_rag.html</a>.</p>
+
+<footer>
+  Questão 5 — RAG · Trabalho Final "Construindo um LLM" (DOM-PI / UFPI-DC).
+  Relatório consolidado: <a href="../relatorio_tecnico_completo.html">relatorio_tecnico_completo.html</a>.
+</footer>
+
+</body>
+</html>
