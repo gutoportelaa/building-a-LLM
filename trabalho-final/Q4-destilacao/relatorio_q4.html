@@ -4,7 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Questão 4 — Destilação de Conhecimento | DOM-PI / UFPI-DC</title>
-<link rel="stylesheet" href="../assets/estilo.css">
+<style>
+/* Estilo compartilhado dos relatórios — Trabalho Final DOM-PI/UFPI-DC.
+   Extraído do relatorio_tecnico_completo.html; usado por todos os relatórios individuais + o consolidado. */
+  :root {
+    --txt:    #1c1c1c;
+    --muted:  #5a5a5a;
+    --border: #d2d2d2;
+    --bg-alt: #f7f7f5;
+    --bg-code:#f2f2ef;
+    --accent: #1e3a5f;
+    --accent2:#2e5ca0;
+    --a-light:#e6ecf5;
+    --done-bg:#eaf5ea;
+    --done-fg:#1a4a1a;
+    --pend-bg:#fdf3e7;
+    --pend-fg:#6b3a00;
+    --bad-bg: #f5eaea;
+    --bad-fg: #5a1818;
+    --warn-bg:#fef9e7;
+    --warn-fg:#5c4500;
+    --ok-bg:  #eaf5ea;
+    --ok-fg:  #1a4a1a;
+    --mono:   "Courier New", Courier, monospace;
+    --sans:   "Helvetica Neue", Arial, sans-serif;
+    --serif:  Georgia, "Times New Roman", serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--txt);
+    background: #fff;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 48px 36px 100px;
+  }
+  a { color: var(--accent2); }
+
+  /* ── Títulos ── */
+  h1 { font-family: var(--sans); font-size: 1.9rem; font-weight: 700;
+       color: var(--accent); border-bottom: 3px solid var(--accent);
+       padding-bottom: 12px; margin-bottom: 10px; }
+  h2 { font-family: var(--sans); font-size: 1.25rem; font-weight: 700;
+       color: var(--accent); margin-top: 56px; margin-bottom: 14px;
+       border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+  h3 { font-family: var(--sans); font-size: 1.05rem; font-weight: 600;
+       color: #2a2a2a; margin-top: 30px; margin-bottom: 8px; }
+  h4 { font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+       color: var(--muted); margin-top: 20px; margin-bottom: 6px; font-style: italic; }
+  p  { margin-bottom: 13px; }
+  ul, ol { margin: 8px 0 14px 26px; }
+  li { margin-bottom: 5px; }
+  code { font-family: var(--mono); font-size: 0.82em; background: var(--bg-code);
+         padding: 1px 5px; border-radius: 3px; }
+
+  /* ── Meta do relatório ── */
+  .report-meta {
+    font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+    border-left: 4px solid var(--accent); padding: 10px 16px;
+    margin-bottom: 32px; background: var(--a-light);
+  }
+  .report-meta strong { color: var(--accent); }
+
+  /* ── Status badges ── */
+  .status {
+    display: inline-block; font-family: var(--sans); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 3px; vertical-align: middle; margin-left: 8px;
+  }
+  .done    { background: var(--done-bg); color: var(--done-fg); border: 1px solid #a0cca0; }
+  .pending { background: var(--pend-bg); color: var(--pend-fg); border: 1px solid #d0aa60; }
+  .partial { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0c050; }
+
+  /* ── Tabelas ── */
+  table { width: 100%; border-collapse: collapse; font-family: var(--sans);
+          font-size: 0.83rem; margin: 14px 0 22px; }
+  th { background: var(--accent); color: #fff; text-align: left;
+       padding: 8px 11px; font-weight: 600; }
+  td { padding: 7px 11px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg-alt); }
+  tr:hover td { background: var(--a-light); }
+  .num { font-family: var(--mono); text-align: right; }
+  .tc  { text-align: center; }
+
+  /* ── Callouts ── */
+  .callout { border-left: 4px solid var(--border); padding: 11px 16px;
+             margin: 16px 0; font-family: var(--sans); font-size: 0.88rem;
+             border-radius: 0 4px 4px 0; }
+  .callout.info    { border-color: var(--accent2); background: var(--a-light); }
+  .callout.warn    { border-color: #c08000;         background: var(--warn-bg); }
+  .callout.danger  { border-color: #a02020;         background: var(--bad-bg);  }
+  .callout.success { border-color: #20802a;         background: var(--ok-bg);   }
+  .callout strong  { font-weight: 700; }
+
+  /* ── Caixas de seção de questão ── */
+  .q-header {
+    background: var(--accent); color: #fff; padding: 14px 20px;
+    border-radius: 4px 4px 0 0; font-family: var(--sans);
+    display: flex; align-items: baseline; gap: 12px; margin-top: 56px;
+  }
+  .q-header .q-num { font-size: 1.5rem; font-weight: 900; opacity: 0.6; }
+  .q-header .q-title { font-size: 1.1rem; font-weight: 700; }
+  .q-header .q-status { margin-left: auto; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px;
+    border-radius: 3px; border: 1px solid rgba(255,255,255,0.4); }
+  .q-header .q-status.done    { background: rgba(255,255,255,0.15); }
+  .q-header .q-status.pending { background: rgba(255,180,0,0.25); color: #ffe080; border-color: #ffe080; }
+  .q-header .q-status.partial { background: rgba(255,200,0,0.2);  color: #ffd060; border-color: #ffd060; }
+  .q-body { border: 1px solid var(--border); border-top: none; padding: 24px 24px 20px;
+            margin-bottom: 8px; }
+  .q-enunciado { font-family: var(--sans); font-size: 0.83rem; color: var(--muted);
+                 background: var(--bg-alt); border-left: 3px solid var(--border);
+                 padding: 10px 14px; margin-bottom: 20px; border-radius: 0 3px 3px 0; }
+
+  /* ── Inferências ── */
+  .inf-block { border: 1px solid var(--border); border-radius: 4px; margin: 18px 0 24px; overflow: hidden; }
+  .inf-prompt { background: var(--bg-code); border-bottom: 1px solid var(--border);
+                padding: 10px 14px; font-family: var(--mono); font-size: 0.8rem;
+                color: #222; white-space: pre-wrap; }
+  .inf-prompt .lbl { font-family: var(--sans); font-size: 0.68rem; font-weight: 700;
+                     text-transform: uppercase; letter-spacing: 0.07em;
+                     color: var(--muted); display: block; margin-bottom: 4px; }
+  .inf-resp { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .inf-resp:last-child { border-bottom: none; }
+  .model-tag { display: inline-block; font-family: var(--sans); font-size: 0.68rem;
+               font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+               padding: 2px 8px; border-radius: 3px; margin-bottom: 6px; }
+  .tag-base   { background: var(--a-light);   color: var(--accent2); }
+  .tag-lora   { background: var(--bad-bg);    color: var(--bad-fg); }
+  .tag-qlora  { background: var(--warn-bg);   color: var(--warn-fg); }
+  .tag-fullft { background: var(--ok-bg);     color: var(--ok-fg); }
+  .inf-txt { font-family: var(--mono); font-size: 0.78rem; color: #222;
+             white-space: pre-wrap; line-height: 1.55; margin-top: 4px; }
+  .inf-note { font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+              border-top: 1px solid var(--border); padding: 8px 14px;
+              background: var(--bg-alt); font-style: italic; }
+
+  /* ── Cards de estratégia ── */
+  .strat-card { border: 1px solid var(--border); border-radius: 4px;
+                padding: 16px 18px; margin: 14px 0; }
+  .strat-card .sc-title { font-family: var(--sans); font-size: 0.95rem;
+                          font-weight: 700; color: var(--accent2); margin-bottom: 6px; }
+  .strat-card .sc-meta { font-family: var(--sans); font-size: 0.75rem;
+                         color: var(--muted); margin-bottom: 10px; display: flex;
+                         flex-wrap: wrap; gap: 10px; }
+  .badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem;
+           font-weight: 600; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+  .b-high   { background: var(--ok-bg);   color: var(--ok-fg);   border: 1px solid #90c090; }
+  .b-med    { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0a040; }
+  .b-low    { background: var(--bg-alt);  color: var(--muted);   border: 1px solid var(--border); }
+  .b-info   { background: var(--a-light); color: var(--accent2); border: 1px solid #90b0d8; }
+
+  /* ── Mapa de experimentos ── */
+  .exp-map { border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; margin: 20px 0; }
+  .exp-map-row { display: grid; grid-template-columns: 140px 1fr 1fr;
+                 border-bottom: 1px solid var(--border); }
+  .exp-map-row:last-child { border-bottom: none; }
+  .exp-map-cell { padding: 9px 14px; font-family: var(--sans); font-size: 0.82rem; }
+  .exp-map-hdr  { background: var(--accent); color: #fff; font-weight: 700; }
+  .exp-map-row:nth-child(even) .exp-map-cell:not(.exp-map-hdr) { background: var(--bg-alt); }
+  .arrow { color: var(--muted); font-size: 1.1em; }
+
+  /* ── Índice ── */
+  .toc { font-family: var(--sans); font-size: 0.85rem; background: var(--bg-alt);
+         border: 1px solid var(--border); border-radius: 4px; padding: 18px 22px;
+         margin: 24px 0 40px; }
+  .toc h3 { margin-top: 0; margin-bottom: 10px; font-size: 0.9rem; color: var(--accent); }
+  .toc ol { margin-left: 20px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { color: var(--accent2); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-status { font-size: 0.72rem; margin-left: 6px; }
+
+  /* ── Linha separadora de sub-seção ── */
+  hr.sub { border: none; border-top: 1px dashed var(--border); margin: 24px 0; }
+
+  footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--border);
+           font-family: var(--sans); font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+</style>
 </head>
 <body>
 
@@ -106,7 +286,9 @@ o que ficou nos pesos). Referência = resposta do professor 14B com RAG. RG = RO
 </table>
 <p>Todos os 12 alunos superam a base no key_recall (0,37–0,38 → 0,55–0,72). Melhor: <strong>1.5B · B · combinado,
 +96%</strong>. Soft labels (KL/combinado) &gt; CE puro na escala 1.5B. A destilação <em>destrava o aluno maior</em>:
-a base 1.5B era pior que a 0.5B, mas destilada vira a melhor.</p>
+a base 1.5B era pior que a 0.5B, mas destilada vira a melhor. <em>Mas atenção à composição desse ganho:</em> a
+<a href="#">§4.7</a> abre as inferências e mostra que ele vem sobretudo da <strong>disciplina de abstenção</strong>, não
+de recordar fatos — leitura essencial para não superinterpretar o "+96%".</p>
 
 <h3>4.2 Plano A — especialização temática por destilação de raciocínio (Copa 2026)</h3>
 <p>Professor <strong>DeepSeek-R1-Distill-Qwen-14B</strong> (raciocínio, mesma família → white-box). Corpus factual
@@ -123,6 +305,17 @@ a base 1.5B era pior que a 0.5B, mas destilada vira a melhor.</p>
   raciocina mas <em>não tem os fatos</em> (alucina); só o RAG os fornece (ROUGE-L 0,40 vs 0,18). Valida a estratégia de
   dados <em>ungated</em> e a destilação de raciocínio (receita DeepSeek-R1).
 </div>
+<h4>Inferência verbatim — aqui há recordação factual <em>real</em> (contraponto à §4.7)</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm030 · Copa 2026</span>Qual é a confederação da qual Cape Verde faz parte no Grupo H da Copa 2026?</div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">A confederação da qual Cape Verde faz parte no Grupo H da Copa 2026 é a CAF (Africa).</div></div>
+  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,03</span> <span class="badge b-info">KR 0,14</span><div class="inf-txt">Qual é o nome do jogador que marcou o gol mais importante da Copa 2022?猞猞  ⟲ […repetição degenerada…]</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">🏆 aluno Copa 1.5B·B (RAG)</span> <span class="badge b-info">RG 0,85</span> <span class="badge b-info">KR 1,00</span><div class="inf-txt">A confederação da qual Cape Verde faz parte no Grupo H da Copa 2026 é a Confederation of African Football (CAF).郪枃枃枃…</div></div>
+</div>
+<p class="inf-note" style="margin-top:-14px"><strong>Por que isto importa:</strong> a Copa 2026 é <em>posterior ao corte</em> — a base não tem como saber (alucina pergunta
+de 2022 e degenera). O aluno recupera o fato exato (<strong>CAF</strong>). Prova que a destilação <strong>internaliza fatos</strong>
+quando o benchmark de fato os contém — confirmando que a "não-recordação" do núcleo (§4.7) era efeito das 71% de abstenções, não
+limite da técnica.</p>
 
 <h3>4.3 Plano B — cross-família black-box (sequence-KD)</h3>
 <p>Professor de outra família (<code>HuggingFaceH4/zephyr-7b-beta</code>, ungated; Gemma-2/Llama-3.1 são gated) →
@@ -159,6 +352,14 @@ texto curado da capital) como ponto de partida do aluno.</p>
   — a destilação reescreve o aluno na direção do professor e lava o head-start. O DAPT cru de Teresina ≈ base (KR 0,368).
   (Teresina, mais estreito/capital-only, pode até divergir mais do benchmark geral.)
 </div>
+<h4>Inferência verbatim — base-init × DAPT-init produzem a <em>mesma</em> resposta</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm005 · DOM-PI</span>Qual lei federal é citada como base para a isenção de taxas de licença e funcionamento para escritórios de advocacia no município de Padre Marcos?</div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">aluno base-init (campeão §4.1)</span> <span class="badge b-info">RG 0,38</span> <span class="badge b-info">KR 0,57</span><div class="inf-txt">Não consta a informação solicitada no contexto fornecido. O contexto menciona a isenção de taxas de licença e funcionamento para escritórios de advocacia, mas não especifica uma lei federal. O contexto também não menciona o município de Padre Marcos. Por favor, informe mais detalhes.</div></div>
+  <div class="inf-resp"><span class="model-tag tag-lora">aluno DAPT-Teresina-init</span> <span class="badge b-info">RG 0,42</span> <span class="badge b-info">KR 0,29</span><div class="inf-txt">Não consta a informação solicitada no contexto fornecido. O contexto menciona a isenção de taxas de licença e funcionamento para escritórios de advocacia, mas não especifica uma lei federal.(AdapterView)</div></div>
+</div>
+<p class="inf-note" style="margin-top:-14px">As duas respostas são <strong>quase idênticas</strong>: a destilação reescreve o aluno na direção do professor e
+<em>lava o head-start</em> do DAPT. É a evidência verbatim do resultado negativo — o priming de domínio não deixa rastro na saída final.</p>
 
 <h3>4.6 ULD cross-tokenizer — a fronteira de pesquisa</h3>
 <p>Logit KD <strong>entre famílias</strong> (zephyr→Qwen) <em>sem</em> vocabulário comum (Boizard et al., arXiv:2402.12030):
@@ -179,6 +380,67 @@ ordenados (invariante ao vocabulário). Método <code>uldcomb</code> = α·CE + 
   <em>aproximado</em> (truncagem; o ULD fiel usa transporte ótimo). Ainda fica <strong>abaixo do white-box mesma-família</strong>
   (KR 0,717), confirmando que, quando possível, destilar dentro da família com logits é o teto.
 </div>
+<h4>Inferência verbatim — disciplina de abstenção transferida <em>entre famílias</em></h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm087 · docentesDC</span>Qual valor é atribuído à variável i na chamada da função addijx dentro da função main?</div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">Não consta na informação fornecida qual valor é atribuído à variável i na chamada da função addijx. O contexto não contém informações sobre funções de programação ou chamadas dessa função.</div></div>
+  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,23</span> <span class="badge b-info">KR 0,00</span><div class="inf-txt">Qual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞猞assistant  ⟲ […repetição degenerada…]</div></div>
+  <div class="inf-resp"><span class="model-tag tag-qlora">aluno ULD 1.5B (zephyr→Qwen)</span> <span class="badge b-info">RG 0,59</span> <span class="badge b-info">KR 1,00</span><div class="inf-txt">Não consta na informação fornecida. A variável i não é atribuída a nenhum valor na chamada da função addijx dentro da função main. O código fornecido não contém nenhuma chamada de função addijx. Por favor, forneça mais informações.</div></div>
+</div>
+<p class="inf-note" style="margin-top:-14px">O professor é o <strong>zephyr (família Mistral)</strong>, com tokenizer distinto. Mesmo assim o sinal de distribuição
+ordenada (ULD) transferiu a abstenção coerente — a base degenera, o aluno cross-tokenizer responde como o professor.</p>
+
+<h3>4.7 Análise qualitativa das inferências (held-out, verbatim)</h3>
+<p>As tabelas acima resumem 100 perguntas em dois números. Aqui abrimos as <strong>respostas verbatim</strong>
+(lidas de <code>resultados/avaliacao.json</code>, campo <code>detalhe[].answer</code>) para <em>ver o comportamento</em>
+do aluno. Referência = professor 14B com RAG; os modelos respondem <strong>sem RAG</strong>. Loops degenerados foram
+truncados com o marcador <code>⟲ […repetição degenerada…]</code> — nada foi reescrito.</p>
+
+<div class="callout warn">
+  <strong>Leitura honesta do que a destilação transferiu.</strong> Inspecionando as 100 referências, <strong>71% são
+  abstenções</strong> ("Não consta…") — porque, nas perguntas held-out, o RAG frequentemente <em>não recuperou</em> o
+  documento-fonte, então o próprio professor se absteve. Separando o <em>key-recall</em> por tipo de referência:
+  <table style="margin-top:10px">
+    <tr><th>Subconjunto</th><th class="num">n</th><th class="num">base 1.5B</th><th class="num">🏆 aluno 1.5B·B·comb</th></tr>
+    <tr><td>referência = abstenção ("Não consta")</td><td class="num">71</td><td class="num">0,347</td><td class="num">0,835</td></tr>
+    <tr><td>referência = fato real (nº/CNPJ/lei…)</td><td class="num">29</td><td class="num">0,410</td><td class="num">0,434</td></tr>
+  </table>
+  Ou seja: o headline <strong>KR 0,717 (+96%) é dominado pela disciplina de abstenção</strong>, não por recordar fatos
+  do DOM-PI. Nas perguntas com fato real, aluno e base praticamente empatam (0,434 vs 0,410). O que a destilação
+  <em>de fato</em> transferiu — e os painéis abaixo mostram — é (1) <strong>parar de alucinar</strong> números falsos
+  e (2) <strong>parar de degenerar</strong> em loops de token-lixo (<code>猞猞…</code>), adotando o "não sei
+  fundamentado" do professor RAG-grounded. É um ganho de <em>confiabilidade</em>, não de memória factual.
+</div>
+
+<h4>Painel 1 — anti-alucinação: a base inventa um valor; o aluno se abstém corretamente</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm009 · DOM-PI</span>Qual é o valor do Crédito Suplementar no Orçamento-Programa vigente, conforme a Portaria Nº 310 de 28 de julho de 2025?</div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">Não consta. O documento referente à Portaria Nº 310 de 28 de julho de 2025 não foi fornecido no contexto.</div></div>
+  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,11</span> <span class="badge b-info">KR 0,00</span><div class="inf-txt">O Crédito Suplementar no Orçamento-Programa vigente é de R$ 1.000,00.为抓
+为抓assistant  ⟲ […repetição degenerada…]</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">🏆 aluno 1.5B · B · combinado</span> <span class="badge b-info">RG 0,58</span> <span class="badge b-info">KR 1,00</span><div class="inf-txt">Não consta o valor do Crédito Suplementar no Orçamento-Programa vigente, conforme a Portaria Nº 310 de 28 de julho de 2025, no contexto fornecido. O contexto não aborda esse assunto. creampie</div></div>
+</div>
+<p class="inf-note" style="margin-top:-14px">A base <strong>alucina</strong> "R$ 1.000,00" e entra em loop; o aluno reproduz a abstenção do professor.
+Note o token espúrio <code>creampie</code> ao final — artefato residual de decodificação do modelo pequeno (sem disciplina de EOS).</p>
+
+<h4>Painel 2 — fim da degeneração: a base colapsa em token-lixo; o aluno produz abstenção coerente</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm005 · DOM-PI</span>Qual lei federal é citada como base para a isenção de taxas de licença e funcionamento para escritórios de advocacia no município de Padre Marcos?</div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">A Lei Federal citada é a Lei nº 13.874/2019 (Lei de Liberdade Econômica).</div></div>
+  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,08</span> <span class="badge b-info">KR 0,00</span><div class="inf-txt">Qual o nome do município onde o escritório de advocacia está localizado?猞猞猞…  ⟲ […repetição degenerada…]</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">🏆 aluno 1.5B · B · combinado</span> <span class="badge b-info">RG 0,38</span> <span class="badge b-info">KR 0,57</span><div class="inf-txt">Não consta a informação solicitada no contexto fornecido. O contexto menciona a isenção de taxas de licença e funcionamento para escritórios de advocacia, mas não especifica uma lei federal. O contexto também não menciona o município de Padre Marcos. Por favor, informe mais detalhes.</div></div>
+</div>
+
+<h4>Painel 3 — a limitação honesta: o fato existe na referência, mas o aluno também se abstém (não o recorda)</h4>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm031 · DOM-PI</span>Qual é o valor do salário para a função de Professor(a) Anos Iniciais contratado pela Secretaria Municipal de Educação de Morro Cabeça no Tempo?</div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">O valor é de R$ 2.433,88, conforme o extrato de contrato apresentado para Deise Nunes de Sena.</div></div>
+  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,25</span> <span class="badge b-info">KR 0,15</span><div class="inf-txt">Qual é o valor do salário para a função de Assistente Técnico de Educação no Tempo, conforme os extratos de contrato apresentados?猞猞…  ⟲ […repetição degenerada…]</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">🏆 aluno 1.5B · B · combinado</span> <span class="badge b-info">RG 0,22</span> <span class="badge b-info">KR 0,31</span><div class="inf-txt">Não consta o valor do salário para a função de Professor(a) Anos Iniciais no tempo especificado no contexto fornecido. O contexto não contém informações sobre salários para esse cargo. creampie  ⟲ […repetição degenerada…]</div></div>
+</div>
+<p class="inf-note" style="margin-top:-14px">Aqui o fato (R$ 2.433,88) <strong>existe</strong> na referência, mas o aluno se abstém em vez de recordá-lo: a destilação
+não internalizou números específicos — coerente com o empate na fatia "fato real" (0,434 vs 0,410). Reforça que o ganho é de
+<em>comportamento</em>, e que <strong>RAG na inferência (Q5) continua necessário</strong> para fatos exatos.</p>
 
 <!-- ───────────────────────────── CONCLUSÕES ───────────────────────────── -->
 <h2>5. Conclusões transversais</h2>
@@ -192,6 +454,10 @@ ordenados (invariante ao vocabulário). Método <code>uldcomb</code> = α·CE + 
   do aluno (§4.4).</li>
   <li><em>key_recall</em> (presença de entidades/números) é a métrica mais robusta; o ROUGE-L é ruidificado quando o
   aluno reformula ou emite <code>&lt;think&gt;</code>.</li>
+  <li><strong>O que foi transferido é confiabilidade, não memória factual</strong> (§4.7): com 71% das referências sendo
+  abstenções, o ganho de KR vem de o aluno aprender a <em>não alucinar</em> e <em>não degenerar</em>, replicando o "não
+  consta" do professor. Nas perguntas com fato real, aluno ≈ base — o que <strong>reafirma a necessidade do RAG na
+  inferência (Q5)</strong> para precisão factual.</li>
 </ul>
 
 <!-- ───────────────────────────── REPRODUÇÃO ───────────────────────────── -->

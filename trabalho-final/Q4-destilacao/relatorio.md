@@ -202,10 +202,30 @@ Referência = resposta do professor 14B **com RAG** (braço B). RG = ROUGE-L; KR
 5. **A destilação destrava o aluno maior:** a base 1.5B era *pior* que a 0.5B (RG 0,185 vs 0,227), mas, destilada,
    torna-se a melhor — a capacidade extra só se realiza com o sinal do professor.
 
+### Análise qualitativa das inferências (held-out, verbatim) — o que de fato foi transferido
+Abrindo as respostas verbatim (`resultados/avaliacao.json`, campo `detalhe[].answer`) e separando as 100 referências:
+**71% são abstenções** ("Não consta…") — nas perguntas held-out o RAG muitas vezes **não recuperou** o documento-fonte,
+então o próprio professor se absteve. O `key_recall` por subconjunto revela a composição do ganho:
+
+| Subconjunto da referência | n | base 1.5B | aluno 1.5B·B·comb |
+|---|---|---|---|
+| abstenção ("Não consta") | 71 | 0,347 | **0,835** |
+| fato real (nº/CNPJ/lei…) | 29 | 0,410 | 0,434 |
+
+**Leitura:** o headline **KR 0,717 (+96%) é dominado pela disciplina de abstenção**, não por recordar fatos do DOM-PI
+(nas perguntas com fato real, aluno ≈ base). O que a destilação transferiu é **confiabilidade**: o aluno (1) deixa de
+**alucinar** valores falsos (base: "R$ 1.000,00" inventado em `bm009`) e (2) deixa de **degenerar** em loops de
+token-lixo (`猞猞…` na base), adotando o "não sei fundamentado" do professor RAG-grounded. Três painéis ilustrativos
+no `relatorio_q4.html` §4.7 (`bm009` anti-alucinação, `bm005` fim da degeneração, `bm031` a limitação: o fato existe
+mas o aluno se abstém). Gerados por `scripts/gerar_painel_inferencias.py`. **Implicação:** RAG na inferência (Q5)
+segue **necessário** para precisão factual.
+
 ### Ressalvas honestas
 - A **referência é a resposta do professor-B (com RAG)**, o que dá leve vantagem aos modelos do braço B no
   ROUGE-L (mesma distribuição). Por isso o **`key_recall`** (presença de entidades/números) é o sinal mais neutro —
   e nele B também vence. Não é circularidade: a referência é factual e o aluno responde *sem* RAG.
+- **Token espúrio residual** (ex.: `creampie`, `(AdapterView)`) aparece ao final de algumas respostas dos alunos —
+  artefato de decodificação dos modelos pequenos (sem disciplina de EOS); não afeta o conteúdo, mas é honesto registrar.
 - ROUGE-L permanece modesto em termos absolutos (respostas reformulam a frase); o ganho de conhecimento está
   concentrado no conteúdo factual (key_recall), coerente com o objetivo de destilação.
 
@@ -265,7 +285,9 @@ Benchmark held-out de **41 fatos** (Copa 2026), referência = Qwen2.5-14B-Instru
 | **🏆 fut_1.5b B (RAG)** | 0,209 | **0,640** |
 
 **Conclusões:** (1) a destilação de raciocínio **transfere o conhecimento da Copa 2026** — todos os alunos KR
-~0,62–0,64 vs base 0,476; (2) **professor com RAG (B) > zerada (A)** — para tema **pós-corte**, o professor "zerado"
+~0,62–0,64 vs base 0,476; aqui há **recordação factual real** (painel `bm030` em `relatorio_q4.html` §4.2: o aluno
+recupera "Cape Verde → CAF" verbatim; a base alucina e degenera) — o **contraponto** que prova que a fraca recordação
+factual do núcleo (§ análise de abstenção) era efeito das 71% de referências "Não consta", não limite da técnica; (2) **professor com RAG (B) > zerada (A)** — para tema **pós-corte**, o professor "zerado"
 raciocina mas **não tem os fatos** (alucina); só o RAG os fornece (nítido no ROUGE-L: 0.5b_B 0,403 vs 0.5b_A 0,178);
 (3) **valida a estratégia de dados** (corpus ungated openfootball+Wikipedia, esforço moderado, sem scraping de
 Transfermarkt); (4) `key_recall` é a métrica robusta (os alunos emitem `<think>`, ruidificando o ROUGE-L vs a
