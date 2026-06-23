@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questão 1 — Pré-treino Continuado (DAPT) | DOM-PI / UFPI-DC</title>
+<link rel="stylesheet" href="../assets/estilo.css">
+</head>
+<body>
+
+<h1>Questão 1 — Pré-treino Continuado (DAPT) <span class="status done">concluída</span></h1>
+
+<div class="report-meta">
+  <strong>Dataset:</strong> diariosPrefeituras (DOM-PI), unificado + subcorpus Teresina · <strong>Base:</strong>
+  Qwen2.5-1.5B (e 0.5B na varredura) · <strong>Métodos:</strong> Full FT · LoRA · QLoRA ·
+  <strong>Melhor:</strong> Full FT unificado v2 (−11,3% PPL) / Teresina v3 (−12,9%).
+</div>
+
+<div class="q-enunciado">
+  Fazer <strong>pré-treinamento continuado</strong> de um LLM sobre o dataset <em>diariosPrefeituras</em> (DOM-PI) e
+  avaliar a qualidade <strong>antes e depois</strong>. Benchmark com ≥25 perguntas. Métricas: <strong>perplexidade,
+  entropia cruzada e acurácia de previsão de tokens</strong>.
+</div>
+
+<h2>1. Fundamentos teóricos</h2>
+<p>O <strong>pré-treino continuado</strong> (<em>Domain-Adaptive Pre-Training</em>, DAPT) é o mesmo objetivo
+auto-supervisivo do pré-treino de Raschka (cap. 5): modelagem de linguagem causal, em que o modelo prevê o
+<strong>próximo token</strong> e é otimizado por <strong>entropia cruzada</strong>. Partimos de pesos já treinados
+(Qwen2.5) e continuamos o treino sobre o corpus do domínio (DOM-PI), deslocando a distribuição do modelo para a
+linguagem administrativa.</p>
+<ul>
+  <li><strong>Entropia cruzada (CE)</strong> — perda média por token (NLL); mede o "espanto" do modelo.</li>
+  <li><strong>Perplexidade (PPL)</strong> = <code>exp(CE)</code> — quantos tokens "igualmente prováveis" o modelo
+  hesita; quanto menor, melhor.</li>
+  <li><strong>Acurácia de previsão de token</strong> — fração de posições em que <code>argmax(logits)</code> acerta o
+  próximo token.</li>
+</ul>
+<div class="callout info">
+  <strong>O deslocamento de rótulos.</strong> Raschka mostra que, no LM causal, os <em>logits</em> da posição <code>t</code>
+  preveem o token <code>t+1</code> — o modelo HuggingFace já faz esse <em>shift</em> internamente
+  (<code>logits[:-1]</code> vs <code>labels[1:]</code>). Esse detalhe é o centro da reviravolta da §3.
+</div>
+
+<h2>2. Decisões de projeto e motivações</h2>
+<table>
+  <tr><th>Decisão</th><th>Motivação</th></tr>
+  <tr><td>Base <strong>Qwen2.5-1.5B</strong></td><td>Forte em português, licença permissiva, cabe full-FT na L4 (24 GB) com AdamW 8-bit.</td></tr>
+  <tr><td>Dois corpora: <strong>unificado</strong> e <strong>Teresina</strong></td><td>O unificado (OCR ruidoso) é a resposta literal ao enunciado; Teresina (capital, curado) testa o efeito da qualidade do texto.</td></tr>
+  <tr><td>Comparar <strong>Full FT × LoRA × QLoRA</strong></td><td>Contrastar parâmetros plenos vs PEFT (low-rank) em custo e qualidade (Raschka, apêndice E).</td></tr>
+  <tr><td>Held-out fixo (seed=42)</td><td>Avaliação antes×depois reproduzível e sem vazamento.</td></tr>
+</table>
+
+<h2>3. A reviravolta: bug do duplo deslocamento de rótulos</h2>
+<p>Por meses os experimentos exibiram "esquecimento catastrófico", atribuído ao corpus ruidoso. A causa real foi um
+<strong>bug</strong>: o <code>PackedTextDataset</code> pré-deslocava os <code>labels</code> (<code>block[1:]</code>)
+<em>e</em> o modelo HuggingFace já desloca internamente → <strong>duplo shift</strong>: o treino otimizava "prever o
+token <strong>2 posições à frente</strong>".</p>
+<div class="callout danger">
+  <strong>Sintomas:</strong> loss de treino travada em ~11 (≈ log do vocabulário de ~152k) e PPL da eval interna
+  ~47.000 (vs ~10 real). Presente nos três scripts de treino. <strong>Correção:</strong>
+  <code>labels = input_ids.clone()</code> (o shift fica só por conta do modelo). Sanidade pós-correção: PPL do baseline
+  ~10 (unificado) / ~6,9 (Teresina).
+</div>
+
+<h2>4. Resultados (held-out) — bug → corrigido</h2>
+<table>
+  <tr><th>Versão (job)</th><th>Corpus</th><th>Objetivo</th><th class="num">PPL</th><th class="num">Δ vs baseline</th></tr>
+  <tr style="font-weight:bold;background:var(--ok-bg)"><td>Full FT unificado v2 (491)</td><td>completo</td><td>corrigido</td><td class="num">8,90</td><td class="num">−11,3%</td></tr>
+  <tr style="font-weight:bold;background:var(--ok-bg)"><td>Full FT Teresina v3 (489)</td><td>Teresina</td><td>corrigido</td><td class="num">6,02</td><td class="num">−12,9%</td></tr>
+  <tr><td>QLoRA unificado v2 (492)</td><td>completo</td><td>corrigido</td><td class="num">9,88</td><td class="num">−1,4%</td></tr>
+  <tr><td>Full FT unificado (487)</td><td>completo</td><td>bug</td><td class="num">22,22</td><td class="num">+121%</td></tr>
+  <tr><td>QLoRA (421)</td><td>completo</td><td>bug</td><td class="num">10,47</td><td class="num">+4,4%</td></tr>
+  <tr><td>LoRA (396/426)</td><td>completo</td><td>bug</td><td class="num">~1.000</td><td class="num">colapso</td></tr>
+</table>
+<p>Benchmark Q&amp;A (NLL, 49 perguntas): Full FT unificado v2 7,45→7,26; Teresina v3 7,45→7,24. Token-accuracy sobe em ambos.</p>
+
+<h2>5. Duas respostas (por desenho), ambas positivas</h2>
+<ol>
+  <li><strong>Canônica (dataset completo):</strong> Full FT unificado v2 — <strong>−11,3%</strong> no held-out geral.</li>
+  <li><strong>Alternativa (corpus curado):</strong> Full FT Teresina v3 — <strong>−12,9%</strong> no held-out de Teresina.</li>
+</ol>
+
+<h2>6. Conclusões</h2>
+<ul>
+  <li>O bug <strong>invertia a conclusão</strong>: sob o objetivo errado, o full-FT parecia catastrófico (+121%) e o
+  QLoRA "vencia". Corrigido, o <strong>Full FT supera o PEFT</strong> nos dois corpora (−11,3% vs −1,4%) — como a teoria
+  de DAPT prevê.</li>
+  <li><strong>Lição central:</strong> validar o pipeline (sanidade: PPL baseline ~10, não ~47.000) antes de culpar os dados.</li>
+  <li>LoRA colapsa em pré-treino contínuo com corpus pequeno ("intruder dimensions"); QLoRA (NF4) é mais estável mas conservador.</li>
+</ul>
+
+<h3>Exemplos de inferência (completar portaria)</h3>
+<div class="inf-block">
+  <div class="inf-resp"><span class="model-tag tag-base">bugado (full FT unificado)</span>
+    <div class="inf-txt">…limpeza urbana e <em>coletares resídeos</em> domiciliares… <em>Coletes Resídeos R$ 70,00</em> — gramática/OCR degradados.</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">corrigido (v2)</span>
+    <div class="inf-txt">…publicado diariamente… normas legais aprovadas… — texto fluente e no domínio.</div></div>
+</div>
+
+<h2>7. Modelos publicados (HuggingFace, privados) e reprodução</h2>
+<ul>
+  <li><code>gutoportelaa/qwen2.5-1.5b-dompi-fullft-unificado</code> — canônica (v2 corrigido).</li>
+  <li><code>gutoportelaa/qwen2.5-1.5b-dompi-teresina-v3</code> — alternativa.</li>
+  <li><code>gutoportelaa/qwen2.5-1.5b-dompi-dapt</code> — variante QLoRA (gerador G2 da Q5).</li>
+</ul>
+<p>Reprodução: <code>sbatch scripts/run_q1_fullft_unificado_v2.sbatch</code> (e variantes Teresina/QLoRA);
+avaliação com <code>avaliar_modelo.py</code> + <code>comparar_resultados.py</code>.</p>
+
+<footer>
+  Questão 1 — Pré-treino Continuado (DAPT) · Trabalho Final "Construindo um LLM" (DOM-PI / UFPI-DC).
+  Relatório consolidado: <a href="../relatorio_tecnico_completo.html">relatorio_tecnico_completo.html</a>.
+</footer>
+
+</body>
+</html>

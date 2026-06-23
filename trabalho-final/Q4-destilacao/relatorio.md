@@ -305,6 +305,43 @@ aproveitando a 2ª GPU). Resultados em `resultados/avaliacao_dapt.json`.
 
 ---
 
+## 9. DAPT-then-distill **Teresina** — a ressalva da §8 refutada (jobs 518/519)
+
+Testando se o DAPT mais **limpo** (Teresina v3, −12,9%) muda o resultado negativo da §8.
+
+| Aluno 1.5B (white-box · B · combinado) | ROUGE-L | key_recall |
+|---|---|---|
+| aluno base pristino (`d_1.5b_B_combined`) | 0,363 | **0,717** |
+| DAPT unificado (§8) | 0,326 | 0,694 |
+| DAPT Teresina | 0,295 | 0,662 |
+
+**Ressalva REFUTADA:** o DAPT limpo também não ajuda — é até pior (0,662 < 0,694 < base 0,717). Conclusão reforçada:
+**priming de domínio antes da destilação não agrega, independente da qualidade do corpus** (a destilação lava o
+head-start). daptT cru ≈ base (KR 0,368). Scripts: `run_dapt_distill.sbatch` (env `DAPT_PATH/DAPT_TAG`).
+`resultados/avaliacao_daptT.json`.
+
+## 10. ULD cross-tokenizer — a fronteira (job 520)
+
+Logit KD **entre famílias** (zephyr→Qwen) sem vocabulário comum (Boizard et al., arXiv:2402.12030): por posição,
+ordenam-se as distribuições de probabilidade do aluno e do professor e minimiza-se a L1 entre os vetores ordenados
+(invariante ao vocabulário). Método `uldcomb` = α·CE + (1−α)·ULD (`destilar.py`).
+
+| Aluno (cross-família) | método | ROUGE-L | key_recall |
+|---|---|---|---|
+| base 1.5B | — | 0,185 | 0,366 |
+| bxf_0.5b | black-box (CE) | 0,348 | 0,523 |
+| **uld_0.5b** | uldcomb | **0,409** | 0,525 |
+| bxf_1.5b | black-box (CE) | 0,270 | 0,490 |
+| **uld_1.5b** | uldcomb | **0,330** | 0,504 |
+
+**Positivo modesto:** o ULD aproximado **bate o black-box puro** em ambos os tamanhos (o sinal de distribuição
+cross-tokenizer agrega sobre o SFT no texto). **Ressalvas honestas:** é `uldcomb` (inclui CE); o alinhamento posicional
+entre tokenizadores distintos é **aproximado** (truncagem; o ULD fiel usa transporte ótimo). Ainda **abaixo do
+white-box mesma-família** (0,717) — destilar dentro da família com logits segue o teto. Scripts: `run_uld.sbatch`,
+`gerar_dataset_crossfamilia.py` (+logprobs), `destilar.py` (método `uld`/`uldcomb`). `resultados/avaliacao_uld.json`.
+
+---
+
 ## Referências (além de Raschka)
 - Gemma 2: *Improving Open Language Models at a Practical Size* — arXiv:2408.00118
 - DeepSeek-R1 (distill report) — deepseek-ai/DeepSeek-R1-Distill-* (HF)
