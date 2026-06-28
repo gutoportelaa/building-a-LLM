@@ -1,0 +1,7262 @@
+{
+  "dataset": "eduagarcia/enem_challenge",
+  "split": "train",
+  "n": 200,
+  "teacher": "prof",
+  "modelos": [
+    {
+      "rotulo": "prof",
+      "path": "Qwen/Qwen2.5-14B-Instruct",
+      "n": 200,
+      "acuracia": 0.455,
+      "detalhe": [
+        {
+          "id": "2009_1",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_3",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_5",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_6",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_7",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_8",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_9",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_10",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_11",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_13",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_17",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_23",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_27",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_30",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_31",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_33",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_34",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_35",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_37",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_38",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_39",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_40",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_41",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_42",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_44",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_46",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_47",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_48",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_49",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_50",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_51",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_52",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_53",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_54",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_55",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_56",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_57",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_58",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_59",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_60",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_61",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_62",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_63",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_64",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_65",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_66",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_67",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_68",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_69",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_70",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_71",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_72",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_74",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_75",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_76",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_79",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_81",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_82",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_88",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_89",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_90",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_92",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_95",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_98",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_99",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_102",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_103",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_104",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_107",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_108",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_110",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_111",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_113",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_115",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_116",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_117",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_118",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_119",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_120",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_121",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_122",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_123",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_124",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_128",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_129",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_130",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_131",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_132",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_133",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_134",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_135",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_141",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_151",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_152",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_155",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_156",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_157",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_154",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_160",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_161",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_162",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_165",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_163",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_170",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_171",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_173",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_175",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_176",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_177",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_178",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_179",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_180",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_3",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_2",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_7",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_8",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_5",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_6",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_9",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_10",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_11",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_12",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_13",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_14",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_15",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_16",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_17",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_18",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_19",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_20",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_21",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_22",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_23",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_24",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_25",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_26",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_27",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_28",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_29",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_30",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_31",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_32",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_34",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_33",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_35",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_36",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_37",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_38",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_39",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_40",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_41",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_42",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_43",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_44",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_45",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_48",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_47",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_49",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_50",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_51",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_52",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_53",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_54",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_55",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_56",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_57",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_58",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_60",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_61",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_64",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_65",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_72",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_73",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_76",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_78",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_84",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_87",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_85",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_86",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_88",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_90",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_98",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_99",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_97",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_100",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_101",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_103",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_104",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_106",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_107",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_109",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_111",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_112",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_113",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_114",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        }
+      ],
+      "retencao_pct": 100.0
+    },
+    {
+      "rotulo": "base_05",
+      "path": "Qwen/Qwen2.5-0.5B",
+      "n": 200,
+      "acuracia": 0.225,
+      "detalhe": [
+        {
+          "id": "2009_1",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_3",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_5",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_6",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_7",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_8",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_9",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_10",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_11",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_13",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_17",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_23",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_27",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_30",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_31",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_33",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_34",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_35",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_37",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_38",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_39",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_40",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_41",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_42",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_44",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_46",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_47",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_48",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_49",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_50",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_51",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_52",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_53",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_54",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_55",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_56",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_57",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_58",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_59",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_60",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_61",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_62",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_63",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_64",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_65",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_66",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_67",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_68",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_69",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_70",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_71",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_72",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_74",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_75",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_76",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_79",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_80",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_81",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_82",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_88",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_89",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_90",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_92",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_95",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_98",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_99",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_102",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_103",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_104",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_107",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_108",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_110",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_111",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_113",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_115",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_116",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_117",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_118",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_119",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_120",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_121",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_122",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_123",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_124",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_128",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_129",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_130",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_131",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_132",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_133",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_134",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_135",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_141",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_151",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_152",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_155",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_156",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_157",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_154",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_160",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_161",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_162",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_165",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_163",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_170",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_171",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_173",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_175",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_176",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_177",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_178",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_179",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_180",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_3",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_2",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_7",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_8",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_5",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_6",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_9",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_10",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_11",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_12",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_13",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_14",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_15",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_16",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_17",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_18",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_19",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_20",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_21",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_22",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_23",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_24",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_25",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_26",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_27",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_28",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_29",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_30",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_31",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_32",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_34",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_33",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_35",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_36",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_37",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_38",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_39",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_40",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_41",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_42",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_43",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_44",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_45",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_48",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_47",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_49",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_50",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_51",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_52",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_53",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_54",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_55",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_56",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_57",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_58",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_60",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_61",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_64",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_65",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_72",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_73",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_76",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_78",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_84",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_87",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_85",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_86",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_88",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_90",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_98",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_99",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_97",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_100",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_101",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_103",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_104",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_107",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_109",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_111",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_112",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_113",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_114",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        }
+      ],
+      "retencao_pct": 49.5
+    },
+    {
+      "rotulo": "base_15",
+      "path": "Qwen/Qwen2.5-1.5B",
+      "n": 200,
+      "acuracia": 0.33,
+      "detalhe": [
+        {
+          "id": "2009_1",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_3",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_5",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_6",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_7",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_8",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_9",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_10",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_11",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_13",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_17",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_23",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_27",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_30",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_31",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_33",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_34",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_35",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_37",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_38",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_39",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_40",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_41",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_42",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_44",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_46",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_47",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_48",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_49",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_50",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_51",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_52",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_53",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_54",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_55",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_56",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_57",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_58",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_59",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_60",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_61",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_62",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_63",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_64",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_65",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_66",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_67",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_68",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_69",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_70",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_71",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_72",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_74",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_75",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_76",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_79",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_81",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_82",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_88",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_89",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_90",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_92",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_95",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_98",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_99",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_102",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_103",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_104",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_107",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_108",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_110",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_111",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_113",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_115",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_116",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_117",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_118",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_119",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_120",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_121",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_122",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_123",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_124",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_128",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_129",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_130",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_131",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_132",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_133",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_134",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_135",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_141",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_151",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_152",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_155",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_156",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_157",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_154",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_160",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_161",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_162",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_165",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_163",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_170",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_171",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_173",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_175",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_176",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_177",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_178",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_179",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_180",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_3",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_2",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_7",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_8",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_5",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_6",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_9",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_10",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_11",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_12",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_13",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_14",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_15",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_16",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_17",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_18",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_19",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_20",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_21",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_22",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_23",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_24",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_25",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_26",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_27",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_28",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_29",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_30",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_31",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_32",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_34",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_33",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_35",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_36",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_37",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_38",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_39",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_40",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_41",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_42",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_43",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_44",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_45",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_48",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_47",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_49",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_50",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_51",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_52",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_53",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_54",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_55",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_56",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_57",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_58",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_60",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_61",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_64",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_65",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_72",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_73",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_76",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_78",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_84",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_87",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_85",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_86",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_88",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_90",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_98",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_99",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_97",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_100",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_101",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_103",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_104",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_107",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_109",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_111",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_112",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_113",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_114",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        }
+      ],
+      "retencao_pct": 72.5
+    },
+    {
+      "rotulo": "d_0.5b_B_combined",
+      "path": "trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_B_combined",
+      "n": 200,
+      "acuracia": 0.245,
+      "detalhe": [
+        {
+          "id": "2009_1",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_3",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_5",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_6",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_7",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_8",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_9",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_10",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_11",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_13",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_17",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_23",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_27",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_30",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_31",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_33",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_34",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_35",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_37",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_38",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_39",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_40",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_41",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_42",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_44",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_46",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_47",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_48",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_49",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_50",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_51",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_52",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_53",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_54",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_55",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_56",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_57",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_58",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_59",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_60",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_61",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_62",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_63",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_64",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_65",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_66",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_67",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_68",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_69",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_70",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_71",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_72",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_74",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_75",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_76",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_79",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_81",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_82",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_88",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_89",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_90",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_92",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_95",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_98",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_99",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_102",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_103",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_104",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_107",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_108",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_110",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_111",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_113",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_115",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_116",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_117",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_118",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_119",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_120",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_121",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_122",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_123",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_124",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_128",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_129",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_130",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_131",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_132",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_133",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_134",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_135",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_141",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_151",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_152",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_155",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_156",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_157",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_154",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_160",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_161",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_162",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_165",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_163",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_170",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_171",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_173",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_175",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_176",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_177",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_178",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_179",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_180",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_3",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_2",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_7",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_8",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_5",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_6",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_9",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_10",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_11",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_12",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_13",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_14",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_15",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_16",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_17",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_18",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_19",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_20",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_21",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_22",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_23",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_24",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_25",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_26",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_27",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_28",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_29",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_30",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_31",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_32",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_34",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_33",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_35",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_36",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_37",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_38",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_39",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_40",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_41",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_42",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_43",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_44",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_45",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_48",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_47",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_49",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_50",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_51",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_52",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_53",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_54",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_55",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_56",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_57",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_58",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_60",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_61",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_64",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_65",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_72",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_73",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_76",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_78",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_84",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_87",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_85",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_86",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_88",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_90",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_98",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_99",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_97",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_100",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_101",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_103",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_104",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_107",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_109",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_111",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_112",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_113",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_114",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        }
+      ],
+      "retencao_pct": 53.8
+    },
+    {
+      "rotulo": "d_1.5b_B_combined",
+      "path": "trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_B_combined",
+      "n": 200,
+      "acuracia": 0.315,
+      "detalhe": [
+        {
+          "id": "2009_1",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_3",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_5",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_6",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_7",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_8",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_9",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_10",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_11",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_13",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_17",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_23",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_27",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_30",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_31",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_33",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_34",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_35",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_37",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_38",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_39",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_40",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_41",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_42",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_44",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_46",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_47",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_48",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_49",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_50",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_51",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_52",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_53",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_54",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_55",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_56",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_57",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_58",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_59",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_60",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_61",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_62",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_63",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_64",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_65",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_66",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_67",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_68",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_69",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_70",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_71",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_72",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_74",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_75",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_76",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_79",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_81",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_82",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_88",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_89",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_90",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_92",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_95",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_98",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_99",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_102",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_103",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_104",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_107",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_108",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_110",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_111",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_113",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_115",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_116",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_117",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_118",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_119",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_120",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_121",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_122",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_123",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_124",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_128",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_129",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_130",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_131",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_132",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_133",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_134",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_135",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_141",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_151",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_152",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_155",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_156",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_157",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_154",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_160",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_161",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_162",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_165",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_163",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_170",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_171",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_173",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_175",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_176",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_177",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_178",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_179",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_180",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_3",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_2",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_7",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_8",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_5",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_6",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_9",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_10",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_11",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_12",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_13",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_14",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_15",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_16",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_17",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_18",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_19",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_20",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_21",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_22",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_23",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_24",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_25",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_26",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_27",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_28",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_29",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_30",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_31",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_32",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_34",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_33",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_35",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_36",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_37",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_38",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_39",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_40",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_41",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_42",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_43",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_44",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_45",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_48",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_47",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_49",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_50",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_51",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_52",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_53",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_54",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_55",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_56",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_57",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_58",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_60",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_61",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_64",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_65",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_72",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_73",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_76",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_78",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_84",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_87",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_85",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_86",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_88",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_90",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_98",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_99",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_97",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_100",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_101",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_103",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_104",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_107",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_109",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_111",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_112",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_113",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_114",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        }
+      ],
+      "retencao_pct": 69.2
+    },
+    {
+      "rotulo": "d_1.5b_B_kl",
+      "path": "trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_B_kl",
+      "n": 200,
+      "acuracia": 0.325,
+      "detalhe": [
+        {
+          "id": "2009_1",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_3",
+          "pred": 3,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_5",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_6",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_7",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_8",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_9",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_10",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_11",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_13",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_17",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_23",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_27",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_30",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_31",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_33",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_34",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_35",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_37",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_38",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_39",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_40",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_41",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_42",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_44",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_46",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_47",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_48",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_49",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_50",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_51",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_52",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_53",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_54",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_55",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_56",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_57",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_58",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_59",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_60",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_61",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_62",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_63",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_64",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_65",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_66",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_67",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_68",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_69",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_70",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_71",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_72",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_74",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_75",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_76",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_79",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_81",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_82",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_88",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_89",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_90",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_92",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_95",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_98",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_99",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_102",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_103",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_104",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2009_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_107",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_108",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2009_110",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_111",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2009_113",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_115",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_116",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_117",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_118",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_119",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_120",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_121",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_122",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_123",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_124",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_128",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_129",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2009_130",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_131",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_132",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_133",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_134",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_135",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_141",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_151",
+          "pred": 0,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_152",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_155",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_156",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_157",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_154",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2009_160",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_161",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2009_162",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_165",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2009_163",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_170",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_171",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_173",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_175",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_176",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_177",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2009_178",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2009_179",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2009_180",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_3",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_4",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_2",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_7",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_8",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_5",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_6",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_9",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_10",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_11",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_12",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_13",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_14",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_15",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_16",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_17",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_18",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_19",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_20",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_21",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_22",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_23",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_24",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_25",
+          "pred": 1,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_26",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_27",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_28",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_29",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_30",
+          "pred": 0,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_31",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_32",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_34",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_33",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_35",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_36",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_37",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_38",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_39",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_40",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_41",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_42",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_43",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_44",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_45",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_48",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_47",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_49",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_50",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_51",
+          "pred": 2,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_52",
+          "pred": 2,
+          "gold": 2,
+          "ok": true
+        },
+        {
+          "id": "2010_53",
+          "pred": 2,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_54",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_55",
+          "pred": 3,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_56",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_57",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_58",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_60",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_61",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_64",
+          "pred": 4,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_65",
+          "pred": 1,
+          "gold": 1,
+          "ok": true
+        },
+        {
+          "id": "2010_72",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_73",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_76",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_78",
+          "pred": 3,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_80",
+          "pred": 0,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_84",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_87",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_85",
+          "pred": 1,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_86",
+          "pred": 4,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_88",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_90",
+          "pred": 1,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_98",
+          "pred": 2,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_99",
+          "pred": 4,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_97",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_100",
+          "pred": 0,
+          "gold": 0,
+          "ok": true
+        },
+        {
+          "id": "2010_101",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_103",
+          "pred": 1,
+          "gold": 3,
+          "ok": false
+        },
+        {
+          "id": "2010_104",
+          "pred": 0,
+          "gold": 4,
+          "ok": false
+        },
+        {
+          "id": "2010_106",
+          "pred": 3,
+          "gold": 3,
+          "ok": true
+        },
+        {
+          "id": "2010_107",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        },
+        {
+          "id": "2010_109",
+          "pred": 4,
+          "gold": 0,
+          "ok": false
+        },
+        {
+          "id": "2010_111",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_112",
+          "pred": 3,
+          "gold": 2,
+          "ok": false
+        },
+        {
+          "id": "2010_113",
+          "pred": 4,
+          "gold": 4,
+          "ok": true
+        },
+        {
+          "id": "2010_114",
+          "pred": 2,
+          "gold": 1,
+          "ok": false
+        }
+      ],
+      "retencao_pct": 71.4
+    }
+  ]
+}

@@ -184,7 +184,7 @@
     <li><a href="#dapt">Extensão: o DAPT da Q1 como ponto de partida</a></li>
     <li><a href="#uld">Extensão: logit KD entre tokenizadores (fronteira)</a></li>
     <li><a href="#referencia">Como nos comparamos com a literatura (modelos de referência)</a></li>
-    <li><a href="#bench-publico">Retenção ancorada em benchmark público (a executar)</a></li>
+    <li><a href="#bench-publico">Retenção ancorada em benchmark público — ENEM (~70% do professor)</a></li>
     <li><a href="#sintese">Síntese para apresentação</a></li>
   </ol>
 </div>
@@ -588,7 +588,8 @@ irmãos maiores) reportam o mesmo par de eixos. Posicionando o nosso resultado n
   <em>retenção</em> é uma fração legítima. No nosso núcleo, a referência é o <strong>próprio professor com RAG</strong>,
   então a sua pontuação é 100% por construção e não dá para extrair um "% do professor" comparável. Por isso reportamos
   <strong>compressão</strong> (diretamente comparável: 9× e 28×) e <strong>ganho sobre a base</strong> (+96%), e
-  deixamos a <strong>retenção ancorada</strong> para a medição em benchmark público (próximo passo, §11).
+  medimos a <strong>retenção ancorada</strong> num benchmark público (§11): os alunos 1.5B retêm <strong>~70% da
+  acurácia do professor 14B</strong> no ENEM sendo 9× menores.
 </div>
 
 <h3>O que nos falta para a comparação ficar "de literatura" (e o que estamos fazendo)</h3>
@@ -597,28 +598,48 @@ irmãos maiores) reportam o mesmo par de eixos. Posicionando o nosso resultado n
   custo-benefício. (Latência/throughput seriam o complemento natural.)</li>
   <li><strong>Vocabulário de retenção/compressão</strong> — esta seção reposiciona os nossos números no mesmo par de
   eixos de DistilBERT/DistilQwen.</li>
-  <li><strong>Benchmark público</strong> — a peça que falta para uma <em>retenção ancorada</em>: medir aluno e
-  professor numa fatia de um benchmark conhecido (ex.: questões de múltipla escolha em PT-BR), onde o professor
-  pontua &lt;100% e a retenção do aluno vira uma fração comparável à literatura. Implementação na §11.</li>
+  <li><strong>Benchmark público</strong> ✅ — feito: medimos aluno e professor no ENEM (múltipla escolha PT-BR),
+  onde o professor pontua &lt;100%, e a retenção do aluno vira uma fração comparável à literatura. Resultado na §11
+  (alunos 1.5B ≈ 70% do professor 14B; sem esquecimento catastrófico da capacidade geral).</li>
 </ul>
 
-<h2 id="bench-publico">11. Retenção ancorada em benchmark público <span class="status pending">a executar</span></h2>
-<p>Para obter uma <strong>retenção comparável à literatura</strong> (um "% do professor" legítimo), medimos aluno e
-professor num <strong>benchmark público</strong> em que o professor pontua abaixo de 100%. Plano:</p>
-<ul>
-  <li><strong>Benchmark:</strong> fatia de questões de <strong>múltipla escolha em PT-BR</strong> (acurácia objetiva,
-  fácil de pontuar e independente do nosso pipeline) — separada do domínio DOM-PI para medir capacidade geral.</li>
-  <li><strong>Modelos:</strong> professor (Qwen2.5-14B-Instruct), os dois alunos base (0.5B/1.5B) e os melhores
-  destilados, todos por <em>log-verossimilhança da alternativa</em> (sem geração livre), como já fazemos na Q1/Q5.</li>
-  <li><strong>Métrica:</strong> acurácia de cada modelo e <strong>retenção = acurácia_aluno / acurácia_professor</strong>
-  — o número diretamente comparável ao "97% do BERT" do DistilBERT.</li>
-  <li><strong>Saída:</strong> uma linha a mais na tabela da §10 e um gráfico de retenção (% do professor) por
-  modelo. Roda no cluster reusando a infra de avaliação por log-prob.</li>
-</ul>
+<h2 id="bench-publico">11. Retenção ancorada em benchmark público <span class="status done">executado</span></h2>
+<p>Para um "% do professor" comparável à literatura, medimos aluno e professor no <strong>ENEM</strong>
+(<code>eduagarcia/enem_challenge</code>, 200 questões de múltipla escolha), por <strong>log-verossimilhança da
+alternativa</strong> (sem geração) — o mesmo princípio do benchmark Q&amp;A da Q1/Q5. O professor 14B (carregado em
+8-bit para caber em uma L4, quase lossless) define o teto, e <strong>retenção = acurácia_aluno /
+acurácia_professor</strong>.</p>
+
+<figure>
+  <img src="resultados/figuras/retencao_benchmark_publico.png" alt="Retenção no ENEM">
+  <figcaption>Retenção (% da acurácia do professor 14B) no ENEM. As barras cinza são as bases; as verdes, os
+  destilados. A acurácia absoluta aparece entre parênteses.</figcaption>
+</figure>
+
+<table>
+  <tr><th>Modelo</th><th class="tc">Acurácia ENEM</th><th class="tc">Retenção (% do professor)</th></tr>
+  <tr><td>professor 14B (teto)</td><td class="num">0,455</td><td class="num">100,0%</td></tr>
+  <tr><td>base 0.5B</td><td class="num">0,225</td><td class="num">49,5%</td></tr>
+  <tr><td>d 0.5B · B · combinado</td><td class="num">0,245</td><td class="num">53,8%</td></tr>
+  <tr><td>base 1.5B</td><td class="num">0,330</td><td class="num">72,5%</td></tr>
+  <tr><td>d 1.5B · B · kl</td><td class="num">0,325</td><td class="num">71,4%</td></tr>
+  <tr><td>d 1.5B · B · combinado</td><td class="num">0,315</td><td class="num">69,2%</td></tr>
+</table>
+
+<div class="callout success">
+  <strong>Leitura.</strong> Este é um benchmark <strong>geral</strong> (ENEM nada tem a ver com DOM-PI/docentes), então
+  mede o efeito colateral da especialização. Resultado: os destilados <strong>preservam</strong> a capacidade da base
+  — o 0.5B até melhora (+4,3 pp de retenção) e o 1.5B fica ~1–3 pp abaixo, dentro do ruído de 200 questões.
+  <strong>Não há esquecimento catastrófico</strong> da habilidade geral. E o número ancorado: os nossos alunos
+  <strong>1.5B retêm ~70% da acurácia do professor 14B sendo 9× menores</strong> — na mesma família de afirmação do
+  clássico "97% do BERT" do DistilBERT (aqui o protocolo é mais difícil: zero-shot, log-prob, sem few-shot/chat
+  template, o que explica o teto absoluto modesto do professor, 45,5%).
+</div>
 <div class="callout warn">
-  <strong>Status.</strong> Esta medição depende de um job no cluster (professor 14B + alunos sobre a fatia do
-  benchmark). Os demais resultados e gráficos deste relatório já estão consolidados; esta seção será preenchida com a
-  retenção ancorada assim que o job concluir.
+  <strong>Ressalvas.</strong> (1) Pontuação zero-shot por log-prob sem few-shot subestima a acurácia absoluta de
+  todos (inclusive do professor) — mas o <em>protocolo é idêntico</em> para todos, então a retenção relativa é
+  comparável. (2) Professor em 8-bit (não fp16) — efeito desprezível em inferência. (3) n = 200 → barras de
+  ~±3 pp de incerteza; as conclusões são qualitativas (preservação da capacidade geral), não os pontos exatos.
 </div>
 
 <h2 id="sintese">12. Síntese para apresentação</h2>

@@ -372,14 +372,28 @@ professor pontua <100% — então a retenção é uma fração legítima. No nos
 com RAG** (100% por construção), então reportamos **compressão** (9×/28×, diretamente comparável) e **ganho sobre a
 base** (+96%), deixando a **retenção ancorada** para o benchmark público (§12).
 
-## 12. Retenção ancorada em benchmark público (a executar)
+## 12. Retenção ancorada em benchmark público (executado — ENEM)
 
-Para um "% do professor" comparável à literatura, medimos aluno e professor num benchmark público de múltipla
-escolha PT-BR (**ENEM**, `eduagarcia/enem_challenge`), onde o professor pontua <100%:
-- **Pontuação por log-verossimilhança** da alternativa (sem geração), robusta para 0.5B/1.5B — `scripts/avaliar_benchmark_publico.py`;
-- **Modelos:** professor 14B (teto) + bases 0.5B/1.5B + melhores destilados; **retenção = acc_aluno / acc_professor**;
-- **Job:** `scripts/run_benchmark_publico.sbatch` (gpunode01, 1 GPU). Loader validado localmente contra o esquema ENEM.
-- **Saída:** linha extra na tabela da §11 + gráfico de retenção (% do professor) por modelo.
+Para um "% do professor" comparável à literatura, medimos aluno e professor no **ENEM**
+(`eduagarcia/enem_challenge`, 200 questões de múltipla escolha), por **log-verossimilhança da alternativa** (sem
+geração; `scripts/avaliar_benchmark_publico.py`). Professor 14B em 8-bit define o teto; **retenção = acc_aluno / acc_professor**.
+
+| Modelo | Acurácia ENEM | Retenção (% do professor) |
+|---|---|---|
+| professor 14B (teto) | 0,455 | 100,0% |
+| base 0.5B | 0,225 | 49,5% |
+| d 0.5B·B·combinado | 0,245 | **53,8%** |
+| base 1.5B | 0,330 | 72,5% |
+| d 1.5B·B·kl | 0,325 | 71,4% |
+| d 1.5B·B·combinado | 0,315 | 69,2% |
+
+**Leitura:** ENEM é um benchmark **geral** (nada a ver com DOM-PI/docentes), então mede o efeito colateral da
+especialização. Os destilados **preservam** a capacidade da base (0.5B até melhora +4,3 pp; 1.5B fica ~1–3 pp abaixo,
+dentro do ruído de 200 questões) — **sem esquecimento catastrófico**. Número ancorado: os alunos **1.5B retêm ~70%
+da acurácia do professor 14B sendo 9× menores** (mesma família de afirmação do "97% do BERT" do DistilBERT; aqui o
+protocolo é mais difícil — zero-shot, log-prob, sem chat template — daí o teto absoluto modesto, 45,5%).
+Gráfico: `resultados/figuras/retencao_benchmark_publico.png`. Resultados: `resultados/avaliacao_benchmark_publico.json`.
+Job: `scripts/run_benchmark_publico.sbatch`.
 
 ## 13. Síntese para apresentação
 

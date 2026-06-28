@@ -194,9 +194,61 @@ def fig_antes_depois(d):
     print("escrito:", out)
 
 
+# ───────────────────────── 4. Retenção em benchmark público (ENEM) ─────────────────────────
+def fig_retencao(nome="avaliacao_benchmark_publico.json"):
+    path = os.path.join(RES, nome)
+    if not os.path.exists(path):
+        print("pulado (sem arquivo):", path)
+        return
+    d = json.load(open(path, encoding="utf-8"))
+    ms = d["modelos"]
+    # ordem: professor, bases, destilados
+    ordem = {"prof": 0, "base_05": 1, "d_0.5b_B_combined": 2,
+             "base_15": 3, "d_1.5b_B_kl": 4, "d_1.5b_B_combined": 5}
+    ms = sorted(ms, key=lambda m: ordem.get(m["rotulo"], 99))
+    rot = [m["rotulo"] for m in ms]
+    ret = [m.get("retencao_pct", 0) for m in ms]
+    labels = {"prof": "professor 14B", "base_05": "base 0.5B", "base_15": "base 1.5B",
+              "d_0.5b_B_combined": "0.5B·B·comb", "d_1.5b_B_combined": "1.5B·B·comb",
+              "d_1.5b_B_kl": "1.5B·B·kl"}
+    cols = []
+    for r in rot:
+        if r == "prof":
+            cols.append(ACCENT)
+        elif r.startswith("base"):
+            cols.append(MUTED)
+        else:
+            cols.append(OK)
+
+    fig, ax = plt.subplots(figsize=(8.4, 4.6))
+    x = np.arange(len(rot))
+    bars = ax.bar(x, ret, color=cols, edgecolor="#333", linewidth=0.5)
+    ax.axhline(100, color=ACCENT, ls=":", lw=1, alpha=0.6)
+    for b, v, a in zip(bars, ret, [m["acuracia"] for m in ms]):
+        ax.annotate(f"{v:.0f}%\n(acc {a:.2f})", (b.get_x() + b.get_width() / 2, v + 1.5),
+                    ha="center", fontsize=8.5)
+    ax.set_xticks(x)
+    ax.set_xticklabels([labels.get(r, r) for r in rot], fontsize=9)
+    ax.set_ylabel("retenção = acc_aluno / acc_professor (%)")
+    ax.set_ylim(0, 115)
+    ax.set_title("Retenção ancorada — benchmark público ENEM (200 questões)",
+                 color=ACCENT, fontweight="bold", fontsize=12)
+    from matplotlib.patches import Patch
+    ax.legend(handles=[Patch(facecolor=ACCENT, label="professor (teto)"),
+                       Patch(facecolor=MUTED, label="base (sem destilar)"),
+                       Patch(facecolor=OK, label="destilado")],
+              fontsize=8, loc="upper right")
+    fig.tight_layout()
+    out = os.path.join(FIG, "retencao_benchmark_publico.png")
+    fig.savefig(out, bbox_inches="tight")
+    plt.close(fig)
+    print("escrito:", out)
+
+
 if __name__ == "__main__":
     d = load("avaliacao.json")
     fig_barras(d)
     fig_compressao(d)
     fig_antes_depois(d)
-    print("OK — 3 figuras em", FIG)
+    fig_retencao()
+    print("OK — figuras em", FIG)
