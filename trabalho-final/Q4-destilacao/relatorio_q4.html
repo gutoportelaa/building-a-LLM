@@ -89,6 +89,7 @@
   tr:hover td { background: var(--a-light); }
   .num { font-family: var(--mono); text-align: right; }
   .tc  { text-align: center; }
+  .win td { background: var(--ok-bg) !important; font-weight: 600; }
 
   /* ── Callouts ── */
   .callout { border-left: 4px solid var(--border); padding: 11px 16px;
@@ -101,72 +102,41 @@
   .callout strong  { font-weight: 700; }
 
   /* ── Caixas de seção de questão ── */
-  .q-header {
-    background: var(--accent); color: #fff; padding: 14px 20px;
-    border-radius: 4px 4px 0 0; font-family: var(--sans);
-    display: flex; align-items: baseline; gap: 12px; margin-top: 56px;
-  }
-  .q-header .q-num { font-size: 1.5rem; font-weight: 900; opacity: 0.6; }
-  .q-header .q-title { font-size: 1.1rem; font-weight: 700; }
-  .q-header .q-status { margin-left: auto; font-size: 0.75rem; font-weight: 600;
-    letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px;
-    border-radius: 3px; border: 1px solid rgba(255,255,255,0.4); }
-  .q-header .q-status.done    { background: rgba(255,255,255,0.15); }
-  .q-header .q-status.pending { background: rgba(255,180,0,0.25); color: #ffe080; border-color: #ffe080; }
-  .q-header .q-status.partial { background: rgba(255,200,0,0.2);  color: #ffd060; border-color: #ffd060; }
-  .q-body { border: 1px solid var(--border); border-top: none; padding: 24px 24px 20px;
-            margin-bottom: 8px; }
   .q-enunciado { font-family: var(--sans); font-size: 0.83rem; color: var(--muted);
                  background: var(--bg-alt); border-left: 3px solid var(--border);
                  padding: 10px 14px; margin-bottom: 20px; border-radius: 0 3px 3px 0; }
 
   /* ── Inferências ── */
   .inf-block { border: 1px solid var(--border); border-radius: 4px; margin: 18px 0 24px; overflow: hidden; }
-  .inf-prompt { background: var(--bg-code); border-bottom: 1px solid var(--border);
-                padding: 10px 14px; font-family: var(--mono); font-size: 0.8rem;
-                color: #222; white-space: pre-wrap; }
-  .inf-prompt .lbl { font-family: var(--sans); font-size: 0.68rem; font-weight: 700;
-                     text-transform: uppercase; letter-spacing: 0.07em;
-                     color: var(--muted); display: block; margin-bottom: 4px; }
   .inf-resp { padding: 10px 14px; border-bottom: 1px solid var(--border); }
   .inf-resp:last-child { border-bottom: none; }
   .model-tag { display: inline-block; font-family: var(--sans); font-size: 0.68rem;
                font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
                padding: 2px 8px; border-radius: 3px; margin-bottom: 6px; }
   .tag-base   { background: var(--a-light);   color: var(--accent2); }
-  .tag-lora   { background: var(--bad-bg);    color: var(--bad-fg); }
-  .tag-qlora  { background: var(--warn-bg);   color: var(--warn-fg); }
-  .tag-fullft { background: var(--ok-bg);     color: var(--ok-fg); }
+  .tag-bad    { background: var(--bad-bg);    color: var(--bad-fg); }
+  .tag-warn   { background: var(--warn-bg);   color: var(--warn-fg); }
+  .tag-ok     { background: var(--ok-bg);     color: var(--ok-fg); }
   .inf-txt { font-family: var(--mono); font-size: 0.78rem; color: #222;
              white-space: pre-wrap; line-height: 1.55; margin-top: 4px; }
-  .inf-note { font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
-              border-top: 1px solid var(--border); padding: 8px 14px;
-              background: var(--bg-alt); font-style: italic; }
 
-  /* ── Cards de estratégia ── */
-  .strat-card { border: 1px solid var(--border); border-radius: 4px;
-                padding: 16px 18px; margin: 14px 0; }
-  .strat-card .sc-title { font-family: var(--sans); font-size: 0.95rem;
-                          font-weight: 700; color: var(--accent2); margin-bottom: 6px; }
-  .strat-card .sc-meta { font-family: var(--sans); font-size: 0.75rem;
-                         color: var(--muted); margin-bottom: 10px; display: flex;
-                         flex-wrap: wrap; gap: 10px; }
-  .badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem;
-           font-weight: 600; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
-  .b-high   { background: var(--ok-bg);   color: var(--ok-fg);   border: 1px solid #90c090; }
-  .b-med    { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0a040; }
-  .b-low    { background: var(--bg-alt);  color: var(--muted);   border: 1px solid var(--border); }
-  .b-info   { background: var(--a-light); color: var(--accent2); border: 1px solid #90b0d8; }
+  /* ── Figuras ── */
+  figure { margin: 18px 0 24px; }
+  figure img { width: 100%; max-width: 100%; border: 1px solid var(--border); border-radius: 4px; display: block; }
+  figcaption { font-family: var(--sans); font-size: 0.78rem; color: var(--muted);
+               margin-top: 6px; font-style: italic; }
+  .fig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 18px 0 24px; }
+  .fig-grid figure { margin: 0; }
+  @media (max-width: 720px) { .fig-grid { grid-template-columns: 1fr; } }
 
-  /* ── Mapa de experimentos ── */
+  /* ── Mapa de experimentos (matriz fatorial) ── */
   .exp-map { border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; margin: 20px 0; }
-  .exp-map-row { display: grid; grid-template-columns: 140px 1fr 1fr;
+  .exp-map-row { display: grid; grid-template-columns: 150px 1fr 1fr;
                  border-bottom: 1px solid var(--border); }
   .exp-map-row:last-child { border-bottom: none; }
   .exp-map-cell { padding: 9px 14px; font-family: var(--sans); font-size: 0.82rem; }
   .exp-map-hdr  { background: var(--accent); color: #fff; font-weight: 700; }
   .exp-map-row:nth-child(even) .exp-map-cell:not(.exp-map-hdr) { background: var(--bg-alt); }
-  .arrow { color: var(--muted); font-size: 1.1em; }
 
   /* ── Índice ── */
   .toc { font-family: var(--sans); font-size: 0.85rem; background: var(--bg-alt);
@@ -177,304 +147,497 @@
   .toc li { margin-bottom: 4px; }
   .toc a { color: var(--accent2); text-decoration: none; }
   .toc a:hover { text-decoration: underline; }
-  .toc .toc-status { font-size: 0.72rem; margin-left: 6px; }
 
-  /* ── Linha separadora de sub-seção ── */
   hr.sub { border: none; border-top: 1px dashed var(--border); margin: 24px 0; }
 
   footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--border);
            font-family: var(--sans); font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
 </style>
 </head>
+
 <body>
 
 <h1>Questão 4 — Destilação de Conhecimento <span class="status done">concluída</span></h1>
 
 <div class="report-meta">
-  <strong>Dataset:</strong> sintético (DOM-PI + docentesDC) · <strong>Professor:</strong> Qwen2.5-14B-Instruct
-  (e variantes) · <strong>Alunos:</strong> Qwen2.5-0.5B / 1.5B · <strong>Cluster:</strong> 2× NVIDIA L4 (gpunode01/02)
-  · <strong>Melhor resultado:</strong> 1.5B · braço B · combinado — key_recall 0,717 (+96% vs base).
+  <strong>Professor:</strong> Qwen2.5-14B-Instruct (mesma família) · <strong>Alunos:</strong> Qwen2.5-0.5B e 1.5B
+  · <strong>Núcleo:</strong> 12 alunos (desenho fatorial) · <strong>Benchmark:</strong> 100 perguntas
+  · <strong>Melhor:</strong> 1.5B · braço B · combinado → <strong>+96%</strong> de key_recall sobre a base.
 </div>
 
 <div class="q-enunciado">
-  Investigar quais LLMs são usados em destilação. Definir modelos <strong>professor</strong> e <strong>aluno</strong>.
-  Usar um <strong>dataset sintético</strong> para destilar professor→aluno. Criar um <strong>benchmark de 100
-  perguntas</strong> para avaliar professor e aluno antes/depois. Analisar se houve <strong>transferência de
-  conhecimento</strong>.
+  Investigar quais LLMs costumam ser usados em destilação; definir <strong>professor</strong> e <strong>aluno</strong>;
+  usar um <strong>dataset sintético</strong> para destilar professor→aluno; criar um <strong>benchmark de 100
+  perguntas</strong> para avaliar antes/depois e <strong>analisar se houve transferência de conhecimento</strong>.
 </div>
 
-<!-- ───────────────────────────── FUNDAMENTOS ───────────────────────────── -->
-<h2>1. Fundamentos teóricos</h2>
-<p>A <strong>destilação de conhecimento</strong> (<em>knowledge distillation</em>, KD; Hinton et al., 2015) treina um
-modelo <strong>aluno</strong> (menor) para imitar um modelo <strong>professor</strong> (maior/mais capaz). Em vez de
-aprender só com o rótulo correto (<em>hard label</em>), o aluno aprende com a <strong>distribuição de probabilidade</strong>
-que o professor atribui ao próximo token (<em>soft labels</em>) — que carrega o "conhecimento implícito" sobre
-alternativas plausíveis.</p>
+<div class="toc">
+  <h3>Conteúdo</h3>
+  <ol>
+    <li><a href="#conceitos">Conceitos básicos (hard/soft, white/black-box)</a></li>
+    <li><a href="#industria">Como a indústria faz destilação</a></li>
+    <li><a href="#desenho">Desenho experimental — por que 12 alunos</a></li>
+    <li><a href="#impl">Implementação</a></li>
+    <li><a href="#resultados">Resultados — houve transferência? (com gráficos)</a></li>
+    <li><a href="#wb-bb">Extensão: white-box × black-box (cross-família)</a></li>
+    <li><a href="#copa">Extensão: especialização temática (Copa 2026)</a></li>
+    <li><a href="#dapt">Extensão: o DAPT da Q1 como ponto de partida</a></li>
+    <li><a href="#uld">Extensão: logit KD entre tokenizadores (fronteira)</a></li>
+    <li><a href="#referencia">Como nos comparamos com a literatura (modelos de referência)</a></li>
+    <li><a href="#bench-publico">Retenção ancorada em benchmark público (a executar)</a></li>
+    <li><a href="#sintese">Síntese para apresentação</a></li>
+  </ol>
+</div>
 
-<p>O alicerce é a mesma <strong>entropia cruzada</strong> e <strong>softmax</strong> do pré-treino (Raschka, cap. 5):
-o modelo produz <em>logits</em> <code>z</code>, a softmax os converte em probabilidades, e a CE mede a divergência
-entre a predição e o alvo. Na KD, o alvo deixa de ser o vetor one-hot e passa a ser a distribuição do professor.
-Dois ingredientes adicionais:</p>
+<h2 id="conceitos">1. Conceitos básicos (para ler o resto sem tropeçar)</h2>
+<p>A destilação parte de uma ideia simples: um modelo <strong>grande e forte</strong> (o <strong>professor</strong>)
+"ensina" um modelo <strong>pequeno</strong> (o <strong>aluno</strong>) a se comportar como ele, a uma fração do custo
+de inferência. O aluno não reaprende o mundo — ele aprende a <strong>imitar as saídas do professor</strong>.</p>
+
+<p>Há duas formas de o professor "ensinar", e a diferença é o coração desta questão:</p>
 <ul>
-  <li><strong>Temperatura T</strong> — suaviza a softmax (<code>softmax(z/T)</code>), revelando a "massa" que o
-  professor coloca em tokens não-vencedores; o gradiente da perda soft é reescalado por <code>T²</code> (Hinton).</li>
-  <li><strong>Divergência KL</strong> — a perda soft é <code>KL(professor ‖ aluno)</code> sobre o vocabulário; combinada
-  com a CE nos rótulos hard dá a forma clássica <code>α·CE + (1−α)·T²·KL</code>.</li>
+  <li><strong>Hard label (rótulo duro):</strong> o professor escreve uma resposta em <strong>texto</strong> e o aluno
+  treina para reproduzi-la. É imitação literal — equivale a um <em>fine-tuning supervisionado</em> (SFT) usando o
+  professor como gerador de gabaritos.</li>
+  <li><strong>Soft label (rótulo suave):</strong> além do texto, o professor expõe, <strong>para cada token</strong>,
+  a sua <strong>distribuição de probabilidade</strong> sobre todo o vocabulário — não só "a próxima palavra é X", mas
+  "era 70% X, 20% Y, 5% Z…". Essa curva carrega <em>como o professor pensa</em>: quais alternativas considerou e com
+  que confiança.</li>
 </ul>
 
 <div class="callout info">
-  <strong>Quais LLMs são usados em destilação (estado da arte 2024–2026).</strong> A prática de produção destila
-  majoritariamente <em>dentro da mesma família</em>, porque o logit KD exige <strong>tokenizador compartilhado</strong>:
-  <strong>Gemma 2</strong> (27B→2B/9B, logits; armazena só um <em>subconjunto amostrado</em> do vocabulário de 256k);
-  <strong>Llama 4</strong> (Behemoth→Scout/Maverick). Quando se cruza família, o caminho é <strong>black-box
-  sequence-level</strong> (SFT sobre o texto do professor) — <strong>DeepSeek-R1-Distill</strong> (SFT em ~800k traços
-  de raciocínio, sem logits). A fronteira é o <strong>logit KD cross-tokenizer</strong> via transporte ótimo
-  (<em>Universal Logit Distillation</em>, Boizard et al., arXiv:2402.12030). On-policy (MiniLLM, GKD) reduz o
-  <em>exposure bias</em> mas é mais caro.
+  <strong>Ligação com Raschka.</strong> No livro, a saída do modelo antes da decisão final é o vetor de
+  <strong>logits</strong>, convertido em probabilidades pela <strong>softmax</strong>; o treino minimiza a
+  <strong>cross-entropy</strong> entre a previsão e o alvo. Na destilação por soft label, o "alvo" deixa de ser um
+  único token (vetor <em>one-hot</em>) e passa a ser <strong>a distribuição inteira do professor</strong> — o aluno
+  aprende a curva, não só o pico.
+</div>
+
+<p>Quatro termos que aparecem o tempo todo:</p>
+<table>
+  <tr><th>Termo</th><th>Significado direto</th></tr>
+  <tr><td><strong>Logit</strong></td><td>pontuação bruta que o modelo dá a cada token antes da softmax (Raschka, geração de texto).</td></tr>
+  <tr><td><strong>CE</strong> (cross-entropy)</td><td>perda que treina o aluno a reproduzir o <strong>texto</strong> do professor (sinal <em>hard</em>).</td></tr>
+  <tr><td><strong>KL</strong> (Kullback–Leibler)</td><td>perda que aproxima a <strong>distribuição</strong> do aluno da do professor (sinal <em>soft</em>).</td></tr>
+  <tr><td><strong>Temperatura (T)</strong></td><td>fator que "achata" a distribuição do professor: com T alto, as alternativas secundárias ganham peso e o aluno enxerga o raciocínio completo, não só o token vencedor.</td></tr>
+</table>
+
+<h3>White-box × Black-box — a distinção central</h3>
+<p>As duas categorias de método se definem por <strong>o quanto o aluno consegue "ver" do professor</strong>.
+Uma analogia: imagine um aluno aprendendo com um professor humano.</p>
+<div class="exp-map">
+  <div class="exp-map-row">
+    <div class="exp-map-cell exp-map-hdr">Abordagem</div>
+    <div class="exp-map-cell exp-map-hdr">Analogia</div>
+    <div class="exp-map-cell exp-map-hdr">Tecnicamente</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>Black-box</strong><br>("caixa preta")</div>
+    <div class="exp-map-cell">o aluno só recebe o <strong>gabarito final</strong>: "a resposta é B". Copia, mas não sabe por que, nem que C era quase tão plausível.</div>
+    <div class="exp-map-cell">usa só o <strong>texto</strong> escolhido; treina por <strong>CE</strong>. Funciona entre <strong>qualquer</strong> par de modelos.</div>
+  </div>
+  <div class="exp-map-row">
+    <div class="exp-map-cell"><strong>White-box</strong><br>("caixa branca")</div>
+    <div class="exp-map-cell">o aluno vê o <strong>raciocínio</strong>: "é B (70%), mas C era boa (20%) e A está descartado (5%)". Aprende confiança e alternativas.</div>
+    <div class="exp-map-cell">usa os <strong>logits</strong> (a distribuição); treina por <strong>KL</strong>. Exige o <strong>mesmo tokenizador</strong> → só mesma família.</div>
+  </div>
+</div>
+
+<p>Quando um modelo gera um token, internamente produz uma distribuição sobre todo o vocabulário. Ex.:</p>
+<div class="inf-block"><div class="inf-resp"><div class="inf-txt">"o prefeito ___"  →  nomeou: 60%  |  assinou: 25%  |  publicou: 10%  |  ...resto: 5%</div></div></div>
+<ul>
+  <li><strong>Black-box</strong> usa só "nomeou" (o vencedor). É um SFT comum no texto do professor.</li>
+  <li><strong>White-box</strong> usa a curva 60/25/10/… — o aluno aprende que "assinou" era a segunda melhor.</li>
+</ul>
+
+<div class="callout warn">
+  <strong>A consequência que molda toda a Q4.</strong> O white-box compara distribuições token a token; para que
+  "60% no token nº 4012" signifique o mesmo para os dois, professor e aluno precisam do <strong>mesmo
+  tokenizador/vocabulário</strong> — na prática, <strong>mesma família</strong>. É por isso que (1) o professor é da
+  mesma família dos alunos; (2) a indústria destila dentro da família; (3) quando fomos para outra família (§6) só
+  pudemos usar black-box; (4) a §9 (ULD) tenta o white-box <em>entre</em> famílias, por aproximação.
 </div>
 
 <table>
-  <tr><th>Regime</th><th>Tokenizer igual?</th><th>Sinal</th><th>Exemplo de referência</th></tr>
-  <tr><td>White-box logit KD</td><td>Sim (mesma família)</td><td>logits (KL soft)</td><td>Gemma 2, DistillKit</td></tr>
-  <tr><td>Black-box sequence-KD</td><td>Não</td><td>texto (SFT)</td><td>DeepSeek-R1-Distill</td></tr>
-  <tr><td>Cross-tokenizer (ULD)</td><td>Não (via aproximação)</td><td>distribuições ordenadas</td><td>Boizard et al. 2025</td></tr>
+  <tr><th></th><th>Black-box</th><th>White-box</th></tr>
+  <tr><td>O aluno vê…</td><td>só o <strong>texto</strong></td><td>os <strong>logits</strong> (a distribuição)</td></tr>
+  <tr><td>Sinal</td><td>mais pobre</td><td>mais rico (confiança + alternativas)</td></tr>
+  <tr><td>Mesmo tokenizador?</td><td>Não</td><td><strong>Sim</strong></td></tr>
+  <tr><td>Entre famílias?</td><td><strong>Sim</strong></td><td>Não</td></tr>
+  <tr><td>Perda</td><td>CE</td><td>KL (ou combinado CE+KL)</td></tr>
+  <tr class="win"><td>No nosso resultado (KR, aluno 1.5B)</td><td>0,647</td><td>0,717 (o teto)</td></tr>
 </table>
 
-<!-- ───────────────────────────── DECISÕES ───────────────────────────── -->
-<h2>2. Decisões de projeto e motivações</h2>
+<h2 id="industria">2. Como a indústria faz destilação</h2>
+<p>Pesquisando como os modelos de produção recentes são destilados, três padrões organizam o nosso desenho.</p>
+<p><strong>2.1 A prática consolidada é destilar dentro da mesma família.</strong> Os principais modelos abertos
+pequenos são versões destiladas de irmãos maiores da mesma linhagem (mesmo tokenizador), justamente para usar
+<strong>white-box logit KD</strong>. Quando se destila <em>entre</em> famílias, o caminho é o <strong>black-box</strong>
+(treinar o aluno só no texto do professor) — foi assim, por exemplo, que modelos de raciocínio foram comprimidos em
+alunos de famílias variadas: gerou-se um grande volume de respostas e treinou-se por SFT, sem logits.</p>
+
+<p><strong>2.2 Os três regimes técnicos e seus custos:</strong></p>
 <table>
-  <tr><th>Decisão</th><th>Motivação</th></tr>
-  <tr><td><strong>Professor = Qwen2.5-14B-Instruct</strong> (não o modelo da Q1)</td>
-      <td>O princípio do KD é <em>professor ≫ aluno</em>. O modelo da Q1 (1.5B, corpus OCR ruidoso, ganho marginal)
-      transferiria os próprios erros. O 14B é forte, limpo e da mesma família (tokenizador idêntico → habilita logit KD).
-      É o mesmo gerador qualificado da Q5 (G3).</td></tr>
-  <tr><td><strong>Aluno = base pristino</strong> (Qwen2.5-0.5B/1.5B)</td>
-      <td>Baseline limpo para medir a transferência (antes→depois) sem confundir com adaptação prévia.</td></tr>
-  <tr><td><strong>Eixo A (zerada) × B (RAG)</strong> no professor</td>
-      <td>O 14B genérico não conhece fatos específicos do DOM-PI → o <em>grounding</em> com o RAG da Q5 vira variável
-      de estudo: quanto dá para "assar" conhecimento factual nos pesos? Ponte direta Q4↔Q5.</td></tr>
-  <tr><td><strong>Cache top-50 logits, KL renormalizada</strong></td>
-      <td>Vocabulário Qwen ~151k → salvar logits densos é proibitivo. Salva-se só o top-50 por token e renormaliza-se
-      a softmax do professor sobre esse suporte (estilo Gemma 2). Usar <em>logprobs</em> é exato: o termo <code>logZ</code>
-      cancela na softmax.</td></tr>
-  <tr><td><strong>Métodos CE / KL / combinado</strong></td>
-      <td>Isolar a contribuição de cada sinal: hard (texto) vs soft (logits) vs combinação.</td></tr>
+  <tr><th>Regime</th><th>Mesmo tokenizador?</th><th>Custo</th><th>Maturidade</th></tr>
+  <tr><td><strong>White-box logit KD</strong> (KL sobre logits)</td><td>Sim → só mesma família</td><td>professor em memória ou logits pré-computados</td><td>padrão da indústria</td></tr>
+  <tr><td><strong>Black-box sequence-KD</strong> (SFT no texto)</td><td>Não → qualquer família</td><td>só gerar o dataset sintético</td><td>padrão e robusto</td></tr>
+  <tr><td><strong>Cross-tokenizer logit KD</strong> (por aproximação)</td><td>Não (aproximado)</td><td>alto, experimental</td><td>fronteira de pesquisa</td></tr>
 </table>
 
-<!-- ───────────────────────────── METODOLOGIA ───────────────────────────── -->
-<h2>3. Metodologia</h2>
-<p>Pipeline (scripts em <code>scripts/</code>): <code>gerar_dataset_destilacao.py</code> (professor 14B no vLLM,
-tensor-parallel=2; self-instruct de 500 DOM-PI + 500 docentesDC; respostas + top-50 logits offline; braços A/B) →
-<code>destilar.py</code> (full fine-tune do aluno; <code>labels=input_ids</code> sem pré-shift — lição do bug de
-duplo-shift da Q1; prompt mascarado) → <code>gerar_benchmark.py</code> (100 perguntas held-out, disjuntas por
-construção) → <code>avaliar_destilacao.py</code> (ROUGE-L e <em>key-term recall</em> por domínio, sem RAG na
-inferência). Hiperparâmetros: T=2,0; α=0,5; 3 épocas; lr 1e-5 (cosine, warmup 3%); grad-accum 16.</p>
+<p><strong>2.3 O que descartamos de propósito:</strong> cross-modalidade (imagem/voz → texto, fora de escopo);
+cross-especialidade (um professor de código não tem o que ensinar sobre administração pública e tende a degradar o
+aluno); cross-família fica só como braço <strong>black-box</strong>, reservado a extensão.</p>
 
-<!-- ───────────────────────────── RESULTADOS ───────────────────────────── -->
-<h2>4. Resultados — seis frentes</h2>
-<p>Métricas no benchmark de 100 perguntas (50 DOM-PI + 50 docentesDC), <strong>sem RAG na inferência</strong> (testa
-o que ficou nos pesos). Referência = resposta do professor 14B com RAG. RG = ROUGE-L; KR = key-recall.</p>
+<div class="callout danger">
+  <strong>2.4 Por que NÃO usar o modelo da Q1/Q5 como professor.</strong> O princípio é <em>professor ≫ aluno</em>. O
+  nosso DAPT da Q1 é pequeno (1.5B) e treinado sobre corpus com OCR corrompido — como professor, transferiria os
+  próprios erros. Por isso o professor é um modelo oficial forte e limpo da <strong>mesma família</strong>
+  (<code>Qwen2.5-Instruct</code>, que habilita o white-box). O aluno é o <strong>base "pristino"</strong>, ponto de
+  partida neutro para medir o ganho.
+</div>
 
-<h3>4.1 Núcleo — white-box logit KD, mesma família (12 alunos)</h3>
+<p><strong>2.5 O grounding do professor como variável de estudo.</strong> Um professor genérico não conhece os fatos
+do DOM-PI e, perguntado "na seco", <strong>aluciná</strong>. Então transformamos o <em>acesso a fatos</em> do
+professor numa variável controlada — os <strong>braços A e B</strong>:</p>
 <table>
-  <tr><th>Modelo</th><th class="num">geral RG</th><th class="num">geral KR</th><th class="num">DOM KR</th><th class="num">doc KR</th></tr>
-  <tr><td>base 0.5B</td><td class="num">0,227</td><td class="num">0,380</td><td class="num">0,505</td><td class="num">0,249</td></tr>
-  <tr><td>base 1.5B</td><td class="num">0,185</td><td class="num">0,366</td><td class="num">0,453</td><td class="num">0,276</td></tr>
-  <tr><td>d_0.5b B combined</td><td class="num">0,243</td><td class="num">0,625</td><td class="num">0,611</td><td class="num">0,639</td></tr>
-  <tr><td>d_1.5b B kl</td><td class="num">0,350</td><td class="num">0,689</td><td class="num">0,654</td><td class="num">0,725</td></tr>
-  <tr style="font-weight:bold;background:var(--ok-bg)"><td>🏆 d_1.5b B combined</td><td class="num">0,363</td><td class="num">0,717</td><td class="num">0,659</td><td class="num">0,776</td></tr>
+  <tr><th>Braço</th><th>O professor responde…</th><th>O que mede</th></tr>
+  <tr><td><strong>A — "zerada"</strong></td><td>só da memória interna (sem buscar)</td><td>quanto o professor sabe sozinho (com alucinação) e quanto o aluno absorve</td></tr>
+  <tr><td><strong>B — com RAG</strong></td><td>com contexto recuperado do índice DOM-PI (sistema da Q5)</td><td>transferência de conhecimento <strong>factual e correto</strong> aos pesos do aluno</td></tr>
+  <tr><td><strong>C — RAG na inferência</strong></td><td>não destila; busca os fatos na hora (baseline Q5)</td><td>o teto: conhecimento <strong>externo</strong> (Q5) vs <strong>internalizado</strong> nos pesos (Q4)</td></tr>
 </table>
-<p>Todos os 12 alunos superam a base no key_recall (0,37–0,38 → 0,55–0,72). Melhor: <strong>1.5B · B · combinado,
-+96%</strong>. Soft labels (KL/combinado) &gt; CE puro na escala 1.5B. A destilação <em>destrava o aluno maior</em>:
-a base 1.5B era pior que a 0.5B, mas destilada vira a melhor. <em>Mas atenção à composição desse ganho:</em> a
-<a href="#">§4.7</a> abre as inferências e mostra que ele vem sobretudo da <strong>disciplina de abstenção</strong>, não
-de recordar fatos — leitura essencial para não superinterpretar o "+96%".</p>
+<p>A pergunta-guia vira: <strong>quanto dá para "assar" conhecimento dentro dos pesos do aluno (B) e quão perto isso
+chega de carregá-lo de fora na hora da resposta (C)?</strong> — a ponte direta entre Q4 e Q5.</p>
 
-<h3>4.2 Plano A — especialização temática por destilação de raciocínio (Copa 2026)</h3>
-<p>Professor <strong>DeepSeek-R1-Distill-Qwen-14B</strong> (raciocínio, mesma família → white-box). Corpus factual
-<em>ungated</em> (openfootball + Wikipedia, 241 passagens; <strong>sem Transfermarkt</strong>). Benchmark de 41 fatos.</p>
+<h2 id="desenho">3. Desenho experimental — por que 12 alunos</h2>
+<p><strong>White-box logit KD, mesma família</strong> (tokenizador idêntico entre o professor Qwen2.5 e os alunos
+0.5B/1.5B). Professor: <code>Qwen2.5-14B-Instruct</code>. Alunos: <code>Qwen2.5-0.5B</code> e <code>1.5B</code> base
+"pristino" — o 0.5B dá o contraste mais visível. Dataset sintético: ~1.000 prompts (500 DOM-PI + 500 docentesDC); o
+professor gera a resposta em texto (hard) e os <strong>top-50 logits por token</strong> (soft).</p>
+
+<p>Não treinamos 12 alunos por repetição — é uma <strong>matriz fatorial</strong> para <em>isolar cada fator</em>.
+Três eixos multiplicados:</p>
+<div class="callout info" style="text-align:center;font-size:1rem">
+  <strong>{0.5B, 1.5B}</strong> × <strong>{CE, KL, Combinado}</strong> × <strong>{Braço A, Braço B}</strong> = <strong>12 alunos</strong>
+</div>
 <table>
-  <tr><th>Modelo</th><th class="num">ROUGE-L</th><th class="num">key_recall</th></tr>
-  <tr><td>base 1.5B</td><td class="num">0,122</td><td class="num">0,476</td></tr>
-  <tr><td>fut_0.5b A (zerada)</td><td class="num">0,178</td><td class="num">0,616</td></tr>
-  <tr><td>fut_0.5b B (RAG)</td><td class="num">0,403</td><td class="num">0,628</td></tr>
-  <tr style="font-weight:bold;background:var(--ok-bg)"><td>🏆 fut_1.5b B (RAG)</td><td class="num">0,209</td><td class="num">0,640</td></tr>
+  <tr><th>Eixo variado</th><th>Opções</th><th>A pergunta que esse eixo responde</th></tr>
+  <tr><td><strong>Tamanho do aluno</strong></td><td>0.5B · 1.5B</td><td>a capacidade extra do aluno maior se realiza com a destilação?</td></tr>
+  <tr><td><strong>Sinal de treino</strong></td><td>CE (texto) · KL (logits) · Combinado</td><td>os <strong>logits</strong> transferem algo <strong>além do texto</strong>?</td></tr>
+  <tr><td><strong>Grounding do professor</strong></td><td>A (zerada) · B (com RAG)</td><td>aterrar o professor em fatos transfere conhecimento <strong>correto</strong>?</td></tr>
 </table>
+<p>Só com a matriz inteira dá para afirmar, sem ambiguidade, frases como "KL supera CE no 1.5B": muda-se
+<strong>um fator por vez</strong>. As três perdas: <strong>(a) CE/hard</strong> — SFT na resposta (baseline);
+<strong>(b) KL/soft</strong> — aproxima as distribuições nos top-50 logits, com temperatura T; <strong>(c)
+Combinado</strong> — <code>α·CE + (1−α)·T²·KL</code> (α = 0,5).</p>
+
+<h3>Benchmark e métricas (100 perguntas = 50 DOM-PI + 50 docentesDC)</h3>
+<ul>
+  <li><strong>PPL / CE / token-accuracy</strong> do aluno antes e depois (as métricas de modelagem de Raschka);</li>
+  <li><strong>ROUGE-L (RG)</strong> — quanto o <strong>texto</strong> do aluno se sobrepõe ao do professor;</li>
+  <li><strong>key_recall (KR)</strong> — fração de <strong>entidades/números-chave</strong> (leis, CNPJ, valores) que
+  o aluno acertou; é o sinal <strong>mais neutro</strong>, porque mede fato, não fraseado;</li>
+  <li><strong>Comparação-chave:</strong> o aluno com soft label (b/c) <strong>supera</strong> o SFT-puro (a)? Se sim,
+  os logits transferem conhecimento <strong>além do texto</strong>.</li>
+</ul>
+
 <div class="callout success">
-  <strong>B ≫ A em tema pós-corte.</strong> A Copa 2026 é posterior ao corte de conhecimento → o professor "zerado"
-  raciocina mas <em>não tem os fatos</em> (alucina); só o RAG os fornece (ROUGE-L 0,40 vs 0,18). Valida a estratégia de
-  dados <em>ungated</em> e a destilação de raciocínio (receita DeepSeek-R1).
+  <strong>⭐ Destaque: KL sobre os top-50 logits (cache enxuto).</strong> Guardar a distribuição completa por token é
+  inviável — o vocabulário do Qwen2.5 tem ~151 mil entradas; salvar isso para ~1.000 respostas × ~256 tokens custaria
+  dezenas de GB. Solução (a mesma de modelos de produção): salvar só os <strong>top-50 logits por token</strong> e, na
+  KL, <strong>renormalizar a softmax do professor apenas sobre esses 50</strong>. A massa de probabilidade concentra-se
+  nos primeiros tokens, então o top-50 captura quase toda a informação útil e produz um alvo soft legítimo (soma 1),
+  reduzindo o cache para <strong>centenas de MB</strong>. O fator <strong>T²</strong> na perda combinada mantém o
+  gradiente da KL na mesma escala da CE.
 </div>
-<h4>Inferência verbatim — aqui há recordação factual <em>real</em> (contraponto à §4.7)</h4>
-<div class="inf-block">
-  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm030 · Copa 2026</span>Qual é a confederação da qual Cape Verde faz parte no Grupo H da Copa 2026?</div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">A confederação da qual Cape Verde faz parte no Grupo H da Copa 2026 é a CAF (Africa).</div></div>
-  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,03</span> <span class="badge b-info">KR 0,14</span><div class="inf-txt">Qual é o nome do jogador que marcou o gol mais importante da Copa 2022?猞猞  ⟲ […repetição degenerada…]</div></div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">🏆 aluno Copa 1.5B·B (RAG)</span> <span class="badge b-info">RG 0,85</span> <span class="badge b-info">KR 1,00</span><div class="inf-txt">A confederação da qual Cape Verde faz parte no Grupo H da Copa 2026 é a Confederation of African Football (CAF).郪枃枃枃…</div></div>
-</div>
-<p class="inf-note" style="margin-top:-14px"><strong>Por que isto importa:</strong> a Copa 2026 é <em>posterior ao corte</em> — a base não tem como saber (alucina pergunta
-de 2022 e degenera). O aluno recupera o fato exato (<strong>CAF</strong>). Prova que a destilação <strong>internaliza fatos</strong>
-quando o benchmark de fato os contém — confirmando que a "não-recordação" do núcleo (§4.7) era efeito das 71% de abstenções, não
-limite da técnica.</p>
 
-<h3>4.3 Plano B — cross-família black-box (sequence-KD)</h3>
-<p>Professor de outra família (<code>HuggingFaceH4/zephyr-7b-beta</code>, ungated; Gemma-2/Llama-3.1 são gated) →
-aluno Qwen via SFT no texto re-tokenizado.</p>
+<h2 id="impl">4. Implementação</h2>
 <table>
-  <tr><th>Arm (aluno 1.5B)</th><th>Professor</th><th>Sinal</th><th class="num">RG</th><th class="num">KR</th></tr>
+  <tr><th>#</th><th>Script</th><th>Papel</th></tr>
+  <tr><td>1</td><td><code>gerar_dataset_destilacao.py</code></td><td>o professor gera respostas e top-50 logits para os ~1.000 prompts</td></tr>
+  <tr><td>2</td><td><code>destilar.py</code></td><td>treina cada aluno com CE / KL / combinado</td></tr>
+  <tr><td>3</td><td><code>benchmark_destilacao_100.jsonl</code></td><td>50 perguntas DOM-PI + 50 docentesDC</td></tr>
+  <tr><td>4</td><td><code>avaliar_destilacao.py</code></td><td>PPL / token-acc / ROUGE-L / key_recall do professor e dos 12 alunos</td></tr>
+</table>
+<p><strong>Geração:</strong> professor servido com inferência paralela em 2 GPUs (<code>bfloat16</code>); a pergunta é
+<strong>idêntica entre A e B</strong> — só muda o contexto. Captura top-50 logits/token; o prompt já renderizado é
+salvo para reproduzir o exemplo sem divergência de formatação. <strong>Destilação:</strong> aluno = base pristino,
+fine-tuning completo, <code>bfloat16</code>, gradient checkpointing; <strong><code>labels</code> alinhados a
+<code>input_ids</code> (sem pré-shift)</strong> — a lição do bug de duplo deslocamento da Q1 — e prompt mascarado
+(−100): a perda recai só sobre os tokens da resposta. Hiperparâmetros: <code>T=2,0</code>, <code>α=0,5</code>,
+<code>épocas=3</code>, <code>lr=1e-5</code> (cosine, warmup 3%), <code>grad_accum=16</code>, <code>max_len=1024</code>.
+Um job gera o dataset e outro varre a matriz de 12 alunos, um por GPU.</p>
+
+<h2 id="resultados">5. Resultados do núcleo — houve transferência?</h2>
+<p>Pipeline executado no cluster (2× GPU L4). Métricas no benchmark held-out de 100 perguntas, <strong>sem RAG na
+inferência</strong> (testa o que ficou <em>nos pesos</em>). Referência = resposta do professor com RAG (braço B).
+RG = ROUGE-L; KR = key_recall.</p>
+<table>
+  <tr><th>Modelo</th><th class="tc">geral RG</th><th class="tc">geral KR</th><th class="tc">DOM RG</th><th class="tc">DOM KR</th><th class="tc">doc RG</th><th class="tc">doc KR</th></tr>
+  <tr><td>base 0.5B</td><td class="num">0,227</td><td class="num">0,380</td><td class="num">0,296</td><td class="num">0,505</td><td class="num">0,157</td><td class="num">0,249</td></tr>
+  <tr><td>base 1.5B</td><td class="num">0,185</td><td class="num">0,366</td><td class="num">0,230</td><td class="num">0,453</td><td class="num">0,141</td><td class="num">0,276</td></tr>
+  <tr><td>d_0.5b A ce</td><td class="num">0,220</td><td class="num">0,550</td><td class="num">0,244</td><td class="num">0,642</td><td class="num">0,196</td><td class="num">0,453</td></tr>
+  <tr><td>d_0.5b A kl</td><td class="num">0,174</td><td class="num">0,577</td><td class="num">0,184</td><td class="num">0,660</td><td class="num">0,164</td><td class="num">0,490</td></tr>
+  <tr><td>d_0.5b A comb</td><td class="num">0,194</td><td class="num">0,563</td><td class="num">0,214</td><td class="num">0,654</td><td class="num">0,174</td><td class="num">0,469</td></tr>
+  <tr><td>d_0.5b B ce</td><td class="num">0,203</td><td class="num">0,667</td><td class="num">0,249</td><td class="num">0,613</td><td class="num">0,157</td><td class="num">0,723</td></tr>
+  <tr><td>d_0.5b B kl</td><td class="num">0,224</td><td class="num">0,598</td><td class="num">0,267</td><td class="num">0,630</td><td class="num">0,181</td><td class="num">0,564</td></tr>
+  <tr><td>d_0.5b B comb</td><td class="num">0,243</td><td class="num">0,625</td><td class="num">0,276</td><td class="num">0,611</td><td class="num">0,211</td><td class="num">0,639</td></tr>
+  <tr><td>d_1.5b A ce</td><td class="num">0,244</td><td class="num">0,617</td><td class="num">0,293</td><td class="num">0,661</td><td class="num">0,196</td><td class="num">0,570</td></tr>
+  <tr><td>d_1.5b A kl</td><td class="num">0,201</td><td class="num">0,576</td><td class="num">0,232</td><td class="num">0,664</td><td class="num">0,170</td><td class="num">0,484</td></tr>
+  <tr><td>d_1.5b A comb</td><td class="num">0,208</td><td class="num">0,582</td><td class="num">0,241</td><td class="num">0,619</td><td class="num">0,176</td><td class="num">0,544</td></tr>
+  <tr><td>d_1.5b B ce</td><td class="num">0,223</td><td class="num">0,647</td><td class="num">0,277</td><td class="num">0,641</td><td class="num">0,170</td><td class="num">0,652</td></tr>
+  <tr><td>d_1.5b B kl</td><td class="num">0,350</td><td class="num">0,689</td><td class="num">0,380</td><td class="num">0,654</td><td class="num">0,320</td><td class="num">0,725</td></tr>
+  <tr class="win"><td>🏆 d_1.5b B comb</td><td class="num">0,363</td><td class="num">0,717</td><td class="num">0,429</td><td class="num">0,659</td><td class="num">0,297</td><td class="num">0,776</td></tr>
+</table>
+
+<h3>Conclusões</h3>
+<ol>
+  <li><strong>Sim, houve transferência — inequívoca.</strong> Os 12 alunos superam ambas as bases no key_recall
+  (0,37–0,38 → 0,55–0,72). O aluno-base quase não conhece os fatos; o destilado os internaliza nos pesos.</li>
+  <li><strong>Melhor receita: aluno 1.5B · braço B · combinado</strong> → RG 0,363 e KR 0,717, <strong>≈ +96%</strong>
+  sobre a base 1.5B (quase dobra).</li>
+  <li><strong>Professor com RAG (B) &gt; "zerada" (A):</strong> aterrar o professor transfere mais fatos corretos aos
+  pesos — confirma a ponte Q4↔Q5. Mais nítido em docentes (KR até 0,776 em B).</li>
+  <li><strong>Soft labels (KL/combinado) &gt; CE puro na escala maior:</strong> no 1.5B-B, combinado (0,363) ≥ kl
+  (0,350) ≫ ce (0,223). Valida o sinal dos logits — o aluno aprende <strong>além do texto</strong>.</li>
+  <li><strong>A destilação destrava o aluno maior:</strong> a base 1.5B era <em>pior</em> que a 0.5B (0,185 vs 0,227),
+  mas, destilada, vira a melhor — a capacidade extra só se realiza com o sinal do professor.</li>
+</ol>
+
+<h3>O que de fato foi transferido (análise das respostas)</h3>
+<p>Abrindo as respostas uma a uma, <strong>71% das referências são abstenções</strong> ("Não consta…") — nessas
+perguntas o RAG muitas vezes <strong>não recuperou</strong> o documento-fonte, então o próprio professor se absteve.
+Separando o key_recall por subconjunto:</p>
+<table>
+  <tr><th>Subconjunto da referência</th><th class="tc">n</th><th class="tc">base 1.5B</th><th class="tc">aluno 1.5B·B·comb</th></tr>
+  <tr><td>abstenção ("Não consta")</td><td class="num">71</td><td class="num">0,347</td><td class="num">0,835</td></tr>
+  <tr><td>fato real (nº/CNPJ/lei…)</td><td class="num">29</td><td class="num">0,410</td><td class="num">0,434</td></tr>
+</table>
+<div class="callout warn">
+  <strong>Leitura honesta.</strong> O headline <strong>+96% é dominado pela disciplina de abstenção</strong>, não por
+  recordar fatos do DOM-PI (nas perguntas com fato real, aluno ≈ base). O que a destilação transferiu, no núcleo, foi
+  <strong>confiabilidade</strong>: o aluno (1) deixa de <strong>alucinar</strong> valores falsos e (2) deixa de
+  <strong>degenerar</strong> em loops de token-lixo, adotando o "não sei fundamentado" do professor.
+  <strong>Implicação:</strong> o RAG na inferência (Q5) segue <strong>necessário</strong> para precisão factual.
+</div>
+
+<h4>Ressalvas honestas</h4>
+<ul>
+  <li>A referência é o professor <strong>com RAG</strong>, o que dá leve vantagem no ROUGE-L aos modelos do braço B
+  (mesmo fraseado). Por isso o <strong>key_recall</strong> é o sinal mais neutro — e nele B também vence. Não há
+  circularidade: a referência é factual e o aluno responde <strong>sem</strong> RAG.</li>
+  <li>Resíduo de <strong>token espúrio</strong> ao final de algumas respostas dos alunos pequenos (sem disciplina de
+  EOS); não afeta o conteúdo, mas é honesto registrar.</li>
+  <li>O ROUGE-L absoluto é modesto (o aluno reformula); o ganho de conhecimento concentra-se no key_recall, coerente
+  com o objetivo de destilação.</li>
+</ul>
+
+<h3>Visualizações</h3>
+<p>Os mesmos resultados, lidos em gráfico. <strong>Acima de tudo:</strong> todas as 12 receitas ficam acima da
+linha da base, e o ganho cresce com o tamanho do aluno e a riqueza do sinal (texto → logits).</p>
+
+<figure>
+  <img src="resultados/figuras/barras_keyrecall_config.png" alt="Barras de key_recall por configuração">
+  <figcaption>Acerto factual (key_recall) das 14 configurações. Linha tracejada = base 1.5B (referência); as cores
+  distinguem o sinal de treino (cinza base · laranja CE/texto · azul KL/logits · verde combinado). Os 12 destilados
+  superam ambas as bases; o campeão é 1.5B · braço B · combinado (★).</figcaption>
+</figure>
+
+<div class="fig-grid">
+  <figure>
+    <img src="resultados/figuras/compressao_vs_keyrecall.png" alt="Compressão versus key_recall">
+    <figcaption>Custo-benefício: o aluno 1.5B é <strong>9× menor</strong> que o professor 14B e o 0.5B é
+    <strong>28× menor</strong>, retendo a maior parte do acerto factual. O sinal de logits (azul/verde) domina o
+    sinal de texto (laranja) na escala 1.5B.</figcaption>
+  </figure>
+  <figure>
+    <img src="resultados/figuras/antes_depois_dominio.png" alt="Antes e depois por domínio">
+    <figcaption>Antes → depois da destilação por domínio: <strong>+46%</strong> em DOM-PI e <strong>+182%</strong>
+    em docentesDC no melhor aluno, frente à base 1.5B.</figcaption>
+  </figure>
+</div>
+
+<div class="fig-grid">
+  <figure>
+    <img src="resultados/figuras/heatmap_keyrecall.png" alt="Heatmap pergunta × modelo">
+    <figcaption>Heatmap pergunta × modelo (key_recall): mostra <em>onde</em> cada configuração acerta — colunas mais
+    quentes = modelos mais consistentes ao longo das 100 perguntas.</figcaption>
+  </figure>
+  <figure>
+    <img src="resultados/figuras/abstencao_vs_fato.png" alt="Abstenção versus fato real">
+    <figcaption>Decomposição do ganho: separando as referências em <strong>abstenção</strong> ("Não consta", 71%) e
+    <strong>fato real</strong> (29%), fica claro que o salto de key_recall vem sobretudo da <em>disciplina de
+    abstenção</em> — o aluno deixa de alucinar.</figcaption>
+  </figure>
+</div>
+
+<div class="fig-grid">
+  <figure>
+    <img src="resultados/figuras/box_por_metodo.png" alt="Boxplot por método">
+    <figcaption>Distribuição de key_recall por método (CE/KL/combinado): a mediana e a dispersão por receita,
+    agregando os experimentos sobre o mesmo benchmark de 100 perguntas.</figcaption>
+  </figure>
+  <figure>
+    <img src="resultados/figuras/delta_base_vs_melhor.png" alt="Delta base versus melhor">
+    <figcaption>Ganho por pergunta (base 1.5B → melhor destilado): quantas perguntas melhoraram, pioraram ou
+    empataram — o ganho é amplo, não concentrado em poucas perguntas.</figcaption>
+  </figure>
+</div>
+
+<h2 id="wb-bb">6. Extensão — white-box × black-box (cross-família)</h2>
+<p>Para contrastar <strong>white-box (mesma família, com logits)</strong> × <strong>black-box (outra família, só
+texto)</strong>, destilamos um professor de <strong>família diferente</strong> para o aluno Qwen via SFT no texto,
+reusando as mesmas perguntas e o contexto B. Professor: <code>zephyr-7b-beta</code> (arquitetura Mistral, tokenizador
+≠ Qwen) — escolhido por ser de <strong>download livre</strong>. A resposta foi re-tokenizada no espaço do Qwen.</p>
+<table>
+  <tr><th>Arm (aluno 1.5B)</th><th>Professor</th><th>Sinal</th><th class="tc">ROUGE-L</th><th class="tc">key_recall</th></tr>
   <tr><td>base</td><td>—</td><td>—</td><td class="num">0,185</td><td class="num">0,366</td></tr>
   <tr><td>cross-família black-box</td><td>zephyr-7B</td><td>texto</td><td class="num">0,270</td><td class="num">0,490</td></tr>
   <tr><td>mesma-família black-box</td><td>Qwen-14B</td><td>texto</td><td class="num">0,223</td><td class="num">0,647</td></tr>
-  <tr style="font-weight:bold;background:var(--ok-bg)"><td>mesma-família white-box (comb)</td><td>Qwen-14B</td><td>logits</td><td class="num">0,363</td><td class="num">0,717</td></tr>
+  <tr><td>mesma-família white-box (kl)</td><td>Qwen-14B</td><td>logits</td><td class="num">0,350</td><td class="num">0,689</td></tr>
+  <tr class="win"><td>🏆 mesma-família white-box (comb)</td><td>Qwen-14B</td><td>logits</td><td class="num">0,363</td><td class="num">0,717</td></tr>
 </table>
-<p>Ordenação em key_recall: <strong>white-box &gt; mesma-família black-box &gt; cross-família black-box &gt; base</strong>.
-Todos transferem; logits/mesma-família é o teto. (Ressalva: a referência é o Qwen-14B → vantagem de casa em KR para a
-mesma família; e zephyr-7B &lt; Qwen-14B mistura efeito de tamanho.)</p>
+<p><strong>Conclusões:</strong> (1) <strong>todos transferem</strong> — inclusive a cross-família (KR 0,49 ≫ base
+0,37); (2) <strong>logits + mesma família entregam o teto</strong> (0,717) — é por isso que a indústria destila dentro
+da família; (3) a cross-família perde recall, em parte porque a referência é o próprio Qwen (vantagem de casa); (4) a
+cross-família curiosamente tem ROUGE-L maior que a mesma-família black-box (o zephyr é um <em>instruct</em> forte e
+fraseia perto da referência). <em>Ressalva de tamanho:</em> zephyr-7B &lt; Qwen-14B, então a comparação carrega também
+o efeito do tamanho do professor.</p>
 
-<h3>4.4 DAPT-then-distill (unificado) — o modelo da Q1 como ALUNO</h3>
-<p>Destilar para o DAPT da Q1 (Full FT v2, −11% PPL) em vez do base. <strong>Resultado negativo:</strong> o priming de
-domínio <em>não ajudou</em> — <code>dapt_B_combined</code> KR 0,694 &lt; base <code>d_1.5b_B_combined</code> 0,717; o DAPT
-cru ≈ base (KR 0,368 vs 0,366). A destilação reescreve o aluno na direção do professor, lavando o head-start. Vindica a
-cautela: o modelo fraco da Q1 não agrega nem como ponto de partida.</p>
-
-<h3>4.5 DAPT-then-distill (Teresina, corpus limpo) — testa a ressalva</h3>
-<p>A §4.4 deixou em aberto: e se o DAPT fosse mais <em>limpo</em>? Testamos o DAPT da Q1 sobre Teresina (v3, −12,9% PPL,
-texto curado da capital) como ponto de partida do aluno.</p>
+<h2 id="copa">7. Extensão — especialização temática (Copa do Mundo 2026)</h2>
+<p>Tema escolhido de propósito <strong>posterior ao corte de conhecimento</strong> → o aluno-base não sabe nada, o que
+torna a transferência inequívoca. Professor: um modelo de <strong>raciocínio</strong> (pensa em voz alta com
+<code>&lt;think&gt;</code>), ainda da <strong>mesma família</strong> → reusa o pipeline white-box campeão. Coletamos
+um corpus factual de fontes abertas (calendário e resultados oficiais, classificações derivadas dos jogos,
+enciclopédia), indexamos com o mesmo <code>build_index.py</code> e geramos 200 perguntas nos braços A e B.</p>
 <table>
-  <tr><th>Aluno 1.5B (white-box · braço B · combinado)</th><th class="num">ROUGE-L</th><th class="num">key_recall</th></tr>
-  <tr style="font-weight:bold;background:var(--ok-bg)"><td>aluno base pristino (<code>d_1.5b_B_combined</code>)</td><td class="num">0,363</td><td class="num">0,717</td></tr>
-  <tr><td>DAPT unificado (§4.4)</td><td class="num">0,326</td><td class="num">0,694</td></tr>
-  <tr><td>DAPT Teresina (corpus limpo)</td><td class="num">0,295</td><td class="num">0,662</td></tr>
-</table>
-<div class="callout danger">
-  <strong>Ressalva refutada — o DAPT mais limpo também NÃO ajuda</strong> (é até pior: KR 0,662 &lt; 0,694 &lt; base 0,717).
-  Conclusão reforçada: <strong>priming de domínio antes da destilação não agrega, independente da qualidade do corpus</strong>
-  — a destilação reescreve o aluno na direção do professor e lava o head-start. O DAPT cru de Teresina ≈ base (KR 0,368).
-  (Teresina, mais estreito/capital-only, pode até divergir mais do benchmark geral.)
-</div>
-<h4>Inferência verbatim — base-init × DAPT-init produzem a <em>mesma</em> resposta</h4>
-<div class="inf-block">
-  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm005 · DOM-PI</span>Qual lei federal é citada como base para a isenção de taxas de licença e funcionamento para escritórios de advocacia no município de Padre Marcos?</div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">aluno base-init (campeão §4.1)</span> <span class="badge b-info">RG 0,38</span> <span class="badge b-info">KR 0,57</span><div class="inf-txt">Não consta a informação solicitada no contexto fornecido. O contexto menciona a isenção de taxas de licença e funcionamento para escritórios de advocacia, mas não especifica uma lei federal. O contexto também não menciona o município de Padre Marcos. Por favor, informe mais detalhes.</div></div>
-  <div class="inf-resp"><span class="model-tag tag-lora">aluno DAPT-Teresina-init</span> <span class="badge b-info">RG 0,42</span> <span class="badge b-info">KR 0,29</span><div class="inf-txt">Não consta a informação solicitada no contexto fornecido. O contexto menciona a isenção de taxas de licença e funcionamento para escritórios de advocacia, mas não especifica uma lei federal.(AdapterView)</div></div>
-</div>
-<p class="inf-note" style="margin-top:-14px">As duas respostas são <strong>quase idênticas</strong>: a destilação reescreve o aluno na direção do professor e
-<em>lava o head-start</em> do DAPT. É a evidência verbatim do resultado negativo — o priming de domínio não deixa rastro na saída final.</p>
-
-<h3>4.6 ULD cross-tokenizer — a fronteira de pesquisa</h3>
-<p>Logit KD <strong>entre famílias</strong> (zephyr→Qwen) <em>sem</em> vocabulário comum (Boizard et al., arXiv:2402.12030):
-por posição, ordenam-se as distribuições de probabilidade do aluno e do professor e minimiza-se a L1 entre os vetores
-ordenados (invariante ao vocabulário). Método <code>uldcomb</code> = α·CE + (1−α)·ULD.</p>
-<table>
-  <tr><th>Aluno (cross-família)</th><th>método</th><th class="num">ROUGE-L</th><th class="num">key_recall</th></tr>
-  <tr><td>base 1.5B</td><td>—</td><td class="num">0,185</td><td class="num">0,366</td></tr>
-  <tr><td>bxf_0.5b</td><td>black-box (CE)</td><td class="num">0,348</td><td class="num">0,523</td></tr>
-  <tr style="font-weight:bold;background:var(--ok-bg)"><td>uld_0.5b</td><td>uldcomb (CE+ULD)</td><td class="num">0,409</td><td class="num">0,525</td></tr>
-  <tr><td>bxf_1.5b</td><td>black-box (CE)</td><td class="num">0,270</td><td class="num">0,490</td></tr>
-  <tr style="font-weight:bold;background:var(--ok-bg)"><td>uld_1.5b</td><td>uldcomb (CE+ULD)</td><td class="num">0,330</td><td class="num">0,504</td></tr>
+  <tr><th>Modelo</th><th class="tc">ROUGE-L</th><th class="tc">key_recall</th></tr>
+  <tr><td>base 1.5B</td><td class="num">0,122</td><td class="num">0,476</td></tr>
+  <tr><td>fut_0.5b A (zerada)</td><td class="num">0,178</td><td class="num">0,616</td></tr>
+  <tr><td>fut_0.5b B (RAG)</td><td class="num">0,403</td><td class="num">0,628</td></tr>
+  <tr><td>fut_1.5b A (zerada)</td><td class="num">0,131</td><td class="num">0,617</td></tr>
+  <tr class="win"><td>🏆 fut_1.5b B (RAG)</td><td class="num">0,209</td><td class="num">0,640</td></tr>
 </table>
 <div class="callout success">
-  <strong>O ULD aproximado bate o black-box puro</strong> em ambos os tamanhos (RG 0,409 vs 0,348; 0,330 vs 0,270; KR
-  ligeiramente acima) — o sinal de distribuição cross-tokenizer agregou valor sobre o SFT no texto. <strong>Ressalva
-  honesta:</strong> é <em>uldcomb</em> (inclui CE), e o alinhamento posicional entre tokenizadores distintos é
-  <em>aproximado</em> (truncagem; o ULD fiel usa transporte ótimo). Ainda fica <strong>abaixo do white-box mesma-família</strong>
-  (KR 0,717), confirmando que, quando possível, destilar dentro da família com logits é o teto.
+  <strong>O contraponto que fecha o argumento.</strong> Aqui há <strong>recordação factual real</strong> — todos os
+  alunos vão a KR ~0,62–0,64 vs base 0,476 num tema que o base desconhece. Isso prova que a fraca recordação do núcleo
+  (§5) era efeito das 71% de referências "Não consta", e <strong>não um limite da técnica</strong>. E de novo
+  <strong>B &gt; A</strong>: para tema pós-corte, o professor "zerado" raciocina mas não tem os fatos (alucina); só o
+  RAG os fornece.
 </div>
-<h4>Inferência verbatim — disciplina de abstenção transferida <em>entre famílias</em></h4>
-<div class="inf-block">
-  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm087 · docentesDC</span>Qual valor é atribuído à variável i na chamada da função addijx dentro da função main?</div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">Não consta na informação fornecida qual valor é atribuído à variável i na chamada da função addijx. O contexto não contém informações sobre funções de programação ou chamadas dessa função.</div></div>
-  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,23</span> <span class="badge b-info">KR 0,00</span><div class="inf-txt">Qual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞猞assistant  ⟲ […repetição degenerada…]</div></div>
-  <div class="inf-resp"><span class="model-tag tag-qlora">aluno ULD 1.5B (zephyr→Qwen)</span> <span class="badge b-info">RG 0,59</span> <span class="badge b-info">KR 1,00</span><div class="inf-txt">Não consta na informação fornecida. A variável i não é atribuída a nenhum valor na chamada da função addijx dentro da função main. O código fornecido não contém nenhuma chamada de função addijx. Por favor, forneça mais informações.</div></div>
+<p><em>Ressalvas:</em> a base não chega a 0 (perguntas tocam conhecimento geral de futebol); os fatos são um
+<em>snapshot</em>. O <strong>key_recall</strong> é a métrica robusta aqui (os alunos emitem <code>&lt;think&gt;</code>,
+o que ruidifica o ROUGE-L contra a referência concisa). A cadeia de jobs rodou encadeada automaticamente.</p>
+
+<h2 id="dapt">8. Extensão — o DAPT da Q1 como ponto de partida do aluno</h2>
+<p>Pergunta: <strong>um aluno já adaptado ao domínio (o DAPT da Q1) destila melhor?</strong> Em vez de partir do
+<code>Qwen2.5-1.5B</code> base, partimos do modelo Full FT da Q1 (−11,3% de PPL no domínio) — currículo "DAPT →
+destilação". (O modelo da Q1 não vira professor — fraco demais; aqui é só o <em>ponto de partida do aluno</em>.)</p>
+<table>
+  <tr><th>Aluno 1.5B</th><th>Início</th><th>Sinal</th><th class="tc">ROUGE-L</th><th class="tc">key_recall</th></tr>
+  <tr><td>base (referência)</td><td>base</td><td>—</td><td class="num">0,185</td><td class="num">0,366</td></tr>
+  <tr><td>DAPT cru (Q1)</td><td>DAPT</td><td>—</td><td class="num">0,187</td><td class="num">0,368</td></tr>
+  <tr class="win"><td>white-box, aluno <strong>base</strong></td><td>base</td><td>logits</td><td class="num">0,363</td><td class="num">0,717</td></tr>
+  <tr><td>white-box, aluno <strong>DAPT</strong></td><td>DAPT</td><td>logits</td><td class="num">0,326</td><td class="num">0,694</td></tr>
+  <tr><td>cross-família, aluno <strong>base</strong></td><td>base</td><td>texto</td><td class="num">0,270</td><td class="num">0,490</td></tr>
+  <tr><td>cross-família, aluno <strong>DAPT</strong></td><td>DAPT</td><td>texto</td><td class="num">0,262</td><td class="num">0,478</td></tr>
+</table>
+<p><strong>Resultado negativo, mas informativo: o priming de domínio NÃO ajudou</strong> — ficou ~0,02–0,04 pior que
+partir do base. Razões: (1) o DAPT cru já é ~igual ao base no benchmark <strong>factual</strong> (KR 0,368 vs 0,366)
+— ele melhorou a <em>modelagem de linguagem</em> (meta da Q1), não o Q&amp;A; (2) a destilação <strong>reescreve</strong>
+o aluno na direção do professor, "lavando" o head-start. Testamos também com o DAPT mais <strong>limpo</strong>
+(Teresina, −12,9%) e o resultado foi até pior (KR 0,662). <strong>Conclusão reforçada: o priming de domínio antes da
+destilação não agrega, independentemente da qualidade do corpus.</strong></p>
+
+<h2 id="uld">9. Extensão — logit KD entre tokenizadores diferentes (a fronteira)</h2>
+<p>E se quiséssemos os benefícios do white-box <strong>mesmo entre famílias</strong> (tokenizadores distintos)? Há uma
+técnica de fronteira que torna isso possível por <strong>aproximação</strong>: em cada posição, ordenam-se as
+distribuições de probabilidade do aluno e do professor e minimiza-se a diferença entre os <strong>vetores
+ordenados</strong> — uma medida que não depende de os dois usarem o mesmo vocabulário. Aplicamos uma versão combinada
+com a CE (<code>uldcomb</code>).</p>
+<table>
+  <tr><th>Aluno (cross-família)</th><th>método</th><th class="tc">ROUGE-L</th><th class="tc">key_recall</th></tr>
+  <tr><td>base 1.5B</td><td>—</td><td class="num">0,185</td><td class="num">0,366</td></tr>
+  <tr><td>bxf_0.5b</td><td>black-box (CE)</td><td class="num">0,348</td><td class="num">0,523</td></tr>
+  <tr class="win"><td>uld_0.5b</td><td>uldcomb</td><td class="num">0,409</td><td class="num">0,525</td></tr>
+  <tr><td>bxf_1.5b</td><td>black-box (CE)</td><td class="num">0,270</td><td class="num">0,490</td></tr>
+  <tr class="win"><td>uld_1.5b</td><td>uldcomb</td><td class="num">0,330</td><td class="num">0,504</td></tr>
+</table>
+<p><strong>Positivo modesto:</strong> a aproximação <strong>bate o black-box puro</strong> nos dois tamanhos — o sinal
+de distribuição cross-tokenizer agrega algo sobre o SFT no texto. <strong>Ressalvas:</strong> inclui a CE na perda; o
+alinhamento posicional entre tokenizadores distintos é <strong>aproximado</strong>; e ainda fica <strong>abaixo do
+white-box mesma-família</strong> (0,717) — destilar dentro da família com logits continua sendo o teto.</p>
+
+<h2 id="referencia">10. Como nos comparamos com a literatura</h2>
+<p>A destilação tem uma "manchete" canônica: <strong>retenção</strong> (quanto do desempenho do professor o aluno
+mantém) versus <strong>compressão</strong> (quantas vezes menor ele é). O caso histórico é o <strong>DistilBERT</strong>
+— ~<strong>97%</strong> do desempenho do BERT com <strong>40% menos parâmetros</strong> e <strong>60% mais
+rápido</strong>. Toolkits e relatórios recentes (DistilQwen na própria família Qwen; modelos pequenos destilados de
+irmãos maiores) reportam o mesmo par de eixos. Posicionando o nosso resultado nesse vocabulário:</p>
+
+<table>
+  <tr><th>Projeto (referência)</th><th>Família</th><th>Sinal</th><th class="tc">Compressão</th><th>Métrica principal</th></tr>
+  <tr><td>DistilBERT (caso clássico)</td><td>BERT</td><td>white-box</td><td class="tc">~1,7× (−40%)</td><td>~97% do professor (GLUE)</td></tr>
+  <tr><td>DistilQwen / modelos pequenos de produção</td><td>Qwen (mesma nossa)</td><td>white-box / sequence</td><td class="tc">2–14×</td><td>win-rate e tarefas (AlpacaEval, MT-Bench, IFEval)</td></tr>
+  <tr><td>Modelos 2B destilados de irmãos maiores</td><td>mesma família</td><td>white-box (logits)</td><td class="tc">~4–13×</td><td>benchmarks de tarefa</td></tr>
+  <tr class="win"><td>🟢 <strong>Este trabalho (núcleo)</strong></td><td>Qwen</td><td>white-box (top-50 logits)</td><td class="tc"><strong>9× (1.5B) / 28× (0.5B)</strong></td><td>key_recall +96% vs base; ROUGE-L 0,363</td></tr>
+</table>
+
+<div class="callout info">
+  <strong>Leitura honesta da comparação.</strong> As manchetes "97% do professor" da literatura usam
+  <strong>benchmarks públicos</strong> (GLUE, MMLU, AlpacaEval) onde o professor pontua &lt;100% — então a
+  <em>retenção</em> é uma fração legítima. No nosso núcleo, a referência é o <strong>próprio professor com RAG</strong>,
+  então a sua pontuação é 100% por construção e não dá para extrair um "% do professor" comparável. Por isso reportamos
+  <strong>compressão</strong> (diretamente comparável: 9× e 28×) e <strong>ganho sobre a base</strong> (+96%), e
+  deixamos a <strong>retenção ancorada</strong> para a medição em benchmark público (próximo passo, §11).
 </div>
-<p class="inf-note" style="margin-top:-14px">O professor é o <strong>zephyr (família Mistral)</strong>, com tokenizer distinto. Mesmo assim o sinal de distribuição
-ordenada (ULD) transferiu a abstenção coerente — a base degenera, o aluno cross-tokenizer responde como o professor.</p>
 
-<h3>4.7 Análise qualitativa das inferências (held-out, verbatim)</h3>
-<p>As tabelas acima resumem 100 perguntas em dois números. Aqui abrimos as <strong>respostas verbatim</strong>
-(lidas de <code>resultados/avaliacao.json</code>, campo <code>detalhe[].answer</code>) para <em>ver o comportamento</em>
-do aluno. Referência = professor 14B com RAG; os modelos respondem <strong>sem RAG</strong>. Loops degenerados foram
-truncados com o marcador <code>⟲ […repetição degenerada…]</code> — nada foi reescrito.</p>
+<h3>O que nos falta para a comparação ficar "de literatura" (e o que estamos fazendo)</h3>
+<ul>
+  <li><strong>Eixo de eficiência</strong> — já incorporado acima: razão de compressão 9×/28× e os gráficos de
+  custo-benefício. (Latência/throughput seriam o complemento natural.)</li>
+  <li><strong>Vocabulário de retenção/compressão</strong> — esta seção reposiciona os nossos números no mesmo par de
+  eixos de DistilBERT/DistilQwen.</li>
+  <li><strong>Benchmark público</strong> — a peça que falta para uma <em>retenção ancorada</em>: medir aluno e
+  professor numa fatia de um benchmark conhecido (ex.: questões de múltipla escolha em PT-BR), onde o professor
+  pontua &lt;100% e a retenção do aluno vira uma fração comparável à literatura. Implementação na §11.</li>
+</ul>
 
+<h2 id="bench-publico">11. Retenção ancorada em benchmark público <span class="status pending">a executar</span></h2>
+<p>Para obter uma <strong>retenção comparável à literatura</strong> (um "% do professor" legítimo), medimos aluno e
+professor num <strong>benchmark público</strong> em que o professor pontua abaixo de 100%. Plano:</p>
+<ul>
+  <li><strong>Benchmark:</strong> fatia de questões de <strong>múltipla escolha em PT-BR</strong> (acurácia objetiva,
+  fácil de pontuar e independente do nosso pipeline) — separada do domínio DOM-PI para medir capacidade geral.</li>
+  <li><strong>Modelos:</strong> professor (Qwen2.5-14B-Instruct), os dois alunos base (0.5B/1.5B) e os melhores
+  destilados, todos por <em>log-verossimilhança da alternativa</em> (sem geração livre), como já fazemos na Q1/Q5.</li>
+  <li><strong>Métrica:</strong> acurácia de cada modelo e <strong>retenção = acurácia_aluno / acurácia_professor</strong>
+  — o número diretamente comparável ao "97% do BERT" do DistilBERT.</li>
+  <li><strong>Saída:</strong> uma linha a mais na tabela da §10 e um gráfico de retenção (% do professor) por
+  modelo. Roda no cluster reusando a infra de avaliação por log-prob.</li>
+</ul>
 <div class="callout warn">
-  <strong>Leitura honesta do que a destilação transferiu.</strong> Inspecionando as 100 referências, <strong>71% são
-  abstenções</strong> ("Não consta…") — porque, nas perguntas held-out, o RAG frequentemente <em>não recuperou</em> o
-  documento-fonte, então o próprio professor se absteve. Separando o <em>key-recall</em> por tipo de referência:
-  <table style="margin-top:10px">
-    <tr><th>Subconjunto</th><th class="num">n</th><th class="num">base 1.5B</th><th class="num">🏆 aluno 1.5B·B·comb</th></tr>
-    <tr><td>referência = abstenção ("Não consta")</td><td class="num">71</td><td class="num">0,347</td><td class="num">0,835</td></tr>
-    <tr><td>referência = fato real (nº/CNPJ/lei…)</td><td class="num">29</td><td class="num">0,410</td><td class="num">0,434</td></tr>
-  </table>
-  Ou seja: o headline <strong>KR 0,717 (+96%) é dominado pela disciplina de abstenção</strong>, não por recordar fatos
-  do DOM-PI. Nas perguntas com fato real, aluno e base praticamente empatam (0,434 vs 0,410). O que a destilação
-  <em>de fato</em> transferiu — e os painéis abaixo mostram — é (1) <strong>parar de alucinar</strong> números falsos
-  e (2) <strong>parar de degenerar</strong> em loops de token-lixo (<code>猞猞…</code>), adotando o "não sei
-  fundamentado" do professor RAG-grounded. É um ganho de <em>confiabilidade</em>, não de memória factual.
+  <strong>Status.</strong> Esta medição depende de um job no cluster (professor 14B + alunos sobre a fatia do
+  benchmark). Os demais resultados e gráficos deste relatório já estão consolidados; esta seção será preenchida com a
+  retenção ancorada assim que o job concluir.
 </div>
 
-<h4>Painel 1 — anti-alucinação: a base inventa um valor; o aluno se abstém corretamente</h4>
-<div class="inf-block">
-  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm009 · DOM-PI</span>Qual é o valor do Crédito Suplementar no Orçamento-Programa vigente, conforme a Portaria Nº 310 de 28 de julho de 2025?</div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">Não consta. O documento referente à Portaria Nº 310 de 28 de julho de 2025 não foi fornecido no contexto.</div></div>
-  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,11</span> <span class="badge b-info">KR 0,00</span><div class="inf-txt">O Crédito Suplementar no Orçamento-Programa vigente é de R$ 1.000,00.为抓
-为抓assistant  ⟲ […repetição degenerada…]</div></div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">🏆 aluno 1.5B · B · combinado</span> <span class="badge b-info">RG 0,58</span> <span class="badge b-info">KR 1,00</span><div class="inf-txt">Não consta o valor do Crédito Suplementar no Orçamento-Programa vigente, conforme a Portaria Nº 310 de 28 de julho de 2025, no contexto fornecido. O contexto não aborda esse assunto. creampie</div></div>
-</div>
-<p class="inf-note" style="margin-top:-14px">A base <strong>alucina</strong> "R$ 1.000,00" e entra em loop; o aluno reproduz a abstenção do professor.
-Note o token espúrio <code>creampie</code> ao final — artefato residual de decodificação do modelo pequeno (sem disciplina de EOS).</p>
-
-<h4>Painel 2 — fim da degeneração: a base colapsa em token-lixo; o aluno produz abstenção coerente</h4>
-<div class="inf-block">
-  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm005 · DOM-PI</span>Qual lei federal é citada como base para a isenção de taxas de licença e funcionamento para escritórios de advocacia no município de Padre Marcos?</div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">A Lei Federal citada é a Lei nº 13.874/2019 (Lei de Liberdade Econômica).</div></div>
-  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,08</span> <span class="badge b-info">KR 0,00</span><div class="inf-txt">Qual o nome do município onde o escritório de advocacia está localizado?猞猞猞…  ⟲ […repetição degenerada…]</div></div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">🏆 aluno 1.5B · B · combinado</span> <span class="badge b-info">RG 0,38</span> <span class="badge b-info">KR 0,57</span><div class="inf-txt">Não consta a informação solicitada no contexto fornecido. O contexto menciona a isenção de taxas de licença e funcionamento para escritórios de advocacia, mas não especifica uma lei federal. O contexto também não menciona o município de Padre Marcos. Por favor, informe mais detalhes.</div></div>
-</div>
-
-<h4>Painel 3 — a limitação honesta: o fato existe na referência, mas o aluno também se abstém (não o recorda)</h4>
-<div class="inf-block">
-  <div class="inf-prompt"><span class="lbl">Pergunta held-out · bm031 · DOM-PI</span>Qual é o valor do salário para a função de Professor(a) Anos Iniciais contratado pela Secretaria Municipal de Educação de Morro Cabeça no Tempo?</div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">referência · professor 14B + RAG</span><div class="inf-txt">O valor é de R$ 2.433,88, conforme o extrato de contrato apresentado para Deise Nunes de Sena.</div></div>
-  <div class="inf-resp"><span class="model-tag tag-base">base 1.5B sem destilar</span> <span class="badge b-info">RG 0,25</span> <span class="badge b-info">KR 0,15</span><div class="inf-txt">Qual é o valor do salário para a função de Assistente Técnico de Educação no Tempo, conforme os extratos de contrato apresentados?猞猞…  ⟲ […repetição degenerada…]</div></div>
-  <div class="inf-resp"><span class="model-tag tag-fullft">🏆 aluno 1.5B · B · combinado</span> <span class="badge b-info">RG 0,22</span> <span class="badge b-info">KR 0,31</span><div class="inf-txt">Não consta o valor do salário para a função de Professor(a) Anos Iniciais no tempo especificado no contexto fornecido. O contexto não contém informações sobre salários para esse cargo. creampie  ⟲ […repetição degenerada…]</div></div>
-</div>
-<p class="inf-note" style="margin-top:-14px">Aqui o fato (R$ 2.433,88) <strong>existe</strong> na referência, mas o aluno se abstém em vez de recordá-lo: a destilação
-não internalizou números específicos — coerente com o empate na fatia "fato real" (0,434 vs 0,410). Reforça que o ganho é de
-<em>comportamento</em>, e que <strong>RAG na inferência (Q5) continua necessário</strong> para fatos exatos.</p>
-
-<!-- ───────────────────────────── CONCLUSÕES ───────────────────────────── -->
-<h2>5. Conclusões transversais</h2>
+<h2 id="sintese">12. Síntese para apresentação</h2>
 <ul>
-  <li><strong>Houve transferência de conhecimento — inequívoca</strong> e reproduzida em múltiplas frentes (núcleo,
-  raciocínio, cross-família).</li>
-  <li><strong>Aterrar o professor com RAG (B) &gt; "zerada" (A)</strong> — universal, e <em>máximo</em> em tema
-  pós-corte (Copa 2026). Ponte Q4↔Q5 confirmada.</li>
-  <li><strong>White-box mesma-família (logits) é o teto;</strong> cross-família força black-box (estilo DeepSeek-R1).</li>
-  <li><strong>O modelo fraco da Q1 não agrega</strong> — nem como professor (princípio do KD), nem como ponto de partida
-  do aluno (§4.4).</li>
-  <li><em>key_recall</em> (presença de entidades/números) é a métrica mais robusta; o ROUGE-L é ruidificado quando o
-  aluno reformula ou emite <code>&lt;think&gt;</code>.</li>
-  <li><strong>O que foi transferido é confiabilidade, não memória factual</strong> (§4.7): com 71% das referências sendo
-  abstenções, o ganho de KR vem de o aluno aprender a <em>não alucinar</em> e <em>não degenerar</em>, replicando o "não
-  consta" do professor. Nas perguntas com fato real, aluno ≈ base — o que <strong>reafirma a necessidade do RAG na
-  inferência (Q5)</strong> para precisão factual.</li>
+  <li><strong>Por que 12 alunos:</strong> desenho fatorial {tamanho} × {sinal} × {grounding} para isolar cada efeito.</li>
+  <li><strong>Por que esses modelos:</strong> professor forte e <strong>da mesma família</strong> (habilita logits);
+  alunos base pequenos (0.5B dá o contraste máximo); o modelo fraco da Q1 não serve de professor (transferiria erros).</li>
+  <li><strong>Resultado-âncora:</strong> transferência inequívoca; melhor receita <strong>1.5B · B · combinado,
+  +96%</strong>; <strong>logits &gt; texto</strong> e <strong>professor com RAG &gt; zerada</strong>.</li>
+  <li><strong>Honestidade:</strong> no núcleo, o ganho foi sobretudo <strong>confiabilidade</strong> (parar de
+  alucinar/degenerar); a extensão da Copa 2026 demonstra <strong>recordação factual real</strong>; e o RAG na
+  inferência (Q5) segue necessário para precisão.</li>
 </ul>
-
-<!-- ───────────────────────────── REPRODUÇÃO ───────────────────────────── -->
-<h2>6. Reprodução</h2>
-<p>Cadeias SLURM auto-encadeadas (<code>--dependency=afterok</code>) no cluster (2× L4):</p>
-<ul>
-  <li><code>run_gerar_dataset.sbatch</code> → <code>run_destilar.sbatch</code> (12 alunos) → <code>run_avaliar.sbatch</code></li>
-  <li><code>run_futebol.sbatch</code> (Plano A) → <code>run_avaliar_futebol.sbatch</code></li>
-  <li><code>run_crossfamilia.sbatch</code> (Plano B) → <code>run_avaliar_bxf.sbatch</code></li>
-  <li><code>run_dapt_distill.sbatch</code> (env <code>DAPT_PATH/DAPT_TAG</code>) → <code>run_avaliar_dapt.sbatch</code></li>
-  <li><code>run_uld.sbatch</code> (geração+logprobs → destilação uldcomb → avaliação)</li>
-</ul>
-<p>Resultados em <code>resultados/avaliacao*.json</code>. Melhor aluno publicado no HF (privado);
-card em <code>HF_MODEL_CARD.md</code>.</p>
 
 <footer>
   Questão 4 — Destilação de Conhecimento · Trabalho Final "Construindo um LLM" (DOM-PI / UFPI-DC).
+  Referência metodológica: Sebastian Raschka, <em>Build a Large Language Model (From Scratch)</em> — logits e softmax na
+  geração de texto; cross-entropy e perplexidade como objetivo e métrica; convenção de alinhamento de rótulos
+  (base da correção do bug de duplo deslocamento, reaproveitada na máscara de perda do aluno).
   Relatório consolidado: <a href="../relatorio_tecnico_completo.html">relatorio_tecnico_completo.html</a>.
 </footer>
 
