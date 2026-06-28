@@ -113,11 +113,24 @@ def logprob_continuacao(model, tok, prompt: str, continuation: str) -> float:
     return float(tok_lp.mean().item())
 
 
+def _eh_grande(path: str) -> bool:
+    """Modelos 7B/14B não cabem em 1 L4 (24GB) em bf16 → carrega em 8-bit (quase lossless)."""
+    p = path.lower()
+    return any(t in p for t in ("14b", "7b", "13b", "32b"))
+
+
 def avaliar_modelo(rotulo: str, path: str, bench: list[dict]) -> dict:
     print(f"\n=== {rotulo} ({path}) ===", flush=True)
     tok = AutoTokenizer.from_pretrained(path, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(
-        path, torch_dtype=torch.bfloat16, device_map="auto", trust_remote_code=True)
+    if _eh_grande(path):
+        from transformers import BitsAndBytesConfig
+        print("   modelo grande → carregando em 8-bit (bitsandbytes)", flush=True)
+        model = AutoModelForCausalLM.from_pretrained(
+            path, quantization_config=BitsAndBytesConfig(load_in_8bit=True),
+            device_map="auto", trust_remote_code=True)
+    else:
+        model = AutoModelForCausalLM.from_pretrained(
+            path, torch_dtype=torch.bfloat16, device_map="auto", trust_remote_code=True)
     model.eval()
 
     acertos, detalhe = 0, []

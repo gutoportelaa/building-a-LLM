@@ -1,7 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=q4-bench-pub
 #SBATCH --partition=gpu
-#SBATCH --nodelist=gpunode01
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --time=04:00:00
@@ -10,6 +9,7 @@
 # Retenção ancorada da Q4 num benchmark PÚBLICO (ENEM PT-BR).
 # Mede professor 14B + alunos por log-verossimilhança da alternativa (sem geração)
 # e calcula retenção = acc_aluno / acc_professor (comparável ao "97% do BERT" do DistilBERT).
+# Professor 14B carregado em 8-bit p/ caber em 1 L4 (24GB) — quase lossless p/ inferência.
 set -euo pipefail
 cd "$HOME/building-a-LLM"
 mkdir -p logs
