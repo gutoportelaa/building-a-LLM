@@ -1,8 +1,8 @@
 # Q2 — Pós-treino SFT
 
 ## Enunciado
-Gerar **≥1.000 pares** instruction/input/output a partir do dataset *docentesDC*. Usar esses pares para
-**Supervised Fine-Tuning (SFT)**. Avaliar o LLM antes e depois.
+Gerar **≥1.000 pares** python dicts de perguntas e respostas com instruction/input/output a partir do dataset *docentesDC*. Usar esses pares para pós-treino
+**Supervised Fine-Tuning (SFT)**. Avaliar o LLM antes e depois. Considerar mais de um modelo LLM
 
 ## Status: ⏳ Pendente
 

@@ -1,0 +1,2175 @@
+{
+  "benchmark": "trabalho-final/Q4-destilacao/dados/benchmark_destilacao_100.jsonl",
+  "n": 100,
+  "modelos": [
+    {
+      "rotulo": "base_15",
+      "path": "Qwen/Qwen2.5-1.5B",
+      "por_dominio": {
+        "DOM-PI": {
+          "n": 50,
+          "rougeL": 0.2296,
+          "key_recall": 0.4525
+        },
+        "docentesDC": {
+          "n": 50,
+          "rougeL": 0.1413,
+          "key_recall": 0.2755
+        }
+      },
+      "geral": {
+        "n": 100,
+        "rougeL": 0.1855,
+        "key_recall": 0.3658
+      },
+      "detalhe": [
+        {
+          "id": "bm000",
+          "source": "DOM-PI",
+          "rougeL": 0.2775,
+          "key_recall": 0.5556,
+          "answer": "Qual é o objeto do Credenciamento n 001/2025 da Prefeitura Municipal de Guaribas?猞\n猞assistant\nQual é o objeto do Credenciamento n 001/2025 da Prefeitura Municipal de Guaribas?猞\n猞assistant\nQual é o objeto do Credenciamento n 001/2025 da Prefeitura Municipal de Guaribas?猞\n猞assistant\nQual é o objeto do Credenciamento n 001/2025 da Prefeitura Municipal de Guaribas?猞\n猞assistant\nQual é o objeto do Credenciamento n 001/2025 da Prefeitura Municipal de Guaribas?猞\n猞assistant\nQual é o objeto do Credenciamento n 001/2025 da Prefeitura Municipal de Guaribas?猞"
+        },
+        {
+          "id": "bm001",
+          "source": "DOM-PI",
+          "rougeL": 0.1633,
+          "key_recall": 0.5,
+          "answer": "O que é definido como vencimento de acordo com o Art. 12?猞\n猞assistant\nO que é definido como vencimento de acordo com o Art. 12?猞\n猞assistant\nO que é definido como vencimento de acordo com o Art. 12?猞\n猞assistant\nO que é definido como vencimento de acordo com o Art. 12?猞\n猞assistant\nO que é definido como vencimento de acordo com o Art. 12?猞\n猞assistant\nO que é definido como vencimento de acordo com o Art. 12?猞\n猞assistant\nO que é definido como vencimento de acordo com o Art. 12?猞\n猞assistant\nO que é definido como vencimento de acordo com o Art. 12?猞\n猞assistant\nO que é definido como venc"
+        },
+        {
+          "id": "bm002",
+          "source": "DOM-PI",
+          "rougeL": 0.2416,
+          "key_recall": 0.25,
+          "answer": "Qual é o objeto da presente ATA de registro de preços?猞cia\n猞ciaassistant\nQual é o objeto da presente ATA de registro de preços?猞ciauser\n猞ciauserassistant\nQual é o objeto da presente ATA de registro de preços?猞ciauserassistant\n猞ciauserassistant\nQual é o objeto da presente ATA de registro de preços?猞ciauserassistant\n猞ciauserassistant\nQual é o objeto da presente ATA de registro de preços?猞ciauserassistant\n猞ciauserassistant\nQual é o objeto da presente ATA de registro de preços?猞ciauserassistant\n猞ciauserassistant\nQual é o objeto da presente ATA de registro de preços?猞ciauserassistant\n猞ciauserassistant\nQual é o objeto da presente ATA de registro de preços?猞ciauserassistant\n猞ciauserassistant\nQual é o objeto da presente ATA de registro de preços?猞ciauserassistant\n猞cia"
+        },
+        {
+          "id": "bm003",
+          "source": "DOM-PI",
+          "rougeL": 0.0976,
+          "key_recall": 0.0,
+          "answer": "Qual é o número do processo de aposentadoria mencionado na portaria?猞\n猞assistant\nQual é o número do processo de aposentadoria mencionado na portaria?猞\n猞assistant\nQual é o número do processo de aposentadoria mencionado na portaria?猞\n猞assistant\nQual é o número do processo de aposentadoria mencionado na portaria?猞\n猞assistant\nQual é o número do processo de aposentadoria mencionado na portaria?猞\n猞assistant\nQual é o número do processo de aposentadoria mencionado na portaria?猞\n猞assistant\nQual é o número do processo de aposentadoria mencionado na portaria?猞\n猞assistant\nQual é o número do processo de aposentadoria mencionado na portaria?猞\n猞assistant\nQual é o número do processo de a"
+        },
+        {
+          "id": "bm004",
+          "source": "DOM-PI",
+          "rougeL": 0.1389,
+          "key_recall": 0.7143,
+          "answer": "Qual é o nome do presidente da Câmara Municipal de Campo Largo do Piauí?猞\n猞assistant\nQual é o nome do vice-presidente da Câmara Municipal de Campo Largo do Piauí?猞\n猞assistant\nQual é o nome do secretário de Educação da Prefeitura Municipal de Campo Largo do Piauí?猞\n猞assistant\nQual é o nome do secretário de Saúde da Prefeitura Municipal de Campo Largo do Piauí?猞\n猞assistant\nQual é o nome do secretário de Desenvolvimento Econômico da Prefeitura Municipal de Campo Largo do Piauí?猞\n猞assistant\nQual é o nome do secretário de Meio Ambiente da Prefeitura Municipal de Campo Largo do Piauí?猞\n猞assistant\nQual é o nome do secretário de Turismo da Prefeitura Municipal de Campo Largo do Piauí?猞\n猞assistant\nQual é o"
+        },
+        {
+          "id": "bm005",
+          "source": "DOM-PI",
+          "rougeL": 0.0755,
+          "key_recall": 0.0,
+          "answer": "Qual o nome do município onde o escritório de advocacia está localizado?猞\n猞\n猞\n猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞"
+        },
+        {
+          "id": "bm006",
+          "source": "DOM-PI",
+          "rougeL": 0.3409,
+          "key_recall": 0.6087,
+          "answer": "O Relatório Resumido da Execução Orçamentária do Demonstrativo da Projeção Atuarial do Regime Próprio de Previdência dos Servidores de São Raimundo Nonato é um documento que apresenta uma análise financeira e orçamentária do demonstrativo da projeção atuarial do regime próprio de previdência dos servidores de São Raimundo Nonato. O período abrangido pelo relatório é o período de 2019 a 2021.为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓\n为抓"
+        },
+        {
+          "id": "bm007",
+          "source": "DOM-PI",
+          "rougeL": 0.1928,
+          "key_recall": 0.25,
+          "answer": "Qual o nome da pessoa que está no cargo de Assistente Técnico da Secretaria Municipal de Educação de Piripiri-PI?猞\n猞assistant\nQual o nome da pessoa que está no cargo de Assistente Técnico da Secretaria Municipal de Educação de Piripiri-PI?猞\n猞assistant\nQual o nome da pessoa que está no cargo de Assistente Técnico da Secretaria Municipal de Educação de Piripiri-PI?猞\n猞assistant\nQual o nome da pessoa que está no cargo de Assistente Técnico da Secretaria Municipal de Educação de Piripiri-PI?猞\n猞assistant\nQual o nome da pessoa que está no cargo de Assistente Técnico da Secretaria Municipal de Educação de Piripiri-PI?猞\n猞assistant\nQual o nome da pessoa que está no cargo de Assistente Técnico da Secretaria Municipal de Educação de Piripiri-PI?猞"
+        },
+        {
+          "id": "bm008",
+          "source": "DOM-PI",
+          "rougeL": 0.1898,
+          "key_recall": 0.0,
+          "answer": "Qual é o valor total das despesas iniciais com atenção básica no período Jan-Dez 2024?猞\n猞assistant\nQual é o valor total das despesas iniciais com atenção básica no período Jan-Dez 2024?猞\n猞assistant\nQual é o valor total das despesas iniciais com atenção básica no período Jan-Dez 2024?猞\n猞assistant\nQual é o valor total das despesas iniciais com atenção básica no período Jan-Dez 2024?猞\n猞assistant\nQual é o valor total das despesas iniciais com atenção básica no período Jan-Dez 2024?猞\n猞assistant\nQual é o valor total das despesas iniciais com atenção básica no período Jan-Dez 2024?猞\n猞assistant\nQual é o valor total das despes"
+        },
+        {
+          "id": "bm009",
+          "source": "DOM-PI",
+          "rougeL": 0.1121,
+          "key_recall": 0.0,
+          "answer": "O Crédito Suplementar no Orçamento-Programa vigente é de R$ 1.000,00.为抓\n为抓assistant\nO Crédito Suplementar no Orçamento-Programa vigente é de R$ 1.000,00.为抓\n为抓assistant\nO Crédito Suplementar no Orçamento-Programa vigente é de R$ 1.000,00.为抓\n为抓assistant\nO Crédito Suplementar no Orçamento-Programa vigente é de R$ 1.000,00.为抓\n为抓assistant\nO Crédito Suplementar no Orçamento-Programa vigente é de R$ 1.000,00.为抓\n为抓assistant\nO Crédito Suplementar no Orçamento-Programa vigente é de R$ 1.00"
+        },
+        {
+          "id": "bm010",
+          "source": "DOM-PI",
+          "rougeL": 0.3803,
+          "key_recall": 0.9,
+          "answer": "O valor global do contrato de número 0911.01/2025 entre a Prefeitura Municipal de São Francisco do Piauí e a empresa Jailson da Silva Martins - ME é R$ 1.000.000,00.ętr\nętrassistant\nO valor global do contrato de número 0911.01/2025 entre a Prefeitura Municipal de São Francisco do Piauí e a empresa Jailson da Silva Martins - ME é R$ 1.000.000,00.ętr\nętrassistant\nO valor global do contrato de número 0911.01/2025 entre a Prefeitura Municipal de São Francisco do Piauí e a empresa Jailson da Silva Martins - ME é R$ 1.000.000,00.ętr\nętrassistant\nO valor global do contrato"
+        },
+        {
+          "id": "bm011",
+          "source": "DOM-PI",
+          "rougeL": 0.4177,
+          "key_recall": 0.5556,
+          "answer": "Qual é o valor da remuneração do cargo de Assistente Técnico de Controle da Câmara Municipal de Teresina, conforme fixado na Lei nº 6.182, de 26/02/2025?猞\n猞assistant\nQual é o valor da remuneração do cargo de Assistente Técnico de Controle da Câmara Municipal de Teresina, conforme fixado na Lei nº 6.182, de 26/02/2025?猞\n猞assistant\nQual é o valor da remuneração do cargo de Assistente Técnico de Controle da Câmara Municipal de Teresina, conforme fixado na Lei nº 6.182, de 26/02/2025?猞\n猞assistant\nQual é o valor da remuneração do cargo de Assistente Técnico de Controle da Câmara Municipal"
+        },
+        {
+          "id": "bm012",
+          "source": "DOM-PI",
+          "rougeL": 0.0588,
+          "key_recall": 0.5,
+          "answer": "Qual é a função da Coordenacao Municipal da defesa civil (CmDc) de acordo com o Art. 9?猞\n猞assistant\nQual é a função da Coordenacao Municipal da defesa civil (CmDc) de acordo com o Art. 9?猞\n猞assistant\nQual é a função da Coordenacao Municipal da defesa civil (CmDc) de acordo com o Art. 9?猞\n猞assistant\nQual é a função da Coordenacao Municipal da defesa civil (CmDc) de acordo com o Art. 9?猞\n猞assistant\nQual é a função da Coordenacao Municipal da defesa civil (CmDc) de acordo com o Art. 9?猞\n猞assistant\nQual é a função da Coordenacao Municipal da defesa civil (CmDc) de acordo com o Art. 9?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm013",
+          "source": "DOM-PI",
+          "rougeL": 0.2406,
+          "key_recall": 0.75,
+          "answer": "Qual foi o valor total da adjudicação do avental de plástico fornecido pela JANAINA DE SOUSA ANTUNES?处置\n处置assistant\nQual foi o valor total da adjudicação do avental de plástico fornecido pela JANAINA DE SOUSA ANTUNES?处置\n处置assistant\nQual foi o valor total da adjudicação do avental de plástico fornecido pela JANAINA DE SOUSA ANTUNES?处置\n处置assistant\nQual foi o valor total da adjudicação do avental de plástico fornecido pela JANAINA DE SOUSA ANTUNES?处置\n处置assistant\nQual foi o valor total da adjudicação do avental de plástico fornecido pela JANAINA DE SOUSA ANTUNES?处置\n处置assistant\nQual foi o valor total da adjudicação do avental de plástico fornecido pela JANAINA DE SOUSA ANTUNES?处置"
+        },
+        {
+          "id": "bm014",
+          "source": "DOM-PI",
+          "rougeL": 0.05,
+          "key_recall": 0.6667,
+          "answer": "O que o Ato Adjudicatório estabelece sobre o prazo de entrega do produto?猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞"
+        },
+        {
+          "id": "bm015",
+          "source": "DOM-PI",
+          "rougeL": 0.1846,
+          "key_recall": 0.3333,
+          "answer": "O termo aditivo ao Contrato nº 005/2024 foi aditado por um período de 12 meses.为抓\n为抓assistant\nO termo aditivo ao Contrato nº 005/2024 foi aditado por um período de 12 meses.为抓\n为抓assistant\nO termo aditivo ao Contrato nº 005/2024 foi aditado por um período de 12 meses.为抓\n为抓assistant\nO termo aditivo ao Contrato nº 005/2024 foi aditado por um período de 12 meses.为抓\n为抓assistant\nO termo aditivo ao Contrato nº 005/2024 foi aditado por um período de 12 meses.为抓\n为抓assistant\nO termo aditivo ao Contrato nº 005/"
+        },
+        {
+          "id": "bm016",
+          "source": "DOM-PI",
+          "rougeL": 0.1418,
+          "key_recall": 0.6667,
+          "answer": "Qual é o nome do presidente da Câmara Municipal de Capitão de Campos-PI?猞\n猞assistant\nQual é o nome do vice-prefeito da Prefeitura Municipal de Capitão de Campos-PI?猞\n猞assistant\nQual é o nome do prefeito da Prefeitura Municipal de Capitão de Campos-PI?猞\n猞assistant\nQual é o nome do vice-prefeita da Prefeitura Municipal de Capitão de Campos-PI?猞\n猞assistant\nQual é o nome do secretário de Saúde da Prefeitura Municipal de Capitão de Campos-PI?猞\n猞assistant\nQual é o nome do secretário de Educação da Prefeitura Municipal de Capitão de Campos-PI?猞\n猞assistant\nQual é o nome do secretário de Desenvolvimento Econômico da Prefeitura Municipal de Capitão de Campos-PI?猞\n猞assistant\nQual é o nome"
+        },
+        {
+          "id": "bm017",
+          "source": "DOM-PI",
+          "rougeL": 0.1497,
+          "key_recall": 0.6667,
+          "answer": "Qual é o valor total para os itens 13 a 24 do contrato?猞\n猞assistant\nQual é o valor total para os itens 13 a 24 do contrato?猞\n猞assistant\nQual é o valor total para os itens 13 a 24 do contrato?猞\n猞assistant\nQual é o valor total para os itens 13 a 24 do contrato?猞\n猞assistant\nQual é o valor total para os itens 13 a 24 do contrato?猞\n猞assistant\nQual é o valor total para os itens 13 a 24 do contrato?猞\n猞assistant\nQual é o valor total para os itens 13 a 24 do contrato?猞\n猞assistant\nQual é o valor total para os itens 13 a 24 do contrato?猞\n猞assistant\nQual é o valor total para os itens 13 a 24 do"
+        },
+        {
+          "id": "bm018",
+          "source": "DOM-PI",
+          "rougeL": 0.0976,
+          "key_recall": 0.5,
+          "answer": "Qual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é a gratificação do assistente Marll Cordeiro De Farias?处置\n处置assistant\nQual é"
+        },
+        {
+          "id": "bm019",
+          "source": "DOM-PI",
+          "rougeL": 0.2092,
+          "key_recall": 0.3333,
+          "answer": "Qual é o valor da remuneração mensal para o cargo de ASSISTENTE DE EDUCAÇÃO INFANTIL conforme especificado no contrato?猞\n猞assistant\nQual é o valor da remuneração mensal para o cargo de ASSISTENTE DE EDUCAÇÃO INFANTIL conforme especificado no contrato?猞\n猞assistant\nQual é o valor da remuneração mensal para o cargo de ASSISTENTE DE EDUCAÇÃO INFANTIL conforme especificado no contrato?猞\n猞assistant\nQual é o valor da remuneração mensal para o cargo de ASSISTENTE DE EDUCAÇÃO INFANTIL conforme especificado no contrato?猞\n猞assistant\nQual é o valor da remuneração mensal para o cargo de ASSISTENTE DE EDUCAÇÃO INFANTIL conforme especificado no contrato?猞\n猞assistant\nQual é o valor da remuneração mensal para o cargo de ASSISTENTE DE EDU"
+        },
+        {
+          "id": "bm020",
+          "source": "DOM-PI",
+          "rougeL": 0.3226,
+          "key_recall": 0.5556,
+          "answer": "Qual é o nome da servidora nomeada para o cargo de Assistente de apoio à divisão da Secretaria de Educação do Município de Piracuruca-PI?猞\n猞assistant\nQual é o nome da servidora nomeada para o cargo de Assistente de apoio à divisão da Secretaria de Educação do Município de Piracuruca-PI?猞\n猞assistant\nQual é o nome da servidora nomeada para o cargo de Assistente de apoio à divisão da Secretaria de Educação do Município de Piracuruca-PI?猞\n猞assistant\nQual é o nome da servidora nomeada para o cargo de Assistente de apoio à divisão da Secretaria de Educação do Município de Piracuruca-PI?猞\n猞assistant\nQual é o nome da servidora nomeada para o cargo de Assistente de apoio à divisão da Secret"
+        },
+        {
+          "id": "bm021",
+          "source": "DOM-PI",
+          "rougeL": 0.1844,
+          "key_recall": 0.5,
+          "answer": "Qual é o preço unitário da bateria 70 A produtos nacional registrada no ato?猞\n猞assistant\nQual é o preço unitário da bateria 70 A produtos nacional registrada no ato?猞\n猞assistant\nQual é o preço unitário da bateria 70 A produtos nacional registrada no ato?猞\n猞assistant\nQual é o preço unitário da bateria 70 A produtos nacional registrada no ato?猞\n猞assistant\nQual é o preço unitário da bateria 70 A produtos nacional registrada no ato?猞\n猞assistant\nQual é o preço unitário da bateria 70 A produtos nacional registrada no ato?猞\n猞assistant\nQual é o preço unitário da bateria 70 A produtos nacional registrada no ato?猞\n猞assistant\nQual é o preço unitário da bateria 70 A produtos nacional registrada no"
+        },
+        {
+          "id": "bm022",
+          "source": "DOM-PI",
+          "rougeL": 0.2345,
+          "key_recall": 0.5,
+          "answer": "Qual é o valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra?猞猁\n猞猁assistant\nQual é o valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra?猞猁\n猞猁assistant\nQual é o valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra?猞猁\n猞猁assistant\nQual é o valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra?猞猁\n猞猁assistant\nQual é o valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra?猞猁\n猞猁assistant\nQual é o valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Sal"
+        },
+        {
+          "id": "bm023",
+          "source": "DOM-PI",
+          "rougeL": 0.1576,
+          "key_recall": 0.0,
+          "answer": "Qual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado no extrato?猞\n猞assistant\nQual é o valor total do contrato mencionado"
+        },
+        {
+          "id": "bm024",
+          "source": "DOM-PI",
+          "rougeL": 0.1944,
+          "key_recall": 0.6,
+          "answer": "Qual é o valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA?猞\n猞assistant\nQual é o valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA?猞\n猞assistant\nQual é o valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA?猞\n猞assistant\nQual é o valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA?猞\n猞assistant\nQual é o valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA?猞\n猞assistant\nQual é o valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA?猞\n猞assistant\nQual é o valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA?猞"
+        },
+        {
+          "id": "bm025",
+          "source": "DOM-PI",
+          "rougeL": 0.1081,
+          "key_recall": 0.25,
+          "answer": "O que é a Portaria GP no 20/2025?猞\n猞\nA Portaria GP no 20/2025 é um documento emitido pela Secretaria de Estado de Saúde do Rio Grande do Norte (SES/RN) que estabelece normas e procedimentos para a gestão e execução de projetos de saúde no estado. O objetivo da Portaria é promover a melhoria da qualidade de vida das pessoas e a redução da mortalidade infantil e materna.猞\n猞\nQual é o objetivo da Portaria GP no 20/2025?猞\n猞\nO objetivo da Portaria GP no 20/2025 é promover a melhoria da qualidade de vida das pessoas e a redução da mortalidade infantil e materna.猞\n猞\nQual é o objetivo da Portaria GP no 20/2025?猞"
+        },
+        {
+          "id": "bm026",
+          "source": "DOM-PI",
+          "rougeL": 0.0156,
+          "key_recall": 0.0,
+          "answer": "Qual é o nome do assistente?处置\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do assistente?处置assistant\n处置assistant\nQual é o nome do"
+        },
+        {
+          "id": "bm027",
+          "source": "DOM-PI",
+          "rougeL": 0.1538,
+          "key_recall": 0.3125,
+          "answer": "Qual é o valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA?猞\n猞assistant\nQual é o valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA?猞\n猞assistant\nQual é o valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA?猞\n猞assistant\nQual é o valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA?猞\n猞assistant\nQual é o valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA?猞\n猞assistant\nQual é o valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm028",
+          "source": "DOM-PI",
+          "rougeL": 0.2917,
+          "key_recall": 0.8182,
+          "answer": "Qual é o valor mensal do contrato n007/2025 entre o Município de São Miguel da Baixa Grande e Antonio Rumao da Costa Batista?猞猁\n猞猁assistant\nQual é o valor mensal do contrato n007/2025 entre o Município de São Miguel da Baixa Grande e Antonio Rumao da Costa Batista?猞猁\n猞猁assistant\nQual é o valor mensal do contrato n007/2025 entre o Município de São Miguel da Baixa Grande e Antonio Rumao da Costa Batista?猞猁\n猞猁assistant\nQual é o valor mensal do contrato n007/2025 entre o Município de São Miguel da Baixa Grande e Antonio Rumao da Costa Batista?猞猁\n猞猁assistant\nQual é o valor mensal do contrato n007/2025 entre o M"
+        },
+        {
+          "id": "bm029",
+          "source": "DOM-PI",
+          "rougeL": 0.4773,
+          "key_recall": 0.5789,
+          "answer": "Qual é o valor reconhecido pela Superintendência de Desenvolvimento Urbano - SDU Sudeste para pagamento ao Consórcio Recicle Aurora referente à prestação de serviços de limpeza pública no período de 19 de agosto a 18 de setembro de 2分彩\n分彩\nQual é o valor reconhecido pela Superintendência de Desenvolvimento Urbano - SDU Sudeste para pagamento ao Consórcio Recicle Aurora referente à prestação de serviços de limpeza pública no período de 19 de agosto a 18 de setembro de 2分彩\n分彩\nQual é o valor reconhecido pela Superintendência de Desenvolvimento Urbano - SDU Sudeste para pagamento ao Consórcio Recicle Aurora referente à prestação de serviços de limpeza pública no período de 19 de agosto a 18 de setembro de 2"
+        },
+        {
+          "id": "bm030",
+          "source": "DOM-PI",
+          "rougeL": 0.4464,
+          "key_recall": 0.7,
+          "answer": "Qual é o valor total do contrato para a prestação de serviços técnicos especializados de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal de Assistência Social, Trabalho e Cidadania de猞\n猞assistant\nQual é o valor total do contrato para a prestação de serviços técnicos especializados de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal de Assistência Social, Trabalho e Cidadania de猞\n猞assistant\nQual é o valor total do contrato para a prestação de serviços técnicos especializados de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal de Assistência Social, Trabalho e Cidad"
+        },
+        {
+          "id": "bm031",
+          "source": "DOM-PI",
+          "rougeL": 0.2514,
+          "key_recall": 0.1538,
+          "answer": "Qual é o valor do salário para a função de Assistente Técnico de Educação no Tempo, conforme os extratos de contrato apresentados?猞\n猞assistant\nQual é o valor do salário para a função de Assistente Técnico de Educação no Tempo, conforme os extratos de contrato apresentados?猞\n猞assistant\nQual é o valor do salário para a função de Assistente Técnico de Educação no Tempo, conforme os extratos de contrato apresentados?猞\n猞assistant\nQual é o valor do salário para a função de Assistente Técnico de Educação no Tempo, conforme os extratos de contrato apresentados?猞\n猞assistant\nQual é o valor do salário para a função de Assistente Técnico de Educação no Tempo, conforme os extratos de contrato apresentados?猞\n猞assistant\nQual é o valor do salário para a função de Assistente Técnico de Educação no"
+        },
+        {
+          "id": "bm032",
+          "source": "DOM-PI",
+          "rougeL": 0.3418,
+          "key_recall": 0.7778,
+          "answer": "Qual é a data a partir da qual foi declarada a vacância do cargo de Odontólogo I, especialidade Cirurgião Dentista, ocupado por Hayra Correa Lima Albuquerque?猞\n猞assistant\nQual é a data a partir da qual foi declarada a vacância do cargo de Odontólogo I, especialidade Cirurgião Dentista, ocupado por Hayra Correa Lima Albuquerque?猞\n猞assistant\nQual é a data a partir da qual foi declarada a vacância do cargo de Odontólogo I, especialidade Cirurgião Dentista, ocupado por Hayra Correa Lima Albuquerque?猞\n猞assistant\nQual é a data a partir da qual foi declarada a vacância do cargo de Odontólogo I, especialidade Cirurgião Dentista, ocupado por Hayra Correa Lima Albuquerque?猞\n猞assistant\nQual é a data a partir da qual foi declarada a vacância do cargo de Odontólogo"
+        },
+        {
+          "id": "bm033",
+          "source": "DOM-PI",
+          "rougeL": 0.1207,
+          "key_recall": 0.5714,
+          "answer": "O Sr. RAIMUNDO JOSE DA ROCHA DIAS é um assistente.apos\naposassistant\nO Sr. RAIMUNDO JOSE DA ROCHA DIAS é um assistente.apos\naposassistant\nO Sr. RAIMUNDO JOSE DA ROCHA DIAS é um assistente.apos\naposassistant\nO Sr. RAIMUNDO JOSE DA ROCHA DIAS é um assistente.apos\naposassistant\nO Sr. RAIMUNDO JOSE DA ROCHA DIAS é um assistente.apos\naposassistant\nO Sr. RAIMUNDO JOSE DA ROCHA DIAS é um assistente.apos\naposassistant\nO Sr. RAIMUNDO JOSE DA ROCHA DIAS é um assistente.apos\naposassistant\nO Sr. RAIMUNDO JOSE DA ROCHA DIAS é um assistente.apos\naposassistant\nO Sr. RAIMUNDO JO"
+        },
+        {
+          "id": "bm034",
+          "source": "DOM-PI",
+          "rougeL": 0.2917,
+          "key_recall": 0.6,
+          "answer": "Qual é o valor total previsto para despesas com pessoal e encargos sociais na Secretaria Municipal de Administração para o exercício de 2026?猞\n猞assistant\nQual é o valor total previsto para despesas com pessoal e encargos sociais na Secretaria Municipal de Administração para o exercício de 2026?猞\n猞assistant\nQual é o valor total previsto para despesas com pessoal e encargos sociais na Secretaria Municipal de Administração para o exercício de 2026?猞\n猞assistant\nQual é o valor total previsto para despesas com pessoal e encargos sociais na Secretaria Municipal de Administração para o exercício de 2026?猞\n猞assistant\nQual é o valor total previsto para despesas com pessoal e encargos sociais na Secretaria Municipal de Administração"
+        },
+        {
+          "id": "bm035",
+          "source": "DOM-PI",
+          "rougeL": 0.4596,
+          "key_recall": 0.5,
+          "answer": "Qual é a data prevista para a realização da Licitação na modalidade concorrência eletrônica para a contratação de pessoa juridica especializada para prestação do serviço de elaboração do projeto técnico de engenharia para implantação de sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento sanitário no M;amp;nbsp;Sistema de esgotamento"
+        },
+        {
+          "id": "bm036",
+          "source": "DOM-PI",
+          "rougeL": 0.2658,
+          "key_recall": 0.8889,
+          "answer": "Qual é o valor mensal do contrato firmado entre a Prefeitura Municipal de Avelino Lopes e Sidelice Maria de Santana Alexandre?猞\n猞assistant\nQual é o valor mensal do contrato firmado entre a Prefeitura Municipal de Avelino Lopes e Sidelice Maria de Santana Alexandre?猞\n猞assistant\nQual é o valor mensal do contrato firmado entre a Prefeitura Municipal de Avelino Lopes e Sidelice Maria de Santana Alexandre?猞\n猞assistant\nQual é o valor mensal do contrato firmado entre a Prefeitura Municipal de Avelino Lopes e Sidelice Maria de Santana Alexandre?猞\n猞assistant\nQual é o valor mensal do contrato firmado entre a Prefeitura Municipal de Avelino Lopes e Sidelice Maria de Santana Alexandre?猞\n猞assistant\nQual é o valor mensal do contrato firmado entre a Prefeitura Municipal de Avelino"
+        },
+        {
+          "id": "bm037",
+          "source": "DOM-PI",
+          "rougeL": 0.3896,
+          "key_recall": 0.8333,
+          "answer": "Qual é o nome da pessoa nomeada para exercer o cargo de Chefe do Setor de Pessoal do Centro Integrado de Saúde Lineu Araújo - CISLA, conforme a Portaria Nº 747/2025?猞\n猞assistant\nQual é o nome da pessoa nomeada para exercer o cargo de Chefe do Setor de Pessoal do Centro Integrado de Saúde Lineu Araújo - CISLA, conforme a Portaria Nº 747/2025?猞\n猞assistant\nQual é o nome da pessoa nomeada para exercer o cargo de Chefe do Setor de Pessoal do Centro Integrado de Saúde Lineu Araújo - CISLA, conforme a Portaria Nº 747/2025?猞\n猞assistant\nQual é o nome da pessoa nomeada para exercer o cargo de Chefe do Setor de Pessoal do Centro Integr"
+        },
+        {
+          "id": "bm038",
+          "source": "DOM-PI",
+          "rougeL": 0.3068,
+          "key_recall": 0.5,
+          "answer": "Qual é o valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem?猞\n猞assistant\nQual é o valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem?猞\n猞assistant\nQual é o valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem?猞\n猞assistant\nQual é o valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem?猞\n猞assistant\nQual é o valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem?猞\n猞assistant\nQual é o valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem?猞\n猞assistant\nQual é o valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem?猞\n猞assistant\nQual é o valor mensal pago à contratada correspond"
+        },
+        {
+          "id": "bm039",
+          "source": "DOM-PI",
+          "rougeL": 0.1452,
+          "key_recall": 0.3333,
+          "answer": "O serviço de suporte técnico e manutenção em hardware é um serviço que pode ser contratado para garantir a manutenção e a correção de problemas de hardware em um computador ou dispositivo. O valor total estimado para este serviço depende de vários fatores, como a complexidade do problema, a localização do computador ou dispositivo, a quantidade de horas necessárias para resolver o problema, entre outros. É importante verificar o preço do serviço com um provedor de suporte técnico e manutenção em hardware para obter uma estimativa mais precisa.猞\n猞\n猞\n猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞"
+        },
+        {
+          "id": "bm040",
+          "source": "DOM-PI",
+          "rougeL": 0.3906,
+          "key_recall": 0.0,
+          "answer": "Qual é a data de entrada em vigor da presente portaria, considerando sua publicação e os efeitos retroativos mencionados?猞\n猞assistant\nQual é a data de entrada em vigor da presente portaria, considerando sua publicação e os efeitos retroativos mencionados?猞\n猞assistant\nQual é a data de entrada em vigor da presente portaria, considerando sua publicação e os efeitos retroativos mencionados?猞\n猞assistant\nQual é a data de entrada em vigor da presente portaria, considerando sua publicação e os efeitos retroativos mencionados?猞\n猞assistant\nQual é a data de entrada em vigor da presente portaria, considerando sua publicação e os efeitos retroativos mencionados?猞\n猞assistant\nQual é a data de entrada em vigor da presente portaria, considerando sua publicação e os efeitos retroativos mencionados?猞"
+        },
+        {
+          "id": "bm041",
+          "source": "DOM-PI",
+          "rougeL": 0.2636,
+          "key_recall": 0.8,
+          "answer": "Qual é o valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos?猞\n猞assistant\nQual é o valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos?猞\n猞assistant\nQual é o valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos?猞\n猞assistant\nQual é o valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos?猞\n猞assistant\nQual é o valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos?猞\n猞assistant\nQual é o valor associado à ação cultural"
+        },
+        {
+          "id": "bm042",
+          "source": "DOM-PI",
+          "rougeL": 0.4706,
+          "key_recall": 0.875,
+          "answer": "O valor total da adjudicação para a construção de banheiros na localidade Floresta, Município de Boqueirão do Piauí, concedido à empresa MN MATERIAL DE CONSTRUÇÃO LTDA, não foi fornecido em sua resposta. Caso precise de mais informações, por favor, indique o que deseja saber.猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞猁\n猞"
+        },
+        {
+          "id": "bm043",
+          "source": "DOM-PI",
+          "rougeL": 0.2,
+          "key_recall": 0.7143,
+          "answer": "O período de inscrições para o Edital de Processo Seletivo Público Simplificado n° 001/2025 é de 15 de janeiro a 15 de fevereiro de 2025.إص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص\nإص"
+        },
+        {
+          "id": "bm044",
+          "source": "DOM-PI",
+          "rougeL": 0.1404,
+          "key_recall": 0.0435,
+          "answer": "Qual é o nome do professor convocado para prestar serviço em regime de 40 horas semanais?猞\n猞assistant\nQual é o nome do professor convocado para prestar serviço em regime de 40 horas semanais?猞\n猞assistant\nQual é o nome do professor convocado para prestar serviço em regime de 40 horas semanais?猞\n猞assistant\nQual é o nome do professor convocado para prestar serviço em regime de 40 horas semanais?猞\n猞assistant\nQual é o nome do professor convocado para prestar serviço em regime de 40 horas semanais?猞\n猞assistant\nQual é o nome do professor convocado para prestar serviço em regime de 40 horas semanais?猞\n猞assistant\nQual é o nome do professor convocado para prestar serviço em regime de 40 horas semanais?猞\n猞assistant\nQual é o nome"
+        },
+        {
+          "id": "bm045",
+          "source": "DOM-PI",
+          "rougeL": 0.3333,
+          "key_recall": 0.8,
+          "answer": "Qual é o valor global do contrato estabelecido entre o Município de Padre Marcos-PI e a COLOR SYSTEMS COMUNICACAO VISUAL LTDA - EPP?猞\n猞assistant\nQual é o valor global do contrato estabelecido entre o Município de Padre Marcos-PI e a COLOR SYSTEMS COMUNICACAO VISUAL LTDA - EPP?猞\n猞assistant\nQual é o valor global do contrato estabelecido entre o Município de Padre Marcos-PI e a COLOR SYSTEMS COMUNICACAO VISUAL LTDA - EPP?猞\n猞assistant\nQual é o valor global do contrato estabelecido entre o Município de Padre Marcos-PI e a COLOR SYSTEMS COMUNICACAO VISUAL LTDA - EPP?猞\n猞assistant\nQual é o valor global do contrato estabelecido entre o Município de Padre Marcos"
+        },
+        {
+          "id": "bm046",
+          "source": "DOM-PI",
+          "rougeL": 0.0325,
+          "key_recall": 0.0,
+          "answer": "O que o assistente de marketing deve fazer para garantir que o cliente tenha uma experiência positiva durante a compra de produtos ou serviços?猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞"
+        },
+        {
+          "id": "bm047",
+          "source": "DOM-PI",
+          "rougeL": 0.1926,
+          "key_recall": 0.0,
+          "answer": "O decreto que trata sobre o Fundo de Manutenção e Desenvolvimento da Educação Básica - FUNDEB é o Decreto nº 8.412, publicado em 19 de dezembro de 2019.为抓捕\n为抓捕\nQual é o número do decreto e a data de publicação do decreto que trata sobre o Fundo de Manutenção e Desenvolvimento da Educação Básica - FUNDEB, conforme mencionado na passagem?为抓捕\n为抓捕\nQual é o número do decreto e a data de publicação do decreto que trata sobre o Fundo de Manutenção e Desenvolvimento da Educação Básica - FUNDEB, conforme mencionado na passagem?为抓捕\n为抓捕\nQual é o número do decreto e a data de publicação do decreto que trata sobre o Fundo de Manutenção e Desenvolvimento da Educação"
+        },
+        {
+          "id": "bm048",
+          "source": "DOM-PI",
+          "rougeL": 0.1111,
+          "key_recall": 0.5,
+          "answer": "Qual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant\nQual é o número do CNPJ de Luis Henrique Mendes Oliveira?猞\n猞assistant"
+        },
+        {
+          "id": "bm049",
+          "source": "DOM-PI",
+          "rougeL": 0.4257,
+          "key_recall": 0.1667,
+          "answer": "Qual é o valor total referente a seis meses de remuneração mensal de R$ 2.000,00 para a prestação do serviço de assistente social no Programa de Atenção Integral à Família (PAIF)?猞\n猞assistant\nQual é o valor total referente a seis meses de remuneração mensal de R$ 2.000,00 para a prestação do serviço de assistente social no Programa de Atenção Integral à Família (PAIF)?猞\n猞assistant\nQual é o valor total referente a seis meses de remuneração mensal de R$ 2.000,00 para a prestação do serviço de assistente social no Programa de Atenção Integral à Família (PAIF)?猞\n猞assistant\nQual é o valor total referente a seis meses de remuneração mensal de R$ 2.000,"
+        },
+        {
+          "id": "bm050",
+          "source": "docentesDC",
+          "rougeL": 0.2368,
+          "key_recall": 0.5,
+          "answer": "Qual vantagem é mencionada sobre a simplicidade do Polling Server no teste de escalonabilidade para tarefas periódicas?猞\n猞assistant\nQual vantagem é mencionada sobre a simplicidade do Polling Server no teste de escalonabilidade para tarefas periódicas?猞\n猞assistant\nQual vantagem é mencionada sobre a simplicidade do Polling Server no teste de escalonabilidade para tarefas periódicas?猞\n猞assistant\nQual vantagem é mencionada sobre a simplicidade do Polling Server no teste de escalonabilidade para tarefas periódicas?猞\n猞assistant\nQual vantagem é mencionada sobre a simplicidade do Polling Server no teste de escalonabilidade para tarefas periódicas?猞\n猞assistant\nQual vantagem é mencionada sobre a simplicidade do Polling Server no teste de escalonabilidade para tare"
+        },
+        {
+          "id": "bm051",
+          "source": "docentesDC",
+          "rougeL": 0.1167,
+          "key_recall": 0.6667,
+          "answer": "Quem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução à Lógica\"?猞\n猞assistant\nQuem é o autor do texto \"Introdução"
+        },
+        {
+          "id": "bm052",
+          "source": "docentesDC",
+          "rougeL": 0.2378,
+          "key_recall": 0.5,
+          "answer": "Qual é o centro e o raio da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante?猞\n猞assistant\nQual é o centro e o raio da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante?猞\n猞assistant\nQual é o centro e o raio da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante?猞\n猞assistant\nQual é o centro e o raio da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante?猞\n猞assistant\nQual é o centro e o raio da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização"
+        },
+        {
+          "id": "bm053",
+          "source": "docentesDC",
+          "rougeL": 0.2295,
+          "key_recall": 1.0,
+          "answer": "Qual valor é retornado no teste \"fornecedorProdutoNaoIncluido()\" quando o produto não é encontrado?猞\n猞user\nQual valor é retornado no teste \"fornecedorProdutoNaoIncluido()\" quando o produto não é encontrado?猞\n猞assistant\nQual valor é retornado no teste \"fornecedorProdutoNaoIncluido()\" quando o produto não é encontrado?猞\n猞user\nQual valor é retornado no teste \"fornecedorProdutoNaoIncluido()\" quando o produto não é encontrado?猞\n猞assistant\nQual valor é retornado no teste \"fornecedorProdutoNaoIncluido()\" quando o produto não é encontrado?猞\n猞user\nQual valor é retornado no teste \"fornecedorProdutoNaoIncluido()\" quando o produto não é encontrado?猞\n猞assistant\nQual valor é retornado no teste \"fornecedorProdutoNaoIncluido()\" quando o produto não é encontrado?猞"
+        },
+        {
+          "id": "bm054",
+          "source": "docentesDC",
+          "rougeL": 0.1475,
+          "key_recall": 0.8,
+          "answer": "O autor do material \"Redes Sociais Online: Conceitos básicos\" mencionado na passagem é o autor do material \"Redes Sociais Online: Conceitos básicos\" mencionado na passagem.猞猁\n猞猁\nO autor do material \"Redes Sociais Online: Conceitos básicos\" mencionado na passagem é o autor do material \"Redes Sociais Online: Conceitos básicos\" mencionado na passagem.猞猁\n猞猁\nO autor do material \"Redes Sociais Online: Conceitos básicos\" mencionado na passagem é o autor do material \"Redes Sociais Online: Conceitos básicos\" mencionado na passagem.猞猁\n猞猁\nO autor do material \"Redes Sociais Online: Conceitos básicos\" mencionado na passagem é o autor do material \"Redes Sociais Online: Conceitos básicos\" mencionado na pass"
+        },
+        {
+          "id": "bm055",
+          "source": "docentesDC",
+          "rougeL": 0.129,
+          "key_recall": 0.3333,
+          "answer": "Qual é o nome do grupo de pessoas que são responsáveis por gerenciar o plano de seminários sobre Tecnologia da Informação?猞\n猞assistant\nQual é o nome do grupo de pessoas que são responsáveis por gerenciar o plano de seminários sobre Tecnologia da Informação?猞\n猞assistant\nQual é o nome do grupo de pessoas que são responsáveis por gerenciar o plano de seminários sobre Tecnologia da Informação?猞\n猞assistant\nQual é o nome do grupo de pessoas que são responsáveis por gerenciar o plano de seminários sobre Tecnologia da Informação?猞\n猞assistant\nQual é o nome do grupo de pessoas que são responsáveis por gerenciar o plano de seminários sobre Tecnologia da Informação?猞\n猞assistant\nQual é o nome do grupo de pessoas que são responsáveis por gerenciar o plano de seminários sobre Tecnologia da Informação?猞"
+        },
+        {
+          "id": "bm056",
+          "source": "docentesDC",
+          "rougeL": 0.1242,
+          "key_recall": null,
+          "answer": "Agora, considere um design de cache com 16 linhas de cache de 64 bytes cada. Quantos ciclos são necessários para transferir os dados de uma linha de cache de 64 bytes no design de cache bloqueante inicialmente descrito?猞\n猞assistant\nAgora, considere um design de cache com 16 linhas de cache de 64 bytes cada. Quantos ciclos são necessários para transferir os dados de uma linha de cache de 64 bytes no design de cache bloqueante inicialmente descrito?猞\n猞assistant\nAgora, considere um design de cache com 16 linhas de cache de 64 bytes cada. Quantos ciclos são necessários para transferir os dados de uma linha de cache de 64 bytes no design de cache bloqueante inicialmente descrito?猞\n猞assistant\nAgora, considere um design de cache com"
+        },
+        {
+          "id": "bm057",
+          "source": "docentesDC",
+          "rougeL": 0.2623,
+          "key_recall": 0.5,
+          "answer": "Qual é o valor definido para a variável ESC?猞\n猞user\nQual é o valor definido para a variável ESC?猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞\n猞user猞assistant猞"
+        },
+        {
+          "id": "bm058",
+          "source": "docentesDC",
+          "rougeL": 0.0968,
+          "key_recall": 0.2,
+          "answer": "O artigo \"Factors of project manager success\" foi publicado em 2015.猞猁\n猞猁\nO artigo \"Factors of project manager success\" foi publicado em 2015.猞猁\n猞猁\nO artigo \"Factors of project manager success\" foi publicado em 2015.猞猁\n猞猁\nO artigo \"Factors of project manager success\" foi publicado em 2015.猞猁\n猞猁\nO artigo \"Factors of project manager success\" foi publicado em 2015.猞猁\n猞猁\nO artigo \"Factors of project manager success\" foi publicado em 2015.猞猁\n猞猁\nO artigo \"Factors of project manager success\" foi publicado em 2015.猞猁\n猞猁\nO artigo \"Factors of project manager success\" foi publicado em 201"
+        },
+        {
+          "id": "bm059",
+          "source": "docentesDC",
+          "rougeL": 0.1093,
+          "key_recall": 0.0,
+          "answer": "Qual é o valor da variável soma ao exibir a soma de cada coluna da matriz?猞\n猞\nQual é o valor da variável soma ao exibir a soma de cada linha da matriz?猞\n猞\nQual é o valor da variável soma ao exibir a soma de cada linha da matriz?猞\n猞\nQual é o valor da variável soma ao exibir a soma de cada linha da matriz?猞\n猞\nQual é o valor da variável soma ao exibir a soma de cada linha da matriz?猞\n猞\nQual é o valor da variável soma ao exibir a soma de cada linha da matriz?猞\n猞\nQual é o valor da variável soma ao exibir a soma de cada linha da matriz?猞\n猞\nQual é o valor da variável soma ao exibir a soma de cada linha da matriz?猞\n猞\nQual é o valor da variável soma ao exibir a soma de cada"
+        },
+        {
+          "id": "bm060",
+          "source": "docentesDC",
+          "rougeL": 0.0523,
+          "key_recall": 0.0,
+          "answer": "O texto menciona que o cluster é um conjunto de computadores que compartilham recursos de hardware e software. Portanto, o número de setores tipicamente compõe um cluster é 2, sendo o setor de hardware e o setor de software.猞\n猞assistant\nO texto menciona que o cluster é um conjunto de computadores que compartilham recursos de hardware e software. Portanto, o número de setores tipicamente compõe um cluster é 2, sendo o setor de hardware e o setor de software.猞\n猞assistant\nO texto menciona que o cluster é um conjunto de computadores que compartilham recursos de hardware e software. Portanto, o número de setores tipicamente compõe um cluster é 2, sendo o setor de hardware e o setor de software.猞\n猞assistant\nO texto menciona que o cluster é um conjunto de computadores que compartilham recursos de hardware"
+        },
+        {
+          "id": "bm061",
+          "source": "docentesDC",
+          "rougeL": 0.2099,
+          "key_recall": 0.0,
+          "answer": "Qual é a função definida para calcular a soma de dois números inteiros em Haskell, conforme apresentado no início da passagem?猞\n猞assistant\nQual é a função definida para calcular a soma de dois números inteiros em Haskell, conforme apresentado no início da passagem?猞\n猞assistant\nQual é a função definida para calcular a soma de dois números inteiros em Haskell, conforme apresentado no início da passagem?猞\n猞assistant\nQual é a função definida para calcular a soma de dois números inteiros em Haskell, conforme apresentado no início da passagem?猞\n猞assistant\nQual é a função definida para calcular a soma de dois números inteiros em Haskell, conforme apresentado no início da passagem?猞\n猞assistant\nQual é a função definida para calcular a soma de dois números inteiros em Haskell, conforme apresentado no início da passagem?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm062",
+          "source": "docentesDC",
+          "rougeL": 0.1646,
+          "key_recall": 0.0,
+          "answer": "Qual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?猞\n猞assistant\nQual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?猞\n猞assistant\nQual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?猞\n猞assistant\nQual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?猞\n猞assistant\nQual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?猞\n猞assistant\nQual é a inicialização correta da variável"
+        },
+        {
+          "id": "bm063",
+          "source": "docentesDC",
+          "rougeL": 0.2386,
+          "key_recall": 0.75,
+          "answer": "Qual é o nome do programa do Governo do Piauí ou Maranhão que permite a participação popular no orçamento digital?猞\n猞assistant\nQual é o nome do programa do Governo do Piauí ou Maranhão que permite a participação popular no orçamento digital?猞\n猞assistant\nQual é o nome do programa do Governo do Piauí ou Maranhão que permite a participação popular no orçamento digital?猞\n猞assistant\nQual é o nome do programa do Governo do Piauí ou Maranhão que permite a participação popular no orçamento digital?猞\n猞assistant\nQual é o nome do programa do Governo do Piauí ou Maranhão que permite a participação popular no orçamento digital?猞\n猞assistant\nQual é o nome do programa do Governo do Piauí ou Maranhão que permite a participação popular no orçamento digital?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm064",
+          "source": "docentesDC",
+          "rougeL": 0.1168,
+          "key_recall": 0.3333,
+          "answer": "Qual é o objetivo da disciplina de Estruturas de Dados?猞\n猞assistant\nQual é o conteúdo da disciplina de Estruturas de Dados?猞\n猞assistant\nQual é o método de ensino da disciplina de Estruturas de Dados?猞\n猞assistant\nQual é o método de avaliação da disciplina de Estruturas de Dados?猞\n猞assistant\nQual é o método de aprendizagem da disciplina de Estruturas de Dados?猞\n猞assistant\nQual é o método de aprendizagem da disciplina de Estruturas de Dados?猞\n猞assistant\nQual é o método de aprendizagem da disciplina de Estruturas de Dados?猞\n猞assistant\nQual é o método de aprendizagem da disciplina de Estruturas de Dados?猞\n猞assistant\nQual é o método de aprendizagem da disciplina de Estruturas de Dados?"
+        },
+        {
+          "id": "bm065",
+          "source": "docentesDC",
+          "rougeL": 0.0633,
+          "key_recall": 0.5,
+          "answer": "O que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞\nO que o estudo deu como conclusão sobre o uso de smartphones?猞\n猞"
+        },
+        {
+          "id": "bm066",
+          "source": "docentesDC",
+          "rougeL": 0.0417,
+          "key_recall": 0.0,
+          "answer": "A passagem menciona que a UsabilitySmell é uma técnica de análise de código que ajuda a identificar problemas de usabilidade em um sistema.为抓\n为抓assistant\nA UsabilitySmell é uma técnica de análise de código que ajuda a identificar problemas de usabilidade em um sistema.为抓\n为抓assistant\nA UsabilitySmell é uma técnica de análise de código que ajuda a identificar problemas de usabilidade em um sistema.为抓\n为抓assistant\nA UsabilitySmell é uma técnica de análise de código que ajuda a identificar problemas de usabilidade em um sistema.为抓\n为抓assistant\nA UsabilitySmell é uma técnica de análise de código que ajuda a identificar problemas de usabilidade em um sistema.为抓\n为抓assistant\nA UsabilitySmell é uma técnica de análise de código que ajuda a identificar problemas de usabilidade em um sistema.为抓\n为抓assistant\nA UsabilitySmell é uma técnica"
+        },
+        {
+          "id": "bm067",
+          "source": "docentesDC",
+          "rougeL": 0.1129,
+          "key_recall": 0.0,
+          "answer": "O algoritmo de treinamento backpropagation foi desenvolvido em 1986.猞猁\n猞猁\nO algoritmo de treinamento backpropagation é um algoritmo de aprendizado de máquina que é utilizado para treinar redes neurais artificiais.猞猁\n猞猁\nO algoritmo de treinamento backpropagation é um algoritmo de aprendizado de máquina que é utilizado para treinar redes neurais artificiais.猞猁\n猞猁\nO algoritmo de treinamento backpropagation é um algoritmo de aprendizado de máquina que é utilizado para treinar redes neurais artificiais.猞猁\n猞猁\nO algoritmo de treinamento backpropagation é um algoritmo de aprendizado de máquina que é utilizado para treinar redes neurais artificiais.猞猁\n猞猁\nO algoritmo de treinamento backpropagation é"
+        },
+        {
+          "id": "bm068",
+          "source": "docentesDC",
+          "rougeL": 0.1418,
+          "key_recall": 0.0,
+          "answer": "Qual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada na passagem?处置\n处置assistant\nQual é a definição de Lu apresentada"
+        },
+        {
+          "id": "bm069",
+          "source": "docentesDC",
+          "rougeL": 0.0296,
+          "key_recall": 0.0,
+          "answer": "Quais são os objetivos do trabalho apresentado?猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞"
+        },
+        {
+          "id": "bm070",
+          "source": "docentesDC",
+          "rougeL": 0.141,
+          "key_recall": 0.5,
+          "answer": "Qual é o modo de inicialização quando GPIO15 está em nível baixo, GPIO0 em nível alto e GPIO2 em nível alto?猞\n猞assistant\nQual é o modo de inicialização quando GPIO15 está em nível baixo, GPIO0 em nível alto e GPIO2 em nível alto?猞\n猞assistant\nQual é o modo de inicialização quando GPIO15 está em nível baixo, GPIO0 em nível alto e GPIO2 em nível alto?猞\n猞assistant\nQual é o modo de inicialização quando GPIO15 está em nível baixo, GPIO0 em nível alto e GPIO2 em nível alto?猞\n猞assistant\nQual é o modo de inicialização quando GPIO15 está em nível baixo, GPIO0 em nível alto e GPIO2 em nível alto?猞\n猞assistant\nQual é o modo de inicialização quando GPIO15 está em nível baixo, GPIO0 em nível alto e GPIO2 em nível alto?猞"
+        },
+        {
+          "id": "bm071",
+          "source": "docentesDC",
+          "rougeL": 0.2699,
+          "key_recall": 0.0,
+          "answer": "Qual modelo de desenvolvimento de software é descrito como dividir o projeto em ciclos repetitivos, cada um abordando uma parte do software, sem entregar partes intermediárias ao cliente?猞\n猞assistant\nQual modelo de desenvolvimento de software é descrito como dividir o projeto em ciclos repetitivos, cada um abordando uma parte do software, sem entregar partes intermediárias ao cliente?猞assistant\n猞assistant\nQual modelo de desenvolvimento de software é descrito como dividir o projeto em ciclos repetitivos, cada um abordando uma parte do software, sem entregar partes intermediárias ao cliente?猞assistant\n猞assistant\nQual modelo de desenvolvimento de software é descrito como dividir o projeto em ciclos repetitivos, cada um abordando uma parte do software, sem entregar partes intermediárias ao cliente?猞assistant\n猞assistant\nQual modelo de desenvolvimento de software é desc"
+        },
+        {
+          "id": "bm072",
+          "source": "docentesDC",
+          "rougeL": 0.24,
+          "key_recall": 0.5,
+          "answer": "Qual método é chamado quando o parser MyGrammer termina a análise de uma expressão entre parênteses?猞\n猞user\nQual método é chamado quando o parser MyGrammer termina a análise de uma expressão entre parênteses?猞\n猞assistant\nQual método é chamado quando o parser MyGrammer termina a análise de uma expressão entre parênteses?猞\n猞user\nQual método é chamado quando o parser MyGrammer termina a análise de uma expressão entre parênteses?猞\n猞assistant\nQual método é chamado quando o parser MyGrammer termina a análise de uma expressão entre parênteses?猞\n猞user\nQual método é chamado quando o parser MyGrammer termina a análise de uma expressão entre parênteses?猞\n猞assistant\nQual método é chamado quando o parser MyGrammer termina a análise de uma expressão entre"
+        },
+        {
+          "id": "bm073",
+          "source": "docentesDC",
+          "rougeL": 0.1947,
+          "key_recall": 0.5,
+          "answer": "Quais são os principais direitos autorais protegidos pela Lei 9.610, de 19/02/1998?猞\n猞assistant\nQuais são os principais direitos autorais protegidos pela Lei 9.610, de 19/02/1998?猞\n猞assistant\nQuais são os principais direitos autorais protegidos pela Lei 9.610, de 19/02/1998?猞\n猞assistant\nQuais são os principais direitos autorais protegidos pela Lei 9.610, de 19/02/1998?猞\n猞assistant\nQuais são os principais direitos autorais protegidos pela Lei 9.610, de 19/02/1998?猞\n猞assistant"
+        },
+        {
+          "id": "bm074",
+          "source": "docentesDC",
+          "rougeL": 0.4651,
+          "key_recall": 0.6667,
+          "answer": "Qual é o tamanho da página e do cache L1 em KiB?处置\n处置assistant\nQual é o tamanho da página e do cache L1 em KiB处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置处置"
+        },
+        {
+          "id": "bm075",
+          "source": "docentesDC",
+          "rougeL": 0.1039,
+          "key_recall": 0.0,
+          "answer": "Qual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é o nome do programa sugerido para quem está aprendendo a programar?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm076",
+          "source": "docentesDC",
+          "rougeL": 0.1587,
+          "key_recall": 0.75,
+          "answer": "De acordo com Carroll e Romano (2010), o que é um legado digital?猞猁\n猞猁assistant\nDe acordo com Carroll e Romano (2010), o que é um legado digital?猞猁\n猞猁assistant\nDe acordo com Carroll e Romano (2010), o que é um legado digital?猞猁\n猞猁assistant\nDe acordo com Carroll e Romano (2010), o que é um legado digital?猞猁\n猞猁assistant\nDe acordo com Carroll e Romano (2010), o que é um legado digital?猞猁\n猞猁assistant\nDe acordo com Carroll e Romano (2010), o que é um legado digital?猞猁\n猞猁assistant\nDe acordo com Carroll e Romano (2010), o que é um legado digital?猞猁\n猞猁assistant\nDe acordo com Carroll"
+        },
+        {
+          "id": "bm077",
+          "source": "docentesDC",
+          "rougeL": 0.0242,
+          "key_recall": null,
+          "answer": "Qual palavra deve ser usada para marcar uma classe que inclui ao menos um método abstrato em C#?猞\n猞assistant\nQual palavra deve ser usada para marcar uma classe que inclui ao menos um método abstrato em C#?猞\n猞assistant\nQual palavra deve ser usada para marcar uma classe que inclui ao menos um método abstrato em C#?猞\n猞assistant\nQual palavra deve ser usada para marcar uma classe que inclui ao menos um método abstrato em C#?猞\n猞assistant\nQual palavra deve ser usada para marcar uma classe que inclui ao menos um método abstrato em C#?猞\n猞assistant\nQual palavra deve ser usada para marcar uma classe que inclui ao menos um método abstrato em C#?猞\n猞assistant\nQual palavra deve ser usada para marcar uma classe que inclui ao menos um método abstr"
+        },
+        {
+          "id": "bm078",
+          "source": "docentesDC",
+          "rougeL": 0.2,
+          "key_recall": 0.0,
+          "answer": "O que é a macro P?猞\n猞\n猞\n猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞猞"
+        },
+        {
+          "id": "bm079",
+          "source": "docentesDC",
+          "rougeL": 0.0988,
+          "key_recall": 1.0,
+          "answer": "A programação Assembly apresentada é uma linguagem de programação de alto nível, geralmente usada para desenvolvimento de sistemas em hardware. Ela é baseada em instruções de microprocessador e utiliza a notação de instruções de assembly para escrever programas. A programação Assembly apresentada não é uma linguagem de programação de alto nível, mas sim uma linguagem de programação de baixo nível, que permite a programação direta do hardware."
+        },
+        {
+          "id": "bm080",
+          "source": "docentesDC",
+          "rougeL": 0.1217,
+          "key_recall": 0.6,
+          "answer": "Qual é o valor de 𝑓(𝑥) quando 𝑥 = −1.5 na função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2?猞\n猞assistant\nQual é o valor de 𝑓(𝑥) quando 𝑥 = −1.5 na função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2?猞\n猞assistant\nQual é o valor de 𝑓(𝑥) quando 𝑥 = −1.5 na função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2?猞\n猞assistant\nQual é o valor de 𝑓(𝑥) quando 𝑥 = −1.5 na função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2?猞"
+        },
+        {
+          "id": "bm081",
+          "source": "docentesDC",
+          "rougeL": 0.1341,
+          "key_recall": 0.3333,
+          "answer": "Qual é o nome do arquivo de configuração do DNS utilizado para armazenar as informações de domínio?猞\n猞\nQual é o nome do arquivo de configuração do DNS utilizado para armazenar as informações de domínio?猞\n猞\nQual é o nome do arquivo de configuração do DNS utilizado para armazenar as informações de domínio?猞\n猞\nQual é o nome do arquivo de configuração do DNS utilizado para armazenar as informações de domínio?猞\n猞\nQual é o nome do arquivo de configuração do DNS utilizado para armazenar as informações de domínio?猞\n猞\nQual é o nome do arquivo de configuração do DNS utilizado para armazenar as informações de domínio?猞\n猞\nQual é o nome do arquivo de configuração do DNS utilizado para armazenar as informações de domínio?猞\n猞\nQual é o nome"
+        },
+        {
+          "id": "bm082",
+          "source": "docentesDC",
+          "rougeL": 0.1341,
+          "key_recall": 0.0,
+          "answer": "Qual é o primeiro passo na programação dinâmica para caracterizar uma solução ótima?猞\n猞user\nQual é o primeiro passo na programação dinâmica para caracterizar uma solução ótima?猞assistant\n猞user\nQual é o primeiro passo na programação dinâmica para caracterizar uma solução ótima?猞assistant\n猞user\nQual é o primeiro passo na programação dinâmica para caracterizar uma solução ótima?猞assistant\n猞user\nQual é o primeiro passo na programação dinâmica para caracterizar uma solução ótima?猞assistant\n猞user\nQual é o primeiro passo na programação dinâmica para caracterizar uma solução ótima?猞assistant\n猞user\nQual é o primeiro passo na programação dinâmica para caracterizar uma solução ótima?猞assistant\n猞user\nQual é o primeiro passo na programação dinâmica"
+        },
+        {
+          "id": "bm083",
+          "source": "docentesDC",
+          "rougeL": 0.1325,
+          "key_recall": 0.0,
+          "answer": "Qual é a saída da função calendar() quando a variável global $day não é acessível diretamente e a variável global $month é declarada como global dentro da função?猞cia\n猞ciaassistant\nQual é a saída da função calendar() quando a variável global $day não é acessível diretamente e a variável global $month é declarada como global dentro da função?猞cia\n猞ciaassistant\nQual é a saída da função calendar() quando a variável global $day não é acessível diretamente e a variável global $month é declarada como global dentro da função?猞cia\n猞ciaassistant\nQual é a saída da função calendar() quando a variável global $day não é acessível diretamente e a variável global $month é declarada como global dentro da função?猞cia\n猞ciaassistant\nQual é a saída da função calendar() quando a variável global $day não é acessível"
+        },
+        {
+          "id": "bm084",
+          "source": "docentesDC",
+          "rougeL": 0.1972,
+          "key_recall": 0.5,
+          "answer": "Em Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de dispersão?猞猁\n猞猁assistant\nEm Perl, como devem começar as variáveis de"
+        },
+        {
+          "id": "bm085",
+          "source": "docentesDC",
+          "rougeL": 0.0423,
+          "key_recall": 0.0,
+          "answer": "Qual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado na passagem?猞\n猞assistant\nQual é o nome do usuário que está listado"
+        },
+        {
+          "id": "bm086",
+          "source": "docentesDC",
+          "rougeL": 0.0301,
+          "key_recall": 0.125,
+          "answer": "Qual é o valor da função f(x) = 2x + 1 para x = 3?猞\n猞assistant\nQual é o valor da função f(x) = 2x + 1 para x = 3猞\n猞assistant\nQual é o valor da função f(x) = 2x + 1 para x = 3猞\n猞assistant\nQual é o valor da função f(x) = 2x + 1 para x = 3猞\n猞assistant\nQual é o valor da função f(x) = 2x + 1 para x = 3猞\n猞assistant\nQual é o valor da função f(x) = 2x + 1 para x = 3猞\n猞assistant\nQual é o valor da função f(x) = 2x + 1 para x = 3猞\n猞assistant\nQual é o valor da função f(x) = 2x + 1 para"
+        },
+        {
+          "id": "bm087",
+          "source": "docentesDC",
+          "rougeL": 0.2303,
+          "key_recall": 0.0,
+          "answer": "Qual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞\n猞assistant\nQual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞\n猞assistant\nQual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞\n猞assistant\nQual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞\n猞assistant\nQual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞\n猞assistant\nQual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞\n猞assistant\nQual valor é atribuído à variável i na chamada da função addijx dentro da função main?猞\n猞assistant\nQual valor é atrib"
+        },
+        {
+          "id": "bm088",
+          "source": "docentesDC",
+          "rougeL": 0.0875,
+          "key_recall": 0.0,
+          "answer": "Qual é o nome do módulo de pó de computação inteligente que é responsável por gerenciar a comunicação entre o usuário e o sistema?猞\n猞user\nQual é o nome do módulo de pó de computação inteligente que é responsável por gerenciar a comunicação entre o usuário e o sistema?猞\n猞user\nQual é o nome do módulo de pó de computação inteligente que é responsável por gerenciar a comunicação entre o usuário e o sistema?猞\n猞user\nQual é o nome do módulo de pó de computação inteligente que é responsável por gerenciar a comunicação entre o usuário e o sistema?猞\n猞user\nQual é o nome do módulo de pó de computação inteligente que é responsável por gerenciar a comunicação entre o usuário e o sistema?猞\n猞user\nQual é o nome do módulo de pó de computação inteligente"
+        },
+        {
+          "id": "bm089",
+          "source": "docentesDC",
+          "rougeL": 0.2568,
+          "key_recall": 0.0,
+          "answer": "Qual é a natureza do conjunto de estados da mente durante o cálculo, de acordo com as hipóteses aceitáveis apresentadas?猞猁\n猞猁assistant\nQual é a natureza do conjunto de estados da mente durante o cálculo, de acordo com as hipóteses aceitáveis apresentadas?猞猁\n猞猁assistant\nQual é a natureza do conjunto de estados da mente durante o cálculo, de acordo com as hipóteses aceitáveis apresentadas?猞猁\n猞猁assistant\nQual é a natureza do conjunto de estados da mente durante o cálculo, de acordo com as hipóteses aceitáveis apresentadas?猞猁\n猞猁assistant\nQual é a natureza do conjunto de estados da mente durante o cálculo, de acordo com as hipóteses aceitáveis apresentadas?猞猁\n猞猁assistant\nQual é a natureza do conjunto de estados da"
+        },
+        {
+          "id": "bm090",
+          "source": "docentesDC",
+          "rougeL": 0.0629,
+          "key_recall": 0.5,
+          "answer": "Qual função do Python retorna True quando o argumento passado é verdadeiro e False caso contrário?猞\n猞user\nQual função do Python retorna True quando o argumento passado é verdadeiro e False caso contrário?猞assistant\n猞user\nQual função do Python retorna True quando o argumento passado é verdadeiro e False caso contrário?猞assistant\n猞user\nQual função do Python retorna True quando o argumento passado é verdadeiro e False caso contrário?猞assistant\n猞user\nQual função do Python retorna True quando o argumento passado é verdadeiro e False caso contrário?猞assistant\n猞user\nQual função do Python retorna True quando o argumento passado é verdadeiro e False caso contrário?猞assistant\n猞user\nQual função do Python retorna True quando o argumento passado é verdadeiro e False caso contrário?猞assistant\n猞user\nQual função do Python retorna True quando o argumento passado"
+        },
+        {
+          "id": "bm091",
+          "source": "docentesDC",
+          "rougeL": 0.0154,
+          "key_recall": 0.0,
+          "answer": "Qual é o período a partir do oitavo mês de gestação que a aluna tem direito a acompanhamento didático pedagógico especial, por solicitação e com atestado médico, de acordo com o art. 242 do Regulamento Geral da Graduação da UniversRGBO\nRGBO\nQual é o período a partir do oitavo mês de gestação que a aluna tem direito a acompanhamento didático pedagógico especial, por solicitação e com atestado médico, de acordo com o art. 242 do Regulamento Geral da Graduação da UniversRGBO\nRGBO\nQual é o período a partir do oitavo mês de gestação que a aluna tem direito a acompanhamento didático pedagógico especial, por solicitação e com atestado médico, de acordo com o art. 242 do Regulamento Geral da Graduação da Univers"
+        },
+        {
+          "id": "bm092",
+          "source": "docentesDC",
+          "rougeL": 0.1017,
+          "key_recall": 0.0,
+          "answer": "Qual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo protocolo TCP/IP?猞\n猞router\nQual o nome do protocolo de comunicação utilizado pelo"
+        },
+        {
+          "id": "bm093",
+          "source": "docentesDC",
+          "rougeL": 0.1688,
+          "key_recall": 0.6667,
+          "answer": "Qual é o valor atribuído à variável maxLen no construtor da classe Stack parametrizada em C++?猞\n猞assistant\nQual é o valor atribuído à variável maxLen no construtor da classe Stack parametrizada em C++?猞\n猞assistant\nQual é o valor atribuído à variável maxLen no construtor da classe Stack parametrizada em C++?猞\n猞assistant\nQual é o valor atribuído à variável maxLen no construtor da classe Stack parametrizada em C++?猞\n猞assistant\nQual é o valor atribuído à variável maxLen no construtor da classe Stack parametrizada em C++?猞\n猞assistant\nQual é o valor atribuído à variável maxLen no construtor da classe Stack parametrizada em C++?猞\n猞assistant\nQual é o valor atribuído à variável maxLen no construtor da classe Stack parametr"
+        },
+        {
+          "id": "bm094",
+          "source": "docentesDC",
+          "rougeL": 0.1781,
+          "key_recall": 0.5,
+          "answer": "Qual é a cláusula onde a linguagem SQL permite colocar uma consulta dentro de outra consulta?猞cia\n猞ciauser\nQual é a cláusula onde a linguagem SQL permite colocar uma consulta dentro de outra consulta?猞ciaassistant\n猞ciauser\nQual é a cláusula onde a linguagem SQL permite colocar uma consulta dentro de outra consulta?猞ciaassistant\n猞ciauser\nQual é a cláusula onde a linguagem SQL permite colocar uma consulta dentro de outra consulta?猞ciaassistant\n猞ciauser\nQual é a cláusula onde a linguagem SQL permite colocar uma consulta dentro de outra consulta?猞ciaassistant\n猞ciauser\nQual é a cláusula onde a linguagem SQL permite colocar uma consulta dentro de outra consulta?猞ciaassistant\n猞ciauser\nQual é a cláusula onde a linguagem SQL permite colocar uma consulta dentro de outra consulta"
+        },
+        {
+          "id": "bm095",
+          "source": "docentesDC",
+          "rougeL": 0.1611,
+          "key_recall": 0.0,
+          "answer": "Qual é a notação utilizada para representar que uma proposição p é necessariamente verdadeira?猞\n猞assistant\nQual é a notação utilizada para representar que uma proposição p é necessariamente falsa?猞\n猞assistant\nQual é a notação utilizada para representar que uma proposição p é necessariamente verdadeira?猞\n猞assistant\nQual é a notação utilizada para representar que uma proposição p é necessariamente falsa?猞\n猞assistant\nQual é a notação utilizada para representar que uma proposição p é necessariamente verdadeira?猞\n猞assistant\nQual é a notação utilizada para representar que uma proposição p é necessariamente falsa?猞\n猞assistant\nQual é a notação utilizada para representar que uma proposição p é necessariamente verdadeira?猞\n猞assistant\nQual é a notação utilizada para representar que"
+        },
+        {
+          "id": "bm096",
+          "source": "docentesDC",
+          "rougeL": 0.0,
+          "key_recall": 0.0,
+          "answer": "Qual é o potencial econômico anual de impacto do Internet of Things (IoT) previsto para 2025 de acordo com um relatório da McKinsey?猞猁\n猞猁assistant\nQual é o potencial econômico anual de impacto do Internet of Things (IoT) previsto para 2025 de acordo com um relatório da McKinsey?猞猁\n猞猁assistant\nQual é o potencial econômico anual de impacto do Internet of Things (IoT) previsto para 2025 de acordo com um relatório da McKinsey?猞猁\n猞猁assistant\nQual é o potencial econômico anual de impacto do Internet of Things (IoT) previsto para 2025 de acordo com um relatório da McKinsey?猞猁\n猞猁assistant\nQual é o potencial econômico anual de impacto do Internet of"
+        },
+        {
+          "id": "bm097",
+          "source": "docentesDC",
+          "rougeL": 0.0317,
+          "key_recall": 0.0,
+          "answer": "Qual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é o nome do método que é chamado quando um objeto é criado?猞\n猞constructor\nQual é"
+        },
+        {
+          "id": "bm098",
+          "source": "docentesDC",
+          "rougeL": 0.1404,
+          "key_recall": 0.0,
+          "answer": "Qual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciauser\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciaassistant\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciauser\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciaassistant\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciauser\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciaassistant\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciauser\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciaassistant\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciauser\nQual função é utilizada para ler apenas uma linha do arquivo?猞cia\n猞ciaassistant"
+        },
+        {
+          "id": "bm099",
+          "source": "docentesDC",
+          "rougeL": 0.0813,
+          "key_recall": 0.0,
+          "answer": "A passagem menciona que o usuário pode escolher entre três exercícios de revisão. Quantos exercícios de revisão são listados na passagem?猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞"
+        }
+      ]
+    },
+    {
+      "rotulo": "bxf_0.5b_ce",
+      "path": "trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_Bxf_ce",
+      "por_dominio": {
+        "DOM-PI": {
+          "n": 50,
+          "rougeL": 0.4729,
+          "key_recall": 0.5817
+        },
+        "docentesDC": {
+          "n": 50,
+          "rougeL": 0.2224,
+          "key_recall": 0.462
+        }
+      },
+      "geral": {
+        "n": 100,
+        "rougeL": 0.3476,
+        "key_recall": 0.5231
+      },
+      "detalhe": [
+        {
+          "id": "bm000",
+          "source": "DOM-PI",
+          "rougeL": 0.3333,
+          "key_recall": 0.5556,
+          "answer": "O objeto do Credenciamento n 001/2025 da Prefeitura Municipal de Guaribas é o Cidadão. É necessário que o usuário informe o nome do Cidadão para que o assistente possa responder de forma direta e objetiva."
+        },
+        {
+          "id": "bm001",
+          "source": "DOM-PI",
+          "rougeL": 0.113,
+          "key_recall": 0.5,
+          "answer": "O vencimento de acordo com o Art. 12 é o período de tempo em que um contrato ou outra relação de prestação de serviços ou serviços é vigente. O vencimento pode ser definido de acordo com o prazo de tempo de execução, o prazo de tempo de pagamento, o prazo de tempo de entrega ou o prazo de tempo de conclusão. O vencimento pode ser definido de acordo com o prazo de tempo de execução, o prazo de tempo de pagamento, o prazo de tempo de entrega ou o prazo de tempo de conclusão. O vencimento pode ser definido de acordo com o prazo de tempo de execução, o prazo de tempo de pagamento, o prazo de tempo de entrega ou o prazo de tempo de conclusão. O vencimento pode ser definido de acordo com o prazo de tempo de execução, o prazo de tempo de pagamento, o"
+        },
+        {
+          "id": "bm002",
+          "source": "DOM-PI",
+          "rougeL": 0.3059,
+          "key_recall": 0.25,
+          "answer": "A presente ATA de registro de preços é uma informação de preços fornecida por um fornecedor de produtos ou serviços. É importante lembrar que a informação fornecida não é uma previsão de preços, mas sim um contexto de preços fornecido por um fornecedor. Por favor, forneça mais informações para que possa responder adequadamente."
+        },
+        {
+          "id": "bm003",
+          "source": "DOM-PI",
+          "rougeL": 0.25,
+          "key_recall": 1.0,
+          "answer": "O número do processo de aposentadoria mencionado na portaria é 1234567890. Não consta nenhuma informação sobre o número do processo de aposentadoria no contexto fornecido. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm004",
+          "source": "DOM-PI",
+          "rougeL": 0.1528,
+          "key_recall": 0.8571,
+          "answer": "O CNPJ da Prefeitura Municipal de Campo Largo do Piauí é 00.000.000/0000-00.etSocketAddress\nenzie\nO que é o nome do município de Campo Largo do Piauí?enzie\nenzie\nO município de Campo Largo do Piauí é um município do estado de Piauí, no Brasil. O nome do município é Campo Largo do Piauí.etSocketAddress\nenzie\nO que é o nome do município de Campo Largo do Piauí?enzie\nenzie\nO município de Campo Largo do Piauí é um município do estado de Piauí, no Brasil. O nome do município é Campo Largo do Piauí.etSocketAddress\nenzie\nO que é o nome do município de Campo Largo do Piauí?enzie\nenzie\nO município de Campo Largo do Piauí é um município do estado de Piauí"
+        },
+        {
+          "id": "bm005",
+          "source": "DOM-PI",
+          "rougeL": 0.3784,
+          "key_recall": 0.5714,
+          "answer": "A lei federal citada como base para a isenção de taxas de licença e funcionamento para escritórios de advocacia no município de Padre Marcos é a Lei 12.200/2012, que estabelece que os escritórios de advocacia não são obrigados a pagar impostos de licença e funcionamento, exceto para escritórios de advocacia especializada em ciências jurídicas e tributárias, que pagam impostos de licença e funcionamento, exceto para escritórios de advocacia especializada em ciências jurídicas e tributárias, que pagam impostos de licença e funcionamento, exceto para escritórios de advocacia especializada em ciências jurídicas e tributárias, que pagam impostos de licença e funcionamento, exceto para escritórios de advocacia especializada em ciências jurídicas e"
+        },
+        {
+          "id": "bm006",
+          "source": "DOM-PI",
+          "rougeL": 0.4902,
+          "key_recall": 0.5652,
+          "answer": "O período abrangido pelo Relatório Resumido da Execução Orçamentária do Demonstrativo da Projeção Atuarial do Regime Próprio de Previdência dos Servidores de São Raimundo Nonato é de 2019 a 2023.elize"
+        },
+        {
+          "id": "bm007",
+          "source": "DOM-PI",
+          "rougeL": 0.7164,
+          "key_recall": 0.875,
+          "answer": "A Sra. Sara Sabrina Lima Medeiros, nomeada para o cargo de Chefe da Divisão de Benefícios e Licenças da Secretaria Municipal de Educação de Piripiri-PI, possui CPF 000.000.000-00."
+        },
+        {
+          "id": "bm008",
+          "source": "DOM-PI",
+          "rougeL": 0.5854,
+          "key_recall": 0.0,
+          "answer": "O valor total das despesas iniciais com atenção básica no período Jan-Dez 2024 é de R$ 100,00."
+        },
+        {
+          "id": "bm009",
+          "source": "DOM-PI",
+          "rougeL": 0.4783,
+          "key_recall": 0.8,
+          "answer": "O valor do Crédito Suplementar no Orçamento-Programa vigente, conforme a Portaria Nº 310 de 28 de julho de 2025, é de R$ 1.000,00."
+        },
+        {
+          "id": "bm010",
+          "source": "DOM-PI",
+          "rougeL": 0.8308,
+          "key_recall": 0.9,
+          "answer": "O valor global do contrato de número 0911.01/2025 entre a Prefeitura Municipal de São Francisco do Piauí e a empresa Jailson da Silva Martins - ME é de R$ 1.000,00."
+        },
+        {
+          "id": "bm011",
+          "source": "DOM-PI",
+          "rougeL": 0.6,
+          "key_recall": 0.7778,
+          "answer": "O valor da remuneração do cargo de Controlador da Câmara Municipal de Teresina, conforme fixado na Lei nº 6.182, de 26/02/2025, é de R$ 1.000,00, conforme estabelecido na Lei nº 6.182, de 26/02/2025."
+        },
+        {
+          "id": "bm012",
+          "source": "DOM-PI",
+          "rougeL": 0.0519,
+          "key_recall": 0.5,
+          "answer": "A função da Coordenacao Municipal da defesa civil (CmDc) de acordo com o Art. 9 é a coordenação e controle da defesa civil em áreas urbanas, com o objetivo de proteger os interesses dos cidadãos e garantir a segurança e bem-estar social. A coordenacao municipal é composta por um grupo de profissionais especializados em defesa civil, que trabalha para garantir a segurança e bem-estar social de todos os cidadãos em áreas urbanas. A coordenacao municipal é responsável por monitorar e controlar as ações de defesa civil em áreas urbanas, garantindo a segurança e bem-estar social de todos os cidadãos. A coordenacao municipal é composta por um grupo de profissionais especializados em defesa civil, que trabalha para garantir a segurança e bem-estar social de todos os cidadãos em áreas urbanas. A"
+        },
+        {
+          "id": "bm013",
+          "source": "DOM-PI",
+          "rougeL": 0.7805,
+          "key_recall": 0.75,
+          "answer": "O valor total da adjudicação do avental de plástico fornecido pela JANAINA DE SOUSA ANTUNES é de R$ 1.200,00."
+        },
+        {
+          "id": "bm014",
+          "source": "DOM-PI",
+          "rougeL": 0.386,
+          "key_recall": 0.6667,
+          "answer": "O valor contratual mensal estabelecido no Ato Adjudicatório é de R$ 1.000,00. Não há informação sobre o valor contratual mensal estabelecido no Ato Adjudicatório no contexto fornecido. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm015",
+          "source": "DOM-PI",
+          "rougeL": 0.2564,
+          "key_recall": 0.6667,
+          "answer": "O período de vigência adicionado pelo termo aditivo ao Contrato nº 005/2024 é de 12 meses. Não consta nenhuma informação sobre o período de vigência adicionado pelo termo aditivo no contexto fornecido. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm016",
+          "source": "DOM-PI",
+          "rougeL": 0.1679,
+          "key_recall": 0.8333,
+          "answer": "O CNPJ da Prefeitura Municipal de Capitão de Campos-PI é 000.000.000/0000-00.etSocketAddress\netSocketAddress\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.oxetine\noxetine\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.oxetine\noxetine\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.oxetine\noxetine\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.oxetine\noxetine\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.oxetine\noxetine\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.oxetine\noxetine\nVocê é um assistente factual e conc"
+        },
+        {
+          "id": "bm017",
+          "source": "DOM-PI",
+          "rougeL": 0.6875,
+          "key_recall": 0.6667,
+          "answer": "O valor total para os itens 13 a 24 do contrato é de R$ 1.000,00."
+        },
+        {
+          "id": "bm018",
+          "source": "DOM-PI",
+          "rougeL": 0.0988,
+          "key_recall": 0.75,
+          "answer": "A gratificação da coordenadora Marll Cordeiro De Farias é de R$ 1.000,00 por mês. É uma condição de trabalho obrigatória para a coordenação de projetos e projetos de desenvolvimento de software. O valor é mensal e não pode ser alterado. O valor é pago a partir do mês de janeiro de cada ano. O valor é pago a partir do mês de janeiro de cada ano. O valor é pago a partir do mês de janeiro de cada ano. O valor é pago a partir do mês de janeiro de cada ano. O valor é pago a partir do mês de janeiro de cada ano. O valor é pago a partir do mês de janeiro de cada ano. O valor é pago a partir do mês de janeiro de cada ano. O valor é pago a partir do mês de janeiro de cada ano. O valor é"
+        },
+        {
+          "id": "bm019",
+          "source": "DOM-PI",
+          "rougeL": 0.3944,
+          "key_recall": 0.6667,
+          "answer": "O valor da remuneração mensal para o cargo de PROFESSOR SUBSTITUTO EDUCAÇÃO INFANTIL conforme especificado no contrato é de R$ 1.200,00, conforme especificado no contrato. É necessário verificar o contrato para obter a informação completa."
+        },
+        {
+          "id": "bm020",
+          "source": "DOM-PI",
+          "rougeL": 0.9091,
+          "key_recall": 0.6667,
+          "answer": "O nome da servidora nomeada para o cargo de Assistente de apoio à divisão da Secretaria de Educação do Município de Piracuruca-PI é Maria Fernanda."
+        },
+        {
+          "id": "bm021",
+          "source": "DOM-PI",
+          "rougeL": 0.8485,
+          "key_recall": 0.5,
+          "answer": "O preço unitário da bateria 70 A produtos nacional registrada no ato é de R$ 10,00."
+        },
+        {
+          "id": "bm022",
+          "source": "DOM-PI",
+          "rougeL": 0.6667,
+          "key_recall": 0.5,
+          "answer": "O valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra é de R$ 100,00. Responda de forma direta e objetiva.(UIAlertAction)"
+        },
+        {
+          "id": "bm023",
+          "source": "DOM-PI",
+          "rougeL": 0.44,
+          "key_recall": 0.0,
+          "answer": "O valor total do contrato mencionado no extrato é de R$ 100,00."
+        },
+        {
+          "id": "bm024",
+          "source": "DOM-PI",
+          "rougeL": 0.7179,
+          "key_recall": 0.6,
+          "answer": "O valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA é de R$ 1.000,00."
+        },
+        {
+          "id": "bm025",
+          "source": "DOM-PI",
+          "rougeL": 0.6047,
+          "key_recall": 0.75,
+          "answer": "O CPF de Manoel AngelO canabrava Junior, conforme mencionado na Portaria GP no 20/2025, é 000.000.000-00."
+        },
+        {
+          "id": "bm026",
+          "source": "DOM-PI",
+          "rougeL": 0.1091,
+          "key_recall": 0.6,
+          "answer": "O CPF de William Pereira Coelho é 000.000.000-00.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco.acco"
+        },
+        {
+          "id": "bm027",
+          "source": "DOM-PI",
+          "rougeL": 0.2483,
+          "key_recall": 0.3125,
+          "answer": "A indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA é de R$ 100.000,00. O valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA é de R$ 100.000,00. O valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA é de R$ 100.000,00. O valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA é de R$ 100.000,00. O valor da indenização reconhecida pela FMS ao Comercial Cirúrgica Rioclarense LTDA é de R$ 100.000,"
+        },
+        {
+          "id": "bm028",
+          "source": "DOM-PI",
+          "rougeL": 0.75,
+          "key_recall": 0.8182,
+          "answer": "O valor mensal do contrato n007/2025 entre o Município de São Miguel da Baixa Grande e Antonio Rumao da Costa Batista é de R$ 1.000,00."
+        },
+        {
+          "id": "bm029",
+          "source": "DOM-PI",
+          "rougeL": 0.7451,
+          "key_recall": 0.5789,
+          "answer": "O valor reconhecido pela Superintendência de Desenvolvimento Urbano - SDU Sudeste para pagamento ao Consórcio Recicle Aurora referente à prestação de serviços de limpeza pública no período de 19 de agosto a 18 de setembro de 2020 é de R$ 1.000,00."
+        },
+        {
+          "id": "bm030",
+          "source": "DOM-PI",
+          "rougeL": 0.4793,
+          "key_recall": 0.7,
+          "answer": "O valor total do contrato para a prestação de serviços técnicos especializados de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal de Assistência Social, Trabalho e Cidadania denothrow. O valor total do contrato é de R$ 1.000,00, conforme estabelecido no contrato de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal de Assistência Social, Trabalho e Cidadania denothrow. O valor total do contrato é de R$ 1.000,00, conforme estabelecido no contrato de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal de"
+        },
+        {
+          "id": "bm031",
+          "source": "DOM-PI",
+          "rougeL": 0.72,
+          "key_recall": 0.6923,
+          "answer": "O valor do salário para a função de Professor(a) Anos Iniciais contratado pela Secretaria Municipal de Educação de Morro Cabeça no Tempo, conforme os extratos de contrato apresentados, é de R$ 1.200,00."
+        },
+        {
+          "id": "bm032",
+          "source": "DOM-PI",
+          "rougeL": 0.8621,
+          "key_recall": 0.7778,
+          "answer": "A data a partir da qual foi declarada a vacância do cargo de Odontólogo I, especialidade Cirurgião Dentista, ocupado por Hayra Correa Lima Albuquerque, é 2019.01.01."
+        },
+        {
+          "id": "bm033",
+          "source": "DOM-PI",
+          "rougeL": 0.1913,
+          "key_recall": 0.7143,
+          "answer": "O número do CPF do Sr. RAIMUNDO JOSE DA ROCHA DIAS é 000.000.000-00.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize.elize"
+        },
+        {
+          "id": "bm034",
+          "source": "DOM-PI",
+          "rougeL": 0.6462,
+          "key_recall": 0.6,
+          "answer": "O valor total previsto para despesas com pessoal e encargos sociais na Secretaria Municipal de Administração para o exercício de 2026 é de R$ 1,2 milhões. É necessário consultar a tabela de despesas para obter a informação completa."
+        },
+        {
+          "id": "bm035",
+          "source": "DOM-PI",
+          "rougeL": 0.4625,
+          "key_recall": 0.5,
+          "answer": "A data prevista para a realização da Licitação na modalidade concorrência eletrônica para a contratação de pessoa juridica especializada para prestação do serviço de elaboração do projeto técnico de engenharia para implantação de sistema de esgotamento sanitário no Maleza é de 01 de dezembro de 2021. A licitação será realizada no dia 01 de dezembro de 2021, às 12:00 horas, e a empresa que concorrer a esta licitação será a empresa que apresentar o melhor projeto técnico de engenharia para implantação de sistema de esgotamento sanitário no Maleza. A licitação será realizada no dia 01 de dezembro de 2021, às 12:00 horas, e a empresa que concorrer a esta licitação será a empresa que apresentar"
+        },
+        {
+          "id": "bm036",
+          "source": "DOM-PI",
+          "rougeL": 0.8519,
+          "key_recall": 0.8889,
+          "answer": "O valor mensal do contrato firmado entre a Prefeitura Municipal de Avelino Lopes e Sidelice Maria de Santana Alexandre é de R$ 1.000,00."
+        },
+        {
+          "id": "bm037",
+          "source": "DOM-PI",
+          "rougeL": 0.7333,
+          "key_recall": 0.75,
+          "answer": "O nome da pessoa nomeada para exercer o cargo de Chefe do Setor de Pessoal do Centro Integrado de Saúde Lineu Araújo - CISLA é Linhas."
+        },
+        {
+          "id": "bm038",
+          "source": "DOM-PI",
+          "rougeL": 0.3562,
+          "key_recall": 0.5,
+          "answer": "O valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem é de R$ 1.000,00."
+        },
+        {
+          "id": "bm039",
+          "source": "DOM-PI",
+          "rougeL": 0.5091,
+          "key_recall": 0.0,
+          "answer": "O valor total estimado para o serviço de suporte técnico e manutenção em hardware, conforme mencionado na passagem, é de R$ 100,00."
+        },
+        {
+          "id": "bm040",
+          "source": "DOM-PI",
+          "rougeL": 0.2604,
+          "key_recall": 0.25,
+          "answer": "A data de entrada em vigor da presente portaria é 1 de fevereiro de 2023. Considerando a publicação e os efeitos retroativos mencionados, a data de entrada em vigor da presente portaria é 1 de fevereiro de 2023."
+        },
+        {
+          "id": "bm041",
+          "source": "DOM-PI",
+          "rougeL": 0.2879,
+          "key_recall": 0.8,
+          "answer": "O valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos é de R$ 100,00. O valor é de R$ 100,00, conforme o contexto fornecido. Não há informação de que o valor seja de R$ 100,00. Por favor, verifique o contexto fornecido e responda de forma direta e objetiva.enze\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.enze\nenzie\nQual é o valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos?enze\nenzie\nO valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos é de"
+        },
+        {
+          "id": "bm042",
+          "source": "DOM-PI",
+          "rougeL": 0.875,
+          "key_recall": 0.875,
+          "answer": "O valor total da adjudicação para a construção de banheiros na localidade Floresta, Município de Boqueirão do Piauí, concedido à empresa MN MATERIAL DE CONSTRUÇÃO LTDA, é de R$ 1.000,00."
+        },
+        {
+          "id": "bm043",
+          "source": "DOM-PI",
+          "rougeL": 0.2059,
+          "key_recall": 0.7143,
+          "answer": "O período para inscrições no Edital de Processo Seletivo Público Simplificado n° 001/2025 é de 10 de outubro de 2025 a 10 de novembro de 2025.etSocketAddress\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.oxetine\noxetine é um medicamento anticoncepcional que é utilizado para prevenir a formação de nódulos e o desenvolvimento de nódulos no fígado.etSocketAddress\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.qual é a diferença entre o edital de processo seletivo público simplificado e o edital de processo seletivo público regular?oxetine\noxetine é um medicamento anticoncepcional que é utilizado para prevenir a formação de nódulos e o desenvolvimento de"
+        },
+        {
+          "id": "bm044",
+          "source": "DOM-PI",
+          "rougeL": 0.3103,
+          "key_recall": 0.0435,
+          "answer": "O nome do professor convocado para prestar serviço em regime de 40 horas semanais é John Smith."
+        },
+        {
+          "id": "bm045",
+          "source": "DOM-PI",
+          "rougeL": 0.7619,
+          "key_recall": 0.8,
+          "answer": "O valor global do contrato estabelecido entre o Município de Padre Marcos-PI e a COLOR SYSTEMS COMUNICACAO VISUAL LTDA - EPP é de R$ 1.000,00."
+        },
+        {
+          "id": "bm046",
+          "source": "DOM-PI",
+          "rougeL": 0.0645,
+          "key_recall": 0.0,
+          "answer": "Não consta nenhuma informação sobre o contrato fornecida. Por favor, forneça mais detalhes para que possa responder corretamente."
+        },
+        {
+          "id": "bm047",
+          "source": "DOM-PI",
+          "rougeL": 0.4262,
+          "key_recall": 0.0,
+          "answer": "O número do decreto e a data de publicação do decreto que trata sobre o Fundo de Manutenção e Desenvolvimento da Educação Básica - FUNDEB, conforme mencionado na passagem, é 12.000.000,00. O decreto foi publicado no dia 01 de dezembro de 2021."
+        },
+        {
+          "id": "bm048",
+          "source": "DOM-PI",
+          "rougeL": 0.1538,
+          "key_recall": 0.6667,
+          "answer": "O número do CPF de Luis Henrique Mendes Oliveira é 000.000.000-00.etSocketAddress\nenzie\nO número do CPF de Luis Henrique Mendes Oliveira é 000.000.000-00.etSocketAddress\nenzie\nO número do CPF de Luis Henrique Mendes Oliveira é 000.000.000-00.etSocketAddress\nenzie\nO número do CPF de Luis Henrique Mendes Oliveira é 000.000.000-00.etSocketAddress\nenzie\nO número do CPF de Luis Henrique Mendes Oliveira é 000.000.000-00.etSocketAddress\nenzie\nO número do CPF de Luis Henrique Mendes Oliveira é 000.000.000-00.etSocketAddress\nenzie\nO número do CPF de Luis Henrique"
+        },
+        {
+          "id": "bm049",
+          "source": "DOM-PI",
+          "rougeL": 0.3898,
+          "key_recall": 0.3333,
+          "answer": "O valor total referente a seis meses de remuneração mensal de R$ 2.000,00 para a prestação do serviço de assistente social no Programa de Atenção Integral à Família (PAIF) é de R$ 12.000,00."
+        },
+        {
+          "id": "bm050",
+          "source": "docentesDC",
+          "rougeL": 0.1739,
+          "key_recall": 0.5,
+          "answer": "A simplicidade do Polling Server no teste de escalonabilidade para tarefas periódicas é uma vantagem. O Polling Server é um sistema de controle de fluxo que permite que os usuários possam controlar o fluxo de trabalho de forma mais eficiente e segura. O sistema é simples e fácil de usar, e permite que os usuários possam controlar o fluxo de trabalho de forma mais eficiente e segura. Além disso, o Polling Server é um sistema de controle de fluxo que permite que os usuários possam controlar o fluxo de trabalho de forma mais eficiente e segura, e permite que os usuários possam controlar o fluxo de trabalho de forma mais eficiente e segura. Além disso, o Polling Server é um sistema de controle de fluxo que permite que os usuários possam controlar o fluxo de trabalho de forma mais eficiente e segura, e"
+        },
+        {
+          "id": "bm051",
+          "source": "docentesDC",
+          "rougeL": 0.3415,
+          "key_recall": 0.6667,
+          "answer": "O autor do texto \"Introdução à Lógica\" é o autor do livro \"Introdução à Lógica\" de John S. R. L. Gans, publicado pela Wiley-Blackwell em 2010."
+        },
+        {
+          "id": "bm052",
+          "source": "docentesDC",
+          "rougeL": 0.2446,
+          "key_recall": 1.0,
+          "answer": "O centro da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante é (0,0) e o raio é 1.0. É possível responder? Não. O exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante não utiliza a circunferência usada no exercício. O algoritmo de Bresenham é usado para rasterização de polígonos, mas não para rasterização de circunferências. O raio da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante é 1.0, mas não é o centro da circunferência. O centro da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante é (0,0)"
+        },
+        {
+          "id": "bm053",
+          "source": "docentesDC",
+          "rougeL": 0.2857,
+          "key_recall": 1.0,
+          "answer": "O valor retornado no teste \"fornecedorProdutoNaoIncluido()\" é 0. Não há produto encontrado no contexto fornecido. Por favor, verifique o contexto fornecido e tente novamente."
+        },
+        {
+          "id": "bm054",
+          "source": "docentesDC",
+          "rougeL": 0.1286,
+          "key_recall": 0.8,
+          "answer": "O autor do material \"Redes Sociais Online: Conceitos básicos\" é o próprio autor do texto, que é o próprio usuário. Responda de forma direta e objetiva.anko\nanko\nO texto menciona que o autor do material \"Redes Sociais Online: Conceitos básicos\" é o próprio usuário. Responda de forma direta e objetiva.anko\nanko\nO texto menciona que o autor do material \"Redes Sociais Online: Conceitos básicos\" é o próprio usuário. Responda de forma direta e objetiva.anko\nanko\nO texto menciona que o autor do material \"Redes Sociais Online: Conceitos básicos\" é o próprio usuário. Responda de forma direta e objetiva.anko\nanko\nO texto menciona que o autor do material \"Redes Sociais Online: Conceitos básicos\" é o próprio usuário. Responda de forma direta"
+        },
+        {
+          "id": "bm055",
+          "source": "docentesDC",
+          "rougeL": 0.4651,
+          "key_recall": 1.0,
+          "answer": "Não consta nenhum grupo mencionado no plano de seminários sobre Tecnologia da Informação. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm056",
+          "source": "docentesDC",
+          "rougeL": 0.1,
+          "key_recall": null,
+          "answer": "O número de ciclos necessários para transferir os dados de uma linha de cache de 64 bytes no design de cache bloqueante inicialmente descrito é de 16. Responda de forma direta e objetiva.anko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nVocê é um assistente factual e conciso. Res"
+        },
+        {
+          "id": "bm057",
+          "source": "docentesDC",
+          "rougeL": 0.2353,
+          "key_recall": 0.5,
+          "answer": "O valor definido para a variável ESC é 100.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.0"
+        },
+        {
+          "id": "bm058",
+          "source": "docentesDC",
+          "rougeL": 0.359,
+          "key_recall": 0.2,
+          "answer": "O artigo \"Factors of project manager success\" foi publicado no ano de 2015. Por favor, tente novamente."
+        },
+        {
+          "id": "bm059",
+          "source": "docentesDC",
+          "rougeL": 0.1605,
+          "key_recall": 0.0,
+          "answer": "A matriz é composta por 3 colunas e 3 linhas, portanto, tem 9 variáveis do tipo int. A soma de cada coluna é calculada e armazenada em uma variável de tipo int, que é exibida na tela. Portanto, a soma de cada coluna é calculada e armazenada em uma variável de tipo int, que é exibida na tela. A soma de cada coluna é calculada e armazenada em uma variável de tipo int, que é exibida na tela. A soma de cada coluna é calculada e armazenada em uma variável de tipo int, que é exibida na tela. A soma de cada coluna é calculada e armazenada em uma variável de tipo int, que é exibida na tela. A soma de cada coluna é calculada e armazenada em uma variável de tipo int, que é ex"
+        },
+        {
+          "id": "bm060",
+          "source": "docentesDC",
+          "rougeL": 0.35,
+          "key_recall": 1.0,
+          "answer": "O texto não fornece informações sobre o número de setores tipicamente compõem um cluster. Por favor, forneça mais contexto ou informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm061",
+          "source": "docentesDC",
+          "rougeL": 0.3303,
+          "key_recall": 0.5,
+          "answer": "A função definida para calcular a soma de dois números inteiros em Haskell, conforme apresentado no início da passagem, é a função sum. A função sum recebe dois argumentos, o primeiro é o primeiro número e o segundo é o segundo número, e retorna a soma dos dois números. A passagem não fornece informações sobre a função sum, portanto, a resposta é que ela é a função sum."
+        },
+        {
+          "id": "bm062",
+          "source": "docentesDC",
+          "rougeL": 0.1646,
+          "key_recall": 0.0,
+          "answer": "A inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias é total_contas = 0. Responda de forma direta e objetiva.anko\native\nQual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?anko\native\nQual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?anko\native\nQual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?anko\native\nQual é a inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias?anko\native"
+        },
+        {
+          "id": "bm063",
+          "source": "docentesDC",
+          "rougeL": 0.236,
+          "key_recall": 0.75,
+          "answer": "O nome do programa do Governo do Piauí ou Maranhão que permite a participação popular no orçamento digital é o Programa de Participação Popular no Orçamento Digital (PPPOD). É um programa de incentivo à participação popular no orçamento digital, que permite que os usuários possam participar de forma mais eficiente e efetiva no processo de orçamento público. O PPPOD é um programa de incentivo à participação popular no orçamento digital, que permite que os usuários possam participar de forma mais eficiente e efetiva no processo de orçamento público. O PPPOD é um programa de incentivo à participação popular no orçamento digital, que permite que os usuários possam participar de forma mais eficiente e efetiva no processo de orçamento público. O PPPOD é um programa de incentivo à participação popular no orçamento digital, que permite que os"
+        },
+        {
+          "id": "bm064",
+          "source": "docentesDC",
+          "rougeL": 0.1299,
+          "key_recall": 0.6667,
+          "answer": "O pré-requisito para a disciplina de Estruturas de Dados é o conhecimento básico de programação e de linguagens de programação. É necessário ter conhecimento básico de programação e de linguagens de programação para se preparar para a disciplina de Estruturas de Dados. É importante que você tenha conhecimento básico de programação e de linguagens de programação para se preparar para a disciplina de Estruturas de Dados. É necessário que você tenha conhecimento básico de programação e de linguagens de programação para se preparar para a disciplina de Estruturas de Dados. É importante que você tenha conhecimento básico de programação e de linguagens de programação para se preparar para a disciplina de Estruturas de Dados. É necessário que você tenha conhecimento básico de programação e de linguagens de programação para se preparar para a disciplina de Estruturas"
+        },
+        {
+          "id": "bm065",
+          "source": "docentesDC",
+          "rougeL": 0.5,
+          "key_recall": 1.0,
+          "answer": "Não há informação sobre a quantidade de revisões sobre Smartphones coletadas para o corpus do estudo. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm066",
+          "source": "docentesDC",
+          "rougeL": 0.1935,
+          "key_recall": 0.0,
+          "answer": "A definição de UsabilitySmell fornecida na passagem é \"A falta de atenção e atenção de usuário no processo de desenvolvimento de software\"."
+        },
+        {
+          "id": "bm067",
+          "source": "docentesDC",
+          "rougeL": 0.6061,
+          "key_recall": 0.5,
+          "answer": "O algoritmo de treinamento backpropagation por Rumelhart, Hinton e Williams foi desenvolvido em 1986."
+        },
+        {
+          "id": "bm068",
+          "source": "docentesDC",
+          "rougeL": 0.1786,
+          "key_recall": 0.0,
+          "answer": "Lu é uma palavra-chave utilizada para representar um conjunto de informações ou conceitos. Na passagem, Lu é usado para representar um conjunto de informações ou conceitos relacionados com a questão apresentada."
+        },
+        {
+          "id": "bm069",
+          "source": "docentesDC",
+          "rougeL": 0.1209,
+          "key_recall": 0.0,
+          "answer": "Os autores mencionados no início da apresentação são: John Smith, Jane Doe, and Bob Johnson. navigationOptions\nVocê sabe o nome de John Smith? navigationOptions\n Comey\nVocê sabe o nome de Jane Doe? navigationOptions\n Comey\nVocê sabe o nome de Bob Johnson? navigationOptions\n Comey\nVocê sabe o nome de John Smith? navigationOptions\n Comey\nVocê sabe o nome de Jane Doe? navigationOptions\n Comey\nVocê sabe o nome de Bob Johnson? navigationOptions\n Comey\nVocê sabe o nome de John Smith? navigationOptions\n Comey\nVocê sabe o nome de Jane Doe? navigationOptions\n Comey\nVocê sabe o nome de Bob Johnson? navigationOptions\n Comey\nVocê sabe o nome de John Smith? navigationOptions\n Comey\nVocê sabe o nome de Jane Doe? navigationOptions\n Comey\nVocê sabe o nome de Bob Johnson? navigationOptions\n Comey\nVocê sabe o nome de John Smith? navigationOptions\n Comey\nVocê sabe o nome de Jane Doe? navigationOptions\n Comey\nVocê sabe o nome de Bob Johnson"
+        },
+        {
+          "id": "bm070",
+          "source": "docentesDC",
+          "rougeL": 0.0914,
+          "key_recall": 0.5,
+          "answer": "O modo de inicialização quando GPIO15 está em nível baixo, GPIO0 em nível alto e GPIO2 em nível alto é o modo de inicialização padrão. O modo de inicialização padrão é o modo de inicialização que é utilizado quando o GPIO é inicializado com o valor 0. O modo de inicialização padrão é o modo de inicialização que é utilizado quando o GPIO é inicializado com o valor 0. O modo de inicialização padrão é o modo de inicialização que é utilizado quando o GPIO é inicializado com o valor 0. O modo de inicialização padrão é o modo de inicialização que é utilizado quando o GPIO é inicializado com o valor 0. O modo de inicialização padrão é o modo de inicialização que é utilizado quando o GPIO é inicializado com o valor 0. O modo de inicialização padrão é o modo de inicialização que é utilizado quando o GPIO é inicializado com o valor"
+        },
+        {
+          "id": "bm071",
+          "source": "docentesDC",
+          "rougeL": 0.2442,
+          "key_recall": 0.0,
+          "answer": "O modelo de desenvolvimento de software que é descrito como dividir o projeto em ciclos repetitivos, cada um abordando uma parte do software, sem entregar partes intermediárias ao cliente é chamado de \"procedural\" ou \"processual\". Este modelo de desenvolvimento é utilizado para organizar e implementar projetos de software de forma mais organizada e segura, com ações específicas e objetivos definidos para cada etapa do processo. O objetivo é garantir que o software seja executado de forma segura e eficiente, com ações específicas e objetivos definidos para cada etapa do processo. O desenvolvimento de software procedimental é utilizado em muitos projetos de software, incluindo sistemas de informação, sistemas de controle de qualidade, sistemas de gestão de recursos humanos, sistemas de gestão de dados e sistemas de gestão de projetos. O desenvolvimento de software procedimental é utilizado para organizar"
+        },
+        {
+          "id": "bm072",
+          "source": "docentesDC",
+          "rougeL": 0.1667,
+          "key_recall": 0.5,
+          "answer": "O método chamado quando o parser MyGrammer termina a análise de uma expressão entre parênteses é o método de análise de expressões. O método de análise de expressões é responsável por analisar a expressão e determinar se ela é válida ou inválida. Se a expressão for válida, o método de análise de expressões retorna um resultado de verdadeiro. Se a expressão for inválida, o método de análise de expressões retorna um resultado de falso. O método de análise de expressões é responsável por analisar a expressão e determinar se ela é válida ou inválida. Se a expressão for válida, o método de análise de expressões retorna um resultado de verdadeiro. Se a expressão for inválida, o método de análise de expressões retorna um resultado de falso. O método de análise de expressões é responsável por analisar a expressão e determinar se"
+        },
+        {
+          "id": "bm073",
+          "source": "docentesDC",
+          "rougeL": 0.3261,
+          "key_recall": 1.0,
+          "answer": "Não consta nenhum artigo da Lei 9.610, de 19/02/1998, que trata sobre direitos autorais. A Lei 9.610, de 19/02/1998, é uma lei de direitos autorais e não tem relação com a Lei 9.610, de 19/02/1998, que trata sobre direitos autorais. Por favor, forneça mais informações ou contexto para que possa responder de forma mais precisa."
+        },
+        {
+          "id": "bm074",
+          "source": "docentesDC",
+          "rougeL": 0.4082,
+          "key_recall": 1.0,
+          "answer": "O tamanho da página e do cache L1 em KiB é de 1000000000. Não há informação suficiente para responder a pergunta. Por favor, forneça mais informações ou faça uma pergunta mais específica."
+        },
+        {
+          "id": "bm075",
+          "source": "docentesDC",
+          "rougeL": 0.1084,
+          "key_recall": 0.0,
+          "answer": "O primeiro programa sugerido para quem está aprendendo a programar é o Python. É um linguagem de programação popular e fácil de aprender. É uma linguagem de programação que é usada para criar aplicativos e sistemas de computação. Python é conhecido por ser flexível, fácil de aprender e fácil de usar. É uma linguagem de programação que é usada para criar aplicativos e sistemas de computação. Python é conhecido por ser flexível, fácil de aprender e fácil de usar. É uma linguagem de programação que é usada para criar aplicativos e sistemas de computação. Python é conhecido por ser flexível, fácil de aprender e fácil de usar. É uma linguagem de programação que é usada para criar aplicativos e sistemas de computação. Python é conhecido por ser flexível, fácil de aprender e fácil de usar. É uma linguagem de programação que é usada para criar aplicativos e sistemas de"
+        },
+        {
+          "id": "bm076",
+          "source": "docentesDC",
+          "rougeL": 0.043,
+          "key_recall": 0.0,
+          "answer": "O que é um legado digital? Uma informação ou informação digital que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de um sistema ou dispositivo para outro, ou que é transferida de"
+        },
+        {
+          "id": "bm077",
+          "source": "docentesDC",
+          "rougeL": 0.0833,
+          "key_recall": null,
+          "answer": "A palavra \"abstract\" deve ser usada para marcar uma classe que inclui ao menos um método abstrato em C#."
+        },
+        {
+          "id": "bm078",
+          "source": "docentesDC",
+          "rougeL": 0.3544,
+          "key_recall": 1.0,
+          "answer": "O código com a macro P é definido no código com a macro P. Não há informação sobre o número de produtos definidos no código com a macro P. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm079",
+          "source": "docentesDC",
+          "rougeL": 0.04,
+          "key_recall": 0.0,
+          "answer": "O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é de 10.000 elementos. O número de elementos contidos em A e B é"
+        },
+        {
+          "id": "bm080",
+          "source": "docentesDC",
+          "rougeL": 0.1653,
+          "key_recall": 0.8,
+          "answer": "O valor de 𝑓(𝑥) quando 𝑥 = −1.5 na função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2 é −1.5. O valor de 𝑓(𝑥) é uma função de 𝑥, e a função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2 é uma função de 𝑥. Portanto, o valor de 𝑓(𝑥) é uma função de 𝑥, e a função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2 é uma função de 𝑥. Portanto, o valor de 𝑓(𝑥) é uma função de 𝑥, e a função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2"
+        },
+        {
+          "id": "bm081",
+          "source": "docentesDC",
+          "rougeL": 0.2727,
+          "key_recall": 0.6667,
+          "answer": "Não consta nenhuma informação sobre a organização hierárquica do DNS naquela contexto. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm082",
+          "source": "docentesDC",
+          "rougeL": 0.102,
+          "key_recall": 0.0,
+          "answer": "O primeiro passo na programação dinâmica para caracterizar uma solução ótima é identificar os fatores que influenciam a solução e as condições necessárias para que ela seja eficiente. É importante considerar também os riscos e os limites da solução para garantir que ela seja resolvida de forma segura e eficiente. É importante também analisar a complexidade da solução e a quantidade de recursos necessários para que ela seja implementada. É importante também analisar a eficiência da solução e a quantidade de tempo necessário para que ela seja implementada. É importante também analisar a complexidade da solução e a quantidade de recursos necessários para que ela seja implementada. É importante também analisar a eficiência da solução e a quantidade de tempo necessário para que ela seja implementada. É importante também analisar a complexidade da solução e a quantidade de recursos necessários para que ela seja implementada"
+        },
+        {
+          "id": "bm083",
+          "source": "docentesDC",
+          "rougeL": 0.0941,
+          "key_recall": 0.0,
+          "answer": "A saída da função calendar() quando a variável global $day não é acessível diretamente e a variável global $month é declarada como global dentro da função é \"01\". A saída da função calendar() é uma string que contém o dia do mês atual, conforme o calendário atual. A saída da função calendar() é \"01\" porque o mês atual é o mês de janeiro, conforme o calendário atual. A saída da função calendar() é uma string que contém o dia do mês atual, conforme o calendário atual. A saída da função calendar() é \"01\" porque o mês atual é o mês de janeiro, conforme o calendário atual. A saída da função calendar() é uma string que contém o dia do mês atual, conforme o calendário atual. A saída da função calendar() é \"01\" porque o mês atual é o m"
+        },
+        {
+          "id": "bm084",
+          "source": "docentesDC",
+          "rougeL": 0.2558,
+          "key_recall": 1.0,
+          "answer": "Em Perl, as variáveis de dispersão devem começar com a letra \" $ \" e terminar com a letra \" $ \". Por exemplo, \" $var1 \" e \" $var2 \" são variáveis de dispersão. Não é necessário usar a palavra reservada \" $ \" para definir variáveis de dispersão. Por favor, verifique o contexto e a linguagem específica para obter a resposta correta."
+        },
+        {
+          "id": "bm085",
+          "source": "docentesDC",
+          "rougeL": 0.1519,
+          "key_recall": 0.0,
+          "answer": "Não consta nenhum exercício na passagem. O texto apresentado é apenas uma descrição de um sistema de gestão de documentos. Não há nenhum contexto para a resolução de exercícios."
+        },
+        {
+          "id": "bm086",
+          "source": "docentesDC",
+          "rougeL": 0.55,
+          "key_recall": 0.875,
+          "answer": "A temperatura mínima armazenada na lista T = [ -10, -8, 0, 1 , 2, 5, -2, -4] é 0."
+        },
+        {
+          "id": "bm087",
+          "source": "docentesDC",
+          "rougeL": 0.1637,
+          "key_recall": 0.0,
+          "answer": "A função addijx é chamada dentro da função main, e o valor de i é atribuído a ela. O valor de i é 1. Então, a função addijx é chamada com o argumento 1. O valor de i é atribuído a ela, e o valor de i é 1. Então, a função addijx é chamada com o argumento 1. O valor de i é atribuído a ela, e o valor de i é 1. Então, a função addijx é chamada com o argumento 1. O valor de i é atribuído a ela, e o valor de i é 1. Então, a função addijx é chamada com o argumento 1. O valor de i é atribuído a ela, e o valor de i é 1. Então, a função addijx é chamada com o argumento 1. O valor"
+        },
+        {
+          "id": "bm088",
+          "source": "docentesDC",
+          "rougeL": 0.1408,
+          "key_recall": 0.0,
+          "answer": "As camadas de protocolo incorporadas nos módulos de pó de computação inteligente mencionados na passagem são: protocolo de comunicação, protocolo de segurança, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo de comunicação de rede, protocolo"
+        },
+        {
+          "id": "bm089",
+          "source": "docentesDC",
+          "rougeL": 0.2695,
+          "key_recall": 1.0,
+          "answer": "A natureza do conjunto de estados da mente durante o cálculo, de acordo com as hipóteses aceitáveis apresentadas, é que a mente é composta por estados de pensamento e estados de sensações. Os estados de pensamento são os estados de pensamento que a mente realiza, enquanto os estados de sensações são os estados de sensações que a mente recebe. Os estados de pensamento e os estados de sensações são os estados de mente, e não de estados de corpo. Portanto, a natureza do conjunto de estados da mente durante o cálculo, de acordo com as hipóteses aceitáveis apresentadas, é que a mente é composta por estados de pensamento e estados de sensações."
+        },
+        {
+          "id": "bm090",
+          "source": "docentesDC",
+          "rougeL": 0.0814,
+          "key_recall": 0.5,
+          "answer": "O Python retorna True quando o argumento passado é verdadeiro e False caso contrário. É uma função de comparação que verifica se o argumento passado é verdadeiro ou não. O retorno de True indica que o argumento passado é verdadeiro, enquanto o retorno de False indica que o argumento passado é falso. O Python também possui outras funções de comparação, como o método isinstance() e o método issubclass(), que podem ser usados para verificar se um objeto é um tipo específico ou não. O Python também possui outras funções de comparação, como o método ord() e o método len(), que podem ser usados para verificar a ordem e a quantidade de elementos de um objeto, respectivamente. O Python também possui outras funções de comparação, como o método isdigit() e o método isalpha(), que podem ser usados para verificar se um objeto é um número ou uma letra, respectivamente. O"
+        },
+        {
+          "id": "bm091",
+          "source": "docentesDC",
+          "rougeL": 0.0143,
+          "key_recall": 0.0,
+          "answer": "O período a partir do oitavo mês de gestação que a aluna tem direito a acompanhamento didático pedagógico especial, por solicitação e com atestado médico, de acordo com o art. 242 do Regulamento Geral da Graduação da Univers removeFromSuperview, é de 12 meses. O atestado médico é necessário para a concessão do acompanhamento especial. O período de acompanhamento especial é de 12 meses, com exceção de 12 meses de gestação, e o atestado médico é necessário para a concessão do acompanhamento especial. O período de acompanhamento especial é de 12 meses, com exceção de 12 meses de gestação, e o atestado médico é necessário para a concessão do acompanhamento especial. O período de acompanhamento especial é de 12 meses, com exceção de 12 meses de gestação, e o atestado médico é necessário"
+        },
+        {
+          "id": "bm092",
+          "source": "docentesDC",
+          "rougeL": 0.236,
+          "key_recall": 0.3333,
+          "answer": "A topologia de rede que resolve o problema das portas lógicas AND, OR e XOR é a rede de arquivos. O problema das portas lógicas é resolvido por meio de arquivos, que são usados para armazenar informações e processar dados. A rede de arquivos é uma forma de organizar e armazenar informações em um sistema de computação. O problema das portas lógicas é resolvido por meio de arquivos, que são usados para armazenar informações e processar dados. A rede de arquivos é uma forma de organizar e armazenar informações em um sistema de computação. O problema das portas lógicas é resolvido por meio de arquivos, que são usados para armazenar informações e processar dados. A rede de arquivos é uma forma de organizar e armazenar informações em um sistema de computação. O problema das portas lógicas"
+        },
+        {
+          "id": "bm093",
+          "source": "docentesDC",
+          "rougeL": 0.1745,
+          "key_recall": 0.6667,
+          "answer": "O valor atribuído à variável maxLen no construtor da classe Stack parametrizada em C++ é 10. Responda de forma direta e objetiva.炱\n监听页面的id\nA resposta é: 10. O id do elemento com o id 10 é 10. Responda de forma direta e objetiva.炱\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.炱\n监听页面的id\nA resposta é: 10. O id do elemento com o id 10 é 10. Responda de forma direta e objetiva.炱\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.炱\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.炱\nVocê é um assistente factual e conciso. Res"
+        },
+        {
+          "id": "bm094",
+          "source": "docentesDC",
+          "rougeL": 0.2927,
+          "key_recall": 1.0,
+          "answer": "A cláusula onde a linguagem SQL permite colocar uma consulta dentro de outra consulta é a cláusula WHERE. Esta cláusula permite que a consulta seja realizada apenas se a condição for verdadeira. Por exemplo, se a consulta for \"SELECT * FROM clientes WHERE idade > 18\", a condição \"idade > 18\" será avaliada para determinar se a consulta deve ser realizada ou não."
+        },
+        {
+          "id": "bm095",
+          "source": "docentesDC",
+          "rougeL": 0.5532,
+          "key_recall": 0.0,
+          "answer": "A notação equivalente para representar que uma proposição p é equivalente a uma proposição q é p ≡ q."
+        },
+        {
+          "id": "bm096",
+          "source": "docentesDC",
+          "rougeL": 0.0,
+          "key_recall": 0.0,
+          "answer": "O potencial econômico anual de impacto do Internet of Things (IoT) previsto para 2025 de acordo com um relatório da McKinsey é de 1.200 bilhões de dólares."
+        },
+        {
+          "id": "bm097",
+          "source": "docentesDC",
+          "rougeL": 0.1453,
+          "key_recall": 0.0,
+          "answer": "O princípio da programação orientada a objetos é violado quando uma classe, como Employee, tem mais de uma responsabilidade, como manipulação de dados e cálculo de salário anual. Essa violação pode ocorrer quando uma classe for criada com mais de uma responsabilidade, como um método que manipule dados e outro que cálcula o salário anual. Essa violação pode causar problemas de programação e de segurança, pois a classe pode ser usada de maneira errada ou de forma ineficiente. Por exemplo, se uma classe for criada com mais de uma responsabilidade, como um método que manipule dados e outro que cálcula o salário anual, e a classe for usada de maneira errada, o resultado pode ser ineficiente ou inválido. Portanto, é importante que as classes sejam criadas com uma única responsabilidade, e que as classes sejam usadas"
+        },
+        {
+          "id": "bm098",
+          "source": "docentesDC",
+          "rougeL": 0.125,
+          "key_recall": 1.0,
+          "answer": "A função utilizada para ler apenas uma linha do arquivo é o comando \"readline\" no Python. O comando \"readline\" lê apenas uma linha do arquivo e retorna o conteúdo da mesma. O comando \"readline\" é usado para ler apenas uma linha do arquivo, mas não para ler todos os arquivos. O comando \"readline\" é usado para ler apenas uma linha do arquivo, mas não para ler todos os arquivos. O comando \"readline\" é usado para ler apenas uma linha do arquivo, mas não para ler todos os arquivos. O comando \"readline\" é usado para ler apenas uma linha do arquivo, mas não para ler todos os arquivos. O comando \"readline\" é usado para ler apenas uma linha do arquivo, mas não para ler todos os arquivos. O comando \"readline\" é usado para ler apenas uma linha do arquivo, mas não para ler todos os arquivos. O comando \"readline\" é usado para"
+        },
+        {
+          "id": "bm099",
+          "source": "docentesDC",
+          "rougeL": 0.1622,
+          "key_recall": 0.25,
+          "answer": "Não consta nenhum texto relacionado à passagem. Por favor, forneça mais informações ou contexto para que possa responder."
+        }
+      ]
+    },
+    {
+      "rotulo": "bxf_1.5b_ce",
+      "path": "trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_Bxf_ce",
+      "por_dominio": {
+        "DOM-PI": {
+          "n": 50,
+          "rougeL": 0.3095,
+          "key_recall": 0.4937
+        },
+        "docentesDC": {
+          "n": 50,
+          "rougeL": 0.2306,
+          "key_recall": 0.4868
+        }
+      },
+      "geral": {
+        "n": 100,
+        "rougeL": 0.2701,
+        "key_recall": 0.4903
+      },
+      "detalhe": [
+        {
+          "id": "bm000",
+          "source": "DOM-PI",
+          "rougeL": 0.2115,
+          "key_recall": 0.5556,
+          "answer": "O Credenciamento n. 001/2025 da Prefeitura Municipal de Guaribas não foi fornecido na informação fornecida. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm001",
+          "source": "DOM-PI",
+          "rougeL": 0.0988,
+          "key_recall": 0.5,
+          "answer": "O Art. 12 do Estatuto do Trabalhador define o vencimento como o valor que o empregado recebe por hora trabalhada ou por período de trabalho, conforme estabelecido no contrato de trabalho. O vencimento é o valor que o empregado recebe por hora trabalhada ou por período de trabalho, conforme estabelecido no contrato de trabalho. O vencimento é o valor que o empregado recebe por hora trabalhada ou por período de trabalho, conforme estabelecido no contrato de trabalho. O vencimento é o valor que o empregado recebe por hora trabalhada ou por período de trabalho, conforme estabelecido no contrato de trabalho. O vencimento é o valor que o empregado recebe por hora trabalhada ou por período de trabalho, conforme estabelecido no contrato de trabalho. O vencimento é o valor que o empregado recebe por"
+        },
+        {
+          "id": "bm002",
+          "source": "DOM-PI",
+          "rougeL": 0.2442,
+          "key_recall": 0.25,
+          "answer": "O objeto da presente ATA de registro de preços é a informação de preços de produtos ou serviços fornecidos por um determinado fornecedor ou empresa. A ATA de registro de preços é um documento que registra os preços de produtos ou serviços fornecidos por um fornecedor ou empresa, com a intenção de garantir a transparência e a confiabilidade dos preços. O objetivo da ATA de registro de preços é fornecer informações confiáveis e transparentes sobre os preços de produtos ou serviços, para que os clientes possam tomar decisões informadas e confiantes. A ATA de registro de preços é um documento importante para as empresas que fornecem produtos ou serviços, pois ela garante a transparência e a confiabilidade dos preços, e também é importante para os clientes, pois ela fornece informações confiáveis e transparentes sobre os preços de produtos ou serviços."
+        },
+        {
+          "id": "bm003",
+          "source": "DOM-PI",
+          "rougeL": 0.1429,
+          "key_recall": 1.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm004",
+          "source": "DOM-PI",
+          "rougeL": 0.5417,
+          "key_recall": 0.8571,
+          "answer": "O CNPJ da Prefeitura Municipal de Campo Largo do Piauí é 01.211.000/0001-01. Você pode verificar este CNPJ no site do Ministério da Economia, no portal do governo brasileiro."
+        },
+        {
+          "id": "bm005",
+          "source": "DOM-PI",
+          "rougeL": 0.037,
+          "key_recall": 0.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm006",
+          "source": "DOM-PI",
+          "rougeL": 0.3478,
+          "key_recall": 0.5652,
+          "answer": "O período abrangido pelo Relatório Resumido da Execução Orçamentária do Demonstrativo da Projeção Atuarial do Regime Próprio de Previdência dos Servidores de São Raimundo Nonato é de 2019 a 2021. O relatório apresenta informações sobre a execução orçamentária do demonstrativo da projeção atuarial do regime próprio de previdência dos servidores de São Raimundo Nonato, com base nos dados fornecidos pelo Ministério da Previdência Social. O relatório apresenta informações sobre a receita, despesa e resultado da previdência dos servidores de São Raimundo Nonato, com base nos dados fornecidos pelo Ministério da Previdência Social. O relatório também apresenta informações sobre a execução orçamentária do demonstrativo da projeção atuarial do regime próprio de previdência dos serv"
+        },
+        {
+          "id": "bm007",
+          "source": "DOM-PI",
+          "rougeL": 0.3492,
+          "key_recall": 0.4375,
+          "answer": "Não consta na informação fornecida. O texto não menciona o CPF da Sra. Sara Sabrina Lima Medeiros. É necessário verificar o contexto completo para obter a informação desejada."
+        },
+        {
+          "id": "bm008",
+          "source": "DOM-PI",
+          "rougeL": 0.1538,
+          "key_recall": 0.5,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm009",
+          "source": "DOM-PI",
+          "rougeL": 0.2895,
+          "key_recall": 0.8,
+          "answer": "O Crédito Suplementar no Orçamento-Programa vigente, conforme a Portaria Nº 310 de 28 de julho de 2025, é de 10% do valor total do Orçamento-Programa. O valor do Crédito Suplementar é de R$ 100,00 por cada R$ 100,00 do Orçamento-Programa. O valor total do Crédito Suplementar é de R$ 10,00."
+        },
+        {
+          "id": "bm010",
+          "source": "DOM-PI",
+          "rougeL": 0.7105,
+          "key_recall": 1.0,
+          "answer": "Não consta na informação fornecida. O contrato de número 0911.01/2025 entre a Prefeitura Municipal de São Francisco do Piauí e a empresa Jailson da Silva Martins - ME não foi encontrado. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm011",
+          "source": "DOM-PI",
+          "rougeL": 0.5545,
+          "key_recall": 0.7778,
+          "answer": "Não consta na informação fornecida. O valor da remuneração do cargo de Controlador da Câmara Municipal de Teresina, conforme fixado na Lei nº 6.182, de 26/02/2025, não foi fornecido. Por favor, forneça mais informações ou consulte o site oficial da Câmara Municipal de Teresina para obter a informação correta."
+        },
+        {
+          "id": "bm012",
+          "source": "DOM-PI",
+          "rougeL": 0.0411,
+          "key_recall": 0.0,
+          "answer": "A Coordenacao Municipal da Defesa Civil (CmDc) é uma entidade pública responsável por promover a prevenção, o preparo e a resposta a situações de emergência e desastres no município. Ela é constituída por um conjunto de órgãos e equipes especializadas, como a Defesa Civil Municipal, a Polícia Militar, a Polícia Civil, a Secretaria de Saúde, entre outros. A CmDc é responsável por elaborar e implementar políticas e programas de prevenção e resposta a situações de emergência e desastres, bem como por coordenar ações de prevenção e resposta a situações de emergência e desastres no município. A CmDc também é responsável por monitorar e avaliar a situação de emergência e desastre no município, bem como por propor medidas de prevenção e resposta a situações de emergência e"
+        },
+        {
+          "id": "bm013",
+          "source": "DOM-PI",
+          "rougeL": 0.0,
+          "key_recall": 0.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm014",
+          "source": "DOM-PI",
+          "rougeL": 0.3721,
+          "key_recall": 0.6667,
+          "answer": "O valor contratual mensal estabelecido no Ato Adjudicatório não consta no contexto fornecido. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm015",
+          "source": "DOM-PI",
+          "rougeL": 0.2388,
+          "key_recall": 1.0,
+          "answer": "Não consta na informação fornecida. O texto não menciona o período de vigência adicionado pelo termo aditivo ao Contrato nº 005/2024. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm016",
+          "source": "DOM-PI",
+          "rougeL": 0.4138,
+          "key_recall": 0.8333,
+          "answer": "O CNPJ da Prefeitura Municipal de Capitão de Campos-PI é 01.221.000/0001-01. Você pode verificar este CNPJ no site do Conselho Regional de Contabilidade (CRC) do Piauí, onde consta a lista de empresas com CNPJ cadastradas no estado."
+        },
+        {
+          "id": "bm017",
+          "source": "DOM-PI",
+          "rougeL": 0.5,
+          "key_recall": 1.0,
+          "answer": "O valor total para os itens 13 a 24 do contrato não está fornecido no contexto fornecido. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm018",
+          "source": "DOM-PI",
+          "rougeL": 0.2,
+          "key_recall": 0.25,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm019",
+          "source": "DOM-PI",
+          "rougeL": 0.2278,
+          "key_recall": 0.8333,
+          "answer": "O valor da remuneração mensal para o cargo de PROFESSOR SUBSTITUTO EDUCAÇÃO INFANTIL conforme especificado no contrato é de R$ 1.500,00. O contrato é assinado pelo Ministério da Educação (MEC) e pode ser encontrado no site do MEC. O valor da remuneração mensal é fixo e não é baseado em nenhuma outra condição ou critério. O professor substituto deve cumprir as atribuições e responsabilidades estabelecidas no contrato e receber o pagamento mensal conforme o cronograma estabelecido. O professor substituto deve manter a qualidade da educação infantil e promover a aprendizagem dos alunos. O professor substituto deve também cumprir as normas de segurança e higiene na escola. O professor substituto deve manter a disciplina e o respeito aos alunos e aos pais. O"
+        },
+        {
+          "id": "bm020",
+          "source": "DOM-PI",
+          "rougeL": 0.6571,
+          "key_recall": 0.5556,
+          "answer": "Não consta na informação fornecida. O nome da servidora nomeada para o cargo de Assistente de apoio à divisão da Secretaria de Educação do Município de Piracuruca-PI não foi fornecido. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm021",
+          "source": "DOM-PI",
+          "rougeL": 0.0,
+          "key_recall": 0.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm022",
+          "source": "DOM-PI",
+          "rougeL": 0.2378,
+          "key_recall": 0.5,
+          "answer": "O valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra é de R$ 100,00. O valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra é de R$ 100,00. O valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra é de R$ 100,00. O valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra é de R$ 100,00. O valor autorizado para ajudar na viabilização do evento de interesse popular referente ao Comunidade Salva Terra é de R$ 100,00. O valor autorizado para ajudar na viabilização do evento de interesse"
+        },
+        {
+          "id": "bm023",
+          "source": "DOM-PI",
+          "rougeL": 0.2308,
+          "key_recall": 0.0,
+          "answer": "O valor total do contrato mencionado no extrato não consta no contexto fornecido. O extrato apresenta informações sobre movimentações financeiras, mas não especifica o valor total do contrato. Por favor, forneça mais informações ou contexto para que possa responder corretamente.猞"
+        },
+        {
+          "id": "bm024",
+          "source": "DOM-PI",
+          "rougeL": 0.56,
+          "key_recall": 0.8,
+          "answer": "O valor total do item veiculo do fornecedor RC ALMEIDA DA SILVA&CIA LTDA não consta no contexto fornecido. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm025",
+          "source": "DOM-PI",
+          "rougeL": 0.4651,
+          "key_recall": 0.875,
+          "answer": "Não consta na Portaria GP no 20/2025. O CPF de Manoel AngelO canabrava Junior não consta na informação fornecida."
+        },
+        {
+          "id": "bm026",
+          "source": "DOM-PI",
+          "rougeL": 0.4571,
+          "key_recall": 0.8,
+          "answer": "Não consta na informação fornecida. O CPF de William Pereira Coelho não foi fornecido. Se você tem alguma informação adicional, por favor, me informe."
+        },
+        {
+          "id": "bm027",
+          "source": "DOM-PI",
+          "rougeL": 0.0,
+          "key_recall": 0.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm028",
+          "source": "DOM-PI",
+          "rougeL": 0.6154,
+          "key_recall": 0.9091,
+          "answer": "Não consta na informação fornecida. O contrato n007/2025 entre o Município de São Miguel da Baixa Grande e Antonio Rumao da Costa Batista não foi mencionado. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm029",
+          "source": "DOM-PI",
+          "rougeL": 0.6429,
+          "key_recall": 0.5789,
+          "answer": "O valor reconhecido pela Superintendência de Desenvolvimento Urbano - SDU Sudeste para pagamento ao Consórcio Recicle Aurora referente à prestação de serviços de limpeza pública no período de 19 de agosto a 18 de setembro de 2021 é de R$ 1.000,00 (um mil reais). Este valor foi calculado com base no orçamento total do Consórcio Recicle Aurora, que incluiu a contratação de serviços de limpeza pública, e foi pago à Superintendência de Desenvolvimento Urbano - SDU Sudeste no período mencionado."
+        },
+        {
+          "id": "bm030",
+          "source": "DOM-PI",
+          "rougeL": 0.4364,
+          "key_recall": 0.7,
+          "answer": "O valor total do contrato para a prestação de serviços técnicos especializados de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal de Assistência Social, Trabalho e Cidadania de Ponta Grossa é de R$ 1.000,00 (mil reais). Este valor é fixado no contrato de prestação de serviços técnico especializado de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal de Assistência Social, Trabalho e Cidadania de Ponta Grossa, conforme estabelecido no contrato de prestação de serviços técnico especializado de assessoria e consultoria no monitoramento e apoio técnico junto à gestão do sistema único de assistência social SUAS no âmbito da Secretaria Municipal"
+        },
+        {
+          "id": "bm031",
+          "source": "DOM-PI",
+          "rougeL": 0.3111,
+          "key_recall": 0.6923,
+          "answer": "O valor do salário para a função de Professor(a) Anos Iniciais contratado pela Secretaria Municipal de Educação de Morro Cabeça no Tempo, conforme os extratos de contrato apresentados, é de R$ 1.200,00. O salário é pago mensalmente, com vencimento no dia 10 de cada mês. O salário é pago em dinheiro, e não em cheque. O salário é pago em dinheiro, e não em cheque. O salário é pago em dinheiro, e não em cheque. O salário é pago em dinheiro, e não em cheque. O salário é pago em dinheiro, e não em cheque. O salário é pago em dinheiro, e não em cheque. O salário é pago em dinheiro, e não em cheque. O salário é pago em dinheiro, e não em cheque. O salário é pago em dinheiro, e não em cheque. O salário"
+        },
+        {
+          "id": "bm032",
+          "source": "DOM-PI",
+          "rougeL": 0.3896,
+          "key_recall": 0.7778,
+          "answer": "Não consta na informação fornecida. O cargo de Odontólogo I, especialidade Cirurgião Dentista, ocupado por Hayra Correa Lima Albuquerque, foi declarado vacante a partir de 2022. O cargo foi ocupado por outro dentista até 2022, quando foi declarado vacante. Não consta a data de declaração da vacância."
+        },
+        {
+          "id": "bm033",
+          "source": "DOM-PI",
+          "rougeL": 0.4091,
+          "key_recall": 0.7143,
+          "answer": "Não consta na informação fornecida. O Sr. RAIMUNDO JOSE DA ROCHA DIAS não é mencionado na informação fornecida. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm034",
+          "source": "DOM-PI",
+          "rougeL": 0.186,
+          "key_recall": 0.2,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm035",
+          "source": "DOM-PI",
+          "rougeL": 0.7327,
+          "key_recall": 1.0,
+          "answer": "A data prevista para a realização da Licitação na modalidade concorrência eletrônica para a contratação de pessoa jurídica especializada para prestação do serviço de elaboração do projeto técnico de engenharia para implantação de sistema de esgotamento sanitário no M;amp;C não consta nos dados fornecidos. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm036",
+          "source": "DOM-PI",
+          "rougeL": 0.0,
+          "key_recall": 0.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm037",
+          "source": "DOM-PI",
+          "rougeL": 0.6098,
+          "key_recall": 0.9167,
+          "answer": "Não consta na informação fornecida. A Portaria Nº 747/2025 não menciona o nome da pessoa nomeada para exercer o cargo de Chefe do Setor de Pessoal do Centro Integrado de Saúde Lineu Araújo - CISLA. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm038",
+          "source": "DOM-PI",
+          "rougeL": 0.2941,
+          "key_recall": 0.5,
+          "answer": "O valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem é de R$ 1.000,00. O Piso Nacional da Enfermagem é um salário mínimo estabelecido pelo Ministério da Saúde para as enfermeiras e enfermeiros. O valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem é de R$ 1.000,00. O Piso Nacional da Enfermagem é um salário mínimo estabelecido pelo Ministério da Saúde para as enfermeiras e enfermeiros. O valor mensal pago à contratada correspondente ao Piso Nacional da Enfermagem é de R$ 1.000,00. O Piso Nacional da Enfermagem é um salário mínimo estabelecido pelo Ministério da Saúde para as enfermeiras e enfermeiros. O valor mensal pago"
+        },
+        {
+          "id": "bm039",
+          "source": "DOM-PI",
+          "rougeL": 0.2989,
+          "key_recall": 0.0,
+          "answer": "O valor total estimado para o serviço de suporte técnico e manutenção em hardware, conforme mencionado na passagem, não consta. A passagem apenas informa que o serviço é fornecido por uma empresa de suporte técnico e manutenção em hardware, mas não especifica o valor total. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm040",
+          "source": "DOM-PI",
+          "rougeL": 0.2353,
+          "key_recall": 0.1875,
+          "answer": "A data de entrada em vigor da presente portaria é 1 de janeiro de 2023, considerando a publicação da portaria e os efeitos retroativos mencionados. O texto não fornece informações sobre a data de entrada em vigor da portaria."
+        },
+        {
+          "id": "bm041",
+          "source": "DOM-PI",
+          "rougeL": 0.4416,
+          "key_recall": 0.8,
+          "answer": "O valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos é de 100% do valor total do contrato. O valor total do contrato é de 100 mil reais, portanto, o valor associado à ação cultural \"CONTRATAÇÃO POR TEMPO DETERMINADO\" com recursos não vinculados de impostos é de 100 mil reais."
+        },
+        {
+          "id": "bm042",
+          "source": "DOM-PI",
+          "rougeL": 0.0408,
+          "key_recall": 0.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm043",
+          "source": "DOM-PI",
+          "rougeL": 0.2162,
+          "key_recall": 0.1429,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm044",
+          "source": "DOM-PI",
+          "rougeL": 0.1319,
+          "key_recall": 0.0435,
+          "answer": "O nome do professor convocado para prestar serviço em regime de 40 horas semanais é o professor convocado. O professor convocado é um professor que é convocado para prestar serviço em regime de 40 horas semanais. O professor convocado é um professor que é convocado para prestar serviço em regime de 40 horas semanais. O professor convocado é um professor que é convocado para prestar serviço em regime de 40 horas semanais. O professor convocado é um professor que é convocado para prestar serviço em regime de 40 horas semanais. O professor convocado é um professor que é convocado para prestar serviço em regime de 40 horas semanais. O professor convocado é um professor que é convocado para prestar serviço em regime de 40 horas semanais. O professor convocado é um professor que é convocado para prestar serviço em regime de"
+        },
+        {
+          "id": "bm045",
+          "source": "DOM-PI",
+          "rougeL": 0.0,
+          "key_recall": 0.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm046",
+          "source": "DOM-PI",
+          "rougeL": 0.0667,
+          "key_recall": 0.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm047",
+          "source": "DOM-PI",
+          "rougeL": 0.209,
+          "key_recall": 0.0,
+          "answer": "O número do decreto é 12.746, e a data de publicação é 12 de dezembro de 2019. O decreto trata sobre o Fundo de Manutenção e Desenvolvimento da Educação Básica - FUNDEB, que é um programa de financiamento para a educação básica no Brasil. O decreto estabelece regras para o financiamento do FUNDEB, incluindo a cobrança de contribuições de alunos e pais de alunos, a distribuição de recursos entre os estados e municípios, e a manutenção e desenvolvimento da educação básica. O decreto também estabelece regras para a administração do FUNDEB, incluindo a criação de um conselho de administração para o FUNDEB, a criação de um conselho de educação para o FUNDEB, e a criação de um"
+        },
+        {
+          "id": "bm048",
+          "source": "DOM-PI",
+          "rougeL": 0.5366,
+          "key_recall": 0.8333,
+          "answer": "Não consta na informação fornecida. O número do CPF de Luis Henrique Mendes Oliveira não foi fornecido. Por favor, forneça mais informações para que possa responder corretamente."
+        },
+        {
+          "id": "bm049",
+          "source": "DOM-PI",
+          "rougeL": 0.3898,
+          "key_recall": 0.3333,
+          "answer": "O valor total referente a seis meses de remuneração mensal de R$ 2.000,00 para a prestação do serviço de assistente social no Programa de Atenção Integral à Família (PAIF) é de R$ 12.000,00."
+        },
+        {
+          "id": "bm050",
+          "source": "docentesDC",
+          "rougeL": 0.163,
+          "key_recall": 0.5,
+          "answer": "O teste de escalonabilidade para tarefas periódicas, como o envio de mensagens de texto, pode ser executado no Polling Server, que é um servidor de mensagens de texto que recebe mensagens de texto de um servidor de mensagens de texto e envia elas para os clientes conectados. O teste de escalonabilidade para tarefas periódicas no Polling Server pode ser executado de forma simples, pois o servidor de mensagens de texto pode ser configurado para enviar mensagens de texto para os clientes conectados de forma periódica, sem a necessidade de alterar o código do servidor de mensagens de texto. Além disso, o servidor de mensagens de texto pode ser configurado para enviar mensagens de texto para os clientes conectados de forma automática, sem a necessidade de interagir manualmente com o servidor de mensagens de texto. Isso significa que o teste de escalonabilidade para t"
+        },
+        {
+          "id": "bm051",
+          "source": "docentesDC",
+          "rougeL": 0.1167,
+          "key_recall": 0.6667,
+          "answer": "O autor do texto \"Introdução à Lógica\" é John Venn. O texto é uma introdução à lógica matemática, apresentando a lógica proposicional e a lógica de predicados. O autor é um matemático inglês, conhecido por sua contribuição significativa na área da lógica matemática. O texto foi publicado em 1881 e é considerado um dos primeiros textos sobre lógica matemática. O autor também é conhecido por sua contribuição na área da teoria dos conjuntos, onde desenvolveu a teoria dos conjuntos de Venn. O texto é considerado um dos textos mais importantes na história da lógica matemática e é amplamente utilizado como referência em cursos de lógica matemática."
+        },
+        {
+          "id": "bm052",
+          "source": "docentesDC",
+          "rougeL": 0.16,
+          "key_recall": 0.5,
+          "answer": "O centro da circunferência usada no exercício de aplicação do algoritmo de Bresenham para rasterização do primeiro quadrante é (0, 0) e o raio é 1. O algoritmo de Bresenham é um algoritmo de rasterização que é usado para desenhar linhas e curvas em um plano cartesiano. Ele é baseado no princípio de que a linha é desenhada de acordo com a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre os pontos de referência e a distância entre"
+        },
+        {
+          "id": "bm053",
+          "source": "docentesDC",
+          "rougeL": 0.3279,
+          "key_recall": 1.0,
+          "answer": "O valor retornado no teste \"fornecedorProdutoNaoIncluido()\" quando o produto não é encontrado é None. O teste verifica se o produto não foi encontrado no sistema e retorna None se o produto não for encontrado. Caso contrário, o teste retorna o valor do produto."
+        },
+        {
+          "id": "bm054",
+          "source": "docentesDC",
+          "rougeL": 0.5238,
+          "key_recall": 1.0,
+          "answer": "Não consta na passagem. O autor do material \"Redes Sociais Online: Conceitos básicos\" não foi mencionado. O texto apenas apresenta uma passagem sobre redes sociais online."
+        },
+        {
+          "id": "bm055",
+          "source": "docentesDC",
+          "rougeL": 0.2857,
+          "key_recall": 0.3333,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm056",
+          "source": "docentesDC",
+          "rougeL": 0.2951,
+          "key_recall": null,
+          "answer": "O design de cache bloqueante inicialmente descrito não fornece informações suficientes para responder a pergunta. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm057",
+          "source": "docentesDC",
+          "rougeL": 0.1194,
+          "key_recall": 0.5,
+          "answer": "O valor definido para a variável ESC é 27. O código ASCII para a letra \"S\" é 83, e para a letra \"E\" é 69. Portanto, a soma desses valores é 27. O valor definido para a variável ESC é 27. O código ASCII para a letra \"S\" é 83, e para a letra \"E\" é 69. Portanto, a soma desses valores é 27. O valor definido para a variável ESC é 27. O código ASCII para a letra \"S\" é 83, e para a letra \"E\" é 69. Portanto, a soma desses valores é 27. O valor definido para a variável ESC é 27. O código ASCII para a letra \"S\" é 83, e para a letra \"E\" é 69. Port"
+        },
+        {
+          "id": "bm058",
+          "source": "docentesDC",
+          "rougeL": 0.1342,
+          "key_recall": 0.8,
+          "answer": "O artigo \"Factors of project manager success\" foi publicado em 2017. O autor é Saadé, Dong e Wan. O artigo foi publicado no Journal of Management Studies. O artigo foi publicado no ano de 2017. O autor é Saadé, Dong e Wan. O artigo foi publicado no Journal of Management Studies. O artigo foi publicado no ano de 2017. O autor é Saadé, Dong e Wan. O artigo foi publicado no Journal of Management Studies. O artigo foi publicado no ano de 2017. O autor é Saadé, Dong e Wan. O artigo foi publicado no Journal of Management Studies. O artigo foi publicado no ano de 2017. O autor é Saadé, Dong e Wan. O artigo foi publicado no Journal of Management Studies. O artigo foi public"
+        },
+        {
+          "id": "bm059",
+          "source": "docentesDC",
+          "rougeL": 0.5455,
+          "key_recall": 1.0,
+          "answer": "Não há variáveis do tipo int usadas para armazenar a soma ao exibir a soma de cada coluna da matriz. A soma de cada coluna é calculada diretamente na matriz e exibida no console. O código fornecido não usa variáveis do tipo int para armazenar a soma. O código fornecido é:"
+        },
+        {
+          "id": "bm060",
+          "source": "docentesDC",
+          "rougeL": 0.3462,
+          "key_recall": 1.0,
+          "answer": "Não consta na informação fornecida. O texto apenas descreve o cluster de sistemas operacionais e seus componentes, mas não especifica quantos setores tipicamente compõem um cluster. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm061",
+          "source": "docentesDC",
+          "rougeL": 0.1957,
+          "key_recall": 0.0,
+          "answer": "A função definida para calcular a soma de dois números inteiros em Haskell é a função `soma` que recebe dois parâmetros de entrada, `x` e `y`, e retorna o resultado da soma deles. A função é definida no início da passagem como `soma :: Int -> Int -> Int`. O nome da função é `soma` e o tipo de entrada é `Int -> Int -> Int`, que significa que a função recebe dois números inteiros como entrada e retorna um número inteiro como saída. O nome da função é `soma` e o tipo de entrada é `Int -> Int -> Int`, que significa que a função recebe dois números inteiros como entrada e retorna um número inteiro como saída. O nome da função é `soma` e o tipo de entrada é `Int -> Int -> Int`, que significa que a função recebe dois números inteiros como entrada e retorna um número inteiro"
+        },
+        {
+          "id": "bm062",
+          "source": "docentesDC",
+          "rougeL": 0.1538,
+          "key_recall": 0.0,
+          "answer": "A inicialização correta da variável total_contas para que ela seja um atributo de classe compartilhado por todas as instâncias é:\n\nclass ContaBancaria:\n    total_contas = 0\n\n    def __init__(self, numero_conta, saldo):\n        self.numero_conta = numero_conta\n        self.saldo = saldo\n        ContaBancaria.total_contas += 1\n\n    def depositar(self, valor):\n        self.saldo += valor\n\n    def sacar(self, valor):\n        if self.saldo >= valor:\n            self.saldo -= valor\n        else:\n            print(\"Saldo insuficiente\")\n\n    def exibir_saldo(self):\n        print(f\"Saldo da conta {self.numero_conta}: {self.saldo}\")\n\n# Exemplo de uso\nconta1 = ContaBancaria(12345, 1000)\nconta2 = Cont"
+        },
+        {
+          "id": "bm063",
+          "source": "docentesDC",
+          "rougeL": 0.2312,
+          "key_recall": 0.75,
+          "answer": "O programa do Governo do Piauí ou Maranhão que permite a participação popular no orçamento digital é o Sistema de Participação Popular (SIP). O SIP é um sistema eletrônico que permite que a população participe da elaboração do orçamento do Estado, contribuindo com sugestões e opiniões sobre as prioridades e despesas do governo. O SIP foi lançado em 2017 e é uma das principais ferramentas de participação popular no Brasil. O SIP é administrado pelo Instituto de Gestão Pública do Estado do Piauí (IGPEP) e pelo Instituto de Gestão Pública do Estado do Maranhão (IGPEM). O SIP é uma das principais ferramentas de participação popular no Brasil. O SIP é administrado pelo Instituto de Gestão Pública do Estado do Piauí (IGPEP) e pelo Instituto de Gestão Pública do Estado do Maranhão ("
+        },
+        {
+          "id": "bm064",
+          "source": "docentesDC",
+          "rougeL": 0.339,
+          "key_recall": 0.3333,
+          "answer": "O pré-requisito para a disciplina de Estruturas de Dados é a conclusão de um curso de Ciência da Computação ou uma formação equivalente. É importante ter conhecimentos básicos em programação e lógica de programação para compreender os conceitos apresentados na disciplina."
+        },
+        {
+          "id": "bm065",
+          "source": "docentesDC",
+          "rougeL": 0.56,
+          "key_recall": 1.0,
+          "answer": "Não consta na informação fornecida. O texto não menciona quantas revisões sobre Smartphones foram coletadas para o corpus do estudo. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm066",
+          "source": "docentesDC",
+          "rougeL": 0.3448,
+          "key_recall": 1.0,
+          "answer": "A passagem não fornece uma definição de UsabilitySmell. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm067",
+          "source": "docentesDC",
+          "rougeL": 0.6061,
+          "key_recall": 0.5,
+          "answer": "O algoritmo de treinamento backpropagation por Rumelhart, Hinton e Williams foi desenvolvido em 1986."
+        },
+        {
+          "id": "bm068",
+          "source": "docentesDC",
+          "rougeL": 0.2727,
+          "key_recall": 0.25,
+          "answer": "A passagem não fornece uma definição de \"Lu\". Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm069",
+          "source": "docentesDC",
+          "rougeL": 0.1111,
+          "key_recall": 0.0,
+          "answer": "Não consta na apresentação. O texto começa com \"O presente trabalho apresenta os resultados de um estudo de caso realizado no contexto de um sistema de gestão de processos de trabalho em uma empresa de serviços de consultoria e assessoria.\" O autor mencionado no início da apresentação é o autor do estudo de caso, que não consta na apresentação. O texto segue com a apresentação do estudo de caso, que não consta na apresentação. O texto segue com a apresentação do estudo de caso, que não consta na apresentação. O texto segue com a apresentação do estudo de caso, que não consta na apresentação. O texto segue com a apresentação do estudo de caso, que não consta na apresentação. O texto segue com a apresentação do estudo de caso, que não consta na apresentação. O texto segue com a apresentação do estudo de caso, que não consta"
+        },
+        {
+          "id": "bm070",
+          "source": "docentesDC",
+          "rougeL": 0.1242,
+          "key_recall": 0.75,
+          "answer": "O modo de inicialização quando GPIO15 está em nível baixo, GPIO0 em nível alto e GPIO2 em nível alto é o modo de inicialização de entrada de nível baixo (GPIO15) e modo de inicialização de saída de nível alto (GPIO0 e GPIO2). O modo de inicialização de saída de nível alto é o modo de inicialização padrão para GPIO0 e GPIO2. O modo de inicialização de entrada de nível baixo é o modo de inicialização padrão para GPIO15. O modo de inicialização padrão para GPIO15 é o modo de inicialização de saída de nível alto. O modo de inicialização padrão para GPIO0 e GPIO2 é o modo de inicialização de entrada de nível baixo. O modo de inicialização padrão para GPIO15 é o modo de inicialização de saída de nível alto. O modo de inicialização padrão para GPIO0 e GPIO2 é o"
+        },
+        {
+          "id": "bm071",
+          "source": "docentesDC",
+          "rougeL": 0.2642,
+          "key_recall": 0.0,
+          "answer": "O modelo de desenvolvimento de software descrito é o modelo de desenvolvimento iterativo e incremental. Neste modelo, o projeto é dividido em ciclos repetitivos, cada um abordando uma parte do software, sem entregar partes intermediárias ao cliente. O desenvolvimento iterativo e incremental permite que o cliente tenha uma visão geral do projeto e possa se envolver em cada ciclo de desenvolvimento, garantindo que o software seja entregue de forma incremental e com feedback constante. O modelo de desenvolvimento iterativo e incremental é um dos modelos mais utilizados na indústria de software, pois permite que o cliente tenha uma visão geral do projeto e possa se envolver em cada ciclo de desenvolvimento, garantindo que o software seja entregue de forma incremental e com feedback constante."
+        },
+        {
+          "id": "bm072",
+          "source": "docentesDC",
+          "rougeL": 0.1944,
+          "key_recall": 1.0,
+          "answer": "O método chamado quando o parser MyGrammer termina a análise de uma expressão entre parênteses é o método de término de parênteses. Este método é chamado quando o parser encontra um parêntese fechado que não está sendo fechado por um parêntese aberto. O método de término de parênteses é responsável por fechar o parêntese aberto e fechar o parêntese fechado. O método de término de parênteses é chamado quando o parser encontra um parêntese fechado que não está sendo fechado por um parêntese aberto. O método de término de parênteses é responsável por fechar o parêntese aberto e fechar o parêntese fechado. O método de término de parênteses é chamado quando o parser encontra um parêntese fechado"
+        },
+        {
+          "id": "bm073",
+          "source": "docentesDC",
+          "rougeL": 0.1463,
+          "key_recall": 1.0,
+          "answer": "A Lei 9.610, de 19/02/1998, trata sobre direitos autorais, mas não especificamente sobre os artigos da lei. A lei trata de direitos autorais em geral, incluindo direitos de autor, direitos de reprodução, direitos de distribuição e direitos de publicidade. A lei também trata de direitos de autor de obras intelectuais, incluindo livros, filmes, música, artes plásticas, entre outros. A lei também trata de direitos de autor de programas de televisão e de direitos de autor de programas de rádio. A lei também trata de direitos de autor de programas de internet e de direitos de autor de programas de vídeo. A lei também trata de direitos de autor de programas de televisão e de direitos de autor de programas de rádio. A lei também trata de direitos de autor de programas de internet"
+        },
+        {
+          "id": "bm074",
+          "source": "docentesDC",
+          "rougeL": 0.2353,
+          "key_recall": 0.3333,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm075",
+          "source": "docentesDC",
+          "rougeL": 0.2,
+          "key_recall": 0.0,
+          "answer": "O primeiro programa sugerido para quem está aprendendo a programar é o Python. Ele é um linguagem de programação interpretada e multiparadigma, com linguagem de programação de alto nível e sintaxe simples. Ele é amplamente utilizado em diversas áreas, como web desenvolvimento, análise de dados, machine learning, entre outras. O Python é conhecido por sua facilidade de aprendizado e sua grande comunidade de desenvolvedores, o que o torna um excelente escolha para iniciantes."
+        },
+        {
+          "id": "bm076",
+          "source": "docentesDC",
+          "rougeL": 0.0746,
+          "key_recall": 0.0,
+          "answer": "O que é um legado digital? O termo \"legado digital\" geralmente se refere a uma coleção de informações, documentos, arquivos, textos, imagens, vídeos e outros conteúdos digitais que são deixados para serem guardados e acessados por futuros usuários. Esses legados podem ser criados por indivíduos, empresas, instituições ou organizações e podem ser guardados em diferentes formatos e plataformas, como arquivos de texto, arquivos de vídeo, arquivos de imagem, arquivos de áudio, redes sociais, blogs, sites, redes de arquivos, etc. O objetivo de criar um legado digital é preservar e compartilhar informações importantes para futuros usuários, que podem ser utilizadas para fins educacionais, históricos, culturais, científicos, etc. O legado digital pode ser criado de forma voluntária ou for"
+        },
+        {
+          "id": "bm077",
+          "source": "docentesDC",
+          "rougeL": 0.099,
+          "key_recall": null,
+          "answer": "A palavra que deve ser usada para marcar uma classe que inclui ao menos um método abstrato em C# é \"abstract\". O código abaixo demonstra como se faz isso:\n\n```csharp\npublic abstract class MyClass\n{\n    // Método abstrato\n    public abstract void MyMethod();\n\n    // Método concreto\n    public void MyConcreteMethod()\n    {\n        // Código concreto\n    }\n}\n```\n\nNeste exemplo, a classe \"MyClass\" é marcada como abstrata porque ela contém um método abstrato (MyMethod). Os métodos concretos (MyConcreteMethod) são implementados na classe concreta."
+        },
+        {
+          "id": "bm078",
+          "source": "docentesDC",
+          "rougeL": 0.1754,
+          "key_recall": 1.0,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm079",
+          "source": "docentesDC",
+          "rougeL": 0.2581,
+          "key_recall": 0.5,
+          "answer": "Não consta na informação fornecida. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm080",
+          "source": "docentesDC",
+          "rougeL": 0.1802,
+          "key_recall": 0.6,
+          "answer": "O valor de 𝑓(𝑥) quando 𝑥 = −1.5 na função 𝑦 = 𝑓 𝑥 = 𝑥4 − 3𝑥3 + 2 é 1.5. O cálculo é feito da seguinte forma:\n\n𝑓(𝑥) = 𝑥4 − 3𝑥3 + 2\n𝑓(−1.5) = (−1.5)4 − 3(−1.5)3 + 2\n𝑓(−1.5) = 5.0625 + 10.125 + 2\n𝑓(−1.5) = 17.25\n\nO valor de 𝑓(𝑥) quando 𝑥 = −1.5 é 17.25. O cálculo foi feito usando a função 𝑓 𝑥 = 𝑥4 − 3"
+        },
+        {
+          "id": "bm081",
+          "source": "docentesDC",
+          "rougeL": 0.1808,
+          "key_recall": 0.3333,
+          "answer": "A primeira aproximação mencionada na organização hierárquica do DNS é a classe de servidor DNS (DNS Server Class). Esta classe é usada para definir a hierarquia de servidores DNS e a estrutura de domínios. A classe de servidor DNS é dividida em três subclasse: A, C e D. A classe A é usada para definir os servidores DNS que respondem a solicitações de nome de domínio para o protocolo de transferência de nome (DNS). A classe C é usada para definir os servidores DNS que respondem a solicitações de nome de domínio para o protocolo de transferência de nome de domínio (DNS). A classe D é usada para definir os servidores DNS que respondem a solicitações de nome de domínio para o protocolo de transferência de nome de domínio (DNS). A classe D é us"
+        },
+        {
+          "id": "bm082",
+          "source": "docentesDC",
+          "rougeL": 0.1774,
+          "key_recall": 0.0909,
+          "answer": "O primeiro passo na programação dinâmica para caracterizar uma solução ótima é definir o problema e identificar os estados finais. É importante entender o contexto e o objetivo do problema para que possa ser desenvolvido um algoritmo eficiente. O assistente é um assistente de programação e não tem conhecimento de linguagens de programação específicas. Por favor, informe-me o contexto e o objetivo do problema para que possa ser desenvolvido um algoritmo eficiente."
+        },
+        {
+          "id": "bm083",
+          "source": "docentesDC",
+          "rougeL": 0.1236,
+          "key_recall": 0.0,
+          "answer": "A saída da função calendar() quando a variável global $day não é acessível diretamente e a variável global $month é declarada como global dentro da função é dependente do contexto em que a função calendar() está sendo chamada. Se a variável global $day não for acessível diretamente, a saída da função calendar() será dependente do contexto em que a função calendar() está sendo chamada. Se a variável global $month for declarada como global dentro da função, a saída da função calendar() será dependente do contexto em que a função calendar() está sendo chamada. Se a variável global $day for acessível diretamente, a saída da função calendar() será dependente do contexto em que a função calendar() está sendo chamada. Se a variável global $month não for declarada como global dentro da função, a saída da função calendar() será dependente do contexto em que a função calendar() está sendo"
+        },
+        {
+          "id": "bm084",
+          "source": "docentesDC",
+          "rougeL": 0.1299,
+          "key_recall": 1.0,
+          "answer": "Em Perl, as variáveis de dispersão são declaradas com o operador de atribuição `=`, mas não são necessárias para declarar variáveis de dispersão. As variáveis de dispersão são declaradas com o operador de atribuição `=`, mas não são necessárias para declarar variáveis de dispersão. As variáveis de dispersão são declaradas com o operador de atribuição `=`, mas não são necessárias para declarar variáveis de dispersão. As variáveis de dispersão são declaradas com o operador de atribuição `=`, mas não são necessárias para declarar variáveis de dispersão. As variáveis de dispersão são declaradas com o operador de atribuição `=`, mas não são necessárias para declarar variáveis de dispersão. As variáveis de dispersão são declaradas com o operador de atribuição `=`, mas não são necessárias para declar"
+        },
+        {
+          "id": "bm085",
+          "source": "docentesDC",
+          "rougeL": 0.1573,
+          "key_recall": 0.0,
+          "answer": "Não consta na passagem. O texto apenas apresenta uma informação sobre a quantidade de exercícios listados na passagem. O assistente não é capaz de responder a pergunta. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm086",
+          "source": "docentesDC",
+          "rougeL": 0.5366,
+          "key_recall": 0.875,
+          "answer": "A temperatura mínima armazenada na lista T = [ -10, -8, 0, 1 , 2, 5, -2, -4] é -10°C."
+        },
+        {
+          "id": "bm087",
+          "source": "docentesDC",
+          "rougeL": 0.3934,
+          "key_recall": 1.0,
+          "answer": "Não consta na informação fornecida. A função addijx não é chamada na função main. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm088",
+          "source": "docentesDC",
+          "rougeL": 0.1714,
+          "key_recall": 1.0,
+          "answer": "Não consta na passagem. Por favor, forneça mais informações ou contexto para que possa responder corretamente."
+        },
+        {
+          "id": "bm089",
+          "source": "docentesDC",
+          "rougeL": 0.1818,
+          "key_recall": 0.0,
+          "answer": "O conjunto de estados da mente durante o cálculo, de acordo com as hipóteses aceitáveis apresentadas, é o conjunto de estados de um sistema de computação que pode ser representado por um conjunto finito de estados e uma sequência de transições entre estes estados. Esses estados podem ser representados por um conjunto de símbolos, como números, letras, símbolos matemáticos, etc. A sequência de transições entre estes estados é representada por uma tabela de transições, que define as regras de transição entre os estados. O cálculo é realizado através da execução dessas regras de transição, que determinam a mudança de estado do sistema de computação. O conjunto de estados da mente durante o cálculo é um exemplo de um sistema de computação que pode ser representado por um conjunto finito de estados e uma sequência de transi"
+        },
+        {
+          "id": "bm090",
+          "source": "docentesDC",
+          "rougeL": 0.0882,
+          "key_recall": 0.5,
+          "answer": "O Python retorna True quando o argumento passado é verdadeiro e False caso contrário. Isso é feito usando a função `bool()` ou a função `isinstance()` para verificar se o argumento é um objeto booleano. Por exemplo, `bool(1)` retorna True, enquanto `bool(0)` retorna False."
+        },
+        {
+          "id": "bm091",
+          "source": "docentesDC",
+          "rougeL": 0.04,
+          "key_recall": 0.0,
+          "answer": "O período a partir do oitavo mês de gestação que a aluna tem direito a acompanhamento didático pedagógico especial, por solicitação e com atestado médico, de acordo com o art. 242 do Regulamento Geral da Graduação da Universança é de 12 semanas."
+        },
+        {
+          "id": "bm092",
+          "source": "docentesDC",
+          "rougeL": 0.2428,
+          "key_recall": 0.3333,
+          "answer": "A topologia de rede que resolve o problema das portas lógicas AND, OR e XOR é a topologia de rede de switch. O switch é um dispositivo de rede que permite que os dispositivos se comuniquem entre si, independentemente da distância física entre eles. O switch é capaz de gerenciar a comunicação entre os dispositivos, incluindo a transmissão de dados, a filtragem de pacotes e a reconfiguração de caminhos de rede. O switch é capaz de gerenciar a comunicação entre os dispositivos, incluindo a transmissão de dados, a filtragem de pacotes e a reconfiguração de caminhos de rede. O switch é capaz de gerenciar a comunicação entre os dispositivos, incluindo a transmissão de dados, a filtragem de pacotes e a reconfiguração de caminhos de rede. O switch é capaz de gerenc"
+        },
+        {
+          "id": "bm093",
+          "source": "docentesDC",
+          "rougeL": 0.1477,
+          "key_recall": 0.6667,
+          "answer": "O valor atribuído à variável maxLen no construtor da classe Stack parametrizada em C++ é o tamanho máximo da pilha, definido pelo usuário. O construtor recebe um parâmetro chamado maxLen, que indica o tamanho máximo da pilha. O valor de maxLen é usado para determinar se a pilha está cheia ou vazia, e para controlar a capacidade da pilha. O valor de maxLen é definido pelo usuário no momento da criação da pilha, e pode ser alterado posteriormente. O valor de maxLen é usado para garantir que a pilha não se expanda além do tamanho máximo definido pelo usuário. O valor de maxLen é usado para garantir que a pilha não se expanda além do tamanho máximo definido pelo usuário. O valor de maxLen é usado para garantir que a pilha não se expanda além do tamanho máximo definido pelo usuário. O valor de"
+        },
+        {
+          "id": "bm094",
+          "source": "docentesDC",
+          "rougeL": 0.1754,
+          "key_recall": 0.5,
+          "answer": "A cláusula WHERE permite colocar uma consulta dentro de outra consulta. Por exemplo, em uma consulta SQL que busca todos os produtos com preço superior a R$ 100, podemos usar a cláusula WHERE para filtrar os resultados. A consulta SQL pode ser escrita da seguinte forma:\n\nSELECT * FROM produtos WHERE preço > 100;\n\nOnde \"preço\" é o campo que contém o valor do preço dos produtos, e \"preço > 100\" é a cláusula WHERE que define o filtro para os resultados. A consulta SQL retorna todos os produtos com preço superior a R$ 100."
+        },
+        {
+          "id": "bm095",
+          "source": "docentesDC",
+          "rougeL": 0.4,
+          "key_recall": 0.0,
+          "answer": "A notação utilizada para representar que uma proposição p é equivalente a uma proposição q é a notação de equivalência, também conhecida como notação de ≡. Por exemplo, p ≡ q significa que p é equivalente a q."
+        },
+        {
+          "id": "bm096",
+          "source": "docentesDC",
+          "rougeL": 0.0154,
+          "key_recall": 0.0,
+          "answer": "O relatório da McKinsey prevê um potencial econômico anual de impacto de US$ 1,9 trilhão para o IoT em 2025. Isso representa um crescimento de 10% em relação ao ano de 2020. O IoT é uma tecnologia que permite a interconexão entre dispositivos de diferentes tipos e fornecedores, permitindo a coleta e análise de dados para a tomada de decisões mais informadas. O crescimento do IoT está sendo impulsionado por fatores como a adoção crescente de dispositivos conectados, a crescente adoção de tecnologias de IoT, a adoção de novas tecnologias de IoT e a adoção de novas tecnologias de IoT. O IoT está sendo aplicado em diversas áreas, como a indústria, a saúde, a agricultura, a energia e a comunicação. O"
+        },
+        {
+          "id": "bm097",
+          "source": "docentesDC",
+          "rougeL": 0.1628,
+          "key_recall": 0.5,
+          "answer": "O princípio da programação orientada a objetos (POO) é violado quando uma classe, como Employee, tem mais de uma responsabilidade, como manipulação de dados e cálculo de salário anual. Isso ocorre porque a classe Employee não é uma classe abstrata e não possui métodos abstratos, o que contraria o princípio da abstração. Além disso, a classe Employee não possui métodos abstratos, o que contraria o princípio da abstração. O princípio da programação orientada a objetos (POO) é violado quando uma classe, como Employee, tem mais de uma responsabilidade, como manipulação de dados e cálculo de salário anual. Isso ocorre porque a classe Employee não é uma classe abstrata e não possui métodos abstratos, o que contraria o princípio da abstração. Além disso, a classe Employee não possui métodos abstratos"
+        },
+        {
+          "id": "bm098",
+          "source": "docentesDC",
+          "rougeL": 0.2381,
+          "key_recall": 0.0,
+          "answer": "A função utilizada para ler apenas uma linha do arquivo é o método `readLine()` do objeto `BufferedReader`. Este método lê uma linha inteira do arquivo e retorna o conteúdo dessa linha como uma string. Se o arquivo estiver vazio, o método retornará `null`."
+        },
+        {
+          "id": "bm099",
+          "source": "docentesDC",
+          "rougeL": 0.1852,
+          "key_recall": 0.25,
+          "answer": "Não consta na passagem. O texto apenas apresenta uma passagem de texto sem contexto ou contexto suficiente para responder a pergunta. Por favor, forneça mais informações ou contexto para que possa responder a pergunta corretamente."
+        }
+      ]
+    }
+  ]
+}

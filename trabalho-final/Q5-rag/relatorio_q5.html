@@ -4,7 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Questão 5 — RAG | DOM-PI / UFPI-DC</title>
-<link rel="stylesheet" href="../assets/estilo.css">
+<style>
+/* Estilo compartilhado dos relatórios — Trabalho Final DOM-PI/UFPI-DC.
+   Extraído do relatorio_tecnico_completo.html; usado por todos os relatórios individuais + o consolidado. */
+  :root {
+    --txt:    #1c1c1c;
+    --muted:  #5a5a5a;
+    --border: #d2d2d2;
+    --bg-alt: #f7f7f5;
+    --bg-code:#f2f2ef;
+    --accent: #1e3a5f;
+    --accent2:#2e5ca0;
+    --a-light:#e6ecf5;
+    --done-bg:#eaf5ea;
+    --done-fg:#1a4a1a;
+    --pend-bg:#fdf3e7;
+    --pend-fg:#6b3a00;
+    --bad-bg: #f5eaea;
+    --bad-fg: #5a1818;
+    --warn-bg:#fef9e7;
+    --warn-fg:#5c4500;
+    --ok-bg:  #eaf5ea;
+    --ok-fg:  #1a4a1a;
+    --mono:   "Courier New", Courier, monospace;
+    --sans:   "Helvetica Neue", Arial, sans-serif;
+    --serif:  Georgia, "Times New Roman", serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--txt);
+    background: #fff;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 48px 36px 100px;
+  }
+  a { color: var(--accent2); }
+
+  /* ── Títulos ── */
+  h1 { font-family: var(--sans); font-size: 1.9rem; font-weight: 700;
+       color: var(--accent); border-bottom: 3px solid var(--accent);
+       padding-bottom: 12px; margin-bottom: 10px; }
+  h2 { font-family: var(--sans); font-size: 1.25rem; font-weight: 700;
+       color: var(--accent); margin-top: 56px; margin-bottom: 14px;
+       border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+  h3 { font-family: var(--sans); font-size: 1.05rem; font-weight: 600;
+       color: #2a2a2a; margin-top: 30px; margin-bottom: 8px; }
+  h4 { font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+       color: var(--muted); margin-top: 20px; margin-bottom: 6px; font-style: italic; }
+  p  { margin-bottom: 13px; }
+  ul, ol { margin: 8px 0 14px 26px; }
+  li { margin-bottom: 5px; }
+  code { font-family: var(--mono); font-size: 0.82em; background: var(--bg-code);
+         padding: 1px 5px; border-radius: 3px; }
+
+  /* ── Meta do relatório ── */
+  .report-meta {
+    font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+    border-left: 4px solid var(--accent); padding: 10px 16px;
+    margin-bottom: 32px; background: var(--a-light);
+  }
+  .report-meta strong { color: var(--accent); }
+
+  /* ── Status badges ── */
+  .status {
+    display: inline-block; font-family: var(--sans); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 3px; vertical-align: middle; margin-left: 8px;
+  }
+  .done    { background: var(--done-bg); color: var(--done-fg); border: 1px solid #a0cca0; }
+  .pending { background: var(--pend-bg); color: var(--pend-fg); border: 1px solid #d0aa60; }
+  .partial { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0c050; }
+
+  /* ── Tabelas ── */
+  table { width: 100%; border-collapse: collapse; font-family: var(--sans);
+          font-size: 0.83rem; margin: 14px 0 22px; }
+  th { background: var(--accent); color: #fff; text-align: left;
+       padding: 8px 11px; font-weight: 600; }
+  td { padding: 7px 11px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg-alt); }
+  tr:hover td { background: var(--a-light); }
+  .num { font-family: var(--mono); text-align: right; }
+  .tc  { text-align: center; }
+
+  /* ── Callouts ── */
+  .callout { border-left: 4px solid var(--border); padding: 11px 16px;
+             margin: 16px 0; font-family: var(--sans); font-size: 0.88rem;
+             border-radius: 0 4px 4px 0; }
+  .callout.info    { border-color: var(--accent2); background: var(--a-light); }
+  .callout.warn    { border-color: #c08000;         background: var(--warn-bg); }
+  .callout.danger  { border-color: #a02020;         background: var(--bad-bg);  }
+  .callout.success { border-color: #20802a;         background: var(--ok-bg);   }
+  .callout strong  { font-weight: 700; }
+
+  /* ── Caixas de seção de questão ── */
+  .q-header {
+    background: var(--accent); color: #fff; padding: 14px 20px;
+    border-radius: 4px 4px 0 0; font-family: var(--sans);
+    display: flex; align-items: baseline; gap: 12px; margin-top: 56px;
+  }
+  .q-header .q-num { font-size: 1.5rem; font-weight: 900; opacity: 0.6; }
+  .q-header .q-title { font-size: 1.1rem; font-weight: 700; }
+  .q-header .q-status { margin-left: auto; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px;
+    border-radius: 3px; border: 1px solid rgba(255,255,255,0.4); }
+  .q-header .q-status.done    { background: rgba(255,255,255,0.15); }
+  .q-header .q-status.pending { background: rgba(255,180,0,0.25); color: #ffe080; border-color: #ffe080; }
+  .q-header .q-status.partial { background: rgba(255,200,0,0.2);  color: #ffd060; border-color: #ffd060; }
+  .q-body { border: 1px solid var(--border); border-top: none; padding: 24px 24px 20px;
+            margin-bottom: 8px; }
+  .q-enunciado { font-family: var(--sans); font-size: 0.83rem; color: var(--muted);
+                 background: var(--bg-alt); border-left: 3px solid var(--border);
+                 padding: 10px 14px; margin-bottom: 20px; border-radius: 0 3px 3px 0; }
+
+  /* ── Inferências ── */
+  .inf-block { border: 1px solid var(--border); border-radius: 4px; margin: 18px 0 24px; overflow: hidden; }
+  .inf-prompt { background: var(--bg-code); border-bottom: 1px solid var(--border);
+                padding: 10px 14px; font-family: var(--mono); font-size: 0.8rem;
+                color: #222; white-space: pre-wrap; }
+  .inf-prompt .lbl { font-family: var(--sans); font-size: 0.68rem; font-weight: 700;
+                     text-transform: uppercase; letter-spacing: 0.07em;
+                     color: var(--muted); display: block; margin-bottom: 4px; }
+  .inf-resp { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .inf-resp:last-child { border-bottom: none; }
+  .model-tag { display: inline-block; font-family: var(--sans); font-size: 0.68rem;
+               font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+               padding: 2px 8px; border-radius: 3px; margin-bottom: 6px; }
+  .tag-base   { background: var(--a-light);   color: var(--accent2); }
+  .tag-lora   { background: var(--bad-bg);    color: var(--bad-fg); }
+  .tag-qlora  { background: var(--warn-bg);   color: var(--warn-fg); }
+  .tag-fullft { background: var(--ok-bg);     color: var(--ok-fg); }
+  .inf-txt { font-family: var(--mono); font-size: 0.78rem; color: #222;
+             white-space: pre-wrap; line-height: 1.55; margin-top: 4px; }
+  .inf-note { font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+              border-top: 1px solid var(--border); padding: 8px 14px;
+              background: var(--bg-alt); font-style: italic; }
+
+  /* ── Cards de estratégia ── */
+  .strat-card { border: 1px solid var(--border); border-radius: 4px;
+                padding: 16px 18px; margin: 14px 0; }
+  .strat-card .sc-title { font-family: var(--sans); font-size: 0.95rem;
+                          font-weight: 700; color: var(--accent2); margin-bottom: 6px; }
+  .strat-card .sc-meta { font-family: var(--sans); font-size: 0.75rem;
+                         color: var(--muted); margin-bottom: 10px; display: flex;
+                         flex-wrap: wrap; gap: 10px; }
+  .badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem;
+           font-weight: 600; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+  .b-high   { background: var(--ok-bg);   color: var(--ok-fg);   border: 1px solid #90c090; }
+  .b-med    { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0a040; }
+  .b-low    { background: var(--bg-alt);  color: var(--muted);   border: 1px solid var(--border); }
+  .b-info   { background: var(--a-light); color: var(--accent2); border: 1px solid #90b0d8; }
+
+  /* ── Mapa de experimentos ── */
+  .exp-map { border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; margin: 20px 0; }
+  .exp-map-row { display: grid; grid-template-columns: 140px 1fr 1fr;
+                 border-bottom: 1px solid var(--border); }
+  .exp-map-row:last-child { border-bottom: none; }
+  .exp-map-cell { padding: 9px 14px; font-family: var(--sans); font-size: 0.82rem; }
+  .exp-map-hdr  { background: var(--accent); color: #fff; font-weight: 700; }
+  .exp-map-row:nth-child(even) .exp-map-cell:not(.exp-map-hdr) { background: var(--bg-alt); }
+  .arrow { color: var(--muted); font-size: 1.1em; }
+
+  /* ── Índice ── */
+  .toc { font-family: var(--sans); font-size: 0.85rem; background: var(--bg-alt);
+         border: 1px solid var(--border); border-radius: 4px; padding: 18px 22px;
+         margin: 24px 0 40px; }
+  .toc h3 { margin-top: 0; margin-bottom: 10px; font-size: 0.9rem; color: var(--accent); }
+  .toc ol { margin-left: 20px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { color: var(--accent2); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-status { font-size: 0.72rem; margin-left: 6px; }
+
+  /* ── Linha separadora de sub-seção ── */
+  hr.sub { border: none; border-top: 1px dashed var(--border); margin: 24px 0; }
+
+  footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--border);
+           font-family: var(--sans); font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+</style>
 </head>
 <body>
 

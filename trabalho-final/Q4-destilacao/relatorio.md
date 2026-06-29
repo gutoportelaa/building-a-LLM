@@ -1,177 +1,196 @@
 # Relatório — Questão 4: Destilação de Conhecimento
 
-## Status: ✅ Concluída (estudo + 12 alunos destilados + avaliação; melhor = 1.5B·B·combinado, +96%)
+## Status: ✅ Concluída (estudo + 12 alunos destilados + avaliação; melhor = 1.5B · braço B · combinado, +96%)
 
-## 1. Enunciado
-Investigar quais LLMs são normalmente usados para destilação. Definir **professor** e **aluno**.
-Usar um **dataset sintético** para destilar professor→aluno. Criar um **benchmark de 100 perguntas**
-para avaliar professor e aluno antes/depois. **Analisar se houve transferência de conhecimento.**
+## 1. O que a questão pede
+
+Investigar como se faz **destilação de conhecimento** entre modelos de linguagem, definir um **professor** e um
+**aluno**, gerar um **dataset sintético** para transferir conhecimento do professor para o aluno, montar um
+**benchmark de 100 perguntas** e, com ele, medir o professor e o aluno **antes e depois** — respondendo à pergunta
+central: **houve transferência de conhecimento?**
 
 ---
 
-## 2. Investigação: quais LLMs e técnicas são usados em destilação (estado da arte 2024–2026)
+## 2. Conceitos básicos (para ler o resto sem tropeçar)
 
-A pesquisa foi além de Raschka, cruzando relatórios técnicos de produção e artigos recentes.
-Três conclusões organizam o desenho:
+A destilação parte de uma ideia simples: um modelo **grande e forte** (o **professor**) "ensina" um modelo
+**pequeno** (o **aluno**) a se comportar como ele, mas a uma fração do custo de inferência. O aluno não vê o
+mundo todo de novo — ele aprende a **imitar as saídas do professor**.
 
-### 2.1 A prática consolidada é destilar *dentro da mesma família*
-Porque a destilação por **logits (white-box)** exige **tokenizador/vocabulário compartilhado**:
+Há duas formas de o professor "ensinar", e a diferença é o coração desta questão:
 
-| Caso real | Professor | Aluno | Técnica |
+- **Hard label (rótulo duro):** o professor escreve uma resposta em **texto**, e o aluno é treinado a reproduzir
+  exatamente aquele texto. É o aprendizado por imitação literal — equivale a um *fine-tuning supervisionado* (SFT)
+  usando o professor como gerador de gabaritos.
+- **Soft label (rótulo suave):** além do texto, o professor expõe, **para cada token**, a sua **distribuição de
+  probabilidade** sobre todo o vocabulário — ou seja, não só "a próxima palavra é X", mas "era 70% X, 20% Y, 5% Z…".
+  Essa distribuição carrega o *como o professor pensa*: quais alternativas ele considerou e com que confiança.
+
+> **Ligação com Raschka:** no livro, a saída do modelo antes da decisão final é o vetor de **logits**, convertido em
+> probabilidades pela **softmax**; o treino minimiza a **cross-entropy** entre a previsão e o alvo. Na destilação por
+> soft label, o "alvo" deixa de ser um único token (vetor *one-hot*) e passa a ser **a distribuição inteira do
+> professor** — o aluno aprende a curva, não só o pico.
+
+Três termos técnicos que aparecem o tempo todo:
+
+| Termo | Significado direto |
+|---|---|
+| **Logit** | pontuação bruta que o modelo dá a cada token antes da softmax (Raschka, cap. de geração de texto). |
+| **CE (cross-entropy)** | perda que treina o aluno a reproduzir o **texto** do professor (sinal *hard*). |
+| **KL (divergência de Kullback–Leibler)** | perda que aproxima a **distribuição** do aluno da distribuição do professor (sinal *soft*). |
+| **Temperatura (T)** | fator que "achata" a distribuição do professor antes da softmax: com T alto, as alternativas secundárias ganham peso e o aluno enxerga o raciocínio completo, não só o token vencedor. |
+
+E duas categorias de método, definidas por **o que o aluno enxerga do professor**:
+
+- **White-box ("caixa branca"):** o aluno usa os **logits** internos do professor. Isso **só funciona se professor
+  e aluno compartilharem o mesmo tokenizador/vocabulário** — caso contrário, "70% no token nº 4012" não significa a
+  mesma coisa para os dois. Na prática, exige **mesma família de modelos**.
+- **Black-box ("caixa preta"):** o aluno só vê o **texto** que o professor produziu (não os logits). Funciona entre
+  **qualquer** par de modelos, mas joga fora o sinal mais rico (as probabilidades).
+
+---
+
+## 3. Investigação: como a indústria faz destilação
+
+Pesquisando como os modelos de produção recentes são destilados, três padrões organizam todo o nosso desenho:
+
+**3.1 A prática consolidada é destilar dentro da mesma família.** Os principais modelos abertos pequenos são
+versões destiladas de irmãos maiores da mesma linhagem (mesmo tokenizador), justamente para poder usar
+**white-box logit KD**. Quando se destila *entre* famílias diferentes, o caminho usado é o **black-box** (treinar o
+aluno apenas no texto do professor) — foi assim, por exemplo, que modelos de raciocínio foram comprimidos em alunos
+de famílias variadas: gerou-se um grande volume de respostas e treinou-se por SFT, **sem logits**.
+
+**3.2 Os três regimes técnicos e seus custos:**
+
+| Regime | Mesmo tokenizador? | Custo | Maturidade |
 |---|---|---|---|
-| **Gemma 2** (Google, 2024) | 27B / Gemini | 2B, 9B | white-box logit KD; "substitui o one-hot pela distribuição do professor"; só um **subconjunto amostrado** dos logits é armazenado (vocab 256k) |
-| **DeepSeek-R1-Distill** (2025) | DeepSeek-R1 671B | Qwen 1.5B–Llama 70B | **SFT puro** sobre ~800K traços de raciocínio — *sequence-level / black-box / off-policy*; **sem logits** |
-| **Llama 4** (Meta) | Behemoth | Scout, Maverick | logit KD mesma família |
+| **White-box logit KD** (KL sobre os logits) | **Sim** → só mesma família | guardar o professor em memória ou pré-computar os logits | padrão da indústria |
+| **Black-box sequence-KD** (SFT no texto do professor) | Não → qualquer família | só o custo de gerar o dataset sintético | padrão e robusto |
+| **Cross-tokenizer logit KD** (logits entre famílias, por aproximação) | Não (aproximado) | alto, ainda experimental | fronteira de pesquisa |
 
-Professores black-box mais comuns na literatura: **GPT-4/4o, Qwen2.5-72B-Instruct, DeepSeek-R1, Llama-3.1**.
+**3.3 Onde o aluno "treina":** treinar no texto pronto do professor sofre de um descompasso entre treino e uso real
+(o aluno nunca vê os próprios erros durante o treino). Técnicas mais novas destilam **na distribuição gerada pelo
+próprio aluno** — mais fiéis, porém mais caras de implementar (exigem o aluno gerando texto em pleno treino). Aqui
+ficamos no regime mais simples e bem estabelecido.
 
-### 2.2 Os três regimes técnicos e seus custos
+**3.4 O que descartamos de propósito:**
+- **Cross-modalidade** (imagem/voz → texto): fora de escopo — o corpus é texto governamental puro.
+- **Cross-especialidade** (ex.: um professor de código ensinando sobre administração pública): descartado — um
+  professor de domínio incompatível não tem o que transferir e tende a *degradar* o aluno.
+- **Cross-família**: viável apenas como braço **black-box**, reservado como **extensão** caso o núcleo desse certo.
 
-| Regime | Tokenizer igual? | Custo | Maturidade |
-|---|---|---|---|
-| **White-box logit KD** (KL nos soft logits) | **Sim** → só mesma família | professor em memória OU logits pré-computados | padrão (Gemma 2, DistillKit, easydistill) |
-| **Black-box sequence-KD** (SFT no texto do professor) | Não → qualquer família | só gerar o dataset sintético | padrão (DeepSeek-R1) |
-| **Cross-tokenizer logit KD** (ULD, ALM, Optimal Transport) | Não (via aproximação) | alto, *research-grade* | fronteira 2025 |
+**3.5 Por que NÃO usar o modelo da Q1/Q5 como professor.** O princípio da destilação é *professor ≫ aluno*. O nosso
+modelo DAPT da Q1 é pequeno (1.5B) e foi treinado sobre um corpus com OCR corrompido — usá-lo como professor
+transferiria os próprios erros para o aluno. Por isso o professor é um **modelo oficial forte e factualmente limpo**
+da mesma família (`Qwen2.5-Instruct`, que compartilha o tokenizador dos alunos e habilita o white-box). O aluno é o
+**modelo base "pristino"** (sem treino prévio), que serve de ponto de partida neutro para *medir* o ganho.
 
-### 2.3 On-policy vs off-policy (literatura nova)
-- **Off-policy** (treinar no texto do professor, ex. DeepSeek-R1): sofre *exposure bias* (mismatch treino↔inferência).
-- **On-policy** (MiniLLM 2023, GKD 2024): destila na **distribuição do próprio aluno**; hoje é ingrediente de
-  Qwen3, Gemma 2, DeepSeek-V4. Mais caro de implementar (rollouts do aluno em treino).
-
-### 2.4 Decisão sobre cross-família / cross-especialidade / cross-modalidade
-- **Cross-modalidade (imagem/voz→texto):** ❌ descartado — corpus é texto governamental puro; custo alto, payoff nulo.
-- **Cross-especialidade (código→geral):** ❌ descartado — a literatura mostra que dados de especialidade
-  incompatível *degradam* o aluno ("cross-model personalized data does not perform as well as real
-  personalized data"); um professor de código nada tem a transferir sobre DOM-PI/docentesDC.
-- **Cross-família (Gemma/Llama→Qwen):** ✅ viável **apenas como braço black-box** (sequence-KD), reservado
-  como **expansão** caso o núcleo dê resultados satisfatórios. Logit KD cross-família exigiria ULD/OT (caro).
-
-### 2.5 Professor forte e factual (não o modelo fraco da Q1)
-Usar o modelo treinado da Q1/Q5 como **professor** seria errado: o princípio do KD é *professor ≫ aluno*, e nosso
-DAPT 1.5B é pequeno e treinado em corpus com OCR corrompido (ganhos marginais) → transferiria os próprios erros.
-Por isso o professor é o **`Qwen2.5-7B-Instruct` oficial** (forte, limpo, mesmo tokenizador → habilita logit KD).
-O modelo da Q1/Q5 **não** é usado como professor nem como aluno. O aluno é o **base pristino** (baseline limpo
-para medir transferência).
-
-### 2.6 Eixo experimental: destilação "zerada" × professor com RAG
-Como o professor 7B genérico não conhece os fatos específicos do DOM-PI (alucina), o *grounding* do professor
-vira **variável de estudo**, não detalhe de implementação. Três braços respondem "houve transferência?":
+**3.6 O grounding do professor como variável de estudo.** Um professor genérico não conhece os fatos específicos do
+DOM-PI e, perguntado "na seco", **aluciná**. Então transformamos o *acesso a fatos* do professor numa variável
+controlada — os **braços A e B**:
 
 | Braço | O professor responde… | O que mede |
 |---|---|---|
-| **A — "zerada"** | só da memória paramétrica (sem recuperar) | quanto o professor sabe sozinho (com alucinação) e quanto disso o aluno absorve |
-| **B — RAG-grounded** | com contexto recuperado do índice DOM-PI (Q5) | transferência de conhecimento **factual e correto** para os pesos do aluno |
-| **C — RAG na inferência** (baseline Q5) | não destila; recupera em tempo de resposta | teto: conhecimento **externo** (Q5) vs **internalizado** nos pesos |
+| **A — "zerada"** | só da memória interna (sem buscar nada) | quanto o professor sabe sozinho (com alucinação) e quanto disso o aluno absorve |
+| **B — com RAG** | com o contexto recuperado do índice DOM-PI (o sistema da Q5) | transferência de conhecimento **factual e correto** para os pesos do aluno |
+| **C — RAG na inferência** | não destila; busca os fatos na hora de responder (baseline da Q5) | o teto: conhecimento **externo** (Q5) vs **internalizado** nos pesos (Q4) |
 
-Conclusão visada: *quanto dá para "assar" conhecimento nos pesos (B) e quão perto isso chega de carregá-lo
-externamente (C)?* — ponte direta Q4↔Q5.
-
-### 2.5 Frameworks de referência (evitam reinventar)
-- **Arcee DistillKit** (`distil_logits.py`): KL + alinhamento de hidden states, online/offline.
-- **ModelScope easydistill** (Alibaba, alinhado a Qwen).
-- **TRL `GKDTrainer`** (on-policy/GKD pronto).
+A pergunta-guia vira: **quanto dá para "assar" conhecimento dentro dos pesos do aluno (B) e quão perto isso chega de
+simplesmente carregá-lo de fora na hora da resposta (C)?** — é a ponte direta entre a Q4 e a Q5.
 
 ---
 
-## 3. Desenho experimental escolhido (NÚCLEO — fase atual)
+## 4. Desenho experimental do núcleo
 
-**White-box logit KD, mesma família** (tokenizador idêntico entre Qwen2.5-7B e 0.5B/1.5B):
+**White-box logit KD, mesma família** (tokenizador idêntico entre o professor Qwen2.5 e os alunos 0.5B/1.5B).
 
-- **Professor:** `Qwen2.5-7B-Instruct` (cabe na L4 23.9GB em bf16; pode-se pré-computar top-k logits offline,
-  estilo Gemma 2, para desacoplar do treino).
-- **Alunos:** `Qwen2.5-0.5B` **e** `Qwen2.5-1.5B` (decisão do usuário) — 0.5B dá o contraste mais visível (14×).
-- **Dataset sintético:** ~1.000 prompts (500 DOM-PI + 500 docentesDC); o professor gera **resposta (hard label)**
-  e **top-k logits (soft labels)** por token de resposta.
-- **Métodos** (treinados separadamente, para isolar a contribuição de cada sinal):
-  - (a) **CE / hard** — SFT na resposta do professor (baseline de imitação);
-  - (b) **KL / soft** — KL-divergência aluno↔professor nos top-k logits, com temperatura T;
-  - (c) **Combinado** — α·CE + (1−α)·T²·KL (α=0,5).
+- **Professor:** `Qwen2.5-14B-Instruct` — forte, limpo e da mesma família (habilita o uso dos logits).
+- **Alunos:** `Qwen2.5-0.5B` **e** `Qwen2.5-1.5B`, ambos base "pristino". O 0.5B dá o contraste mais visível
+  (dezenas de vezes menor que o professor — se transferir para ele, fica inequívoco).
+- **Dataset sintético:** ~1.000 prompts (500 sobre o DOM-PI + 500 sobre o *docentesDC*). Para cada prompt o
+  professor gera a **resposta em texto** (hard label) e os **top-50 logits por token** (soft label).
+
+### Por que 12 alunos? — um desenho fatorial
+
+Não é repetição: treinamos uma **matriz controlada** para isolar a contribuição de cada fator. São três eixos
+multiplicados:
+
+**{0.5B, 1.5B}** × **{CE, KL, Combinado}** × **{Braço A, Braço B}** = **12 alunos**
+
+| Eixo variado | Opções | A pergunta que esse eixo responde |
+|---|---|---|
+| **Tamanho do aluno** | 0.5B · 1.5B | a capacidade extra do aluno maior se realiza com a destilação? |
+| **Sinal de treino** | CE (texto) · KL (logits) · Combinado | os **logits** transferem algo **além do texto**? |
+| **Grounding do professor** | A (zerada) · B (com RAG) | aterrar o professor em fatos transfere conhecimento **correto**? |
+
+Só com a matriz inteira é possível afirmar, sem ambiguidade, frases como "KL supera CE no 1.5B" ou "B supera A":
+muda-se **um fator por vez**. As três perdas treinadas separadamente:
+
+- **(a) CE / hard** — SFT na resposta do professor (imitação do texto, baseline);
+- **(b) KL / soft** — aproxima a distribuição do aluno da do professor nos top-50 logits, com temperatura **T**;
+- **(c) Combinado** — `α·CE + (1−α)·T²·KL` (α = 0,5), usando os dois sinais ao mesmo tempo.
 
 ### Benchmark e métricas (100 perguntas = 50 DOM-PI + 50 docentesDC)
-- **PPL / CE / token-acc** do aluno antes e depois (reusa `avaliacao/avaliar_modelo.py`);
-- **ROUGE-L vs professor** (quanto o aluno se aproxima do professor);
-- **Acerto factual** (entidade-chave, como na Q5) do professor, aluno-base e aluno-destilado;
-- **Comparação chave:** aluno destilado (b/c) **supera** o aluno SFT-puro (a)? → evidência de que o sinal de
-  logits transfere conhecimento além do texto.
+
+- **PPL / CE / token-accuracy** do aluno antes e depois (perplexidade, cross-entropy e acerto por token — as
+  métricas de modelagem de linguagem de Raschka);
+- **ROUGE-L (RG)** — o quanto o **texto** do aluno se sobrepõe ao do professor;
+- **key_recall (KR)** — a fração de **entidades/números-chave** (leis, CNPJ, valores) que o aluno acertou; é o
+  sinal **mais neutro**, porque mede fato, não fraseado;
+- **Comparação-chave:** o aluno destilado com soft label (b/c) **supera** o aluno SFT-puro (a)? Se sim, é evidência
+  de que o sinal dos logits transfere conhecimento **além do texto**.
+
+### ⭐ Destaque: KL sobre os top-50 logits (cache enxuto)
+
+Guardar a distribuição **completa** do professor por token é inviável: o vocabulário do Qwen2.5 tem ~151 mil
+entradas, e salvar isso para ~1.000 respostas × ~256 tokens custaria dezenas de GB e dominaria o I/O do treino. A
+solução adotada (a mesma de modelos de produção): salvar só os **top-50 logits por token** e, no cálculo da KL,
+**renormalizar a softmax do professor apenas sobre esses 50** — os demais saem do suporte da distribuição-alvo.
+
+- **Por que é válido:** a massa de probabilidade do professor concentra-se nos primeiros tokens; o top-50 captura
+  quase toda a informação útil, e a renormalização produz um alvo "soft" legítimo (soma 1) sem o vocabulário
+  inteiro. Reduz o cache de dezenas de GB para **centenas de MB** e desacopla o professor pesado do laço de treino.
+- **Papel da temperatura:** **T** suaviza o alvo (escala os logits antes da softmax); na perda combinada o fator
+  **T²** mantém a magnitude do gradiente da KL comparável à da CE — sem ele, ajustar T desbalancearia as duas perdas.
+- **Limite conhecido:** com top-k truncado, o aluno não recebe sinal sobre a *cauda* da distribuição. Para domínios
+  de alta entropia conviria aumentar k; aqui, com respostas factuais (baixa entropia por token), 50 é folgado.
 
 ---
 
-## 3.1 ⭐ Destaque metodológico — KL sobre top-k renormalizado (cache estilo Gemma 2)
+## 5. Implementação
 
-Armazenar a distribuição **completa** do professor por token é proibitivo: o vocabulário Qwen2.5 tem ~151k
-entradas, então salvar logits densos para ~1.000 respostas × ~256 tokens custaria dezenas de GB e dominaria o
-I/O do treino. **Decisão adotada:** salvar apenas os **top-50 logprobs por token** (cache offline) e, no cálculo
-da KL, **renormalizar a softmax do professor exclusivamente sobre esses top-50** — os tokens fora do top-k saem
-do suporte da distribuição-alvo.
-
-- **Por que é correto:** é exatamente o que o **Gemma 2** faz — "como o vocabulário tem 256k entradas, apenas um
-  **subconjunto amostrado** das probabilidades do professor é armazenado" (arXiv:2408.00118). A massa de
-  probabilidade do professor concentra-se nos primeiros tokens; o top-50 captura quase toda a entropia útil, e a
-  renormalização produz um alvo soft válido (soma 1) sem precisar do vocabulário inteiro.
-- **Efeito prático:** desacopla o professor 14B do laço de treino (Gemma-2 style), reduz o cache de dezenas de GB
-  para centenas de MB, e deixa os 3 métodos (CE/KL/combinado) lendo o **mesmo** cache.
-- **Parâmetros:** temperatura **T** suaviza o alvo (escala os logprobs antes da softmax); a perda combinada usa
-  α·CE + (1−α)·**T²**·KL — o fator T² mantém a magnitude do gradiente da KL comparável à da CE (Hinton et al.).
-- **Limite conhecido:** com top-k truncado, o aluno não recebe sinal sobre a *cauda* da distribuição do professor;
-  para domínios de alta entropia poder-se-ia aumentar k. Aqui k=50 é folgado dado o foco factual (respostas
-  objetivas, baixa entropia por token).
-
-## 4. Implementação (scripts em `scripts/`)
-
-| # | Script | Estado |
+| # | Script | Papel |
 |---|---|---|
-| 1 | `gerar_dataset_destilacao.py` + `run_gerar_dataset.sbatch` | ✅ escrito |
-| 2 | `destilar.py` + `run_destilar.sbatch` | ✅ escrito |
-| 3 | `benchmark_destilacao_100.jsonl` (50 DOM-PI + 50 docentesDC) | ⏳ a criar |
-| 4 | `avaliar_destilacao.py` (PPL/token-acc/ROUGE-L/factual, professor + 12 alunos) | ⏳ a criar |
+| 1 | `gerar_dataset_destilacao.py` (+ sbatch) | o professor gera respostas e top-50 logits para os ~1.000 prompts |
+| 2 | `destilar.py` (+ sbatch) | treina cada aluno com CE / KL / combinado |
+| 3 | `benchmark_destilacao_100.jsonl` | 50 perguntas DOM-PI + 50 docentesDC |
+| 4 | `avaliar_destilacao.py` | PPL / token-acc / ROUGE-L / key_recall do professor e dos 12 alunos |
 
-### 4.1 Geração do dataset (script 1)
-Professor **Qwen2.5-14B-Instruct** servido por **vLLM com `tensor_parallel_size=2`** (gpunode01, 2× L4),
-`bfloat16`, `gpu_memory_utilization=0.90`. Perguntas: 500 DOM-PI (self-instruct *grounded* sobre passagens do
-held-out) + 500 docentesDC (instruções do dataset HF). **Pergunta idêntica entre A e B**; só muda o contexto.
-Captura **top-50 logprobs/token** (`SamplingParams(logprobs=50)`), arredondados a 4 casas → cache de centenas de MB.
-O **prompt renderizado** é salvo no dataset para que a destilação reproduza o exemplo sem divergência de formatação.
+**Geração (script 1):** professor servido com inferência paralela em 2 GPUs (`bfloat16`); 500 perguntas DOM-PI
+(geradas a partir de passagens do held-out) + 500 do *docentesDC*. **A pergunta é idêntica entre A e B** — só muda o
+contexto fornecido. Captura os **top-50 logits/token**. O prompt já renderizado é salvo para a destilação reproduzir
+o exemplo sem divergência de formatação.
 
-### 4.2 Destilação (script 2) — decisões fixadas
-- **Aluno = base pristino** (`Qwen2.5-0.5B` e `1.5B`); o modelo treinado da Q1/Q5 **não** é usado (professor fraco
-  transferiria erros — ver §2.5). Full fine-tune (aluno é pequeno), `bfloat16`, gradient checkpointing.
-- **Alinhamento `labels`/`input_ids` sem pré-shift** (lição do bug duplo-shift da Q1); **prompt mascarado (−100)**;
-  perda só sobre os tokens de resposta.
-- **Posições de resposta:** logits `[p_len−1 : p_len−1+ans_len]` preveem `answer_token_ids[0:]` — mesmo
-  alinhamento dos top-k do professor.
-- **KL top-k renormalizada** (§3.1): alvo `softmax(logprob_professor / T)` sobre o suporte top-50; aluno via
-  `log_softmax` no vocabulário inteiro colhido nos mesmos ids. `combined = α·CE + (1−α)·T²·KL`.
-- **Hiperparâmetros:** `T=2.0`, `α=0.5`, `epochs=3`, `lr=1e-5` (cosine, warmup 3%), `grad_accum=16`,
-  `max_len=1024`, micro-batch=1 (evita bug de gather por posição com padding). `config_destilacao.json` salvo por aluno.
+**Destilação (script 2) — decisões fixadas:**
+- Aluno = **base pristino** (`Qwen2.5-0.5B` e `1.5B`); fine-tuning completo (o aluno é pequeno), `bfloat16`,
+  *gradient checkpointing* para caber na GPU.
+- **`labels` alinhados a `input_ids` (sem pré-shift)** — a lição do bug de duplo deslocamento da Q1 — e **prompt
+  mascarado (−100)**: a perda recai só sobre os tokens da **resposta**.
+- **KL top-k renormalizada:** alvo `softmax(logit_professor / T)` sobre o suporte top-50; aluno via `log_softmax`
+  nos mesmos ids. `combinado = α·CE + (1−α)·T²·KL`.
+- **Hiperparâmetros:** `T = 2,0`, `α = 0,5`, `épocas = 3`, `lr = 1e-5` (cosine, warmup 3%), `grad_accum = 16`,
+  `max_len = 1024`, micro-batch = 1.
 
-### 4.3 Organização do job
-- **Geração:** `run_gerar_dataset.sbatch` — gpunode01, `--gres=gpu:2`, reconstrói o índice RAG se faltar (braço B).
-- **Destilação:** `run_destilar.sbatch` — varre a matriz **{0.5B,1.5B} × {ce,kl,combined} × {A,B} = 12 alunos**,
-  despachando 1 aluno por GPU (`CUDA_VISIBLE_DEVICES`) em pares paralelos no gpunode01.
-
-### Expansão gated (só se o núcleo for satisfatório)
-- Braço **black-box cross-família** (Gemma-2-9B ou Llama-3.1-8B → aluno via SFT) para contrastar
-  white-box×black-box; e/ou tentativa **ULD/OT** (logit KD cross-tokenizer, research-grade).
-
-### Extensão futura — especialização temática (não nesta rodada)
-Destilar um aluno especializado em um **corpo de conhecimento coletado da internet** (ex.: Copa do Mundo 2026,
-campeonatos brasileiros, um ano de política nacional). Vale como demonstração da *utilidade prática* da técnica:
-um tema **posterior ao corte de conhecimento** faz o aluno-base pontuar ~0% e a transferência ficar inequívoca,
-e torna o contraste A×B brutal (o professor "zerado" não tem como saber → só RAG sabe).
-- **Fontes:** Wikipedia (multilíngue), sites oficiais (ex.: FIFA), notícias via `WebSearch`/`WebFetch`.
-- **Técnica:** coletar corpus → indexar (reusa `build_index.py`) → self-instruct + professor com RAG gera ~1.000
-  Q&A fiéis às fontes → SFT/logit KD no aluno → benchmark 100 Q de fatos **estáveis** do tema.
-- **Lição esperada (trade-off):** RAG vence para conhecimento volátil (atualização barata); destilação
-  internaliza um *snapshot*. Decisão do usuário: tratar como prática futura / comparativo póstumo.
+**Organização dos jobs:** um job gera o dataset (reconstruindo o índice RAG se faltar, para o braço B) e outro varre
+a matriz **{0.5B,1.5B} × {ce,kl,combined} × {A,B} = 12 alunos**, despachando alunos em paralelo, um por GPU.
 
 ---
 
-## 5. Resultados (executado — jobs SLURM 502/503/504)
+## 6. Resultados do núcleo — houve transferência?
 
-Pipeline completo executado no cluster (gpunode01, 2× L4): geração do dataset (job 502, 1000 prompts ×
-braços A/B + top-50 logits), destilação dos 12 alunos (job 503) e avaliação (job 504). Métricas no benchmark
-held-out de 100 perguntas (50 DOM-PI + 50 docentesDC), **sem RAG na inferência** (testa o que ficou nos pesos).
-Referência = resposta do professor 14B **com RAG** (braço B). RG = ROUGE-L; KR = key-term recall.
+Pipeline executado no cluster (2× GPU L4): geração do dataset, destilação dos 12 alunos e avaliação. Métricas no
+benchmark held-out de 100 perguntas, **sem RAG na inferência** (testa o que ficou *nos pesos*). A referência é a
+resposta do professor com RAG (braço B). RG = ROUGE-L; KR = key_recall.
 
 | Modelo | geral RG | geral KR | DOM RG | DOM KR | doc RG | doc KR |
 |---|---|---|---|---|---|---|
@@ -190,37 +209,58 @@ Referência = resposta do professor 14B **com RAG** (braço B). RG = ROUGE-L; KR
 | d_1.5b B kl | 0,350 | 0,689 | 0,380 | 0,654 | 0,320 | 0,725 |
 | **🏆 d_1.5b B comb** | **0,363** | **0,717** | **0,429** | 0,659 | 0,297 | **0,776** |
 
-### Conclusões — houve transferência de conhecimento?
-1. **Sim, inequívoca.** Os 12 alunos superam ambas as bases no `key_recall` (0,37–0,38 → 0,55–0,72). O aluno-base
-   quase não conhece os fatos; o destilado os internaliza nos pesos.
+**Conclusões:**
+1. **Sim, houve transferência — inequívoca.** Os 12 alunos superam ambas as bases no key_recall (0,37–0,38 →
+   0,55–0,72). O aluno-base quase não conhece os fatos; o destilado os internaliza nos pesos.
 2. **Melhor receita: aluno 1.5B · braço B · combinado** → ROUGE-L 0,363 e key_recall 0,717, **≈ +96%** sobre a
-   base 1.5B em ambos (quase dobra).
-3. **Professor aterrado com RAG (B) > "zerada" (A)** — confirma a ponte Q4↔Q5: o grounding transfere **mais fatos
-   corretos** aos pesos. Mais nítido em docentes (KR doc até 0,776 em B vs ~0,47–0,57 em A).
-4. **Soft labels (KL/combined) > CE puro na escala maior:** no 1.5B-B, combined (0,363) ≥ kl (0,350) ≫ ce (0,223).
-   Valida o sinal de logit KD white-box (§3.1) — o aluno aprende além do texto.
+   base 1.5B (quase dobra).
+3. **Professor com RAG (B) > "zerada" (A):** confirma a ponte Q4↔Q5 — aterrar o professor transfere **mais fatos
+   corretos** aos pesos. Mais nítido em docentes (KR até 0,776 em B vs ~0,47–0,57 em A).
+4. **Soft labels (KL/combinado) > CE puro na escala maior:** no 1.5B-B, combinado (0,363) ≥ kl (0,350) ≫ ce (0,223).
+   Valida o sinal dos logits — o aluno aprende **além do texto**.
 5. **A destilação destrava o aluno maior:** a base 1.5B era *pior* que a 0.5B (RG 0,185 vs 0,227), mas, destilada,
    torna-se a melhor — a capacidade extra só se realiza com o sinal do professor.
 
-### Ressalvas honestas
-- A **referência é a resposta do professor-B (com RAG)**, o que dá leve vantagem aos modelos do braço B no
-  ROUGE-L (mesma distribuição). Por isso o **`key_recall`** (presença de entidades/números) é o sinal mais neutro —
-  e nele B também vence. Não é circularidade: a referência é factual e o aluno responde *sem* RAG.
-- ROUGE-L permanece modesto em termos absolutos (respostas reformulam a frase); o ganho de conhecimento está
-  concentrado no conteúdo factual (key_recall), coerente com o objetivo de destilação.
+### O que de fato foi transferido (análise das respostas)
 
-Artefatos: `dados/` (dataset + logits + benchmark), `modelos/aluno_qwen2.5-*_{A,B}_{ce,kl,combined}/` (12 alunos),
-`resultados/avaliacao.json` (métricas + respostas geradas). Melhor aluno publicado no HF (ver README).
+Abrindo as respostas uma a uma, **71% das referências são abstenções** ("Não consta…") — nessas perguntas held-out
+o RAG muitas vezes **não recuperou** o documento-fonte, então o próprio professor se absteve. Separando o key_recall
+por subconjunto:
+
+| Subconjunto da referência | n | base 1.5B | aluno 1.5B·B·comb |
+|---|---|---|---|
+| abstenção ("Não consta") | 71 | 0,347 | **0,835** |
+| fato real (nº/CNPJ/lei…) | 29 | 0,410 | 0,434 |
+
+**Leitura honesta:** o headline **+96% é dominado pela disciplina de abstenção**, não por recordar fatos do DOM-PI
+(nas perguntas com fato real, aluno ≈ base). O que a destilação transferiu, nesse núcleo, foi **confiabilidade**: o
+aluno (1) deixa de **alucinar** valores falsos e (2) deixa de **degenerar** em loops de token-lixo, adotando o "não
+sei fundamentado" do professor. **Implicação:** o RAG na inferência (Q5) segue **necessário** para precisão factual.
+
+### Visualizações (`resultados/figuras/`)
+Os resultados em gráfico (gerados por `scripts/graficos_destilacao.py` e `scripts/comparativo_por_questao.py`):
+- `barras_keyrecall_config.png` — key_recall das 14 configs, base como linha de referência (todas as 12 sobem);
+- `compressao_vs_keyrecall.png` — custo-benefício: 1.5B é 9× menor e 0.5B 28× menor que o professor 14B;
+- `antes_depois_dominio.png` — base→melhor aluno por domínio (+46% DOM-PI, +182% docentesDC);
+- `heatmap_keyrecall.png`, `abstencao_vs_fato.png`, `box_por_metodo.png`, `delta_base_vs_melhor.png`.
+
+### Ressalvas honestas
+- A referência é o professor **com RAG**, o que dá leve vantagem no ROUGE-L aos modelos do braço B (mesma
+  distribuição de fraseado). Por isso o **key_recall** (presença de entidades) é o sinal mais neutro — e nele B
+  também vence. Não há circularidade: a referência é factual e o aluno responde **sem** RAG.
+- Resíduo de **token espúrio** ao final de algumas respostas dos alunos pequenos (sem disciplina de EOS); não afeta
+  o conteúdo, mas é honesto registrar.
+- O ROUGE-L absoluto é modesto (o aluno reformula); o ganho de conhecimento concentra-se no **key_recall**, coerente
+  com o objetivo de destilação.
 
 ---
 
-## 6. Extensão executada — Plano B: cross-família black-box (job SLURM 506/507)
+## 7. Extensão — white-box × black-box (cross-família)
 
-Para contrastar **white-box (mesma família, com logits)** × **black-box (cross-família, só texto)**, destilamos um
-professor de **outra família** para o aluno Qwen via SFT no texto (sequence-KD), reusando as mesmas perguntas e o
-mesmo contexto B. Professor: **`HuggingFaceH4/zephyr-7b-beta`** (arquitetura Mistral, tokenizer ≠ Qwen; escolhido
-por ser *ungated* — Gemma-2 e Llama-3.1 são *gated* e bloquearam o download). Re-tokenização da resposta no espaço
-Qwen (`gerar_dataset_crossfamilia.py`); SFT método `ce`.
+Para contrastar **white-box (mesma família, com logits)** × **black-box (outra família, só texto)**, destilamos um
+professor de **família diferente** para o aluno Qwen via SFT no texto, reusando as mesmas perguntas e o contexto B.
+Professor: `zephyr-7b-beta` (arquitetura Mistral, tokenizador ≠ Qwen) — escolhido por ser de **download livre**
+(outros modelos equivalentes eram de acesso restrito). A resposta foi re-tokenizada no espaço do Qwen.
 
 | Arm (aluno 1.5B) | Professor | Sinal | ROUGE-L | key_recall |
 |---|---|---|---|---|
@@ -230,31 +270,24 @@ Qwen (`gerar_dataset_crossfamilia.py`); SFT método `ce`.
 | mesma-família white-box (kl) | Qwen-14B | logits | 0,350 | 0,689 |
 | **🏆 mesma-família white-box (comb)** | Qwen-14B | logits | **0,363** | **0,717** |
 
-(0.5B: `bxf_0.5b_ce` RG 0,348 / KR 0,523 vs `d_0.5b_B_ce` RG 0,203 / KR 0,667.)
-
-**Conclusões:** (1) **todos transferem** — a cross-família também (KR 0,49 ≫ base 0,37); (2) **logits/mesma-família
-entregam o máximo** (combined 0,717) — é o porquê de Gemma 2 / Llama 4 destilarem dentro da família; (3) a
-cross-família **perde recall**, mas em parte é **artefato** da referência ser o Qwen-14B (vantagem de casa em KR para
-a mesma família); (4) curiosamente a cross-família tem **ROUGE-L maior** que a mesma-família black-box — o zephyr é um
-instruct forte e fraseia mais perto da referência. Lição reproduzida da literatura: **white-box mesma-família quando
-possível; black-box cross-família (estilo DeepSeek-R1) só quando forçado** (vocabulário/tokenizador distintos).
-
-Scripts: `gerar_dataset_crossfamilia.py`, `run_crossfamilia.sbatch`, `run_avaliar_bxf.sbatch`. Resultados em
-`resultados/avaliacao_bxf.json`. *(Ressalva de tamanho: zephyr-7B < Qwen-14B → a comparação cross-família carrega
-também o efeito de tamanho do professor.)*
+**Conclusões:** (1) **todos transferem** — inclusive a cross-família (KR 0,49 ≫ base 0,37); (2) **logits + mesma
+família entregam o teto** (0,717) — é exatamente por isso que a indústria destila dentro da família; (3) a
+cross-família **perde recall**, em parte porque a referência é o próprio Qwen (vantagem de casa); (4) curiosamente a
+cross-família tem **ROUGE-L maior** que a mesma-família black-box, porque o zephyr é um *instruct* forte e fraseia
+mais perto da referência. *Ressalva de tamanho:* o zephyr-7B é menor que o Qwen-14B, então a comparação cross-família
+carrega também o efeito do tamanho do professor.
 
 ---
 
-## 7. Extensão executada — Plano A: especialização temática por destilação de RACIOCÍNIO (jobs 508/509)
+## 8. Extensão — especialização temática (Copa do Mundo 2026)
 
-Tema **Copa do Mundo 2026** (posterior ao corte de conhecimento → o aluno-base não sabe). **Destilação de raciocínio**
-(receita DeepSeek-R1): professor **`DeepSeek-R1-Distill-Qwen-14B`** — modelo *thinking* (`<think>`) sobre Qwen2.5-14B,
-**mesma família** dos alunos → habilita **white-box logit KD** (reusa o pipeline campeão da Q4). Corpus factual
-**ungated** coletado e indexado (`coletar_corpus_futebol.py` → 241 passagens: openfootball 2026 [grupos, jogos com
-placares/gols, elencos, estádios, seleções] + **classificação derivada dos jogos** + Wikipedia) — **sem Transfermarkt**.
-200 perguntas (self-instruct) × braços A (zerada) × B (RAG sobre o corpus), top-50 logits; destilação `combined`.
+Tema escolhido de propósito **posterior ao corte de conhecimento** dos modelos → o aluno-base **não sabe nada**, o
+que torna a transferência inequívoca. Professor: um modelo de **raciocínio** (que pensa em voz alta com `<think>`),
+ainda **da mesma família** dos alunos → permite reusar o pipeline white-box campeão. Coletamos um corpus factual de
+fontes abertas (calendário e resultados oficiais, classificações derivadas dos jogos, enciclopédia), indexamos com o
+mesmo `build_index.py` e geramos 200 perguntas nos braços A (zerada) e B (RAG).
 
-Benchmark held-out de **41 fatos** (Copa 2026), referência = Qwen2.5-14B-Instruct + RAG (concisa):
+Benchmark held-out de **41 fatos** da Copa 2026 (referência = professor + RAG):
 
 | Modelo | ROUGE-L | key_recall |
 |---|---|---|
@@ -264,67 +297,47 @@ Benchmark held-out de **41 fatos** (Copa 2026), referência = Qwen2.5-14B-Instru
 | fut_1.5b A (zerada) | 0,131 | 0,617 |
 | **🏆 fut_1.5b B (RAG)** | 0,209 | **0,640** |
 
-**Conclusões:** (1) a destilação de raciocínio **transfere o conhecimento da Copa 2026** — todos os alunos KR
-~0,62–0,64 vs base 0,476; (2) **professor com RAG (B) > zerada (A)** — para tema **pós-corte**, o professor "zerado"
-raciocina mas **não tem os fatos** (alucina); só o RAG os fornece (nítido no ROUGE-L: 0.5b_B 0,403 vs 0.5b_A 0,178);
-(3) **valida a estratégia de dados** (corpus ungated openfootball+Wikipedia, esforço moderado, sem scraping de
-Transfermarkt); (4) `key_recall` é a métrica robusta (os alunos emitem `<think>`, ruidificando o ROUGE-L vs a
-referência concisa). *Ressalvas:* base KR 0,476 não é 0 (perguntas tocam conhecimento geral de futebol + eco do
-enunciado); fatos voláteis (snapshot). Scripts: `coletar_corpus_futebol.py`, `run_futebol.sbatch`,
-`run_avaliar_futebol.sbatch`. Resultados em `resultados/avaliacao_futebol.json`.
-
-**Automação:** a cadeia 508→509 rodou via **dependência SLURM `afterok`** (geração+destilação → avaliação),
-mantendo as GPUs utilizadas sem intervenção manual.
+**Conclusões:** (1) a destilação **transfere o conhecimento da Copa 2026** — todos os alunos vão a KR ~0,62–0,64 vs
+base 0,476; aqui há **recordação factual real**, o **contraponto** que prova que a fraca recordação do núcleo (§6)
+era efeito das 71% de referências "Não consta", e não um limite da técnica; (2) **professor com RAG (B) > zerada
+(A)** — para tema pós-corte, o professor "zerado" raciocina mas **não tem os fatos** (alucina); só o RAG os fornece;
+(3) o **key_recall** é a métrica robusta aqui (os alunos emitem `<think>`, o que ruidifica o ROUGE-L contra a
+referência concisa). *Ressalvas:* a base não chega a 0 (as perguntas tocam conhecimento geral de futebol); os fatos
+são um *snapshot* (conhecimento volátil). A cadeia de jobs rodou encadeada automaticamente (geração+destilação →
+avaliação).
 
 ---
 
-## 8. Extensão executada — DAPT-then-distill: o modelo da Q1 como ALUNO (jobs 510/511)
+## 9. Extensão — o DAPT da Q1 como ponto de partida do aluno
 
-Pergunta: o **priming de domínio** ajuda a destilação? Em vez de destilar para o `Qwen2.5-1.5B` base, destilamos
-para o **DAPT da Q1** (`checkpoints_fullft_unificado_v2/best`, Full FT v2, −11,3% PPL no domínio) — currículo
-"DAPT → destilação". Reusa `dataset_B`/`logits_B` (white-box) e `dataset_Bxf` (cross-família); só troca `--student`.
-(O modelo da Q1 NÃO é usado como professor — fraco demais; ver §2.5. Aqui ele é o *ponto de partida do aluno*.)
+Pergunta: **um aluno já adaptado ao domínio (o DAPT da Q1) destila melhor?** Em vez de partir do `Qwen2.5-1.5B`
+base, partimos do modelo Full FT da Q1 (−11,3% de PPL no domínio) — um currículo "DAPT → destilação". (O modelo da
+Q1 **não** vira professor — fraco demais; ele é só o *ponto de partida do aluno*.)
 
 | Aluno 1.5B | Início | Sinal | ROUGE-L | key_recall |
 |---|---|---|---|---|
 | base (referência) | base | — | 0,185 | 0,366 |
 | DAPT cru (Q1) | DAPT | — | 0,187 | 0,368 |
-| white-box, aluno **base** (`d_1.5b_B_combined`) | base | logits | **0,363** | **0,717** |
-| white-box, aluno **DAPT** (`dapt_B_combined`) | DAPT | logits | 0,326 | 0,694 |
-| cross-família, aluno **base** (`bxf_1.5b_ce`) | base | texto | 0,270 | 0,490 |
-| cross-família, aluno **DAPT** (`dapt_Bxf_ce`) | DAPT | texto | 0,262 | 0,478 |
+| white-box, aluno **base** | base | logits | **0,363** | **0,717** |
+| white-box, aluno **DAPT** | DAPT | logits | 0,326 | 0,694 |
+| cross-família, aluno **base** | base | texto | 0,270 | 0,490 |
+| cross-família, aluno **DAPT** | DAPT | texto | 0,262 | 0,478 |
 
-**Resultado (negativo, mas informativo): o priming de domínio NÃO ajudou** — DAPT-then-distill ficou ~0,02–0,04
-**pior** que base-then-distill em ambos os regimes. Razões: (1) o DAPT cru já é ~igual ao base no benchmark factual
-(KR 0,368 vs 0,366) — ele melhorou a *PPL/modelagem de linguagem* (Q1), não o Q&A factual; (2) a destilação
-**reescreve** o aluno na direção do professor, lavando o head-start. Isso reforça (por outro ângulo) a §2.5: o
-modelo fraco da Q1 (DAPT em OCR ruidoso) não agrega nem como ponto de partida — o base pristino é tão bom ou melhor.
-*Ressalva:* um DAPT mais limpo (Teresina v3, −12,9%) poderia render diferente; com este (corpus ruidoso), não há ganho.
-Scripts: `run_dapt_distill.sbatch`, `run_avaliar_dapt.sbatch` (rodaram no **gpunode02** — `gpu:1` sem fixar nó,
-aproveitando a 2ª GPU). Resultados em `resultados/avaliacao_dapt.json`.
+**Resultado negativo, mas informativo: o priming de domínio NÃO ajudou** — ficou ~0,02–0,04 *pior* que partir do
+base. Razões: (1) o DAPT cru já é ~igual ao base no benchmark **factual** (KR 0,368 vs 0,366) — ele melhorou a
+*modelagem de linguagem* (a meta da Q1), não o Q&A; (2) a destilação **reescreve** o aluno na direção do professor,
+"lavando" o head-start. Testamos também com o DAPT mais **limpo** (Teresina, −12,9%) e o resultado foi até pior
+(KR 0,662). **Conclusão reforçada: o priming de domínio antes da destilação não agrega, independentemente da
+qualidade do corpus.**
 
 ---
 
-## 9. DAPT-then-distill **Teresina** — a ressalva da §8 refutada (jobs 518/519)
+## 10. Extensão — logit KD entre tokenizadores diferentes (a fronteira)
 
-Testando se o DAPT mais **limpo** (Teresina v3, −12,9%) muda o resultado negativo da §8.
-
-| Aluno 1.5B (white-box · B · combinado) | ROUGE-L | key_recall |
-|---|---|---|
-| aluno base pristino (`d_1.5b_B_combined`) | 0,363 | **0,717** |
-| DAPT unificado (§8) | 0,326 | 0,694 |
-| DAPT Teresina | 0,295 | 0,662 |
-
-**Ressalva REFUTADA:** o DAPT limpo também não ajuda — é até pior (0,662 < 0,694 < base 0,717). Conclusão reforçada:
-**priming de domínio antes da destilação não agrega, independente da qualidade do corpus** (a destilação lava o
-head-start). daptT cru ≈ base (KR 0,368). Scripts: `run_dapt_distill.sbatch` (env `DAPT_PATH/DAPT_TAG`).
-`resultados/avaliacao_daptT.json`.
-
-## 10. ULD cross-tokenizer — a fronteira (job 520)
-
-Logit KD **entre famílias** (zephyr→Qwen) sem vocabulário comum (Boizard et al., arXiv:2402.12030): por posição,
-ordenam-se as distribuições de probabilidade do aluno e do professor e minimiza-se a L1 entre os vetores ordenados
-(invariante ao vocabulário). Método `uldcomb` = α·CE + (1−α)·ULD (`destilar.py`).
+E se quiséssemos os benefícios do white-box **mesmo entre famílias** (tokenizadores distintos)? Há uma técnica de
+fronteira que torna isso possível por **aproximação**: em cada posição, ordenam-se as distribuições de probabilidade
+do aluno e do professor e minimiza-se a diferença entre os **vetores ordenados** — uma medida que não depende de os
+dois usarem o mesmo vocabulário. Aplicamos uma versão combinada com a CE (`uldcomb`).
 
 | Aluno (cross-família) | método | ROUGE-L | key_recall |
 |---|---|---|---|
@@ -334,20 +347,65 @@ ordenam-se as distribuições de probabilidade do aluno e do professor e minimiz
 | bxf_1.5b | black-box (CE) | 0,270 | 0,490 |
 | **uld_1.5b** | uldcomb | **0,330** | 0,504 |
 
-**Positivo modesto:** o ULD aproximado **bate o black-box puro** em ambos os tamanhos (o sinal de distribuição
-cross-tokenizer agrega sobre o SFT no texto). **Ressalvas honestas:** é `uldcomb` (inclui CE); o alinhamento posicional
-entre tokenizadores distintos é **aproximado** (truncagem; o ULD fiel usa transporte ótimo). Ainda **abaixo do
-white-box mesma-família** (0,717) — destilar dentro da família com logits segue o teto. Scripts: `run_uld.sbatch`,
-`gerar_dataset_crossfamilia.py` (+logprobs), `destilar.py` (método `uld`/`uldcomb`). `resultados/avaliacao_uld.json`.
+**Positivo modesto:** a aproximação **bate o black-box puro** nos dois tamanhos — o sinal de distribuição
+cross-tokenizer agrega algo sobre o SFT no texto. **Ressalvas:** inclui a CE na perda; o alinhamento posicional entre
+tokenizadores distintos é **aproximado**; e ainda fica **abaixo do white-box mesma-família** (0,717) — destilar
+dentro da família com logits continua sendo o teto.
 
 ---
 
-## Referências (além de Raschka)
-- Gemma 2: *Improving Open Language Models at a Practical Size* — arXiv:2408.00118
-- DeepSeek-R1 (distill report) — deepseek-ai/DeepSeek-R1-Distill-* (HF)
-- Boizard et al., *Universal Logit Distillation Loss* (cross-tokenizer) — arXiv:2402.12030
-- *Approximate Likelihood Matching* (cross-tokenizer) — arXiv:2503.20083
-- *Multi-Level Optimal Transport for Cross-Tokenizer KD* — arXiv:2412.14528
-- MiniLLM (reverse-KL on-policy); GKD (on/off-policy unificado)
-- *A Survey of On-Policy Distillation for LLMs* — arXiv:2604.00626
-- Frameworks: arcee-ai/DistillKit · modelscope/easydistill · TRL `GKDTrainer`
+## 11. Como nos comparamos com a literatura
+
+A "manchete" canônica de destilação cruza **retenção** (quanto do professor o aluno mantém) com **compressão**
+(quantas vezes menor). O caso histórico é o **DistilBERT** — ~97% do BERT com −40% de parâmetros e +60% de
+velocidade. Toolkits e relatórios recentes (DistilQwen na própria família Qwen; modelos pequenos destilados de irmãos
+maiores) reportam o mesmo par de eixos. Posicionando nosso resultado nesse vocabulário:
+
+| Projeto | Família | Sinal | Compressão | Métrica principal |
+|---|---|---|---|---|
+| DistilBERT (clássico) | BERT | white-box | ~1,7× (−40%) | ~97% do professor (GLUE) |
+| DistilQwen / modelos pequenos de produção | Qwen (a nossa) | white-box / sequence | 2–14× | win-rate, tarefas (AlpacaEval/MT-Bench/IFEval) |
+| **Este trabalho (núcleo)** | Qwen | white-box (top-50 logits) | **9× (1.5B) / 28× (0.5B)** | key_recall +96% vs base; ROUGE-L 0,363 |
+
+**Leitura honesta:** as manchetes "97% do professor" usam **benchmarks públicos** (GLUE/MMLU/AlpacaEval) onde o
+professor pontua <100% — então a retenção é uma fração legítima. No nosso núcleo a referência é o **próprio professor
+com RAG** (100% por construção), então reportamos **compressão** (9×/28×, diretamente comparável) e **ganho sobre a
+base** (+96%), deixando a **retenção ancorada** para o benchmark público (§12).
+
+## 12. Retenção ancorada em benchmark público (executado — ENEM)
+
+Para um "% do professor" comparável à literatura, medimos aluno e professor no **ENEM**
+(`eduagarcia/enem_challenge`, 200 questões de múltipla escolha), por **log-verossimilhança da alternativa** (sem
+geração; `scripts/avaliar_benchmark_publico.py`). Professor 14B em 8-bit define o teto; **retenção = acc_aluno / acc_professor**.
+
+| Modelo | Acurácia ENEM | Retenção (% do professor) |
+|---|---|---|
+| professor 14B (teto) | 0,455 | 100,0% |
+| base 0.5B | 0,225 | 49,5% |
+| d 0.5B·B·combinado | 0,245 | **53,8%** |
+| base 1.5B | 0,330 | 72,5% |
+| d 1.5B·B·kl | 0,325 | 71,4% |
+| d 1.5B·B·combinado | 0,315 | 69,2% |
+
+**Leitura:** ENEM é um benchmark **geral** (nada a ver com DOM-PI/docentes), então mede o efeito colateral da
+especialização. Os destilados **preservam** a capacidade da base (0.5B até melhora +4,3 pp; 1.5B fica ~1–3 pp abaixo,
+dentro do ruído de 200 questões) — **sem esquecimento catastrófico**. Número ancorado: os alunos **1.5B retêm ~70%
+da acurácia do professor 14B sendo 9× menores** (mesma família de afirmação do "97% do BERT" do DistilBERT; aqui o
+protocolo é mais difícil — zero-shot, log-prob, sem chat template — daí o teto absoluto modesto, 45,5%).
+Gráfico: `resultados/figuras/retencao_benchmark_publico.png`. Resultados: `resultados/avaliacao_benchmark_publico.json`.
+Job: `scripts/run_benchmark_publico.sbatch`.
+
+## 13. Síntese para apresentação
+
+- **Por que 12 alunos:** desenho fatorial {tamanho} × {sinal} × {grounding} para isolar cada efeito.
+- **Por que esses modelos:** professor forte e **da mesma família** (habilita logits); alunos base pequenos (0.5B
+  dá o contraste máximo); o modelo fraco da Q1 não serve de professor (transferiria erros).
+- **Resultado-âncora:** houve transferência inequívoca; melhor receita **1.5B · B · combinado, +96%**; **logits >
+  texto** e **professor com RAG > zerada**.
+- **Honestidade:** no núcleo, o ganho foi sobretudo **confiabilidade** (parar de alucinar/degenerar); a extensão da
+  Copa 2026 demonstra **recordação factual real**; e o RAG na inferência (Q5) segue necessário para precisão.
+
+## Referência metodológica
+- Sebastian Raschka — *Build a Large Language Model (From Scratch)*: logits e softmax na geração de texto;
+  cross-entropy e perplexidade como objetivo e métrica de treino; convenção de alinhamento de rótulos (base da
+  correção do bug de duplo deslocamento reaproveitada aqui na máscara de perda do aluno).

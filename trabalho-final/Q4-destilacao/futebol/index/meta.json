@@ -1,0 +1,11 @@
+{
+  "model": "intfloat/multilingual-e5-base",
+  "dim": 768,
+  "n_docs": 241,
+  "n_chunks": 241,
+  "chunk_chars": 1600,
+  "overlap": 200,
+  "corpus": [
+    "trabalho-final/Q4-destilacao/futebol/corpus_futebol.jsonl"
+  ]
+}
