@@ -19,7 +19,7 @@ from pathlib import Path
 def inline(t: str) -> str:
     t = html.escape(t, quote=False)
     t = re.sub(r"`([^`]+)`", r"<code>\1</code>", t)
-    t = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", t)
+    t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)   # negrito (permite *itálico* interno)
     t = re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)", r"<em>\1</em>", t)
     t = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', t)
     return t
@@ -69,19 +69,31 @@ def md_to_html(md: str, fig_dir: Path) -> str:
         if ln.lstrip().startswith(">"):
             close_list(); buf=[]
             while i < len(lines) and lines[i].lstrip().startswith(">"):
-                buf.append(inline(re.sub(r"^\s*>\s?","",lines[i]))); i+=1
-            out.append("<blockquote>"+"<br>".join(buf)+"</blockquote>"); continue
-        # listas
-        m = re.match(r"^\s*([-*])\s+(.*)$", ln)
+                buf.append(re.sub(r"^\s*>\s?","",lines[i])); i+=1
+            # linhas '>' consecutivas = soft-wrap (junta com espaço); linha '>' vazia = quebra.
+            paras, cur = [], []
+            for s in buf:
+                if s.strip(): cur.append(s.strip())
+                else:
+                    if cur: paras.append(" ".join(cur)); cur=[]
+            if cur: paras.append(" ".join(cur))
+            out.append("<blockquote>"+"<br><br>".join(inline(p) for p in paras)+"</blockquote>"); continue
+        # listas (com captura de continuações soft-wrap do item)
+        m = re.match(r"^\s*([-*])\s+(.*)$", ln) or re.match(r"^\s*(\d+)\.\s+(.*)$", ln)
         if m:
-            if list_open!="ul": close_list(); out.append("<ul>"); list_open="ul"
-            out.append(f"<li>{inline(m.group(2))}</li>"); i+=1; continue
-        m = re.match(r"^\s*\d+\.\s+(.*)$", ln)
-        if m:
-            if list_open!="ol": close_list(); out.append("<ol>"); list_open="ol"
-            out.append(f"<li>{inline(m.group(1))}</li>"); i+=1; continue
-        # parágrafo
-        close_list(); out.append(f"<p>{inline(ln)}</p>"); i+=1
+            kind = "ul" if ln.lstrip()[0] in "-*" else "ol"
+            if list_open != kind: close_list(); out.append(f"<{kind}>"); list_open = kind
+            item = [m.group(2)]; i += 1
+            while i < len(lines) and re.match(r"^\s+\S", lines[i]) and not re.match(
+                    r"^\s*([-*]\s|\d+\.\s|[#>|]|!\[|---)", lines[i]):
+                item.append(lines[i].strip()); i += 1
+            out.append(f"<li>{inline(' '.join(item))}</li>"); continue
+        # parágrafo — junta linhas plenas consecutivas (soft-wrap) num só <p>
+        close_list(); buf = [ln]; i += 1
+        while i < len(lines) and lines[i].strip() and not re.match(
+                r"^\s*([#>|*-]|\d+\.|!\[|---)", lines[i]):
+            buf.append(lines[i]); i += 1
+        out.append(f"<p>{inline(' '.join(s.strip() for s in buf))}</p>")
     close_list()
     return "\n".join(out)
 
