@@ -245,10 +245,50 @@ def fig_retencao(nome="avaliacao_benchmark_publico.json"):
     print("escrito:", out)
 
 
+# ─────────────── 5. Especialistas por tópico (benchmark v2, contexto-ouro) ───────────────
+def fig_topicos():
+    arqs = {"DOM-PI": "avaliacao_dompi.json", "docentesDC": "avaliacao_docentes.json"}
+    if not all(os.path.exists(os.path.join(RES, a)) for a in arqs.values()):
+        print("pulado (sem avaliacao_dompi/docentes)")
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.6), sharey=True)
+    for ax, (topico, arq) in zip(axes, arqs.items()):
+        d = json.load(open(os.path.join(RES, arq), encoding="utf-8"))
+        bl = {m["rotulo"]: m["geral"]["key_recall"] for m in d["modelos"]}
+        tag = "dompi" if topico == "DOM-PI" else "docentes"
+        sizes = [("0.5B", "base_05", f"esp_{tag}_0.5b"), ("1.5B", "base_15", f"esp_{tag}_1.5b")]
+        x = np.arange(len(sizes)); w = 0.36
+        base = [bl[b] for _, b, _ in sizes]
+        esp = [bl[e] for _, _, e in sizes]
+        b1 = ax.bar(x - w / 2, base, w, color=MUTED, edgecolor="#333", label="base")
+        b2 = ax.bar(x + w / 2, esp, w, color=OK, edgecolor="#333", label="especialista")
+        for bars in (b1, b2):
+            for r in bars:
+                ax.annotate(f"{r.get_height():.3f}", (r.get_x() + r.get_width() / 2, r.get_height() + 0.006),
+                            ha="center", fontsize=8.5)
+        for i in range(len(sizes)):
+            g = (esp[i] - base[i]) / base[i] * 100
+            ax.annotate(f"+{g:.0f}%", (x[i], max(base[i], esp[i]) + 0.045),
+                        ha="center", fontsize=10, color=OK, fontweight="bold")
+        ax.set_xticks(x); ax.set_xticklabels([s for s, _, _ in sizes])
+        ax.set_title(topico, color=ACCENT, fontweight="bold", fontsize=11)
+        ax.set_ylim(0, 0.70)
+        if ax is axes[0]:
+            ax.set_ylabel("key_recall (acerto factual)"); ax.legend(fontsize=8, loc="upper left")
+    fig.suptitle("Especialistas por tópico (benchmark factual, contexto-ouro)",
+                 color=ACCENT, fontweight="bold", fontsize=12.5)
+    fig.tight_layout()
+    out = os.path.join(FIG, "topicos_especialistas.png")
+    fig.savefig(out, bbox_inches="tight")
+    plt.close(fig)
+    print("escrito:", out)
+
+
 if __name__ == "__main__":
     d = load("avaliacao.json")
     fig_barras(d)
     fig_compressao(d)
     fig_antes_depois(d)
     fig_retencao()
+    fig_topicos()
     print("OK — figuras em", FIG)

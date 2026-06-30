@@ -237,6 +237,26 @@ por subconjunto:
 aluno (1) deixa de **alucinar** valores falsos e (2) deixa de **degenerar** em loops de token-lixo, adotando o "não
 sei fundamentado" do professor. **Implicação:** o RAG na inferência (Q5) segue **necessário** para precisão factual.
 
+### ⭐ Atualização v2 — benchmark factual + especialistas por tópico
+
+**Problema do v1:** 71% das referências eram abstenções ("Não consta") — a pergunta vinha de uma passagem, mas a
+referência usava contexto RAG sobre todo o índice; com recall ~42%, o documento-fonte muitas vezes não era recuperado
+e o professor se abstinha. **Correção (v2):** usar a **passagem-fonte como contexto-ouro** da referência → **0 "Não
+consta"** (99% factual). E **seccionar a destilação por tópico** (DOM-PI × docentesDC): um especialista por domínio,
+avaliado no seu próprio benchmark. Scripts: `--gold-context` em `gerar_dataset_destilacao.py`/`gerar_benchmark.py`;
+orquestrador `run_q4_topicos.sbatch`. Artefatos em `dados_v2/`, `modelos/esp_*`, `resultados/avaliacao_{dompi,docentes}.json`.
+
+| Tópico | Modelo | ROUGE-L | key_recall | Δ KR |
+|---|---|---|---|---|
+| DOM-PI | base 0.5B → esp 0.5B | 0,373 → 0,520 | 0,515 → 0,526 | +2% |
+| DOM-PI | base 1.5B → **esp 1.5B** | 0,231 → 0,380 | 0,488 → **0,537** | +10% |
+| docentesDC | base 0.5B → esp 0.5B | 0,218 → 0,308 | 0,352 → 0,412 | +17% |
+| docentesDC | base 1.5B → **esp 1.5B** | 0,171 → 0,221 | 0,328 → **0,404** | +23% |
+
+**Leitura:** com referências factuais, o ganho aparece **nas duas métricas** (não só ROUGE-L, mas key_recall até
++23%) — a destilação transfere **fatos reais**, não a disciplina de abstenção que dominava o headline do v1. Ganho
+maior em docentesDC (domínio menos conhecido pela base). Gráfico: `resultados/figuras/topicos_especialistas.png`.
+
 ### Visualizações (`resultados/figuras/`)
 Os resultados em gráfico (gerados por `scripts/graficos_destilacao.py` e `scripts/comparativo_por_questao.py`):
 - `barras_keyrecall_config.png` — key_recall das 14 configs, base como linha de referência (todas as 12 sobem);

@@ -63,9 +63,13 @@ ANSWER_SYSTEM_GOLD = (
 )
 
 _ABSTENCAO_RE = re.compile(
-    r"n[ãa]o\s+(consta|h[áa]\b|foi poss|menciona|informa|aborda|cont[eé]m|especifica|apresenta|"
-    r"est[áa]\s+(no|presente|dispon))|sem\s+informa|n[ãa]o\s+(é|e)\s+poss[íi]vel|"
-    r"nenhuma\s+informa|n[ãa]o\s+(há|ha)\s+(informa|men)",
+    # "não <verbo> <especificado/informado/mencionado/...>" — pega as formas verbais ("não foi
+    # especificado", "não está disponível") além das diretas ("não consta", "não especifica").
+    r"n[ãa]o\s+(foi|est[áa]|é|s[ãa]o|h[áa]|consta|cont[eé]m|pode[m]?|aparece[m]?|se\s+aplica)\s*"
+    r"(poss\w*|especific\w*|inform\w*|mencion\w*|detalh\w*|dispon\w*|present\w*|descrit\w*|"
+    r"explicit\w*|encontrad\w*|determin\w*|abord\w*|apresent\w*|fornec\w*|clar\w*)"
+    r"|n[ãa]o\s+(consta|especifica|menciona|informa|aborda|h[áa]\b)"
+    r"|sem\s+informa\w*|nenhuma\s+informa\w*",
     re.IGNORECASE,
 )
 
