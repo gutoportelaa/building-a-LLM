@@ -278,6 +278,13 @@
 <li><strong>A lição transversal (Q1↔Q3):</strong> <em>PEFT é conservador — ruim para reescrever a distribuição no pré-treino bruto, ideal para o ajuste fino supervisionado.</em></li>
 </ol>
 <hr>
-<h2>10. Reprodução</h2>
-<p>Cadeia no cluster (SLURM, L4): <code>run_q2_gerar_1gpu</code> → <code>run_q2q3_treino_aval</code> → <code>run_q2q3_juiz_1gpu</code>, depois <code>consolidar_q2q3.py</code> + <code>graficos_q2q3.py</code>. Scripts em <code>trabalho-final/Q2-pos-treino-sft/scripts/</code>; métricas brutas (com geração completa) em <code>resultados/*.json</code>; runbook em <code>scripts/README_RUNBOOK.md</code>. Relatórios por questão: <a href="relatorio_q2.html">Q2</a> · <a href="../Q3-pos-treino-lora-qlora/relatorio_q3.html">Q3</a>.</p>
+<h2>10. Material para apresentação (disponível localmente)</h2>
+<ul>
+<li><strong>Benchmark:</strong> <code>benchmark/dc_bench.jsonl</code> (30 questões).</li>
+<li><strong>Respostas verbatim de todos os modelos:</strong> <a href="painel_respostas_q2q3.html"><code>painel_respostas_q2q3.html</code></a> — as 30 questões × {base, full, LoRA, QLoRA} × {1.5B, 0.5B}, com nota do juiz e F1.</li>
+<li><strong>Modelos pós-treinados</strong> (6) em <code>modelos/sft_&lt;metodo&gt;_&lt;tam&gt;/</code> — prontos para inferência local.</li>
+<li><strong>Demonstração ao vivo:</strong> <code>scripts/inferencia_local.py</code> roda qualquer modelo na sua máquina: ``<code> python scripts/inferencia_local.py --model modelos/sft_full_1.5b --bench python scripts/inferencia_local.py --model modelos/sft_qlora_1.5b --prompt "O que é uma pilha?" </code>``</li>
+</ul>
+<h2>11. Reprodução (cluster)</h2>
+<p>Cadeia SLURM (L4): <code>run_q2_gerar_1gpu</code> → <code>run_q2q3_treino_aval</code> → <code>run_q2q3_juiz_1gpu</code>, depois <code>consolidar_q2q3.py</code> + <code>graficos_q2q3.py</code> + <code>painel_respostas.py</code>. Scripts em <code>scripts/</code>; métricas brutas (com geração completa) em <code>resultados/*.json</code>; runbook em <code>scripts/README_RUNBOOK.md</code>. Relatórios por questão: <a href="relatorio_q2.html">Q2</a> · <a href="../Q3-pos-treino-lora-qlora/relatorio_q3.html">Q3</a>.</p>
 </main></body></html>

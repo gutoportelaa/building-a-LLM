@@ -222,10 +222,22 @@ Illusion of Equivalence"* (intruder dimensions, arXiv:2410.21228).
 
 ---
 
-## 10. Reprodução
+## 10. Material para apresentação (disponível localmente)
 
-Cadeia no cluster (SLURM, L4): `run_q2_gerar_1gpu` → `run_q2q3_treino_aval` → `run_q2q3_juiz_1gpu`,
-depois `consolidar_q2q3.py` + `graficos_q2q3.py`. Scripts em
-`trabalho-final/Q2-pos-treino-sft/scripts/`; métricas brutas (com geração completa) em
-`resultados/*.json`; runbook em `scripts/README_RUNBOOK.md`. Relatórios por questão:
+- **Benchmark:** `benchmark/dc_bench.jsonl` (30 questões).
+- **Respostas verbatim de todos os modelos:** [`painel_respostas_q2q3.html`](painel_respostas_q2q3.html)
+  — as 30 questões × {base, full, LoRA, QLoRA} × {1.5B, 0.5B}, com nota do juiz e F1.
+- **Modelos pós-treinados** (6) em `modelos/sft_<metodo>_<tam>/` — prontos para inferência local.
+- **Demonstração ao vivo:** `scripts/inferencia_local.py` roda qualquer modelo na sua máquina:
+  ```
+  python scripts/inferencia_local.py --model modelos/sft_full_1.5b --bench
+  python scripts/inferencia_local.py --model modelos/sft_qlora_1.5b --prompt "O que é uma pilha?"
+  ```
+
+## 11. Reprodução (cluster)
+
+Cadeia SLURM (L4): `run_q2_gerar_1gpu` → `run_q2q3_treino_aval` → `run_q2q3_juiz_1gpu`,
+depois `consolidar_q2q3.py` + `graficos_q2q3.py` + `painel_respostas.py`. Scripts em
+`scripts/`; métricas brutas (com geração completa) em `resultados/*.json`; runbook em
+`scripts/README_RUNBOOK.md`. Relatórios por questão:
 [Q2](relatorio_q2.html) · [Q3](../Q3-pos-treino-lora-qlora/relatorio_q3.html).
