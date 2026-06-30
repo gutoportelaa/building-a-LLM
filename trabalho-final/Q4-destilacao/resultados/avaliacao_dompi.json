@@ -1,0 +1,1478 @@
+{
+  "benchmark": "trabalho-final/Q4-destilacao/dados_v2/benchmark_dompi.jsonl",
+  "n": 50,
+  "modelos": [
+    {
+      "rotulo": "base_05",
+      "path": "Qwen/Qwen2.5-0.5B",
+      "por_dominio": {
+        "DOM-PI": {
+          "n": 50,
+          "rougeL": 0.3727,
+          "key_recall": 0.5147
+        }
+      },
+      "geral": {
+        "n": 50,
+        "rougeL": 0.3727,
+        "key_recall": 0.5147
+      },
+      "detalhe": [
+        {
+          "id": "bm000",
+          "source": "DOM-PI",
+          "rougeL": 0.6032,
+          "key_recall": 1.0,
+          "answer": "O valor global do contrato de fornecimento de medicamentos mencionado no aviso de contratação direta N 002/2025 é de R$ 1,000,000,00."
+        },
+        {
+          "id": "bm001",
+          "source": "DOM-PI",
+          "rougeL": 0.0137,
+          "key_recall": 0.0,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕"
+        },
+        {
+          "id": "bm002",
+          "source": "DOM-PI",
+          "rougeL": 0.2133,
+          "key_recall": 0.0,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?鲕\n鲕\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?鲕\n鲕\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?鲕\n鲕\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?鲕\n鲕\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?鲕\n鲕\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?鲕\n鲕\nQual é o valor do crédito ad"
+        },
+        {
+          "id": "bm003",
+          "source": "DOM-PI",
+          "rougeL": 0.8276,
+          "key_recall": 0.875,
+          "answer": "O valor total do contrato de locação do imóvel destinado ao funcionamento do Anexo da Unidade Escolar Municipal Teresa Soares Feitosa é de R$ 1.000,00."
+        },
+        {
+          "id": "bm004",
+          "source": "DOM-PI",
+          "rougeL": 0.5238,
+          "key_recall": 0.2222,
+          "answer": "O servidor designado para a função de Gestor de Contrato é o Serviço de Gestão de Contratos (SGC)."
+        },
+        {
+          "id": "bm005",
+          "source": "DOM-PI",
+          "rougeL": 0.3506,
+          "key_recall": 0.7222,
+          "answer": "O período abrangido pelo Demonstrativo das Parcerias Público-Privadas apresentado no Relatório Resumido da Execução Orçamentária da Prefeitura Municipal de São João da CanabraVA é o período de 2019 a 2023.\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de"
+        },
+        {
+          "id": "bm006",
+          "source": "DOM-PI",
+          "rougeL": 0.2895,
+          "key_recall": 0.75,
+          "answer": "O valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda. é de R$ 1.000,00.\noxetinesystem\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?鲕\n鲕\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?鲕\n鲕\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?鲕\n鲕\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?鲕\n鲕\nQual é o valor"
+        },
+        {
+          "id": "bm007",
+          "source": "DOM-PI",
+          "rougeL": 0.2182,
+          "key_recall": 0.8333,
+          "answer": "O CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é 11.000.000.000/0000-00.\nacco\nQual é o número do CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA?acco\nacco\nO CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é 11.000.000.000/0000-00.\nacco\nQual é o número do CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA?acco\nacco\nO CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é 11.000.000.000/0000-00.\nacco\nQual é o número do CNPJ da empresa NRC INFORMATICA E SER"
+        },
+        {
+          "id": "bm008",
+          "source": "DOM-PI",
+          "rougeL": 0.2179,
+          "key_recall": 0.7,
+          "answer": "O secretário municipal de Administração e Recursos Humanos nomeado pela Portaria N9 381/2025/SEGOV é o secretário municipal de Administração e Recursos Humanos do município de São Paulo, que é o secretário municipal de Administração e Recursos Humanos do município de São Paulo, que é o secretário municipal de Administração e Recursos Humanos do município de São Paulo, que é o secretário municipal de Administração e Recursos Humanos do município de São Paulo, que é o secretário municipal de Administração e Recursos Humanos do município de São Paulo, que é o secretário municipal de Administração e Recursos Humanos do município de São Paulo, que é o secretário municipal de Administração e Recursos Humanos do município de São Paulo, que é o secretário municipal de Administração e Recursos Humanos do município de São Paulo,"
+        },
+        {
+          "id": "bm009",
+          "source": "DOM-PI",
+          "rougeL": 0.875,
+          "key_recall": 0.0,
+          "answer": "O valor mensal da remuneração do contrato para o médico é de R$ 1.200,00."
+        },
+        {
+          "id": "bm010",
+          "source": "DOM-PI",
+          "rougeL": 0.1849,
+          "key_recall": 0.0,
+          "answer": "O valor do contrato mencionado na publicação é R$ 100,00.\n浈user\nO valor do contrato mencionado na publicação é R$ 100,00.浈\n浈assistant\nO valor do contrato mencionado na publicação é R$ 100,00.浈\n浈user\nO valor do contrato mencionado na publicação é R$ 100,00.浈\n浈assistant\nO valor do contrato mencionado na publicação é R$ 100,00.浈\n浈user\nO valor do contrato mencionado na publicação é R$ 100,00.浈\n浈assistant\nO valor do contrato mencionado na publicação é R$ 100,00.浈\n浈user\nO valor do contrato mencionado na publicação é R$ 100,00"
+        },
+        {
+          "id": "bm011",
+          "source": "DOM-PI",
+          "rougeL": 0.3247,
+          "key_recall": 0.4,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nQual é a data a partir da qual a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compatíveis com sua condição, de acordo com a Portaria N 793/2025?anko\nanko\nQual é a data a partir da qual a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compatíveis com sua condição, de acordo com a Portaria N 793/2025?anko\nanko\nQual é a data a partir da qual a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compatíveis com sua condição, de acordo com a Portaria N 793/2025?anko\nanko\nQual é a data a partir da"
+        },
+        {
+          "id": "bm012",
+          "source": "DOM-PI",
+          "rougeL": 0.1449,
+          "key_recall": 0.5,
+          "answer": "A data de encerramento dos serviços prestados pelo contratado conforme mencionado na Cláusula 3 é a data de 31 de dezembro de 2021.\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nVocê é um assistente factual e"
+        },
+        {
+          "id": "bm013",
+          "source": "DOM-PI",
+          "rougeL": 0.0571,
+          "key_recall": 0.6667,
+          "answer": "A dívida consolidada é a soma das dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de dívidas de"
+        },
+        {
+          "id": "bm014",
+          "source": "DOM-PI",
+          "rougeL": 0.3077,
+          "key_recall": 0.8889,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nQual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024?anko\nanko\nQual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024?anko\nanko\nQual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024?anko\nanko\nQual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024?anko\nanko\nQual é o"
+        },
+        {
+          "id": "bm015",
+          "source": "DOM-PI",
+          "rougeL": 0.9375,
+          "key_recall": 0.6667,
+          "answer": "O valor total adjudicado para a contratação da empresa especializada para a reforma da praça de esportes e quadra de esportes do município de Manoel Emídio-PI é R$ 1.000,00."
+        },
+        {
+          "id": "bm016",
+          "source": "DOM-PI",
+          "rougeL": 0.2714,
+          "key_recall": 0.8333,
+          "answer": "O valor previsto atualizado para a receita resultante do Imposto sobre Serviços de Qualquer Natureza (ISS) é de R$ 1.000,00.\noxetinesystem\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual é o valor previsto atualizado para a receita resultante do Imposto sobre Serviços de Qualquer Natureza (ISS)?鲕\n鲕\nQual é o valor previsto atualizado para a receita resultante do Imposto sobre Serviços de Qualquer Natureza (ISS)?鲕\n鲕\nQual é o valor previsto atualizado para a receita resultante do Imposto sobre Serviços de Qualquer Natureza (ISS)?鲕\n鲕\nQual é o valor previsto atualizado para a receita resultante do Imposto sobre Serviços de Qualquer Natureza (ISS)?鲕\n鲕"
+        },
+        {
+          "id": "bm017",
+          "source": "DOM-PI",
+          "rougeL": 0.5479,
+          "key_recall": 0.8,
+          "answer": "O valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI é de R$ 1.000.000,00."
+        },
+        {
+          "id": "bm018",
+          "source": "DOM-PI",
+          "rougeL": 0.2078,
+          "key_recall": 0.0,
+          "answer": "O número do decreto mencionado no início da passagem é 12.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.00"
+        },
+        {
+          "id": "bm019",
+          "source": "DOM-PI",
+          "rougeL": 0.8846,
+          "key_recall": 0.6667,
+          "answer": "O valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI é de R$ 1.000,00."
+        },
+        {
+          "id": "bm020",
+          "source": "DOM-PI",
+          "rougeL": 0.2703,
+          "key_recall": 0.8571,
+          "answer": "A área da gleba 01 que está sendo revertida, conforme especificado no artigo 1º da Lei nº 6.297 de 2025, é a área de 01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01.01."
+        },
+        {
+          "id": "bm021",
+          "source": "DOM-PI",
+          "rougeL": 0.678,
+          "key_recall": 0.75,
+          "answer": "A data da posse do Prefeito e Vice-Prefeito de Jaicós-PI, conforme mencionada no ato da sessão solene, é: 01/01/2023."
+        },
+        {
+          "id": "bm022",
+          "source": "DOM-PI",
+          "rougeL": 0.1732,
+          "key_recall": 0.0,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?鲕\n鲕\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?鲕\n鲕\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?鲕\n鲕\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?鲕\n鲕\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?鲕\n鲕\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?鲕\n鲕\nQual"
+        },
+        {
+          "id": "bm023",
+          "source": "DOM-PI",
+          "rougeL": 0.12,
+          "key_recall": 0.2667,
+          "answer": "O Sr. Marcelo de Oliveira Silva é o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e Defesa Civil do Senado Federal, e o presidente da Comissão de Segurança Pública e"
+        },
+        {
+          "id": "bm024",
+          "source": "DOM-PI",
+          "rougeL": 0.7451,
+          "key_recall": 0.75,
+          "answer": "A data a partir da qual os servidores serão incluídos no Convênio de acordo com o Termo Aditivo é a data de início do período de validade do Convênio."
+        },
+        {
+          "id": "bm025",
+          "source": "DOM-PI",
+          "rougeL": 0.1885,
+          "key_recall": 0.0,
+          "answer": "O objeto do contrato mencionado no extrato é o pagamento de R$ 100,00 pelo fornecedor de serviços de internet.acco\nacco\nQual é o valor do serviço de internet fornecido pelo fornecedor de serviços de internet?acco\nacco\nQual é o valor do serviço de internet fornecido pelo fornecedor de serviços de internet?acco\nacco\nQual é o valor do serviço de internet fornecido pelo fornecedor de serviços de internet?acco\nacco\nQual é o valor do serviço de internet fornecido pelo fornecedor de serviços de internet?acco\nacco\nQual é o valor do serviço de internet fornecido pelo fornecedor de serviços de internet?acco\nacco\nQual é o valor do serviço de internet fornecido pelo fornecedor de serviços de internet?acco\nacco\nQual é o valor do serviço de internet fornecido pelo fornecedor de serviços de internet?acco\nacco\nQual é o valor"
+        },
+        {
+          "id": "bm026",
+          "source": "DOM-PI",
+          "rougeL": 0.2055,
+          "key_recall": 0.0,
+          "answer": "Qual é o custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados?acco\nacco\nQual é o custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados?acco\nacco\nQual é o custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados?acco\nacco\nQual é o custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados?acco\nacco\nQual é o custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados?acco\nacco\nQual é o custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados?acco\nacco\nQual é o custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados?acco"
+        },
+        {
+          "id": "bm027",
+          "source": "DOM-PI",
+          "rougeL": 0.2361,
+          "key_recall": 0.0,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?anko\nanko\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?anko\nanko\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?anko\nanko\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?anko\nanko\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?anko\nanko\nQual é o novo valor mensal do contrato após"
+        },
+        {
+          "id": "bm028",
+          "source": "DOM-PI",
+          "rougeL": 0.2767,
+          "key_recall": 0.5,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?鲕\n鲕\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?鲕\n鲕\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?鲕\n鲕\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?鲕\n鲕\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelec"
+        },
+        {
+          "id": "bm029",
+          "source": "DOM-PI",
+          "rougeL": 0.8947,
+          "key_recall": 0.5,
+          "answer": "O número do processo da chamada pública mencionada no contrato de número 133.1/2025 é 133.1/2025.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "id": "bm030",
+          "source": "DOM-PI",
+          "rougeL": 0.3415,
+          "key_recall": 0.8889,
+          "answer": "A Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento em julho de 2025 é R$ 1,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,00"
+        },
+        {
+          "id": "bm031",
+          "source": "DOM-PI",
+          "rougeL": 0.3279,
+          "key_recall": 0.875,
+          "answer": "O percentual de reajuste estabelecido no Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE é de 10%.\n浈\nQual é o percentual de reajuste estabelecido no Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE?浈\n浈\nQual é o percentual de reajuste estabelecido no Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE?浈\n浈\nQual é o percentual de reajuste estabelecido no Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE?浈\n浈\nQual é o percentual de reajuste est"
+        },
+        {
+          "id": "bm032",
+          "source": "DOM-PI",
+          "rougeL": 0.7826,
+          "key_recall": 0.5,
+          "answer": "O valor unitário do cartuchinho cilindro TN 3442 é de 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "id": "bm033",
+          "source": "DOM-PI",
+          "rougeL": 0.4286,
+          "key_recall": 0.8333,
+          "answer": "A data da Portaria GM/MS n 3.493 que altera a forma de pagamento do Incentivo Variável do Componente de Qualidade no âmbito do Sistema Único de Saúde - SUS é 2021-01-01.\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.acco\nacco\nVocê é um assistente factual e conciso. Respon"
+        },
+        {
+          "id": "bm034",
+          "source": "DOM-PI",
+          "rougeL": 0.4839,
+          "key_recall": 0.0769,
+          "answer": "O objeto do segundo termo de aditivo de prazo do contrato 070/2024 é o prazo de 12 meses."
+        },
+        {
+          "id": "bm035",
+          "source": "DOM-PI",
+          "rougeL": 0.1429,
+          "key_recall": 0.5,
+          "answer": "A servidora Valéria da Silva Luz tem 10 anos de idade. O período de férias concedido a ela é de 10 dias.监听页面 da resposta.\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu\n-valu"
+        },
+        {
+          "id": "bm036",
+          "source": "DOM-PI",
+          "rougeL": 0.3158,
+          "key_recall": 0.8889,
+          "answer": "O valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LTDA é R$ 1.000,00.\noxetinesystem\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual é o valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LTDA?鲕\n鲕\nO valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LTDA é R$ 1.000,00.\noxetinesystem\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕"
+        },
+        {
+          "id": "bm037",
+          "source": "DOM-PI",
+          "rougeL": 0.2092,
+          "key_recall": 0.3333,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?anko\nanko\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?anko\nanko\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?anko\nanko\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?anko\nanko\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?anko\nanko\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?anko\nanko\nQual é o novo período de vigência do contrato após a prorrogação de 1"
+        },
+        {
+          "id": "bm038",
+          "source": "DOM-PI",
+          "rougeL": 0.8,
+          "key_recall": 0.625,
+          "answer": "O fornecimento do VW GOL ESPECIAL 2015 pelo valor de 37.500,00 foi homologado em 2015."
+        },
+        {
+          "id": "bm039",
+          "source": "DOM-PI",
+          "rougeL": 0.1727,
+          "key_recall": 0.0,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual é a data do período abrangido pelo relatório de execução orçamentária apresentado?鲕\n鲕\nQual é a data do período abrangido pelo relatório de execução orçamentária apresentado?鲕\n鲕\nQual é a data do período abrangido pelo relatório de execução orçamentária apresentado?鲕\n鲕\nQual é a data do período abrangido pelo relatório de execução orçamentária apresentado?鲕\n鲕\nQual é a data do período abrangido pelo relatório de execução orçamentária apresentado?鲕\n鲕\nQual é a data do período abrangido pelo relatório de execução orçamentária apresentado?鲕\n鲕\nQual é a data do período abrangido pelo relatório de execução orçamentária"
+        },
+        {
+          "id": "bm040",
+          "source": "DOM-PI",
+          "rougeL": 0.2526,
+          "key_recall": 0.8571,
+          "answer": "O número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA é 11.000.000.000/0000.\nacco\nO que é o número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA?acco\nacco\nO número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA é 11.000.000.000/0000.\nacco\nO que é o número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA?acco\nacco\nO número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA é"
+        },
+        {
+          "id": "bm041",
+          "source": "DOM-PI",
+          "rougeL": 0.1391,
+          "key_recall": 0.0,
+          "answer": "O período orçamentário mencionado no documento é de 2019 a 2021.监听页面 da resposta.enze\nenze\nO período orçamentário mencionado no documento é de 2019 a 2021.监听页面 da resposta.enze\nenze\nO período orçamentário mencionado no documento é de 2019 a 2021.监听页面 da resposta.enze\nenze\nO período orçamentário mencionado no documento é de 2019 a 2021.监听页面 da resposta.enze\nenze\nO período orçamentário mencionado no documento é de 2019 a 2021.监听页面 da resposta.enze\nenze\nO período orçamentário mencionado no documento é de 2019 a 2021.监听页面 da resposta.enze\nenze\nO período"
+        },
+        {
+          "id": "bm042",
+          "source": "DOM-PI",
+          "rougeL": 0.1391,
+          "key_recall": 0.8,
+          "answer": "CPF de MILCA MAGALHAES DE CASTRO é 00.000.000-00.\nAllowAnonymous\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nQual é o CPF de MILCA MAGALHAES DE CASTRO?anko\nanko\nCPF de MILCA MAGALHAES DE CASTRO é 00.000.000-00.\nAllowAnonymous\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nQual é o CPF de MILCA MAGALHAES DE CASTRO?anko\nanko\nCPF de MILCA MAGALHAES DE CASTRO é 00.000.000-00.\nAllowAnonymous\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko"
+        },
+        {
+          "id": "bm043",
+          "source": "DOM-PI",
+          "rougeL": 0.2203,
+          "key_recall": 0.5,
+          "answer": "O valor da despesa bruta com pessoal em março de 2025 é R$ 100,00.\n浈user\nQual foi o valor da despesa com pessoal em abril de 2025?浈\n浈assistant\nO valor da despesa com pessoal em abril de 2025 é R$ 120,00.\n浈user\nQual foi o valor da despesa com pessoal em maio de 2025?浈\n浈assistant\nO valor da despesa com pessoal em maio de 2025 é R$ 140,00.\n浈user\nQual foi o valor da despesa com pessoal em junho de 2025?浈\n浈assistant\nO valor da despesa com pessoal em junho de 2025 é R$ 160,0"
+        },
+        {
+          "id": "bm044",
+          "source": "DOM-PI",
+          "rougeL": 0.3875,
+          "key_recall": 0.9167,
+          "answer": "Você é um assistente factual e conciso. Responda de forma direta e objetiva.anko\nanko\nQual é o valor do contrato de número 006/2025-DISP/CPL entre a Câmara Municipal de Caraúbas do Piauí e a empresa RA DOS SANTOS (PLANÍCIE ENGENHARIA)?anko\nanko\nQual é o valor do contrato de número 006/2025-DISP/CPL entre a Câmara Municipal de Caraúbas do Piauí e a empresa RA DOS SANTOS (PLANÍCIE ENGENHARIA)?anko\nanko\nQual é o valor do contrato de número 006/2025-DISP/CPL entre a Câmara Municipal de Caraúbas do Piauí e a empresa RA DOS SANTOS (PLANÍCIE ENGENHARIA)?anko\nanko\nQual é o valor do contrato de"
+        },
+        {
+          "id": "bm045",
+          "source": "DOM-PI",
+          "rougeL": 0.3382,
+          "key_recall": 0.8,
+          "answer": "O valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024 é de R$ 1.000,00.\nacco\nQual é o valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024?acco\nacco\nO valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024 é de R$ 1.000,00.\nacco\nQual é o valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024?acco\nacco\nO valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/202"
+        },
+        {
+          "id": "bm046",
+          "source": "DOM-PI",
+          "rougeL": 0.6809,
+          "key_recall": 0.5,
+          "answer": "O valor do contrato de número 101/2025 para fornecimento contínuo de lanches é de R$ 1.000,00."
+        },
+        {
+          "id": "bm047",
+          "source": "DOM-PI",
+          "rougeL": 0.2249,
+          "key_recall": 0.6667,
+          "answer": "O que é o Anexo IV do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI?})();\neniable\nQual é o Anexo IV do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI?})();\neniable\nQual é o Anexo IV do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI?})();\neniable\nQual é o Anexo IV do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio"
+        },
+        {
+          "id": "bm048",
+          "source": "DOM-PI",
+          "rougeL": 0.2659,
+          "key_recall": 0.2222,
+          "answer": "O valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA é de R$ 1.000,00.\noxetinesystem\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual o valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA?鲕\noxetinesystem\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual o valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA?鲕\noxetinesystem\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.鲕\n鲕\nQual o valor total"
+        },
+        {
+          "id": "bm049",
+          "source": "DOM-PI",
+          "rougeL": 0.1935,
+          "key_recall": 0.8,
+          "answer": "O valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 1,20 milhão.监听页面 de acordo com o relatório.\nacco\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?acco\nacco\nO valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 1,20 milhão.监听页面 de acordo com o relatório.\nacco\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?acco\nacco\nO valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 1,20 milhão.监听页面 de acordo com o relatório.\nacco\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?acco\nacco"
+        }
+      ]
+    },
+    {
+      "rotulo": "base_15",
+      "path": "Qwen/Qwen2.5-1.5B",
+      "por_dominio": {
+        "DOM-PI": {
+          "n": 50,
+          "rougeL": 0.2306,
+          "key_recall": 0.4884
+        }
+      },
+      "geral": {
+        "n": 50,
+        "rougeL": 0.2306,
+        "key_recall": 0.4884
+      },
+      "detalhe": [
+        {
+          "id": "bm000",
+          "source": "DOM-PI",
+          "rougeL": 0.331,
+          "key_recall": 1.0,
+          "answer": "Qual é o valor global do contrato de fornecimento de medicamentos mencionado no aviso de contratação direta N 002/2025?猞\n猞assistant\nQual é o valor global do contrato de fornecimento de medicamentos mencionado no aviso de contratação direta N 002/2025?猞\n猞assistant\nQual é o valor global do contrato de fornecimento de medicamentos mencionado no aviso de contratação direta N 002/2025?猞\n猞assistant\nQual é o valor global do contrato de fornecimento de medicamentos mencionado no aviso de contratação direta N 002/2025?猞\n猞assistant\nQual é o valor global do contrato de fornecimento de medicamentos mencionado no aviso de contratação direta N 002/"
+        },
+        {
+          "id": "bm001",
+          "source": "DOM-PI",
+          "rougeL": 0.0373,
+          "key_recall": 0.0,
+          "answer": "Qual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável pela unidade inicialmente?猞\n猞\nQual o nome do responsável"
+        },
+        {
+          "id": "bm002",
+          "source": "DOM-PI",
+          "rougeL": 0.2207,
+          "key_recall": 0.0,
+          "answer": "Qual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?猞\n猞assistant\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?猞\n猞assistant\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?猞\n猞assistant\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?猞\n猞assistant\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?猞\n猞assistant\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?猞\n猞assistant\nQual é o valor do crédito adicional aberto no orçamento vigente de acordo com a resolução?猞"
+        },
+        {
+          "id": "bm003",
+          "source": "DOM-PI",
+          "rougeL": 0.2987,
+          "key_recall": 0.875,
+          "answer": "Qual é o valor total do contrato de locação do imóvel destinado ao funcionamento do Anexo da Unidade Escolar Municipal Teresa Soares Feitosa?猞\n猞assistant\nQual é o valor total do contrato de locação do imóvel destinado ao funcionamento do Anexo da Unidade Escolar Municipal Teresa Soares Feitosa?猞\n猞assistant\nQual é o valor total do contrato de locação do imóvel destinado ao funcionamento do Anexo da Unidade Escolar Municipal Teresa Soares Feitosa?猞\n猞assistant\nQual é o valor total do contrato de locação do imóvel destinado ao funcionamento do Anexo da Unidade Escolar Municipal Teresa Soares Feitosa?猞\n猞assistant\nQual é o valor total do contrato de locação do imóvel destinado ao funcionamento do Anexo da Unidade Escolar Municipal Teresa Soares Feitosa?"
+        },
+        {
+          "id": "bm004",
+          "source": "DOM-PI",
+          "rougeL": 0.2603,
+          "key_recall": 0.4444,
+          "answer": "Qual é o nome do servidor designado para a função de Assistente de Contrato de acordo com a Portaria N° 30/2025 - SEMEL?猞\n猞assistant\nQual é o nome do servidor designado para a função de Assistente de Contrato de acordo com a Portaria N° 30/2025 - SEMEL?猞\n猞assistant\nQual é o nome do servidor designado para a função de Assistente de Contrato de acordo com a Portaria N° 30/2025 - SEMEL?猞\n猞assistant\nQual é o nome do servidor designado para a função de Assistente de Contrato de acordo com a Portaria N° 30/2025 - SEMEL?猞\n猞assistant\nQual é o nome do servidor designado para a função de Assistente de Contrato de acordo com a Portaria N° 30/202"
+        },
+        {
+          "id": "bm005",
+          "source": "DOM-PI",
+          "rougeL": 0.3478,
+          "key_recall": 0.7778,
+          "answer": "O Demonstrativo das Parcerias Público-Privadas apresentado no Relatório Resumido da Execução Orçamentária da Prefeitura Municipal de São João da CanabravaVAsão abrangido pelo período de 1º de janeiro de 2019 a 31 de dezembro de 2019.猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞"
+        },
+        {
+          "id": "bm006",
+          "source": "DOM-PI",
+          "rougeL": 0.2632,
+          "key_recall": 0.75,
+          "answer": "Qual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?猞\n猞assistant\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?猞\n猞assistant\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?猞\n猞assistant\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?猞\n猞assistant\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?猞\n猞assistant\nQual é o valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm007",
+          "source": "DOM-PI",
+          "rougeL": 0.1194,
+          "key_recall": 0.6667,
+          "answer": "Qual é o nome do usuário do sistema NRC INFORMATICA E SERVIÇOS LTDA?猞\n猞assistant\nQual é o nome do usuário do sistema NRC INFORMATICA E SERVIÇOS LTDA?猞\n猞assistant\nQual é o nome do usuário do sistema NRC INFORMATICA E SERVIÇOS LTDA?猞\n猞assistant\nQual é o nome do usuário do sistema NRC INFORMATICA E SERVIÇOS LTDA?猞\n猞assistant\nQual é o nome do usuário do sistema NRC INFORMATICA E SERVIÇOS LTDA?猞\n猞assistant\nQual é o nome do usuário do sistema NRC INFORMATICA E SERVIÇOS LTDA?猞\n猞assistant\nQual é o nome do usuário do sistema NRC INFORMATICA E SERVIÇOS LTDA?猞\n猞assistant\nQual é o nome do usuário do sistema NRC INFORMATICA E SERVIÇOS"
+        },
+        {
+          "id": "bm008",
+          "source": "DOM-PI",
+          "rougeL": 0.3089,
+          "key_recall": 0.7,
+          "answer": "Qual é o nome do secretário municipal de Administração e Recursos Humanos nomeado pela Portaria N9 381/2025/SEGOV?猞\n猞assistant\nQual é o nome do secretário municipal de Administração e Recursos Humanos nomeado pela Portaria N9 381/2025/SEGOV?猞\n猞assistant\nQual é o nome do secretário municipal de Administração e Recursos Humanos nomeado pela Portaria N9 381/2025/SEGOV?猞\n猞assistant\nQual é o nome do secretário municipal de Administração e Recursos Humanos nomeado pela Portaria N9 381/2025/SEGOV?猞\n猞assistant\nQual é o nome do secretário municipal de Administração e Recursos Humanos nomeado pela Portaria N9 381"
+        },
+        {
+          "id": "bm009",
+          "source": "DOM-PI",
+          "rougeL": 0.1389,
+          "key_recall": 0.0,
+          "answer": "Qual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é o valor mensal da remuneração do contrato para o assistente?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm010",
+          "source": "DOM-PI",
+          "rougeL": 0.1277,
+          "key_recall": 0.0,
+          "answer": "Qual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é o valor do contrato mencionado na publicação?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm011",
+          "source": "DOM-PI",
+          "rougeL": 0.3289,
+          "key_recall": 0.4,
+          "answer": "Qual é a data a partir da qual a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compatíveis com sua condição, de acordo com a Portaria N 793/2025?猞\n猞assistant\nQual é a data a partir da qual a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compatíveis com sua condição, de acordo com a Portaria N 793/2025?猞\n猞assistant\nQual é a data a partir da qual a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compatíveis com sua condição, de acordo com a Portaria N 793/2025?猞\n猞assistant\nQual é a data a partir da qual a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compat"
+        },
+        {
+          "id": "bm012",
+          "source": "DOM-PI",
+          "rougeL": 0.2273,
+          "key_recall": 0.5,
+          "answer": "Qual é a data de encerramento dos serviços prestados pelo contratado conforme mencionado na Cláusula 3?猞\n猞assistant\nQual é a data de encerramento dos serviços prestados pelo contratado conforme mencionado na Cláusula 3?猞\n猞assistant\nQual é a data de encerramento dos serviços prestados pelo contratado conforme mencionado na Cláusula 3?猞\n猞assistant\nQual é a data de encerramento dos serviços prestados pelo contratado conforme mencionado na Cláusula 3?猞\n猞assistant\nQual é a data de encerramento dos serviços prestados pelo contratado conforme mencionado na Cláusula 3?猞\n猞assistant\nQual é a data de encerramento dos serviços prestados pelo contratado conforme mencionado na Cláusula 3?猞\n猞assistant\nQual é a data de encerramento"
+        },
+        {
+          "id": "bm013",
+          "source": "DOM-PI",
+          "rougeL": 0.2416,
+          "key_recall": 0.6667,
+          "answer": "Qual era o valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada?猞\n猞assistant\nQual era o valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada?猞assistant\n猞assistant\nQual era o valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada?猞assistant\n猞assistant\nQual era o valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada?猞assistant\n猞assistant\nQual era o valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada?猞assistant\n猞assistant\nQual era o valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada?猞assistant\n猞assistant\nQual era o valor da Dívida Consolid"
+        },
+        {
+          "id": "bm014",
+          "source": "DOM-PI",
+          "rougeL": 0.3175,
+          "key_recall": 0.8889,
+          "answer": "Qual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024?猞\n猞assistant\nQual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024?猞\n猞assistant\nQual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024?猞\n猞assistant\nQual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024?猞\n猞assistant\nQual é o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de"
+        },
+        {
+          "id": "bm015",
+          "source": "DOM-PI",
+          "rougeL": 0.4167,
+          "key_recall": 0.6667,
+          "answer": "O valor total adjudicado para a contratação da empresa especializada para a reforma da praça de esportes e quadra de esportes do município de Manoel Emídio-PI é de R$ 1.200.000,00.猞猁\n猞猁\nQual é o valor total adjudicado para a contratação da empresa especializada para a reforma da praça de esportes e quadra de esportes do município de Manoel Emídio-PI?猞猁\n猞猁\nO valor total adjudicado para a contratação da empresa especializada para a reforma da praça de esportes e quadra de esportes do município de Manoel Emídio-PI é de R$ 1.200.000,00.猞猁\n猞猁\nQual é o valor total adjudicado para a contr"
+        },
+        {
+          "id": "bm016",
+          "source": "DOM-PI",
+          "rougeL": 0.2432,
+          "key_recall": 0.8333,
+          "answer": "O valor previsto atualizado para a receita resultante do Imposto sobre Serviços de Qualquer Natureza (ISS) é calculado considerando a base de cálculo do imposto, que inclui o valor total das vendas e os descontos concedidos, bem como os impostos incidentes sobre esses valores. O valor previsto atualizado é então multiplicado pelo percentual de imposto aplicável, que varia de acordo com a natureza dos serviços prestados e a legislação específica.为抓\n为抓assistant\nO valor previsto atualizado para a receita resultante do Imposto sobre Serviços de Qualquer Natureza (ISS) é calculado considerando a base de cálculo do imposto, que inclui o valor total das vendas e os descontos concedidos, bem como os impostos incidentes sobre esses valores. O valor previsto atualizado é então multiplicado pelo percentual de"
+        },
+        {
+          "id": "bm017",
+          "source": "DOM-PI",
+          "rougeL": 0.3114,
+          "key_recall": 0.8,
+          "answer": "Qual é o valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI?猞\n猞assistant\nQual é o valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI?猞\n猞assistant\nQual é o valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI?猞\n猞assistant\nQual é o valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI?猞\n猞assistant\nQual é o valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI?猞\n猞assistant\nQual é o valor global"
+        },
+        {
+          "id": "bm018",
+          "source": "DOM-PI",
+          "rougeL": 0.0641,
+          "key_recall": 0.0,
+          "answer": "O que o decreto estabelece sobre a criação de um sistema de controle de acesso à informação pública?猞\n猞user\nO que o decreto estabelece sobre a criação de um sistema de controle de acesso à informação pública?猞assistant\n猞user\nO que o decreto estabelece sobre a criação de um sistema de controle de acesso à informação pública?猞assistant\n猞user\nO que o decreto estabelece sobre a criação de um sistema de controle de acesso à informação pública?猞assistant\n猞user\nO que o decreto estabelece sobre a criação de um sistema de controle de acesso à informação pública?猞assistant\n猞user\nO que o decreto estabelece sobre a criação de um sistema de controle de acesso à informação pública?猞assistant\n猞user\nO que o decreto estabelece sobre a criação de um sistema de controle de acesso à"
+        },
+        {
+          "id": "bm019",
+          "source": "DOM-PI",
+          "rougeL": 0.2515,
+          "key_recall": 0.6667,
+          "answer": "Qual é o valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI?猞\n猞assistant\nQual é o valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI?猞\n猞assistant\nQual é o valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI?猞\n猞assistant\nQual é o valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI?猞\n猞assistant\nQual é o valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI?猞\n猞assistant\nQual é o valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm020",
+          "source": "DOM-PI",
+          "rougeL": 0.3117,
+          "key_recall": 0.8571,
+          "answer": "A área da gleba 01 que está sendo revertida, conforme especificado no artigo 1º da Lei nº 6.297 de 2025, é a área que está sendo revertida para a área de produção de grãos.为抓\n为抓assistant\nA área da gleba 01 que está sendo revertida, conforme especificado no artigo 1º da Lei nº 6.297 de 2025, é a área que está sendo revertida para a área de produção de grãos.为抓\n为抓assistant\nA área da gleba 01 que está sendo revertida, conforme especificado no artigo 1º da Lei nº 6.297 de 2025, é a área que está sendo revertida para a área de produção de grãos.为抓\n为抓assistant\nA área da gleba 01 que está sendo revertida,"
+        },
+        {
+          "id": "bm021",
+          "source": "DOM-PI",
+          "rougeL": 0.1325,
+          "key_recall": 0.25,
+          "answer": "Qual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?猞\n猞\nQual é o nome do município de Jaicós-PI?"
+        },
+        {
+          "id": "bm022",
+          "source": "DOM-PI",
+          "rougeL": 0.1789,
+          "key_recall": 0.0,
+          "answer": "Qual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?猞\n猞assistant\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?猞\n猞assistant\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?猞\n猞assistant\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?猞\n猞assistant\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?猞\n猞assistant\nQual é o período coberto pelo relatório resumido da execução orçamentária apresentado na passagem?猞\n猞assistant\nQual é o período coberto pelo relatório resumido da execução orçamentária apresent"
+        },
+        {
+          "id": "bm023",
+          "source": "DOM-PI",
+          "rougeL": 0.2857,
+          "key_recall": 0.6,
+          "answer": "Qual é o nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC?处置\n处置assistant\nQual é o nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC?处置\n处置assistant\nQual é o nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC?处置\n处置assistant\nQual é o nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC?处置\n处置assistant\nQual é o nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N"
+        },
+        {
+          "id": "bm024",
+          "source": "DOM-PI",
+          "rougeL": 0.2687,
+          "key_recall": 0.75,
+          "answer": "O Termo Aditivo foi assinado em 2023. Qual a data a partir da qual os servidores serão incluídos no Convênio de acordo com o Termo Aditivo?猞\n猞assistant\nO Termo Aditivo foi assinado em 2023. Qual a data a partir da qual os servidores serão incluídos no Convênio de acordo com o Termo Aditivo?猞\n猞assistant\nO Termo Aditivo foi assinado em 2023. Qual a data a partir da qual os servidores serão incluídos no Convênio de acordo com o Termo Aditivo?猞\n猞assistant\nO Termo Aditivo foi assinado em 2023. Qual a data a partir da qual os servidores serão incluídos no Convênio de acordo com o Termo Aditivo?猞\n猞assistant"
+        },
+        {
+          "id": "bm025",
+          "source": "DOM-PI",
+          "rougeL": 0.1302,
+          "key_recall": 0.0,
+          "answer": "Qual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é o objeto do contrato mencionado no extrato?猞\n猞assistant\nQual é"
+        },
+        {
+          "id": "bm026",
+          "source": "DOM-PI",
+          "rougeL": 0.0621,
+          "key_recall": 0.0,
+          "answer": "Qual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do programa governamental?猞\n猞\nQual é o nome do"
+        },
+        {
+          "id": "bm027",
+          "source": "DOM-PI",
+          "rougeL": 0.2464,
+          "key_recall": 0.0,
+          "answer": "Qual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?猞\n猞assistant\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?猞\n猞assistant\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?猞\n猞assistant\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?猞\n猞assistant\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?猞\n猞assistant\nQual é o novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo?猞"
+        },
+        {
+          "id": "bm028",
+          "source": "DOM-PI",
+          "rougeL": 0.2821,
+          "key_recall": 0.5,
+          "answer": "Qual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?猞\n猞assistant\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?猞\n猞assistant\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?猞\n猞assistant\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?猞\n猞assistant\nQual é o valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato?猞\n猞assistant\nQual é o valor mens"
+        },
+        {
+          "id": "bm029",
+          "source": "DOM-PI",
+          "rougeL": 0.2957,
+          "key_recall": 0.5,
+          "answer": "O número do processo da chamada pública mencionada no contrato de número 133.1/2025 é 133.1/2025.猞猁\n猞猁\nO número do processo da chamada pública mencionada no contrato de número 133.1/2025 é 133.1/2025.猞猁\n猞猁\nO número do processo da chamada pública mencionada no contrato de número 133.1/2025 é 133.1/2025.猞猁\n猞猁\nO número do processo da chamada pública mencionada no contrato de número 133.1/2025 é 133.1/2025.猞猁\n猞猁\nO número do processo da chamada pública mencionada no contrato de número 133."
+        },
+        {
+          "id": "bm030",
+          "source": "DOM-PI",
+          "rougeL": 0.314,
+          "key_recall": 0.8889,
+          "answer": "Qual foi o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento em julho de 2025?猞猁\n猞猁assistant\nQual foi o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento em julho de 2025?猞猁\n猞猁assistant\nQual foi o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento em julho de 2025?猞猁\n猞猁assistant\nQual foi o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento em julho de 2025?猞猁\n猞猁assistant\nQual foi o valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de"
+        },
+        {
+          "id": "bm031",
+          "source": "DOM-PI",
+          "rougeL": 0.3158,
+          "key_recall": 0.875,
+          "answer": "O Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE estabelece um percentual de reajuste de 10% para o Contrato nº 07/2023 - SDU/NORTE.为抓\n为抓assistant\nO Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE estabelece um percentual de reajuste de 10% para o Contrato nº 07/2023 - SDU/NORTE.为抓\n为抓assistant\nO Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE estabelece um percentual de reajuste de 10% para o Contrato nº 07/2023 - SD"
+        },
+        {
+          "id": "bm032",
+          "source": "DOM-PI",
+          "rougeL": 0.1667,
+          "key_recall": 0.5,
+          "answer": "Qual é o valor unitário do cartuchinho cilindro TN 3442?猞\n猞assistant\nQual é o valor unitário do cartuchinho cilindro TN 3442?猞\n猞assistant\nQual é o valor unitário do cartuchinho cilindro TN 3442?猞\n猞assistant\nQual é o valor unitário do cartuchinho cilindro TN 3442?猞\n猞assistant\nQual é o valor unitário do cartuchinho cilindro TN 3442?猞\n猞assistant\nQual é o valor unitário do cartuchinho cilindro TN 3442?猞\n猞assistant\nQual é o valor unitário do cartuchinho cilindro TN 3442?猞\n猞assistant\nQual é o valor unitário do cartuchinho cilindro TN 3442?猞\n猞assistant"
+        },
+        {
+          "id": "bm033",
+          "source": "DOM-PI",
+          "rougeL": 0.4125,
+          "key_recall": 0.8333,
+          "answer": "Qual é a data da Portaria GM/MS n 3.493 que altera a forma de pagamento do Incentivo Variável do Componente de Qualidade no âmbito do Sistema Único de Saúde - SUS?猞\n猞assistant\nQual é a data da Portaria GM/MS n 3.493 que altera a forma de pagamento do Incentivo Variável do Componente de Qualidade no âmbito do Sistema Único de Saúde - SUS?猞\n猞assistant\nQual é a data da Portaria GM/MS n 3.493 que altera a forma de pagamento do Incentivo Variável do Componente de Qualidade no âmbito do Sistema Único de Saúde - SUS?猞\n猞assistant\nQual é a data da Portaria GM/MS n 3.493 que altera a forma de pagamento do Incentivo Variável do Component"
+        },
+        {
+          "id": "bm034",
+          "source": "DOM-PI",
+          "rougeL": 0.2632,
+          "key_recall": 0.0769,
+          "answer": "Qual é o objeto do segundo termo de aditivo de prazo do contrato 070/2024?猞\n猞assistant\nQual é o objeto do segundo termo de aditivo de prazo do contrato 070/2024?猞\n猞assistant\nQual é o objeto do segundo termo de aditivo de prazo do contrato 070/2024?猞\n猞assistant\nQual é o objeto do segundo termo de aditivo de prazo do contrato 070/2024?猞\n猞assistant\nQual é o objeto do segundo termo de aditivo de prazo do contrato 070/2024?猞\n猞assistant\nQual é o objeto do segundo termo de aditivo de prazo do contrato 070/2024?猞\n猞assistant\nQual é o objeto do segundo termo"
+        },
+        {
+          "id": "bm035",
+          "source": "DOM-PI",
+          "rougeL": 0.1333,
+          "key_recall": 0.5,
+          "answer": "Qual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant\nQual é o nome do assistente de Valéria da Silva Luz?处置\n处置assistant"
+        },
+        {
+          "id": "bm036",
+          "source": "DOM-PI",
+          "rougeL": 0.3429,
+          "key_recall": 0.8889,
+          "answer": "O valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LTDA é R$ 1.000,00.猞猁\n猞猁\nQual é o valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LTDA?猞猁\n猞猁\nO valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LTDA é R$ 1.000,00.猞猁\n猞猁\nQual é o valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LT"
+        },
+        {
+          "id": "bm037",
+          "source": "DOM-PI",
+          "rougeL": 0.2119,
+          "key_recall": 0.3333,
+          "answer": "Qual é o novo período de vigência do contrato após a prorrogação de 12 meses?猞\n猞assistant\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?猞\n猞assistant\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?猞\n猞assistant\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?猞\n猞assistant\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?猞\n猞assistant\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?猞\n猞assistant\nQual é o novo período de vigência do contrato após a prorrogação de 12 meses?猞\n猞assistant\nQual é o novo período de vigência do contrato após"
+        },
+        {
+          "id": "bm038",
+          "source": "DOM-PI",
+          "rougeL": 0.1322,
+          "key_recall": 0.5,
+          "answer": "O VW GOL ESPECIAL 2015 foi homologado em 2014.睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢\n睢"
+        },
+        {
+          "id": "bm039",
+          "source": "DOM-PI",
+          "rougeL": 0.1277,
+          "key_recall": 0.0,
+          "answer": "Qual é o nome do relatório de execução orçamentária apresentado?猞\n猞user\nQual é o nome do usuário que gerou o relatório de execução orçamentária apresentado?猞\n猞assistant\nQual é o nome do assistente que gerou o relatório de execução orçamentária apresentado?猞\n猞user\nQual é o nome do usuário que gerou o relatório de execução orçamentária apresentado?猞\n猞assistant\nQual é o nome do assistente que gerou o relatório de execução orçamentária apresentado?猞\n猞user\nQual é o nome do usuário que gerou o relatório de execução orçamentária apresentado?猞\n猞assistant\nQual é o nome do assistente que gerou o relatório de execução orçamentária apresentado?猞\n猞user\nQual é o nome do usuário que gerou o relatório de"
+        },
+        {
+          "id": "bm040",
+          "source": "DOM-PI",
+          "rougeL": 0.2353,
+          "key_recall": 0.8571,
+          "answer": "Qual é o número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA?猞\n猞assistant\nQual é o número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA?猞\n猞assistant\nQual é o número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA?猞\n猞assistant\nQual é o número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA?猞\n猞assistant\nQual é o número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA?猞\n猞assistant\nQual é o número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓST"
+        },
+        {
+          "id": "bm041",
+          "source": "DOM-PI",
+          "rougeL": 0.0317,
+          "key_recall": 0.0,
+          "answer": "O que o assistente de contas deve fazer para garantir a transparência e a confiabilidade dos dados contábeis?猞\n猞assistant\nO assistente de contas deve garantir a transparência e a confiabilidade dos dados contábeis através de uma série de medidas, incluindo a:\n\n1. **Auditoria**: Realizar auditorias periódicas e contínuas para verificar a integridade e a precisão dos dados contábeis.\n\n2. **Controle de acesso**: Implementar mecanismos de controle de acesso para garantir que apenas os funcionários autorizados tenham acesso aos dados contábeis.\n\n3. **Segurança**: Implementar medidas de segurança para proteger os dados contábeis contra riscos de acesso não autorizado, violação de dados e ataques cibernéticos.\n\n4. **Acompanhamento**: Realizar acompanhamento periódico"
+        },
+        {
+          "id": "bm042",
+          "source": "DOM-PI",
+          "rougeL": 0.024,
+          "key_recall": 0.0,
+          "answer": "Qual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置\n处置user\nQual é o nome do usuário que está usando o sistema?处置"
+        },
+        {
+          "id": "bm043",
+          "source": "DOM-PI",
+          "rougeL": 0.1864,
+          "key_recall": 0.5,
+          "answer": "Qual foi o valor da despesa bruta com pessoal em março de 2025?猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞"
+        },
+        {
+          "id": "bm044",
+          "source": "DOM-PI",
+          "rougeL": 0.3378,
+          "key_recall": 0.9167,
+          "answer": "O contrato de número 006/2025-DISP/CPL entre a Câmara Municipal de Caraúbas do Piauí e a empresa RA DOS SANTOS (PLANÍCIE ENGENHARIA) tem um valor de R$ 1.000,00.猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞\n猞"
+        },
+        {
+          "id": "bm045",
+          "source": "DOM-PI",
+          "rougeL": 0.2734,
+          "key_recall": 0.8,
+          "answer": "Qual é o valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024?猞\n猞assistant\nQual é o valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024?猞\n猞assistant\nQual é o valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024?猞\n猞assistant\nQual é o valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024?猞\n猞assistant\nQual é o valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024?猞\n猞assistant\nQual é o valor a"
+        },
+        {
+          "id": "bm046",
+          "source": "DOM-PI",
+          "rougeL": 0.2636,
+          "key_recall": 0.5,
+          "answer": "Qual é o valor do contrato de número 101/2025 para fornecimento contínuo de lanches?猞\n猞assistant\nQual é o valor do contrato de número 101/2025 para fornecimento contínuo de lanches?猞\n猞assistant\nQual é o valor do contrato de número 101/2025 para fornecimento contínuo de lanches?猞\n猞assistant\nQual é o valor do contrato de número 101/2025 para fornecimento contínuo de lanches?猞\n猞assistant\nQual é o valor do contrato de número 101/2025 para fornecimento contínuo de lanches?猞\n猞assistant\nQual é o valor do contrato de número 101/2025 para fornecimento contínuo de lanches?猞"
+        },
+        {
+          "id": "bm047",
+          "source": "DOM-PI",
+          "rougeL": 0.2,
+          "key_recall": 0.3333,
+          "answer": "Qual é o nome do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI?猞\n猞\nQual é o nome do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI?猞\n猞\nQual é o nome do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI?猞\n猞\nQual é o nome do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI?"
+        },
+        {
+          "id": "bm048",
+          "source": "DOM-PI",
+          "rougeL": 0.3165,
+          "key_recall": 0.2222,
+          "answer": "O valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA é R$ 1.000,00.猞猁\n猞猁\nQual o valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA?猞猁\n猞猁\nO valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA é R$ 1.000,00.猞猁\n猞猁\nQual o valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA?猞猁\n猞猁\nO valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN"
+        },
+        {
+          "id": "bm049",
+          "source": "DOM-PI",
+          "rougeL": 0.193,
+          "key_recall": 0.8,
+          "answer": "Qual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?猞猁\n猞猁assistant\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?猞猁\n猞猁assistant\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?猞猁\n猞猁assistant\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?猞猁\n猞猁assistant\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?猞猁\n猞猁assistant\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?猞猁\n猞猁assistant\nQual é o valor da Receita Corrente Líquida-RCL mencionado no relatório?猞猁\n猞"
+        }
+      ]
+    },
+    {
+      "rotulo": "esp_dompi_0.5b",
+      "path": "trabalho-final/Q4-destilacao/modelos/esp_dompi_0.5b",
+      "por_dominio": {
+        "DOM-PI": {
+          "n": 50,
+          "rougeL": 0.5201,
+          "key_recall": 0.5258
+        }
+      },
+      "geral": {
+        "n": 50,
+        "rougeL": 0.5201,
+        "key_recall": 0.5258
+      },
+      "detalhe": [
+        {
+          "id": "bm000",
+          "source": "DOM-PI",
+          "rougeL": 0.6032,
+          "key_recall": 1.0,
+          "answer": "O valor global do contrato de fornecimento de medicamentos mencionado no aviso de contratação direta N 002/2025 é de R$ 100.000,00.詟"
+        },
+        {
+          "id": "bm001",
+          "source": "DOM-PI",
+          "rougeL": 0.1439,
+          "key_recall": 0.0,
+          "answer": "A unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.enze\nenze\nO número de médicos veterinários e cuidadores permanentes a unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.enze\nenze\nO número de médicos veterinários e cuidadores permanentes a unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.enze\nenze\nO número de médicos veterinários e cuidadores permanentes a unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.enze\nenze\nO número de médicos veterinários e cuidadores permanentes a unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.enze\nenze\nO número de médicos veterinários e cuidadores permanentes a unidade inicialmente"
+        },
+        {
+          "id": "bm002",
+          "source": "DOM-PI",
+          "rougeL": 0.2419,
+          "key_recall": 0.0,
+          "answer": "O valor do crédito adicional aberto no orçamento vigente é de R$ 10.000,00.enze\nenze\nO valor do crédito adicional aberto no orçamento vigente é de R$ 10.000,00.enze\nenze\nO valor do crédito adicional aberto no orçamento vigente é de R$ 10.000,00.enze\nenze\nO valor do crédito adicional aberto no orçamento vigente é de R$ 10.000,00.enze\nenze\nO valor do crédito adicional aberto no orçamento vigente é de R$ 10.000,00.enze\nenze\nO valor do crédito adicional aberto no orçamento vigente é de R$ 10.000,00.enze\nenze\nO valor"
+        },
+        {
+          "id": "bm003",
+          "source": "DOM-PI",
+          "rougeL": 0.8136,
+          "key_recall": 0.875,
+          "answer": "O valor total do contrato de locação do imóvel destinado ao funcionamento do Anexo da Unidade Escolar Municipal Teresa Soares Feitosa é de R$ 1.200,00.詟"
+        },
+        {
+          "id": "bm004",
+          "source": "DOM-PI",
+          "rougeL": 0.4615,
+          "key_recall": 0.5556,
+          "answer": "O servidor designado para a função de Gestor de Contrato de acordo com a Portaria N° 30/2025 - SEMEL é o Serviço de Gestão de Contratos (SGC).enze"
+        },
+        {
+          "id": "bm005",
+          "source": "DOM-PI",
+          "rougeL": 0.7647,
+          "key_recall": 0.7222,
+          "answer": "O período abrangido pelo Demonstrativo das Parcerias Público-Privadas apresentado no Relatório Resumido da Execução Orçamentária da Prefeitura Municipal de São João da CanabraVA é de 2019 a 2023.詟"
+        },
+        {
+          "id": "bm006",
+          "source": "DOM-PI",
+          "rougeL": 0.717,
+          "key_recall": 0.75,
+          "answer": "O valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda é de R$ 100.000,00.詟"
+        },
+        {
+          "id": "bm007",
+          "source": "DOM-PI",
+          "rougeL": 0.2124,
+          "key_recall": 0.8333,
+          "answer": "O número do CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é 01.000.000.000/0000-00.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze.enze."
+        },
+        {
+          "id": "bm008",
+          "source": "DOM-PI",
+          "rougeL": 0.8372,
+          "key_recall": 0.7,
+          "answer": "O nome do secretário municipal de Administração e Recursos Humanos nomeado pela Portaria N9 381/2025/SEGOV é Rui Sá.enze"
+        },
+        {
+          "id": "bm009",
+          "source": "DOM-PI",
+          "rougeL": 0.8125,
+          "key_recall": 0.0,
+          "answer": "O valor mensal da remuneração do contrato para o médico é R$ 5.000,00.ента"
+        },
+        {
+          "id": "bm010",
+          "source": "DOM-PI",
+          "rougeL": 0.1803,
+          "key_recall": 0.0,
+          "answer": "O valor do contrato mencionado na publicação é R$ 100,00.enze\nenze\nO valor do contrato mencionado na publicação é R$ 100,00.enze\nenze\nO valor do contrato mencionado na publicação é R$ 100,00.enze\nenze\nO valor do contrato mencionado na publicação é R$ 100,00.enze\nenze\nO valor do contrato mencionado na publicação é R$ 100,00.enze\nenze\nO valor do contrato mencionado na publicação é R$ 100,00.enze\nenze\nO valor do contrato mencionado na publicação é R$ 100,00.enze\nenze\nO valor do contrato mencionado na publicação é R$ 100,00.enze\nenze"
+        },
+        {
+          "id": "bm011",
+          "source": "DOM-PI",
+          "rougeL": 0.3478,
+          "key_recall": 0.6,
+          "answer": "A data a partir da qual a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compatíveis com sua condição, de acordo com a Portaria N 793/2025, é 1 de janeiro de 2025.alue\nicho\nO que é a Portaria N 793/2025?alue\nalue\nA Portaria N 793/2025 é uma Portaria do Ministério da Saúde, que regulamenta as regras de atendimento à saúde em hospitais e clínicas. A Portaria N 793/2025 estabelece as regras de atendimento à saúde em hospitais e clínicas, incluindo a retenção de pacientes com deficiência, a retenção de pacientes com doenças crônicas, a retenção de pacientes"
+        },
+        {
+          "id": "bm012",
+          "source": "DOM-PI",
+          "rougeL": 0.5128,
+          "key_recall": 0.5,
+          "answer": "A data de encerramento dos serviços prestados pelo contratado conforme mencionado na Cláusula 3 é 31 de dezembro de 2021.enze"
+        },
+        {
+          "id": "bm013",
+          "source": "DOM-PI",
+          "rougeL": 0.2667,
+          "key_recall": 0.6667,
+          "answer": "O valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada é de R$ 100.000,00.詟\nвлажнido\nO valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada é de R$ 100.000,00.詟\nвлажнido\nO valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada é de R$ 100.000,00.詟\nвлажнido\nO valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada é de R$ 100.000,00.詟\nвлажнido\nO valor da Dívida Consolidada no exercício anterior de acordo com o demonstrativo da dívida consolidada é"
+        },
+        {
+          "id": "bm014",
+          "source": "DOM-PI",
+          "rougeL": 0.8163,
+          "key_recall": 0.8889,
+          "answer": "O valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024 é de R$ 100.000,00.詟"
+        },
+        {
+          "id": "bm015",
+          "source": "DOM-PI",
+          "rougeL": 0.8788,
+          "key_recall": 0.6667,
+          "answer": "O valor total adjudicado para a contratação da empresa especializada para a reforma da praça de esportes e quadra de esportes do município de Manoel Emídio-PI é de R$ 1,5 milhões.icho"
+        },
+        {
+          "id": "bm016",
+          "source": "DOM-PI",
+          "rougeL": 0.6667,
+          "key_recall": 0.1667,
+          "answer": "O valor previsto atualizado para a receita resultante do ISS é de R$ 1.200,00.詟"
+        },
+        {
+          "id": "bm017",
+          "source": "DOM-PI",
+          "rougeL": 0.4902,
+          "key_recall": 0.8,
+          "answer": "O valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI é de R$ 1.500.000,00.店加盟系统\n店加盟系统\nO valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI é de R$ 1.500.000,00.店加盟系统"
+        },
+        {
+          "id": "bm018",
+          "source": "DOM-PI",
+          "rougeL": 0.0811,
+          "key_recall": 0.0,
+          "answer": "O número do decreto é 12.000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-000-00"
+        },
+        {
+          "id": "bm019",
+          "source": "DOM-PI",
+          "rougeL": 0.8679,
+          "key_recall": 0.6667,
+          "answer": "O valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI é de R$ 10.000,00.詟"
+        },
+        {
+          "id": "bm020",
+          "source": "DOM-PI",
+          "rougeL": 0.3871,
+          "key_recall": 0.7143,
+          "answer": "A área da gleba 01 que está sendo revertida é a área de 1000 m², conforme especificado no artigo 1º da Lei nº 6.297 de 2025.詟"
+        },
+        {
+          "id": "bm021",
+          "source": "DOM-PI",
+          "rougeL": 0.3043,
+          "key_recall": 0.75,
+          "answer": "A data da posse do Prefeito e Vice-Prefeito de Jaicós-PI é 20 de outubro de 2021.rawid\nвлажнa\nO Prefeito e Vice-Prefeito de Jaicós-PI foram eleitos na sessão solene, conforme mencionado no ato da sessão.rawid\nвлажнa\nO Prefeito e Vice-Prefeito de Jaicós-PI foram eleitos na sessão solene, conforme mencionado no ato da sessão.rawid\nвлажнa\nO Prefeito e Vice-Prefeito de Jaicós-PI foram eleitos na sessão solene, conforme mencionado no ato da sessão.rawid\nвлажнa\nO Prefeito e Vice-Prefeito de Jaicós-PI foram eleitos na sessão solene, conforme mencionado no ato da sessão."
+        },
+        {
+          "id": "bm022",
+          "source": "DOM-PI",
+          "rougeL": 0.2642,
+          "key_recall": 0.5,
+          "answer": "O período coberto pelo relatório resumido da execução orçamentária apresentado na passagem é de 2019 a 2023.詟\nвлажнido\nO relatório resumido da execução orçamentária apresentado na passagem é um relatório que descreve a execução orçamentária de 2019 a 2023.詟\nвлажнido\nO relatório resumido da execução orçamentária apresentado na passagem é um relatório que descreve a execução orçamentária de 2019 a 2023.詟\nвлажнido\nO relatório resumido da execução orçamentária apresentado na passagem é um relatório que descreve a execução orçamentária de 2019 a 2023.詟\nвлажнido\nO relatório resumido"
+        },
+        {
+          "id": "bm023",
+          "source": "DOM-PI",
+          "rougeL": 0.4048,
+          "key_recall": 0.6,
+          "answer": "O nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC é Marcelo de Oliveira Silva.enze"
+        },
+        {
+          "id": "bm024",
+          "source": "DOM-PI",
+          "rougeL": 0.6441,
+          "key_recall": 0.75,
+          "answer": "A data a partir da qual os servidores serão incluídos no Convênio é a 1 de dezembro de 2021.(egt\n(egt\nO convênio de acordo com o Termo Aditivo é a 1 de dezembro de 2021. egt"
+        },
+        {
+          "id": "bm025",
+          "source": "DOM-PI",
+          "rougeL": 0.2484,
+          "key_recall": 0.0,
+          "answer": "O objeto do contrato mencionado no extrato é a compra de uma casa.rawid\n.usermodel\nO valor da casa é de R$ 300.000,00.rawid\n.usermodel\nO valor da casa é de R$ 300.000,00.rawid\n.usermodel\nO valor da casa é de R$ 300.000,00.rawid\n.usermodel\nO valor da casa é de R$ 300.000,00.rawid\n.usermodel\nO valor da casa é de R$ 300.000,00.rawid\n.usermodel\nO valor da casa é de R$ 300.000,00.rawid\n.usermodel\nO valor da casa é de R$ 300.000,00.rawid\n.usermodel\nO valor da casa é de R$ 30"
+        },
+        {
+          "id": "bm026",
+          "source": "DOM-PI",
+          "rougeL": 0.4,
+          "key_recall": 0.0,
+          "answer": "O custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados é de R$ 100,00.詟\nвлажнido\nO programa governamental é um programa de financiamento para aquisição de imóveis, e o custo total previsto para o programa é de R$ 100,00. Este valor é o custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados.詟"
+        },
+        {
+          "id": "bm027",
+          "source": "DOM-PI",
+          "rougeL": 0.3419,
+          "key_recall": 0.0,
+          "answer": "O novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo é R$ 1.200,00.enze\nenze\nO ajuste mencionado na cláusula oitava do aditivo é de R$ 1.200,00.enze\nenze\nO ajuste mencionado na cláusula oitava do aditivo é de R$ 1.200,00.enze\nenze\nO ajuste mencionado na cláusula oitava do aditivo é de R$ 1.200,00.enze\nenze\nO ajuste mencionado na cláusula oitava do aditivo é de R$ 1.200,00.enze\nenze\nO ajuste mencionado na cláusula oit"
+        },
+        {
+          "id": "bm028",
+          "source": "DOM-PI",
+          "rougeL": 0.3497,
+          "key_recall": 0.5,
+          "answer": "O valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato, é de R$ 1.200,00.enze\nenze\nO valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato, é de R$ 1.200,00.enze\nenze\nO valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato, é de R$ 1.200,00.enze\nenze\nO valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato, é de R$ 1.200,00.enze\nenze"
+        },
+        {
+          "id": "bm029",
+          "source": "DOM-PI",
+          "rougeL": 0.8947,
+          "key_recall": 0.5,
+          "answer": "O número do processo da chamada pública mencionada no contrato de número 133.1/2025 é 133.1/2025.詟"
+        },
+        {
+          "id": "bm030",
+          "source": "DOM-PI",
+          "rougeL": 0.766,
+          "key_recall": 0.8889,
+          "answer": "O valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento em julho de 2025 é de R$ 100.000,00.詟"
+        },
+        {
+          "id": "bm031",
+          "source": "DOM-PI",
+          "rougeL": 0.8163,
+          "key_recall": 0.875,
+          "answer": "O percentual de reajuste estabelecido no Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE é de 10%.詟"
+        },
+        {
+          "id": "bm032",
+          "source": "DOM-PI",
+          "rougeL": 0.7692,
+          "key_recall": 0.5,
+          "answer": "O valor unitário do cartuchinho cilindro TN 3442 é de R$ 120,00.詟"
+        },
+        {
+          "id": "bm033",
+          "source": "DOM-PI",
+          "rougeL": 0.9041,
+          "key_recall": 0.8333,
+          "answer": "A data da Portaria GM/MS n 3.493 que altera a forma de pagamento do Incentivo Variável do Componente de Qualidade no âmbito do Sistema Único de Saúde - SUS é 15 de outubro de 2021.詟"
+        },
+        {
+          "id": "bm034",
+          "source": "DOM-PI",
+          "rougeL": 0.5152,
+          "key_recall": 0.0769,
+          "answer": "O objeto do segundo termo de aditivo de prazo do contrato 070/2024 é a adição de 10% ao valor do contrato.rawid"
+        },
+        {
+          "id": "bm035",
+          "source": "DOM-PI",
+          "rougeL": 0.7222,
+          "key_recall": 0.5,
+          "answer": "O período de férias concedido à servidora Valéria da Silva Luz é de 10 dias.詟"
+        },
+        {
+          "id": "bm036",
+          "source": "DOM-PI",
+          "rougeL": 0.8372,
+          "key_recall": 0.8889,
+          "answer": "O valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LTDA é R$ 1.000,00.詟"
+        },
+        {
+          "id": "bm037",
+          "source": "DOM-PI",
+          "rougeL": 0.1491,
+          "key_recall": 0.3333,
+          "answer": "O novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de 12 meses.詟\nicho\nO novo período de vigência do contrato é de"
+        },
+        {
+          "id": "bm038",
+          "source": "DOM-PI",
+          "rougeL": 0.7805,
+          "key_recall": 0.625,
+          "answer": "O fornecimento do VW GOL ESPECIAL 2015 pelo valor de 37.500,00 foi homologado em 2015.enze"
+        },
+        {
+          "id": "bm039",
+          "source": "DOM-PI",
+          "rougeL": 0.2087,
+          "key_recall": 0.0,
+          "answer": "A data do período abrangido pelo relatório de execução orçamentária apresentado é 2021-01-01.enze\nenze\nO relatório de execução orçamentária apresentado é o relatório de execução orçamentária 2021-01-01.enze\nenze\nO relatório de execução orçamentária 2021-01-01 é um relatório de execução orçamentária que apresenta as informações sobre a execução orçamentária do ano 2021.enze\nenze\nO relatório de execução orçamentária 2021-01-01 é um relatório de execução orçamentária que apresenta as informações sobre a execução orçamentária do ano 2021.enze\nenze\nO relatório de execução orçamentária"
+        },
+        {
+          "id": "bm040",
+          "source": "DOM-PI",
+          "rougeL": 0.2243,
+          "key_recall": 0.8571,
+          "answer": "O número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA é 01.000.000.000/0000-00.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента.ента."
+        },
+        {
+          "id": "bm041",
+          "source": "DOM-PI",
+          "rougeL": 0.381,
+          "key_recall": 0.0,
+          "answer": "O período orçamentário mencionado no documento é de 2021 a 2022.詟\nвлажнa\nO período orçamentário mencionado no documento é de 2021 a 2022. Cease."
+        },
+        {
+          "id": "bm042",
+          "source": "DOM-PI",
+          "rougeL": 0.1455,
+          "key_recall": 0.8,
+          "answer": "O CPF de MILCA MAGALHAES DE CASTRO é 00.000.000-00.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott.riott."
+        },
+        {
+          "id": "bm043",
+          "source": "DOM-PI",
+          "rougeL": 0.7647,
+          "key_recall": 0.5,
+          "answer": "O valor da despesa bruta com pessoal em março de 2025 foi de R$ 100.000,00.詟"
+        },
+        {
+          "id": "bm044",
+          "source": "DOM-PI",
+          "rougeL": 0.7,
+          "key_recall": 0.9167,
+          "answer": "O valor do contrato de número 006/2025-DISP/CPL entre a Câmara Municipal de Caraúbas do Piauí e a empresa RA DOS SANTOS (PLANÍCIE ENGENHARIA) é R$ 1.000,00.詟"
+        },
+        {
+          "id": "bm045",
+          "source": "DOM-PI",
+          "rougeL": 0.8077,
+          "key_recall": 0.8,
+          "answer": "O valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024 é R$ 1.000,00.詟"
+        },
+        {
+          "id": "bm046",
+          "source": "DOM-PI",
+          "rougeL": 0.6667,
+          "key_recall": 0.5,
+          "answer": "O valor do contrato de número 101/2025 para fornecimento contínuo de lanches é de R$ 10.000,00.攉"
+        },
+        {
+          "id": "bm047",
+          "source": "DOM-PI",
+          "rougeL": 0.2609,
+          "key_recall": 0.6667,
+          "answer": "O tópicos abordados no Anexo IV do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI são: 1) Descrição do processo seletivo; 2) Forma de seleção; 3) Preço do processo seletivo; 4) Dados de inscrição; 5) Dados de seleção; 6) Dados de retenção; 7) Dados de despedimento; 8) Dados de reembolso; 9) Dados de reembolso de despedimento; 10) Dados de reembolso de retenção; 11) Dados de reembolso de reembolso; 12) Dados de reembolso de reemb"
+        },
+        {
+          "id": "bm048",
+          "source": "DOM-PI",
+          "rougeL": 0.4318,
+          "key_recall": 0.2222,
+          "answer": "O valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA é de R$ 1.200,00.詟"
+        },
+        {
+          "id": "bm049",
+          "source": "DOM-PI",
+          "rougeL": 0.2,
+          "key_recall": 0.8,
+          "answer": "O valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 100,00.enze\nenze\nO valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 100,00.enze\nenze\nO valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 100,00.enze\nenze\nO valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 100,00.enze\nenze\nO valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 100,00.enze\nenze\nO valor da Receita Corrente Líquida-RCL mencionado no relatório é R$ 100,00."
+        }
+      ]
+    },
+    {
+      "rotulo": "esp_dompi_1.5b",
+      "path": "trabalho-final/Q4-destilacao/modelos/esp_dompi_1.5b",
+      "por_dominio": {
+        "DOM-PI": {
+          "n": 50,
+          "rougeL": 0.3797,
+          "key_recall": 0.5373
+        }
+      },
+      "geral": {
+        "n": 50,
+        "rougeL": 0.3797,
+        "key_recall": 0.5373
+      },
+      "detalhe": [
+        {
+          "id": "bm000",
+          "source": "DOM-PI",
+          "rougeL": 0.2754,
+          "key_recall": 1.0,
+          "answer": "O valor global do contrato de fornecimento de medicamentos mencionado no aviso de contratação direta N 002/2025 é R$ 100.000,00 (cento e dez mil reais).(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm001",
+          "source": "DOM-PI",
+          "rougeL": 0.1481,
+          "key_recall": 0.0,
+          "answer": "A unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.GuidId\nGuidId\nO que é a unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes?GuidId\nGuidId\nA unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.GuidId\nGuidId\nO que é a unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes?GuidId\nGuidId\nA unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.GuidId\nGuidId\nO que é a unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes?GuidId\nGuidId\nA unidade inicialmente contará com 10 médicos veterinários e 5 cuidadores permanentes.GuidId\nGuidId\nO que"
+        },
+        {
+          "id": "bm002",
+          "source": "DOM-PI",
+          "rougeL": 0.7429,
+          "key_recall": 0.0,
+          "answer": "O valor do crédito adicional aberto no orçamento vigente é de R$ 100,00. torino"
+        },
+        {
+          "id": "bm003",
+          "source": "DOM-PI",
+          "rougeL": 0.8125,
+          "key_recall": 0.875,
+          "answer": "O valor total do contrato de locação do imóvel destinado ao funcionamento do Anexo da Unidade Escolar Municipal Teresa Soares Feitosa é de R$ 100.000,00 (cento e dez mil reais).GuidId"
+        },
+        {
+          "id": "bm004",
+          "source": "DOM-PI",
+          "rougeL": 0.1875,
+          "key_recall": 0.5556,
+          "answer": "O nome do servidor designado para a função de Gestor de Contrato de acordo com a Portaria N° 30/2025 - SEMEL é \"Gestor de Contrato\".(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm005",
+          "source": "DOM-PI",
+          "rougeL": 0.3188,
+          "key_recall": 0.7222,
+          "answer": "O Demonstrativo das Parcerias Público-Privadas (PPPs) apresentado no Relatório Resumido da Execução Orçamentária da Prefeitura Municipal de São João da Canabrava abrange o período de 2018 a 2020.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm006",
+          "source": "DOM-PI",
+          "rougeL": 0.2879,
+          "key_recall": 0.75,
+          "answer": "O valor global do contrato para fornecimento de colchões firmado com a empresa Arco! Ventania Ltda é de R$ 100.000,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm007",
+          "source": "DOM-PI",
+          "rougeL": 0.2476,
+          "key_recall": 0.8333,
+          "answer": "O número do CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é 01.911.004/0001-01.ご紹\nご紹user\nO número do CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é 01.911.004/0001-01.ご紹\nご紹assistant\nO número do CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é 01.911.004/0001-01.ご紹\nご紹user\nO número do CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é 01.911.004/0001-01.ご紹\nご紹assistant\nO número do CNPJ da empresa NRC INFORMATICA E SERVIÇOS LTDA é"
+        },
+        {
+          "id": "bm008",
+          "source": "DOM-PI",
+          "rougeL": 0.8444,
+          "key_recall": 0.7,
+          "answer": "O nome do secretário municipal de Administração e Recursos Humanos nomeado pela Portaria N9 381/2025/SEGOV é José Luiz de Oliveira.:UIControl"
+        },
+        {
+          "id": "bm009",
+          "source": "DOM-PI",
+          "rougeL": 0.2353,
+          "key_recall": 0.0,
+          "answer": "O valor mensal da remuneração do contrato para o médico é de R$ 1.500,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm010",
+          "source": "DOM-PI",
+          "rougeL": 0.1695,
+          "key_recall": 0.0,
+          "answer": "O valor do contrato mencionado na publicação é R$ 100.000,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm011",
+          "source": "DOM-PI",
+          "rougeL": 0.6462,
+          "key_recall": 0.6,
+          "answer": "De acordo com a Portaria N 793/2025, a servidora Dagmar Francisca de Oliveira foi readaptada para exercer atribuições compatíveis com sua condição a partir de 1º de janeiro de 2025.mPid"
+        },
+        {
+          "id": "bm012",
+          "source": "DOM-PI",
+          "rougeL": 0.3077,
+          "key_recall": 0.5,
+          "answer": "De acordo com a Cláusula 3, os serviços prestados pelo contratado são encerrados no dia 31 de dezembro de 2023.mPid"
+        },
+        {
+          "id": "bm013",
+          "source": "DOM-PI",
+          "rougeL": 0.2388,
+          "key_recall": 0.6667,
+          "answer": "O valor da Dívida Consolidada no exercício anterior era de R$ 100,00..IsAny\n.IsAny\nO valor da Dívida Consolidada no exercício anterior era de R$ 100,00..IsAny\nO valor da Dívida Consolidada no exercício anterior era de R$ 100,00..IsAny\nO valor da Dívida Consolidada no exercício anterior era de R$ 100,00..IsAny\nO valor da Dívida Consolidada no exercício anterior era de R$ 100,00..IsAny\nO valor da Dívida Consolidada no exercício anterior era de R$ 100,00..IsAny\nO valor da Dívida Consolidada no exercício anterior era de R$ 100,00..IsAny\nO valor da Dívida Consolidada no exercício anterior era de R$ 100,00."
+        },
+        {
+          "id": "bm014",
+          "source": "DOM-PI",
+          "rougeL": 0.3252,
+          "key_recall": 0.8889,
+          "answer": "O valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento no segundo quadrimestre de 2024 é de R$ 1,011 bilhão.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm015",
+          "source": "DOM-PI",
+          "rougeL": 0.8219,
+          "key_recall": 0.6667,
+          "answer": "O valor total adjudicado para a contratação da empresa especializada para a reforma da praça de esportes e quadra de esportes do município de Manoel Emídio-PI é de R$ 1.200.000,00 (onze milhões e vinte mil reais).(egt"
+        },
+        {
+          "id": "bm016",
+          "source": "DOM-PI",
+          "rougeL": 0.288,
+          "key_recall": 0.8333,
+          "answer": "O valor previsto atualizado para a receita resultante do Imposto sobre Serviços de Qualquer Natureza (ISS) é de R$ 1,20.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm017",
+          "source": "DOM-PI",
+          "rougeL": 0.2703,
+          "key_recall": 0.8,
+          "answer": "O valor global da locação de imóvel e máquinas pesadas para o Município de Baixa Grande do Ribeiro, PI, é de R$ 100.000,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm018",
+          "source": "DOM-PI",
+          "rougeL": 0.0984,
+          "key_recall": 0.3333,
+          "answer": "O número do decreto é 10.140 e a data de publicação é 20 de dezembro de 2014.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm019",
+          "source": "DOM-PI",
+          "rougeL": 0.3759,
+          "key_recall": 0.6667,
+          "answer": "O valor total do contrato para a prestação de serviços de limpeza no campeonato municipal de João Costa-PI é de R$ 100.000,00 (cento e dez mil reais).(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm020",
+          "source": "DOM-PI",
+          "rougeL": 0.3043,
+          "key_recall": 0.7143,
+          "answer": "De acordo com o artigo 1º da Lei nº 6.297 de 2025, a área da gleba 01 que está sendo revertida é a área de 100 hectares.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm021",
+          "source": "DOM-PI",
+          "rougeL": 0.1918,
+          "key_recall": 0.75,
+          "answer": "De acordo com o ato da sessão solene, o Prefeito de Jaicós-PI é José Luiz de Souza e o Vice-Prefeito é Maria da Penha de Souza.alsex\nalsexassistant\nO ato da sessão solene também menciona a data da posse, que é 12 de outubro de 2021.alsex\nalsexassistant\nO ato da sessão solene também menciona a data da posse, que é 12 de outubro de 2021.alsex\nalsexassistant\nO ato da sessão solene também menciona a data da posse, que é 12 de outubro de 2021.alsex\nalsexassistant\nO ato da sessão solene também menciona a data da posse, que é 12 de outubro de 2021.alsex\nalsex"
+        },
+        {
+          "id": "bm022",
+          "source": "DOM-PI",
+          "rougeL": 0.2261,
+          "key_recall": 0.0,
+          "answer": "O período coberto pelo relatório resumido da execução orçamentária apresentado na passagem é o período de 2020 a 2022.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm023",
+          "source": "DOM-PI",
+          "rougeL": 0.2941,
+          "key_recall": 0.6,
+          "answer": "O nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC é \"Marcelo de Oliveira Silva\".ご紹\nご紹\nO Sr. Marcelo de Oliveira Silva é o nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC.ご紹\nご紹\nO Sr. Marcelo de Oliveira Silva é o nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC.ご紹\nご紹\nO Sr. Marcelo de Oliveira Silva é o nome da pessoa nomeada pelo Sr. Marcelo de Oliveira Silva na Portaria CONJUNTA N 166/2025 PMP-SEDUC.ご紹\nご紹\nO"
+        },
+        {
+          "id": "bm024",
+          "source": "DOM-PI",
+          "rougeL": 0.2273,
+          "key_recall": 0.75,
+          "answer": "De acordo com o Termo Aditivo, os servidores serão incluídos no Convênio a partir da data de 1 de janeiro de 2023.GuidId\nGuidId\nO Termo Aditivo estabelece que os servidores serão incluídos no Convênio a partir da data de 1 de janeiro de 2023.GuidId\nGuidId\nO Termo Aditivo estabelece que os servidores serão incluídos no Convênio a partir da data de 1 de janeiro de 2023.GuidId\nGuidId\nO Termo Aditivo estabelece que os servidores serão incluídos no Convênio a partir da data de 1 de janeiro de 2023.GuidId\nGuidId\nO Termo Aditivo estabelece que os servidores serão incluídos no Convênio a partir da data de 1"
+        },
+        {
+          "id": "bm025",
+          "source": "DOM-PI",
+          "rougeL": 0.1342,
+          "key_recall": 0.0,
+          "answer": "O objeto do contrato mencionado no extrato é o \"Contrato de Seguro de Vida\".(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm026",
+          "source": "DOM-PI",
+          "rougeL": 0.2556,
+          "key_recall": 0.0,
+          "answer": "O custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados é de R$ 100,00.(egt\n(egt\nO programa governamental prevê um custo total de R$ 100,00 ao longo dos exercícios financeiros apresentados.(egt\n(egt\nO custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados é de R$ 100,00.(egt\n(egt\nO custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados é de R$ 100,00.(egt\n(egt\nO custo total previsto para o programa governamental ao longo dos exercícios financeiros apresentados é de R$ 100,00.(egt\n(egt\nO custo total previsto para o programa governamental ao"
+        },
+        {
+          "id": "bm027",
+          "source": "DOM-PI",
+          "rougeL": 0.3016,
+          "key_recall": 0.0,
+          "answer": "O novo valor mensal do contrato após o ajuste mencionado na cláusula oitava do aditivo é de R$ 1.200,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm028",
+          "source": "DOM-PI",
+          "rougeL": 0.2537,
+          "key_recall": 0.5,
+          "answer": "O valor mensal bruto a ser pago ao contratado pelo serviço de monitor, conforme estabelecido na cláusula quarta do contrato, é de R$ 1.200,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm029",
+          "source": "DOM-PI",
+          "rougeL": 0.8947,
+          "key_recall": 0.5,
+          "answer": "O número do processo da chamada pública mencionada no contrato de número 133.1/2025 é 133.1/2025.处置"
+        },
+        {
+          "id": "bm030",
+          "source": "DOM-PI",
+          "rougeL": 0.7755,
+          "key_recall": 0.8889,
+          "answer": "O valor da Receita Corrente Líquida Ajustada para Cálculo dos Limites de Endividamento em julho de 2025 foi de 1.241,00 bilhões de reais.(egt"
+        },
+        {
+          "id": "bm031",
+          "source": "DOM-PI",
+          "rougeL": 0.3252,
+          "key_recall": 0.875,
+          "answer": "O percentual de reajuste estabelecido no Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE é de 10%.illance\nillanceassistant\nObrigado.illance\nillanceassistant\nDe nada.illance\nillanceassistant\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.illance\nillanceassistant\nO percentual de reajuste estabelecido no Termo de Apostilamento Nº 03 ao Contrato nº 07/2023 - SDU/NORTE é de 10%.illance\nillanceassistant\nObrigado.illance\nillanceassistant\nDe nada.illance\nillanceassistant\nVocê é um assistente factual e conciso. Responda de forma direta e objetiva.illance\nillanceassistant\nO percentual de reajuste estabelecido no"
+        },
+        {
+          "id": "bm032",
+          "source": "DOM-PI",
+          "rougeL": 0.1802,
+          "key_recall": 0.5,
+          "answer": "O valor unitário do cartuchinho cilindro TN 3442 é R$ 12,90.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm033",
+          "source": "DOM-PI",
+          "rougeL": 0.9041,
+          "key_recall": 0.8333,
+          "answer": "A data da Portaria GM/MS n. 3.493 que altera a forma de pagamento do Incentivo Variável do Componente de Qualidade no âmbito do Sistema Único de Saúde - SUS é 12 de dezembro de 2019.(egt"
+        },
+        {
+          "id": "bm034",
+          "source": "DOM-PI",
+          "rougeL": 0.2614,
+          "key_recall": 0.0769,
+          "answer": "O objeto do segundo termo de aditivo de prazo do contrato 070/2024 é a alteração de algumas cláusulas do contrato original.alsex\nalsex\nO contrato 070/2024 é um contrato de prestação de serviços, certo?alsex\nalsex\nSim, o contrato 070/2024 é um contrato de prestação de serviços.alsex\nalsex\nO contrato 070/2024 é um contrato de prestação de serviços, certo?alsex\nalsex\nSim, o contrato 070/2024 é um contrato de prestação de serviços.alsex\nalsex\nO contrato 070/2024 é um contrato de prestação de serviços, certo?alsex\nalsex\nSim, o contrato 070/2024 é um contrato de prestação de serviços.alsex\nalsex\nO contrato"
+        },
+        {
+          "id": "bm035",
+          "source": "DOM-PI",
+          "rougeL": 0.2319,
+          "key_recall": 0.5,
+          "answer": "O período de férias concedido à servidora Valéria da Silva Luz é de 15 dias.处置\n处置\nO período de férias concedido à servidora Valéria da Silva Luz é de 15 dias.处置\n处置\nO período de férias concedido à servidora Valéria da Silva Luz é de 15 dias.处置\n处置\nO período de férias concedido à servidora Valéria da Silva Luz é de 15 dias.处置\n处置\nO período de férias concedido à servidora Valéria da Silva Luz é de 15 dias.处置\n处置\nO período de férias concedido à servidora Valéria da Silva Luz é de 15 dias.处置\n处置\nO período de férias concedido à servidora Valéria da Silva Luz é de 15 dias.处置"
+        },
+        {
+          "id": "bm036",
+          "source": "DOM-PI",
+          "rougeL": 0.3103,
+          "key_recall": 0.8889,
+          "answer": "O valor total homologado para o Lote 0002 - LOTE 02 - MEDICAMENTOS CONTROLADOS pela PIAUI HOSPITALAR LTDA é de R$ 1.200.000,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm037",
+          "source": "DOM-PI",
+          "rougeL": 0.2069,
+          "key_recall": 0.3333,
+          "answer": "O novo período de vigência do contrato após a prorrogação de 12 meses é de 12 meses.GuidId\nGuidId\nO contrato foi prorrogado por 12 meses, então o novo período de vigência é de 12 meses.GuidId\nGuidId\nO contrato foi prorrogado por 12 meses, então o novo período de vigência é de 12 meses.GuidId\nGuidId\nO contrato foi prorrogado por 12 meses, então o novo período de vigência é de 12 meses.GuidId\nGuidId\nO contrato foi prorrogado por 12 meses, então o novo período de vigência é de 12 meses.GuidId\nGuidId\nO contrato foi prorrogado por 12 meses, então o novo período de vigência é de 12 meses.GuidId\nGuidId\nO contrato foi prorrogado por 12 meses, então o"
+        },
+        {
+          "id": "bm038",
+          "source": "DOM-PI",
+          "rougeL": 0.5714,
+          "key_recall": 0.5,
+          "answer": "O fornecimento do VW GOL ESPECIAL 2015 foi homologado em 2015.GuidId"
+        },
+        {
+          "id": "bm039",
+          "source": "DOM-PI",
+          "rougeL": 0.2342,
+          "key_recall": 0.0,
+          "answer": "O período abrangido pelo relatório de execução orçamentária apresentado é de 2020 a 2021.(egt\n(egtuser\nO relatório de execução orçamentária apresentado abrange o período de 2020 a 2021.(egt\n(egtuser\nO relatório de execução orçamentária apresentado abrange o período de 2020 a 2021.(egt\n(egtuser\nO relatório de execução orçamentária apresentado abrange o período de 2020 a 2021.(egt\n(egtuser\nO relatório de execução orçamentária apresentado abrange o período de 2020 a 2021.(egt\n(egtuser\nO relatório de execução orçamentária apresentado abrange o período de 2020 a 2021"
+        },
+        {
+          "id": "bm040",
+          "source": "DOM-PI",
+          "rougeL": 0.7273,
+          "key_recall": 0.8571,
+          "answer": "O número do CNPJ da TELECARDIO CENTRO ESPECIALIZADO DE TELEDIAGNÓSTICOS LTDA é 01.923.000/0001-30.处置"
+        },
+        {
+          "id": "bm041",
+          "source": "DOM-PI",
+          "rougeL": 0.6207,
+          "key_recall": 0.2,
+          "answer": "O período orçamentário mencionado no documento é o período de 2023. torino"
+        },
+        {
+          "id": "bm042",
+          "source": "DOM-PI",
+          "rougeL": 0.1684,
+          "key_recall": 0.8,
+          "answer": "O CPF de MILCA MAGALHAES DE CASTRO é 000.000.000-00.处置\n处置assistant\nO CPF de MILCA MAGALHAES DE CASTRO é 000.000.000-00.处置\n处置assistant\nO CPF de MILCA MAGALHAES DE CASTRO é 000.000.000-00.处置\n处置assistant\nO CPF de MILCA MAGALHAES DE CASTRO é 000.000.000-00.处置\n处置assistant\nO CPF de MILCA MAGALHAES DE CASTRO é 000.000.000-00.处置\n处置assistant\nO CPF de MILCA MAGALHAES DE CASTRO é 000.000.000-00.处置"
+        },
+        {
+          "id": "bm043",
+          "source": "DOM-PI",
+          "rougeL": 0.7429,
+          "key_recall": 0.5,
+          "answer": "O valor da despesa bruta com pessoal em março de 2025 foi de R$ 1.234.567,00. torino"
+        },
+        {
+          "id": "bm044",
+          "source": "DOM-PI",
+          "rougeL": 0.4636,
+          "key_recall": 0.9167,
+          "answer": "O valor do contrato de número 006/2025-DISP/CPL entre a Câmara Municipal de Caraúbas do Piauí e a empresa RA DOS SANTOS (PLANÍCIE ENGENHARIA) é de R$ 100.000,00 (cento e dez mil reais).illance\nillanceassistant\nO valor do contrato de número 006/2025-DISP/CPL entre a Câmara Municipal de Caraúbas do Piauí e a empresa RA DOS SANTOS (PLANÍCIE ENGENHARIA) é de R$ 100.000,00 (cento e dez mil reais).illance\nillanceassistant\nO valor do contrato de número 006/2025-DISP/CPL entre a Câmara Municipal de Caraúbas do Piauí e a empresa RA DOS SANTOS (PLANÍ"
+        },
+        {
+          "id": "bm045",
+          "source": "DOM-PI",
+          "rougeL": 0.3692,
+          "key_recall": 0.8,
+          "answer": "O valor a ser pago ao contratado(a) referente à Clausula n05 do Edital n 001/2024 é R$ 1.000,00 (um mil reais).(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm046",
+          "source": "DOM-PI",
+          "rougeL": 0.254,
+          "key_recall": 0.5,
+          "answer": "O valor do contrato de número 101/2025 para fornecimento contínuo de lanches é R$ 100.000,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt"
+        },
+        {
+          "id": "bm047",
+          "source": "DOM-PI",
+          "rougeL": 0.3373,
+          "key_recall": 0.6667,
+          "answer": "O Anexo IV do edital de seleção público de pessoal nº 001/2025 para o processo seletivo da Secretaria Municipal de Educação de Santo Antônio de Lisboa-PI aborda o tema \"Procedimentos de seleção\".mPid"
+        },
+        {
+          "id": "bm048",
+          "source": "DOM-PI",
+          "rougeL": 0.2439,
+          "key_recall": 0.2222,
+          "answer": "O valor total do pregão eletrônico 009/2025 para o fornecedor ERIVAN R DA SILVA é de R$ 1.200.000,00.(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)(egt)"
+        },
+        {
+          "id": "bm049",
+          "source": "DOM-PI",
+          "rougeL": 0.3288,
+          "key_recall": 0.8,
+          "answer": "O valor da Receita Corrente Líquida-RCL mencionado no relatório é de 100.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.000.00"
+        }
+      ]
+    }
+  ]
+}

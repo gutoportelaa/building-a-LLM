@@ -162,7 +162,8 @@
 <div class="report-meta">
   <strong>Professor:</strong> Qwen2.5-14B-Instruct (mesma família) · <strong>Alunos:</strong> Qwen2.5-0.5B e 1.5B
   · <strong>Núcleo:</strong> 12 alunos (desenho fatorial) · <strong>Benchmark:</strong> 100 perguntas
-  · <strong>Melhor:</strong> 1.5B · braço B · combinado → <strong>+96%</strong> de key_recall sobre a base.
+  · <strong>v2 (factual, por tópico):</strong> especialistas DOM-PI/docentes com benchmark de contexto-ouro
+  (0 abstenções) — ganho de key_recall até <strong>+23%</strong> e ROUGE-L até <strong>+65%</strong> (ver §5 ⭐).
 </div>
 
 <div class="q-enunciado">
@@ -178,7 +179,8 @@
     <li><a href="#industria">Como a indústria faz destilação</a></li>
     <li><a href="#desenho">Desenho experimental — por que 12 alunos</a></li>
     <li><a href="#impl">Implementação</a></li>
-    <li><a href="#resultados">Resultados — houve transferência? (com gráficos)</a></li>
+    <li><a href="#resultados">Resultados — houve transferência? (com gráficos)</a>
+        <ul><li><a href="#v2">⭐ Atualização v2: benchmark factual + especialistas por tópico</a></li></ul></li>
     <li><a href="#wb-bb">Extensão: white-box × black-box (cross-família)</a></li>
     <li><a href="#copa">Extensão: especialização temática (Copa 2026)</a></li>
     <li><a href="#dapt">Extensão: o DAPT da Q1 como ponto de partida</a></li>
@@ -482,6 +484,45 @@ linha da base, e o ganho cresce com o tamanho do aluno e a riqueza do sinal (tex
     empataram — o ganho é amplo, não concentrado em poucas perguntas.</figcaption>
   </figure>
 </div>
+
+<h3 id="v2">⭐ Atualização — benchmark v2: factual e seccionado por tópico</h3>
+<div class="callout danger">
+  <strong>O problema do benchmark v1.</strong> A análise das respostas (acima) revelou que <strong>71% das
+  referências eram abstenções</strong> ("Não consta"). A causa: a pergunta era gerada de uma passagem, mas a
+  referência usava <strong>contexto recuperado por RAG</strong> sobre todo o índice — e, com recall ~42% (Q5), o
+  documento-fonte muitas vezes <em>não era recuperado</em>, então o professor se abstinha. O benchmark media, em boa
+  parte, <em>disciplina de abstenção</em>, não recordação factual.
+</div>
+<div class="callout success">
+  <strong>A correção (v2): contexto-ouro.</strong> Passamos a usar a <strong>própria passagem-fonte</strong> (de onde
+  a pergunta foi gerada) como contexto da referência — ela contém o fato, então o professor sempre responde com
+  conteúdo. Resultado: o novo benchmark de 100 perguntas tem <strong>0 "Não consta"</strong> (99% factual; 1/100
+  abstenção suave residual). Além disso, <strong>seccionamos a destilação por tópico</strong> (DOM-PI e docentesDC são
+  domínios distintos): treinamos um <strong>especialista por tópico</strong> e o avaliamos no benchmark do seu próprio
+  tópico.
+</div>
+
+<figure>
+  <img src="resultados/figuras/topicos_especialistas.png" alt="Especialistas por tópico">
+  <figcaption>key_recall base × especialista, por tamanho e por tópico, no benchmark v2 (factual). Cada especialista é
+  destilado e avaliado no seu próprio domínio.</figcaption>
+</figure>
+
+<table>
+  <tr><th>Tópico</th><th>Modelo</th><th class="tc">ROUGE-L</th><th class="tc">key_recall</th><th class="tc">Δ key_recall</th></tr>
+  <tr><td rowspan="2"><strong>DOM-PI</strong></td><td>base 0.5B → esp 0.5B</td><td class="num">0,373 → 0,520</td><td class="num">0,515 → 0,526</td><td class="num">+2%</td></tr>
+  <tr class="win"><td>base 1.5B → <strong>esp 1.5B</strong></td><td class="num">0,231 → 0,380</td><td class="num">0,488 → <strong>0,537</strong></td><td class="num">+10%</td></tr>
+  <tr><td rowspan="2"><strong>docentesDC</strong></td><td>base 0.5B → esp 0.5B</td><td class="num">0,218 → 0,308</td><td class="num">0,352 → 0,412</td><td class="num">+17%</td></tr>
+  <tr class="win"><td>base 1.5B → <strong>esp 1.5B</strong></td><td class="num">0,171 → 0,221</td><td class="num">0,328 → <strong>0,404</strong></td><td class="num">+23%</td></tr>
+</table>
+
+<p><strong>O que muda em relação ao v1:</strong> com referências factuais, o ganho aparece <strong>nas duas
+métricas</strong> — não só ROUGE-L (até +65% no esp DOM-PI 1.5B) mas também o <strong>key_recall</strong> (até +23%
+em docentes). Ou seja, a destilação <strong>transfere fatos reais</strong> do professor para o aluno, e não apenas a
+disciplina de abstenção que dominava o headline antigo. O ganho é mais forte em <strong>docentesDC</strong> (domínio
+que o aluno-base conhece menos) e o especialista por tópico evita a diluição de misturar dois domínios distintos num
+único aluno. Artefatos: <code>dados_v2/</code> (dataset+benchmark factuais), <code>modelos/esp_{dompi,docentes}_*</code>,
+<code>resultados/avaliacao_{dompi,docentes}.json</code>.</p>
 
 <h2 id="wb-bb">6. Extensão — white-box × black-box (cross-família)</h2>
 <p>Para contrastar <strong>white-box (mesma família, com logits)</strong> × <strong>black-box (outra família, só

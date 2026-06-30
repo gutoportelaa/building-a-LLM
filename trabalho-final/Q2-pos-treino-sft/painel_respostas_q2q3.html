@@ -1,0 +1,2482 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark e respostas Q2/Q3 | DOM-PI / UFPI-DC</title>
+<style>
+/* Estilo compartilhado dos relatórios — Trabalho Final DOM-PI/UFPI-DC.
+   Extraído do relatorio_tecnico_completo.html; usado por todos os relatórios individuais + o consolidado. */
+  :root {
+    --txt:    #1c1c1c;
+    --muted:  #5a5a5a;
+    --border: #d2d2d2;
+    --bg-alt: #f7f7f5;
+    --bg-code:#f2f2ef;
+    --accent: #1e3a5f;
+    --accent2:#2e5ca0;
+    --a-light:#e6ecf5;
+    --done-bg:#eaf5ea;
+    --done-fg:#1a4a1a;
+    --pend-bg:#fdf3e7;
+    --pend-fg:#6b3a00;
+    --bad-bg: #f5eaea;
+    --bad-fg: #5a1818;
+    --warn-bg:#fef9e7;
+    --warn-fg:#5c4500;
+    --ok-bg:  #eaf5ea;
+    --ok-fg:  #1a4a1a;
+    --mono:   "Courier New", Courier, monospace;
+    --sans:   "Helvetica Neue", Arial, sans-serif;
+    --serif:  Georgia, "Times New Roman", serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--txt);
+    background: #fff;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 48px 36px 100px;
+  }
+  a { color: var(--accent2); }
+
+  /* ── Títulos ── */
+  h1 { font-family: var(--sans); font-size: 1.9rem; font-weight: 700;
+       color: var(--accent); border-bottom: 3px solid var(--accent);
+       padding-bottom: 12px; margin-bottom: 10px; }
+  h2 { font-family: var(--sans); font-size: 1.25rem; font-weight: 700;
+       color: var(--accent); margin-top: 56px; margin-bottom: 14px;
+       border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+  h3 { font-family: var(--sans); font-size: 1.05rem; font-weight: 600;
+       color: #2a2a2a; margin-top: 30px; margin-bottom: 8px; }
+  h4 { font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+       color: var(--muted); margin-top: 20px; margin-bottom: 6px; font-style: italic; }
+  p  { margin-bottom: 13px; }
+  ul, ol { margin: 8px 0 14px 26px; }
+  li { margin-bottom: 5px; }
+  code { font-family: var(--mono); font-size: 0.82em; background: var(--bg-code);
+         padding: 1px 5px; border-radius: 3px; }
+
+  /* ── Meta do relatório ── */
+  .report-meta {
+    font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+    border-left: 4px solid var(--accent); padding: 10px 16px;
+    margin-bottom: 32px; background: var(--a-light);
+  }
+  .report-meta strong { color: var(--accent); }
+
+  /* ── Status badges ── */
+  .status {
+    display: inline-block; font-family: var(--sans); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 3px; vertical-align: middle; margin-left: 8px;
+  }
+  .done    { background: var(--done-bg); color: var(--done-fg); border: 1px solid #a0cca0; }
+  .pending { background: var(--pend-bg); color: var(--pend-fg); border: 1px solid #d0aa60; }
+  .partial { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0c050; }
+
+  /* ── Tabelas ── */
+  table { width: 100%; border-collapse: collapse; font-family: var(--sans);
+          font-size: 0.83rem; margin: 14px 0 22px; }
+  th { background: var(--accent); color: #fff; text-align: left;
+       padding: 8px 11px; font-weight: 600; }
+  td { padding: 7px 11px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg-alt); }
+  tr:hover td { background: var(--a-light); }
+  .num { font-family: var(--mono); text-align: right; }
+  .tc  { text-align: center; }
+
+  /* ── Callouts ── */
+  .callout { border-left: 4px solid var(--border); padding: 11px 16px;
+             margin: 16px 0; font-family: var(--sans); font-size: 0.88rem;
+             border-radius: 0 4px 4px 0; }
+  .callout.info    { border-color: var(--accent2); background: var(--a-light); }
+  .callout.warn    { border-color: #c08000;         background: var(--warn-bg); }
+  .callout.danger  { border-color: #a02020;         background: var(--bad-bg);  }
+  .callout.success { border-color: #20802a;         background: var(--ok-bg);   }
+  .callout strong  { font-weight: 700; }
+
+  /* ── Caixas de seção de questão ── */
+  .q-header {
+    background: var(--accent); color: #fff; padding: 14px 20px;
+    border-radius: 4px 4px 0 0; font-family: var(--sans);
+    display: flex; align-items: baseline; gap: 12px; margin-top: 56px;
+  }
+  .q-header .q-num { font-size: 1.5rem; font-weight: 900; opacity: 0.6; }
+  .q-header .q-title { font-size: 1.1rem; font-weight: 700; }
+  .q-header .q-status { margin-left: auto; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px;
+    border-radius: 3px; border: 1px solid rgba(255,255,255,0.4); }
+  .q-header .q-status.done    { background: rgba(255,255,255,0.15); }
+  .q-header .q-status.pending { background: rgba(255,180,0,0.25); color: #ffe080; border-color: #ffe080; }
+  .q-header .q-status.partial { background: rgba(255,200,0,0.2);  color: #ffd060; border-color: #ffd060; }
+  .q-body { border: 1px solid var(--border); border-top: none; padding: 24px 24px 20px;
+            margin-bottom: 8px; }
+  .q-enunciado { font-family: var(--sans); font-size: 0.83rem; color: var(--muted);
+                 background: var(--bg-alt); border-left: 3px solid var(--border);
+                 padding: 10px 14px; margin-bottom: 20px; border-radius: 0 3px 3px 0; }
+
+  /* ── Inferências ── */
+  .inf-block { border: 1px solid var(--border); border-radius: 4px; margin: 18px 0 24px; overflow: hidden; }
+  .inf-prompt { background: var(--bg-code); border-bottom: 1px solid var(--border);
+                padding: 10px 14px; font-family: var(--mono); font-size: 0.8rem;
+                color: #222; white-space: pre-wrap; }
+  .inf-prompt .lbl { font-family: var(--sans); font-size: 0.68rem; font-weight: 700;
+                     text-transform: uppercase; letter-spacing: 0.07em;
+                     color: var(--muted); display: block; margin-bottom: 4px; }
+  .inf-resp { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .inf-resp:last-child { border-bottom: none; }
+  .model-tag { display: inline-block; font-family: var(--sans); font-size: 0.68rem;
+               font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+               padding: 2px 8px; border-radius: 3px; margin-bottom: 6px; }
+  .tag-base   { background: var(--a-light);   color: var(--accent2); }
+  .tag-lora   { background: var(--bad-bg);    color: var(--bad-fg); }
+  .tag-qlora  { background: var(--warn-bg);   color: var(--warn-fg); }
+  .tag-fullft { background: var(--ok-bg);     color: var(--ok-fg); }
+  .inf-txt { font-family: var(--mono); font-size: 0.78rem; color: #222;
+             white-space: pre-wrap; line-height: 1.55; margin-top: 4px; }
+  .inf-note { font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+              border-top: 1px solid var(--border); padding: 8px 14px;
+              background: var(--bg-alt); font-style: italic; }
+
+  /* ── Cards de estratégia ── */
+  .strat-card { border: 1px solid var(--border); border-radius: 4px;
+                padding: 16px 18px; margin: 14px 0; }
+  .strat-card .sc-title { font-family: var(--sans); font-size: 0.95rem;
+                          font-weight: 700; color: var(--accent2); margin-bottom: 6px; }
+  .strat-card .sc-meta { font-family: var(--sans); font-size: 0.75rem;
+                         color: var(--muted); margin-bottom: 10px; display: flex;
+                         flex-wrap: wrap; gap: 10px; }
+  .badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem;
+           font-weight: 600; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+  .b-high   { background: var(--ok-bg);   color: var(--ok-fg);   border: 1px solid #90c090; }
+  .b-med    { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0a040; }
+  .b-low    { background: var(--bg-alt);  color: var(--muted);   border: 1px solid var(--border); }
+  .b-info   { background: var(--a-light); color: var(--accent2); border: 1px solid #90b0d8; }
+
+  /* ── Mapa de experimentos ── */
+  .exp-map { border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; margin: 20px 0; }
+  .exp-map-row { display: grid; grid-template-columns: 140px 1fr 1fr;
+                 border-bottom: 1px solid var(--border); }
+  .exp-map-row:last-child { border-bottom: none; }
+  .exp-map-cell { padding: 9px 14px; font-family: var(--sans); font-size: 0.82rem; }
+  .exp-map-hdr  { background: var(--accent); color: #fff; font-weight: 700; }
+  .exp-map-row:nth-child(even) .exp-map-cell:not(.exp-map-hdr) { background: var(--bg-alt); }
+  .arrow { color: var(--muted); font-size: 1.1em; }
+
+  /* ── Índice ── */
+  .toc { font-family: var(--sans); font-size: 0.85rem; background: var(--bg-alt);
+         border: 1px solid var(--border); border-radius: 4px; padding: 18px 22px;
+         margin: 24px 0 40px; }
+  .toc h3 { margin-top: 0; margin-bottom: 10px; font-size: 0.9rem; color: var(--accent); }
+  .toc ol { margin-left: 20px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { color: var(--accent2); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-status { font-size: 0.72rem; margin-left: 6px; }
+
+  /* ── Linha separadora de sub-seção ── */
+  hr.sub { border: none; border-top: 1px dashed var(--border); margin: 24px 0; }
+
+  footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--border);
+           font-family: var(--sans); font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+</style><style>
+    .qcard{border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin:16px 0;background:#fff}
+    .qtipo{color:var(--muted);font-size:.85em;margin:0 0 4px}
+    .qref{background:var(--bg-alt);padding:8px 10px;border-radius:6px}
+    table.resp{width:100%;border-collapse:collapse;margin-top:8px}
+    table.resp td,table.resp th{border:1px solid var(--border);padding:7px 9px;vertical-align:top;font-size:.92em}
+    table.resp td.gen{white-space:pre-wrap;max-width:680px}
+    table.resp td.num{text-align:center;font-variant-numeric:tabular-nums;width:48px}
+    </style></head><body><main class="container">
+<h1>Benchmark CC/UFPI e respostas dos modelos — Q2/Q3</h1><p>Benchmark de 30 questões (10 conceitual · 10 código · 10 contextual UFPI) e a geração <strong>verbatim</strong> de cada modelo, antes e depois do pós-treino, com a nota do juiz (1-5) e o token-F1. Dados brutos em <code>resultados/bench_*.json</code> e <code>resultados/juiz_*.json</code>.</p><h2>Qwen2.5-1.5b — respostas por questão (30 questões)</h2>
+<div class="qcard">
+<p class="qtipo">#1 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é uma pilha (stack) em estruturas de dados e qual sua política de acesso?</p>
+<p class="qref"><strong>Referência:</strong> Uma pilha é uma estrutura de dados linear que segue a política LIFO (Last In, First Out): o último elemento inserido é o primeiro a ser removido. O acesso é feito sempre pelo topo.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Uma pilha (stack) é uma estrutura de dados linear onde os elementos são adicionados e removidos no final do mesmo. Essa característica faz com que a pilha seja útil para implementar funções como recursão.
+
+A pilha segue a política de acesso LIFO (Last In First Out), ou seja:
+
+1. O último elemento inserido é o primeiro a ser removido.
+2. A operação de adicionar um novo elemento à pilha é chamada de push.
+3. A operação de remover o último elemento da pilha é chamada de pop.
+
+Alguns pontos importantes sobre pilhas:
+
+- Pilhas podem ser consideradas uma versão simplificada de uma fila (queue).
+- As operações mais comuns na pilha incluem push, pop, top e empty.
+- Pilhas são úteis para manter uma sequência ordenada de eventos ou para resolver problemas de recursão.
+
+Exemplo de uso de pilhas:
+- Para resolver problemas de recursão, como calcular fatorial de um número.
+- Para manter uma sequência de chamadas de processos ou threads em uma linguagem de programação orientada a objetos.</td><td class="num">5</td><td class="num">0.30</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Uma pilha é uma estrutura de dados linear onde os elementos são inseridos e removidos no final do mesmo. A política de acesso à pilha é LIFO (Last In First Out), ou seja, o último elemento a ser inserido será o primeiro a ser removido.</td><td class="num">5</td><td class="num">0.68</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma pilha é uma estrutura de dados linear onde os elementos são inseridos e removidos no final do mesmo. A pilha segue a política de acesso 'first in, first out' (primeiro entra, primeiro sai).</td><td class="num">2</td><td class="num">0.53</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Uma pilha (stack) é uma estrutura de dados linear onde os elementos são inseridos e removidos do final. A pilha tem a característica de ser LIFO (Last In First Out), ou seja, o último elemento adicionado será o primeiro a ser removido.
+
+A política de acesso à pilha é:
+
+1. Adicionar: O novo elemento é sempre adicionado no topo da pilha.
+2. Remover: O elemento removido é sempre o elemento no topo da pilha.
+
+Esta política permite que operações como push (adicionar) e pop (remover) sejam eficientes, pois não há necessidade de movimentar todos os elementos para remover um único elemento. Isso torna a pilha uma estrutura muito útil em muitos algoritmos e aplicações, especialmente na programação funcional.</td><td class="num">5</td><td class="num">0.39</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#2 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> Quais são as duas operações fundamentais de uma pilha?</p>
+<p class="qref"><strong>Referência:</strong> As operações fundamentais são push (inserir um elemento no topo) e pop (remover e retornar o elemento do topo).</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">As duas operações fundamentais de uma pilha (stack) são:
+
+1. **Inserção**: Adicionar um elemento à topologia da pilha.
+2. **Remoção**: Remover o elemento mais recentemente inserido na pilha.
+
+Essas operações são essenciais para a implementação de muitos algoritmos e estruturas de dados complexas, como funções recursivas, arquivos de texto, entre outros. A pilha tem uma lógica de operações simples mas poderosa, tornando-se fundamental em várias áreas da programação e ciência da computação.</td><td class="num">4</td><td class="num">0.24</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Inserir (push) e remover (pop) elementos</td><td class="num">4</td><td class="num">0.40</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Inserção (push) e Saida (pop)</td><td class="num">4</td><td class="num">0.25</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">As duas operações fundamentais de uma pilha (stack) são:
+
+1. Push: Inserir um elemento na pilha.
+2. Pop: Remover o elemento mais recente inserido na pilha.
+
+Essas operações permitem a manutenção de um sequencial ordenado de elementos, onde os elementos são sempre removidos do topo da pilha.</td><td class="num">5</td><td class="num">0.42</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#3 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que diferencia uma fila (queue) de uma pilha?</p>
+<p class="qref"><strong>Referência:</strong> A fila segue a política FIFO (First In, First Out), em que o primeiro elemento inserido é o primeiro a sair, enquanto a pilha segue LIFO, em que o último a entrar é o primeiro a sair.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Uma fila (queue) e uma pilha são estruturas de dados diferentes com suas próprias características e usos. Aqui estão as principais diferenças:
+
+1. Estrutura:
+   - Fila: Uma fila é uma estrutura de dados ordenada onde os elementos são inseridos e removidos no final.
+   - Pilha: Uma pilha é uma estrutura de dados ordenada onde os elementos são inseridos e removidos no topo.
+
+2. Inserção e Remoção:
+   - Fila: Elementos são adicionados ao final (enqueue) e removidos do final (dequeue).
+   - Pilha: Elementos são adicionados no topo (push) e removidos do topo (pop).
+
+3. Ordem dos Elementos:
+   - Fila: Os elementos são sempre adicionados e removidos na mesma ordem.
+   - Pilha: Os elementos são sempre removidos na mesma ordem, mas podem ser adicionados em qualquer ordem.
+
+4. Usos:
+   - Fila: Comuns para processamento sequencial, como a espera de clientes em um banco ou o armazenamento de eventos temporários.
+   - Pilha: Comuns para fun</td><td class="num">5</td><td class="num">0.09</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Uma fila é uma estrutura de dados onde os elementos são inseridos no final e removidos do início, enquanto a pilha funciona ao contrário, com os elementos sendo adicionados no topo e removidos do topo.</td><td class="num">5</td><td class="num">0.17</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma fila (queue) tem a característica de adicionar elementos no final e remover elementos do início, enquanto uma pilha tem a característica de adicionar elementos no topo e remover elementos do fundo.</td><td class="num">5</td><td class="num">0.20</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Uma fila (queue) e uma pilha são estruturas de dados relacionadas, mas elas têm algumas diferenças importantes:
+
+1. Fila:
+- Apenas os elementos podem ser inseridos no final do objeto.
+- Os elementos podem ser removidos do início do objeto.
+
+2. Pilha:
+- Apenas os elementos podem ser inseridos no topo do objeto.
+- Os elementos podem ser removidos do topo do objeto.
+
+Essa diferença fundamental pode levar a diferentes comportamentos nos dois casos. Por exemplo, na maioria dos casos, o acesso ao topo da pilha é mais rápido do que o acesso à frente da fila. No entanto, isso não significa que seja sempre assim - dependendo do contexto, ambas as operações podem ser eficientes ou ligeiramente lentas.</td><td class="num">5</td><td class="num">0.13</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#4 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é um Tipo Abstrato de Dados (TAD)?</p>
+<p class="qref"><strong>Referência:</strong> Um Tipo Abstrato de Dados é a especificação de um conjunto de dados e das operações que podem ser realizadas sobre eles, separando o comportamento (interface) da implementação concreta.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Um Tipo Abstrato de Dados (TAD) é uma abordagem para modelar dados complexos ou não estruturados usando linguagens de programação orientadas a objetos. Aqui estão alguns pontos-chave sobre TADs:
+
+1. Definição: Um TAD é uma classe genérica que encapsula funcionalidades comuns para diferentes tipos de dados.
+
+2. Utilidade:
+   - Simplifica o código ao reutilizar lógica.
+   - Facilita a manutenção do sistema.
+   - Permite a extensão sem alterar a base de dados.
+
+3. Exemplos de TADs:
+   - Listas encadeadas
+   - Pilhas e Fila
+   - Matrizes multidimensionais
+   - Arvore binária
+
+4. Características principais:
+   - Usam classes genéricas.
+   - Possuem métodos estáticos ou dinâmicos.
+   - Podem ser usadas para representar dados não estruturados.
+
+5. Desvantagens:
+   - Pode aumentar o tamanho do código.
+   - Pode dificultar a compreensão dos dados por outros desenvolvedores.
+
+6.</td><td class="num">3</td><td class="num">0.23</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Um TAD é uma estrutura de dados que define a abstração de uma classe ou objeto. Ele descreve como os objetos do tipo devem ser criados, manipulados e usados.</td><td class="num">3</td><td class="num">0.34</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Um tipo abstrato de dados define uma interface para objetos que possuem características específicas.</td><td class="num">2</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Um Tipo Abstrato de Dados (TAD) é uma estrutura de dados que permite a representar objetos ou entidades complexas sem precisar explicitamente definir todos os seus atributos ou métodos. Em outras palavras, o TAD oferece uma abstração para lidar com variáveis e operações relacionadas a esses objetos.
+
+Alguns pontos importantes sobre TADs:
+
+1. **Abstração**: O TAD permite que você trabalhe com objetos complexos sem ter que conhecer todas as suas características específicas.
+
+2. **Especificações Simplificadas**: Você pode especificar apenas o que o objeto faz (funcionalidade), mas não precisa fornecer detalhes sobre como ele funciona internamente.
+
+3. **Flexibilidade**: A implementação do TAD pode ser diferente dependendo do contexto, permitindo flexibilidade na programação.
+
+4. **Usos Práticos**: São usados em várias linguagens de programação, especialmente em orientação a objetos, para facilitar a criação de classes e objetos.
+
+5. **Exemplo**: Uma classe `Person` poderia ser um TAD para representar pessoas, onde o TAD não necessariamente contém todos os atrib</td><td class="num">4</td><td class="num">0.20</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#5 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que significa a notação de complexidade O(1)?</p>
+<p class="qref"><strong>Referência:</strong> O(1) indica complexidade de tempo constante: o custo da operação não depende do tamanho da entrada. As operações push e pop de uma pilha são O(1).</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A notação O(1) na matemática e ciência da computação representa tempo ou espaço linearmente dependendo do tamanho do problema. Em outras palavras:
+
+- Quando dizemos "O(1)", estamos falando sobre operações que são independentes do tamanho do dado.
+- Isso significa que o tempo ou espaço necessário para realizar uma tarefa não varia com o tamanho do problema.
+
+Em termos mais simples, se você está lidando com um problema grande (tamanho grande), a tarefa será executada rapidamente; se o problema é pequeno (tamanho pequeno), ainda assim a tarefa será rápida. 
+
+Por exemplo:
+- Se você tem 10 números e precisa somar todos eles, isso levará exatamente 1 segundo, independente do número total de números.
+- Se você tem 100 números e precisar fazer a mesma coisa, isso também levará exatamente 1 segundo, mesmo que seja muito mais trabalho computacional.
+
+Portanto, O(1) indica eficiência linear, onde qualquer tamanho de entrada requer o mesmo tempo ou espaço para ser processado.</td><td class="num">1</td><td class="num">0.20</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A notação O(1) representa tempo ou espaço constante, indicando que o tempo ou espaço necessário para realizar uma operação não depende do tamanho do input.</td><td class="num">5</td><td class="num">0.41</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A notação O(1) representa tempo ou espaço constante, indicando que o tempo ou espaço necessário para executar uma operação não depende do tamanho do dado.</td><td class="num">5</td><td class="num">0.41</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A notação O(1) na matemática e ciência da computação representa tempo ou espaço constante. Em outras palavras, isso indica que uma operação tem um tempo ou espaço de execução independente do tamanho do dado.
+
+Em termos mais simples:
+
+- Quando falamos em tempo, dizemos que algo leva 1 segundo para ser feito.
+- Quando falamos em espaço, dizemos que algo usa 1 byte para ser feito.
+
+Portanto, quando alguém fala em "O(1)", eles estão indicando que o tempo ou espaço necessário para realizar alguma tarefa não depende do tamanho do dado ou do número de elementos. Isso geralmente ocorre com operações como acesso a memória (como arrays), operações aritméticas básicas, etc.</td><td class="num">2</td><td class="num">0.27</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#6 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> Explique a diferença entre alocação estática e alocação dinâmica de memória.</p>
+<p class="qref"><strong>Referência:</strong> Na alocação estática o tamanho da estrutura é fixado em tempo de compilação; na alocação dinâmica a memória é reservada em tempo de execução (por exemplo com malloc em C), permitindo estruturas que crescem ou diminuem conforme a necessidade.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A alocação estática e a alocação dinâmica são duas maneiras diferentes de reservar espaço na memória RAM do computador para armazenar dados.
+
+1. Alocação estática:
+   - O espaço na memória é reservado quando o programa é executado.
+   - Alocação estática ocorre antes do início do programa ou durante seu carregamento.
+   - Exemplo: Quando você instala uma biblioteca no ambiente de desenvolvimento (como Visual Studio), os módulos são geralmente alocações estáticas.
+   - Desvantagens: Não permite mudanças ao longo do tempo, pode causar problemas se não houver suficiente espaço disponível.
+
+2. Alocação dinâmica:
+   - O espaço na memória é reservado ao longo do tempo, conforme necessário.
+   - Alocação dinâmica ocorre durante o processo de execução do programa.
+   - Exemplo: Quando você usa variáveis ou objetos em um programa, muitas vezes esses são alocações dinâmicas.
+   - Benefícios: Permite flexibilidade ao longo do tempo, sem comprometer a performance inicial do programa.
+
+Em resumo, a alocação estática reserva espaço</td><td class="num">2</td><td class="num">0.24</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A alocação estática é quando o programa determina a quantidade de memória necessária para os dados antes do início da execução. Por outro lado, a alocação dinâmica ocorre durante a execução do programa, onde a quantidade de memória pode ser alterada conforme necessário.</td><td class="num">4</td><td class="num">0.37</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A alocação estática é quando o tamanho da memória é definido antes do programa ser executado, geralmente durante a compilação. Por outro lado, a alocação dinâmica ocorre durante o processo de execução do programa, onde o tamanho da memória é determinado pelo usuário ao invés de ser previamente definido.</td><td class="num">5</td><td class="num">0.39</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A alocação estática e a alocação dinâmica são dois métodos diferentes para gerenciar a quantidade de memória utilizada por uma aplicação ou programa.
+
+1. Alocação estática: Nesta técnica, o espaço de memória é reservado no momento do início da execução do programa. Isso significa que o espaço de memória é definido na hora em que o programa começa a ser executado. A memória não pode ser aumentada ou diminuída durante o tempo de execução do programa. Exemplo: quando você define um array com um tamanho fixo antes de usar ele.
+
+2. Alocação dinâmica: Em contrasto, a alocação dinâmica permite que o espaço de memória seja alterado durante o tempo de execução do programa. O espaço de memória é inicialmente pequeno e expande conforme necessário. Por exemplo, ao longo do tempo, você pode adicionar mais elementos à lista sem precisar redefinir toda a lista novamente. 
+
+Em resumo, a alocação estática garante que o espaço de memória será sempre o mesmo, enquanto a alocação dinâmica permite que esse espaço de memória possa crescer ou diminuir conforme necessário.</td><td class="num">4</td><td class="num">0.25</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#7 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é uma lista encadeada (linked list)?</p>
+<p class="qref"><strong>Referência:</strong> Uma lista encadeada é uma estrutura de dados linear composta por nós, em que cada nó armazena um valor e um ponteiro para o próximo nó, permitindo inserções e remoções sem deslocar os demais elementos.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Uma lista encadeada (ou lista ligada) é uma estrutura de dados linear onde os elementos são organizados em sequência lógica, mas não necessariamente em ordem cronológica. Cada elemento na lista (chamado nó) contém dois campos: um valor e um ponteiro para o próximo nó.
+
+A principal característica de uma lista encadeada é que cada nó tem um ponteiro que aponta para o próximo nó na sequência. Isso permite que você adicione ou remova elementos da lista sem precisar se deslocar por toda a lista, o que torna as operações de inserção e exclusão muito rápidas.
+
+Alguns pontos importantes sobre lista encadeadas:
+
+1. Inserção e exclusão rápida: As operações de inserção e exclusão podem ser realizadas rapidamente porque não há necessidade de mover outros elementos.
+
+2. Não suporta busca direta: Para acessar um elemento específico, você precisa percorrer toda a lista até encontrar o nó correspondente.
+
+3. Complexidade de acesso: O acesso ao primeiro elemento é rápido, enquanto o acesso ao último elemento pode levar a complexidades maiores dependendo do tamanho da</td><td class="num">5</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Uma lista encadeada é uma estrutura de dados onde os elementos são organizados em sequência, cada elemento contendo um valor e um ponteiro para o próximo elemento na sequência.</td><td class="num">4</td><td class="num">0.62</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma lista encadeada é uma estrutura de dados onde os elementos são organizados de forma lógica, mas não sequencial. Cada elemento, chamado nó, contém dois campos: o valor do dado e um ponteiro para o próximo nó na lista.</td><td class="num">5</td><td class="num">0.54</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Uma lista encadeada (Linked List) é uma estrutura de dados que permite armazenar elementos (chave, valor, etc.) em sequência. Ela funciona de maneira semelhante a uma pilha ou uma fila, mas com algumas diferenças importantes.
+
+1. **Elementos**: Cada elemento na lista encadeada contém dois campos: um campo para o dado (que pode ser qualquer tipo) e outro campo para o endereço do próximo nó na lista.
+
+2. **Referências**: O campo do próximo nó no nó atual aponta para o nó seguinte na lista. Se não houver mais nós para seguir, esse campo será nulo.
+
+3. **Início e Fim**: A lista pode ter um nó inicial chamado cabeça (head), que aponta para o primeiro nó da lista. Outro nó final pode existir, chamado cauda (tail).
+
+4. **Operações**: As operações básicas incluem inserção, remoção, busca, ordenação e iteração sobre os elementos da lista.
+
+5. **Estruturas Adjacentes**: Em uma lista encadeada, cada nó tem exatamente um único nó anterior e posterior, tornando-a</td><td class="num">4</td><td class="num">0.25</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#8 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é recursão em programação?</p>
+<p class="qref"><strong>Referência:</strong> Recursão é a técnica em que uma função chama a si mesma para resolver subproblemas menores; precisa de um caso base que encerra as chamadas e de um passo recursivo que aproxima do caso base.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Recursão em programação é uma técnica onde uma função ou método chama a si mesma para resolver problemas complexos. Essa abordagem permite que o código seja dividido em partes menores e mais simples, facilitando a solução do problema.
+
+A principal característica da recursão é que ela usa a própria definição do problema para resolver o mesmo problema novamente, até que se atinja um ponto onde o problema é simplesmente solucionável (base).
+
+Alguns pontos importantes sobre recursão:
+
+1. Base: É a condição básica que define quando a recursão deve parar.
+2. Recurso: É a parte que chamou a função recursivamente.
+3. Transição: É a lógica que faz a função retornar ao recurso após cada chamada recursiva.
+
+Exemplos práticos incluem:
+- Calculo de fatorial
+- Busca binária
+- Gerenciamento de arquivos em sistemas operacionais
+
+No entanto, é importante notar que a recursão pode ser ineficiente em termos de tempo e espaço se não for usada adequadamente, pois pode resultar em uma série infinita de chamadas recursivas.</td><td class="num">5</td><td class="num">0.26</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Recursão é uma técnica onde a função ou método se chama para resolver o mesmo problema com menor escala até chegar ao caso base.</td><td class="num">5</td><td class="num">0.37</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Recursão é uma técnica onde um programa se recusa a executar novamente o mesmo código para resolver um problema, ao invés de repetir o processo até obter uma solução.</td><td class="num">2</td><td class="num">0.31</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Recursão em programação é uma técnica onde uma função ou procedimento chama a si mesma para resolver um problema. A recursão pode ser usada para resolver problemas complexos por dividir o problema em partes menores até chegar a algo simplesmente calculado.
+
+Algumas características importantes de recursão são:
+
+1. Uma função recursiva deve ter pelo menos um argumento.
+2. O argumento deve ser usado no cálculo do resultado final.
+3. O argumento deve ser alterado na chamada recursiva.
+4. A recursão deve terminar com uma condição base (base case), que não seja recursiva.
+
+Exemplo de recursão em Python:
+
+```python
+def fatorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * fatorial(n-1)
+
+print(fatorial(5)) # Saída: 120
+```
+
+Neste exemplo, a função `fatorial` é chamando ela mesma para calcular o fatorial de um número menor, até que a condição base seja atingida (n = 0).</td><td class="num">5</td><td class="num">0.27</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#9 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> Para que serve um ponteiro na linguagem C?</p>
+<p class="qref"><strong>Referência:</strong> Um ponteiro é uma variável que armazena o endereço de memória de outra variável, permitindo acesso indireto, passagem de argumentos por referência e a construção de estruturas dinâmicas como listas e árvores.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Um ponteiro em C serve para apontar para uma memória dinamicamente alocada ou para uma variável localmente declarada dentro do escopo onde está sendo usado. Aqui estão alguns dos principais usos e benefícios de usar ponteiros:
+
+1. Alocação Dinâmica de Memória:
+   - Permite criar estruturas complexas sem ter que definir todas as suas partes no código inicial.
+   - Exemplo: `int *p; p = (int *)malloc(sizeof(int));`
+
+2. Passagem de Parâmetros por Referência:
+   - Permite passar o endereço de uma variável como parâmetro para funções, permitindo alterações nela.
+
+3. Manipulação de Estruturas Complexas:
+   - Permite manipular estruturas complexas com facilidade, sem precisar declarar todas as partes separadamente.
+
+4. Armazenamento de Endereços:
+   - Pode armazenar diretamente os endereços de memória, útil para intercâmbio de dados entre processos.
+
+5. Função de Escrita Direta:
+   - Permite escrever diretamente em qualquer parte da memória, útil</td><td class="num">4</td><td class="num">0.24</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Um ponteiro em C é uma variável que armazena a direção de memória onde está localizado o endereço de outro objeto. Isso permite que você manipule diretamente os endereços de memória, permitindo acesso a dados ou funções internas do sistema operacional.</td><td class="num">4</td><td class="num">0.44</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Um ponteiro em C é uma variável que armazena o endereço de memória de outra variável ou de outro tipo de dado. Isso significa que o ponteiro pode ser usado para apontar para qualquer local de memória onde a variável foi declarada.</td><td class="num">4</td><td class="num">0.46</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Um ponteiro em C serve para apontar para uma variável ou estrutura de dados. Aqui estão alguns dos principais usos:
+
+1. Passar argumentos a funções: Ponteiros são frequentemente usados como parâmetros para funções.
+
+2. Manipulação de arrays: Você pode usar um ponteiro para acessar os elementos de um array.
+
+3. Manipulação de structs: Ponteiros podem ser usados para manipular struct (estruturas) complexas.
+
+4. Função de ponteiro: Uma função que retorna um ponteiro permite retornar o endereço de uma variável.
+
+5. Estruturado programação: Ponteiros permitem a criação de algoritmos mais eficientes e dinâmicos.
+
+6. Programa de controle de fluxo: Usando ponteiros, você pode criar programas que controlam o fluxo do programa.
+
+7. Manipulação de memória dinâmica: Ponteiros são essenciais para a gestão de memória dinâmica em C.
+
+8. Trabalho com arquivos: Ponteiros podem ser usados para abrir e ler/escrver arquivos.
+
+9. Manipulação de list</td><td class="num">5</td><td class="num">0.22</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#10 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é uma árvore binária de busca?</p>
+<p class="qref"><strong>Referência:</strong> É uma árvore binária em que, para cada nó, todos os valores da subárvore esquerda são menores que o do nó e todos os da subárvore direita são maiores, o que permite busca, inserção e remoção eficientes.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Uma árvore binária de busca é um tipo específico de árvore binária onde cada nó tem no máximo dois filhos: um à esquerda e outro à direita. Essa estrutura permite que sejam eficientemente realizadas buscas sequenciais (busca em profundidade) e inserções ordenadas.
+
+Características principais:
+
+1. Cada nó possui pelo menos zero e no máximo dois filhos.
+2. A raiz do árbusto é o nó mais a esquerda.
+3. Os nós não podem ter filhos irmãos; todos os filhos de um nó são irmãos entre si.
+4. As folhas (nó com valor nulo ou menor) são chamadas nós vazios.
+5. O nó mais a esquerda é sempre o menor elemento na árvore.
+6. O nó mais à direita é sempre o maior elemento na árvore.
+7. A busca em profundidade começa sempre na raiz e prossegue até encontrar o elemento desejado ou chegar a um nó vazio.
+
+Aplicações:
+- Busca em arvore binaria de busca é usada para organizar dados em ordem crescente ou dec</td><td class="num">2</td><td class="num">0.24</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">É uma estrutura de dados onde cada nó tem no máximo dois filhos: um à esquerda e outro à direita.</td><td class="num">2</td><td class="num">0.28</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma árvore binária de busca é uma estrutura de dados onde cada nó possui ao máximo dois filhos: um à esquerda e outro à direita. A chave do nó é maior ou igual a todas as chaves nos nós da subárvore à sua esquerda e menor ou igual às chaves nos nós da subárvore à sua direita.</td><td class="num">5</td><td class="num">0.36</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Uma árvore binária de busca (ou árvore binária ordenada) é uma estrutura de dados que permite a pesquisa eficiente através de um algoritmo de buscas. Aqui estão alguns pontos importantes sobre essa estrutura:
+
+1. Estrutura: É composta por nós (nós), que podem ser tanto folhas quanto internos.
+
+2. Propriedades:
+   - Cada nó tem exatamente dois filhos.
+   - Os nós folhas são chamados de "leaves".
+   - Todos os nós internos têm o mesmo número de filhos.
+
+3. Busca Eficiente: A árvore binária de busca permite que você encontre qualquer elemento no seu conjunto usando uma busca binária, que é uma operação logarítmica.
+
+4. Exemplo: Na árvore binária de busca abaixo, todos os nós internos têm dois filhos, e todas as folhas são números pares.
+
+5. Aplicações: Árvores binárias de busca são usadas em muitas aplicações, como arquivos de texto, onde cada linha é um nó, e cada caractere é um filho.
+
+6. Complexidade: O tempo de busca</td><td class="num">2</td><td class="num">0.24</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#11 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Considerando uma pilha vazia, qual é o elemento no topo após executar o código?</p>
+<p class="qref"><strong>Referência:</strong> O elemento no topo é 'I', pois foi o último a ser inserido pela operação push.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Para resolver este problema, vamos analisar o fluxo do código step por step:
+
+1. Inicialmente, a pilha está vazia.
+
+2. O primeiro comando `push('O')` adiciona 'O' ao topo da pilha.
+   Pilha: ['O']
+
+3. O segundo comando `push('C')` adiciona 'C' ao topo da pilha.
+   Pilha: ['O', 'C']
+
+4. O terceiro comando `push('I')` adiciona 'I' ao topo da pilha.
+   Pilha: ['O', 'C', 'I']
+
+Portanto, após executar todos os comandos, o elemento no topo da pilha será 'I'.</td><td class="num">5</td><td class="num">0.17</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">O</td><td class="num">1</td><td class="num">0.12</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">'O'</td><td class="num">1</td><td class="num">0.12</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Após executar o código `push('O')`, `push('C')`, `push('I')` na pilha vazia, o elemento no topo será `'I'`.</td><td class="num">5</td><td class="num">0.40</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#12 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> O que o código a seguir imprime, partindo de uma pilha vazia?</p>
+<p class="qref"><strong>Referência:</strong> Imprime 'C'. Após push de 'A' e 'B', o pop remove 'B'; em seguida push de 'C' deixa 'C' no topo, que é removido e impresso pelo último pop.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Vamos analisar este código passo a passo:
+
+1) `push('A')`: Adiciona 'A' à pilha.
+2) `push('B')`: Adiciona 'B' à pilha.
+3) `pop()`: Remove o topo da pilha (que era 'B'), então a pilha agora tem apenas 'A'.
+4) `push('C')`: Adiciona 'C' à pilha.
+5) `printf("%c", pop())`: Remove o topo da pilha novamente (que era 'A'), então a pilha está vazia.
+
+Portanto, quando você chama `printf("%c", pop())`, ele vai imprimir nada porque a pilha já estava vazia antes disso.
+
+Em resumo: O código imprime "Nada" ou "Empty Stack".</td><td class="num">2</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A C</td><td class="num">2</td><td class="num">0.13</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">BC</td><td class="num">1</td><td class="num">0.00</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O código a seguir imprime 'C'.
+
+Explicação:
+
+1. `push('A')` adiciona a letra 'A' à pilha.
+2. `push('B')` adiciona a letra 'B' à pilha.
+3. `pop()` remove o elemento mais recente da pilha (que era 'B'), mas não faz nada com ele porque a função `printf` ainda não foi chamada.
+4. `push('C')` adiciona a letra 'C' à pilha.
+5. `printf("%c", pop())` chama a função `printf` para imprimir o caractere removido da pilha (`'B'`) e depois remove esse caractere da pilha.
+
+Portanto, após essas operações, a pilha contém apenas a letra 'C'. Então, quando `printf("%c", pop())` é executado, ele imprime `'C'`.</td><td class="num">4</td><td class="num">0.27</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#13 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Quantas vezes o laço executa o corpo?</p>
+<p class="qref"><strong>Referência:</strong> O corpo executa 5 vezes, imprimindo os valores 0, 1, 2, 3 e 4.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">O laço `for` no exemplo fornecido irá executar o corpo do loop cinco vezes.
+
+Aqui está a explicação:
+
+1. O primeiro parênteses (`(`) indica o início do bloco de código.
+2. A variável `i` começa com o valor zero (`i = 0`).
+3. O segundo parênteses (`)` marca o fim do bloco de código.
+4. O operador `;` separa as partes do laço.
+
+No caso específico do exemplo, o laço será executado até que `i` seja igual ou maior que 5. Portanto, ele será executado quatro vezes antes de entrar no ponto final do laço, onde `printf("%d", i);` imprime o valor atual de `i`.
+
+Portanto, o corpo do laço será executado **cinco** vezes.</td><td class="num">2</td><td class="num">0.15</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">5</td><td class="num">1</td><td class="num">0.13</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">5 vezes</td><td class="num">4</td><td class="num">0.25</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O laço for irá executar o corpo 5 vezes.
+
+A estrutura do laço for é a seguinte:
+
+```c
+for (inicialização; condição; incremento) {
+    // corpo do loop
+}
+```
+
+No seu caso:
+- inicialização: `i = 0`
+- condição: `i &lt; 5` 
+- incremento: `i++`
+
+Portanto, o laço será executado até que a condição seja falsa, ou seja, quando `i` chegar a 5. Então, ele imprimirá os valores 0, 1, 2, 3 e 4 antes de parar.</td><td class="num">5</td><td class="num">0.29</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#14 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Qual o valor final da variável soma?</p>
+<p class="qref"><strong>Referência:</strong> O valor final de soma é 10, resultado de 1 + 2 + 3 + 4.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Para resolver este exercício, vamos passar por cada passo do código:
+
+1. Inicializamos a variável `soma` com 0.
+2. Começamos um loop `for` que vai até 4 (inclusive).
+3. Dentro do loop, adicionamos o valor atual de `i` à variável `soma`.
+
+Vamos executar isso passo a passo:
+
+- Primeiro laço: `i = 1`, então `soma = 0 + 1 = 1`
+- Segundo laço: `i = 2`, então `soma = 1 + 2 = 3`
+- Terceiro laço: `i = 3`, então `soma = 3 + 3 = 6`
+- Quarto laço: `i = 4`, então `soma = 6 + 4 = 10`
+
+Portanto, o valor final da variável `soma` será **10**.</td><td class="num">5</td><td class="num">0.19</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">10</td><td class="num">5</td><td class="num">0.14</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">10</td><td class="num">5</td><td class="num">0.14</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Para calcular o valor final da variável `soma`, vamos iterar pelo laço de repetição:
+
+```plaintext
+i = 1 -&gt; soma = 0 + 1 = 1
+i = 2 -&gt; soma = 1 + 2 = 3
+i = 3 -&gt; soma = 3 + 3 = 6
+i = 4 -&gt; soma = 6 + 4 = 10
+```
+
+Portanto, o valor final da variável `soma` será **10**.</td><td class="num">5</td><td class="num">0.33</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#15 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> O que a função abaixo calcula para n &gt;= 0?</p>
+<p class="qref"><strong>Referência:</strong> A função calcula o fatorial de n (n!), usando recursão com caso base f(0)=1 e passo recursivo n * f(n-1).</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A função `f` definida no código fornecido é uma implementação recursiva do fatorial de um número inteiro positivo `n`. Vamos analisar o funcionamento dessa função:
+
+```c
+int f(int n){
+    if(n == 0) 
+        return 1;
+    else 
+        return n * f(n - 1);
+}
+```
+
+### Explicação:
+
+1. **Base Case (n == 0):**
+   - Quando `n` é igual a zero (`if(n == 0)`), a função retorna `1`.
+   - O fatorial de zero é definido como 1.
+
+2. **Recursão:**
+   - Se `n` não for zero, a função chama ela mesma com o argumento `n - 1`, multiplicando o resultado pela variável atual `n`.
+
+3. **Processo de Calculo:**
+   - A chamada recursiva `f(n-1)` será executada primeiro.
+   - Isso resultará em `f(n-1)` sendo chamado novamente, passando `n-1` como argumento.
+   - Este processo continua até que `n` chegue à base case (zero).
+
+4.</td><td class="num">5</td><td class="num">0.23</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">n!</td><td class="num">1</td><td class="num">0.08</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">n!</td><td class="num">1</td><td class="num">0.08</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A função `f` calcula o fatorial de um número inteiro positivo. O fatorial de um número natural n é definido como:
+
+\[ n! = n \times (n-1) \times (n-2) \times ... \times 1 \]
+
+Portanto, a função `f` implementa esse cálculo recursivamente.
+
+Vamos analisar a função step by step:
+
+1. Se `n == 0`, então a função retorna 1.
+   - A razão pela qual isso acontece é porque 0! = 1.
+
+2. Caso contrário:
+   - A função chama `f(n-1)` e multiplica o resultado por `n`.
+
+Por exemplo, se `n = 5`, então a função será chamada desta maneira:
+
+\[ f(5) = 5 \times f(4) \]
+\[ f(4) = 4 \times f(3) \]
+\[ f(3) = 3 \times f(2) \]
+\[ f(2) = 2 \times f(1) \]
+\[ f(1) = 1 \]
+
+Então, a função retornará:
+
+\[ f(5</td><td class="num">5</td><td class="num">0.23</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#16 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> O acesso a p-&gt;dado em C corresponde a quê?</p>
+<p class="qref"><strong>Referência:</strong> p-&gt;dado acessa o campo 'dado' do nó apontado por p; é equivalente a (*p).dado, ou seja, desreferencia o ponteiro e acessa o membro.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Acesso ao campo `dado` do struct `No` através de um ponteiro `p` correspondem à seguinte expressão:
+
+```c
+*p-&gt;dado;
+```
+
+Explicando:
+
+1. `*p`: Isso significa "obter o valor armazenado no endereço apontado por `p`".
+
+2. `-&gt;dado`: Isso significa "chamar o método ou atributo chamado `dado` no objeto apontado pelo endereço de `p`".
+
+Portanto, a expressão `*p-&gt;dado` faz exatamente isso: ela acessa o valor contido no campo `dado` do nó apontado pelo ponteiro `p`.</td><td class="num">2</td><td class="num">0.37</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">p-&gt;dado</td><td class="num">1</td><td class="num">0.15</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">referência ao campo dado do nó apontado por p</td><td class="num">3</td><td class="num">0.41</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Acesso ao campo "dado" no struct `No` pode ser feito diretamente usando o ponteiro `p`, pois `p` aponta para uma instância do tipo `No`. Portanto, você pode acessar o campo `dado` através de `p-&gt;dado`.
+
+Portanto, a resposta correta seria:
+
+```c
+p-&gt;dado
+```
+
+Esta expressão retorna o valor armazenado na posição referenciada pelo ponteiro `p` na estrutura `No`.</td><td class="num">5</td><td class="num">0.34</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#17 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Qual é o efeito de chamar pop() em uma pilha vazia, em uma implementação correta?</p>
+<p class="qref"><strong>Referência:</strong> Deve sinalizar erro de underflow (pilha vazia), pois não há elemento a remover; tipicamente retorna um código de erro ou lança uma condição de exceção, sem alterar a pilha.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Chamar `pop()` em uma pilha vazia resulta em um erro ou exceção. A pilha é um tipo de estrutura de dados onde os elementos são removidos do final (topo) para a entrada. Quando você tentar remover um elemento de uma pilha vazia, ocorre um problema porque não há nada para ser removido.
+
+Em uma implementação correta, isso geralmente gera um erro de pilha vazia. Isso pode ser representado por:
+
+```python
+class Pilha:
+    def __init__(self):
+        self.pilha = []
+
+    def push(self, item):
+        self.pilha.append(item)
+
+    def pop(self):
+        if not self.vazia():
+            return self.pilha.pop()
+        else:
+            raise Exception("Pilha vazia")
+
+    def vazia(self):
+        return len(self.pilha) == 0
+
+# Exemplo de uso
+pilha = Pilha()
+
+try:
+    print(pilha.pop())  # Este comando deve gerar um erro
+except Exception as e:
+    print(e)
+```
+
+No exemplo acima, ao chamar `pilha.pop()` quando a pilha está vazia, o método `pop()` retorna None</td><td class="num">4</td><td class="num">0.23</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">O programa será interrompido com um erro de overflow (overflow).</td><td class="num">1</td><td class="num">0.15</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">O programa produzirá um erro (Exception), pois a pilha está vazia e não há espaço para adicionar mais elementos.</td><td class="num">2</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Se você estiver usando uma pilha (stack) como estrutura de dados, a chamada `pop()` em uma pilha vazia resultará em um erro ou no comportamento indefinido dependendo do contexto.
+
+No entanto, se estamos considerando uma pilha implementada com uma lista simplesmente encadeada, então a resposta seria:
+
+- **Erro**: A pilha não pode ser acessada diretamente por meio de seu método `pop()`. Isso ocorre porque a pilha é uma estrutura de controle dinâmica, onde os elementos são removidos do topo da pilha ao longo do tempo. Portanto, tentar remover algo de uma pilha vazia resulta em um erro.
+
+Em outras palavras, na prática, isso significa que a pilha não pode ser removida completamente, pois ela sempre tem pelo menos um elemento no topo. Se você tentar remover o último elemento, ele será removido, mas a pilha permanece intacta.</td><td class="num">2</td><td class="num">0.21</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#18 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> O que faz a função malloc em C e o que retorna?</p>
+<p class="qref"><strong>Referência:</strong> malloc reserva dinamicamente um bloco de memória do tamanho informado (sizeof(No)) e retorna um ponteiro para o início do bloco, ou NULL se a alocação falhar.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A função `malloc` no C é uma função de alocação dinâmica de memória. Ela permite reservar espaço para um novo objeto na memória do sistema operacional. Aqui estão as principais características e comportamentos da função `malloc`:
+
+1. A função `malloc` recebe como parâmetro o número de bytes desejados para a alocação.
+
+2. Se a alocação for bem-sucedida, ela retorna um ponteiro para a nova área de memória. Caso contrário, ela retorna NULL.
+
+3. O tamanho retornado pelo `malloc` é sempre múltiplo de 4 bytes, pois isso é o padrão usado pela maioria dos tipos primitivos em C.
+
+4. A função `malloc` não garante que a alocação será efetivamente usada ou que haverá espaço suficiente para armazenar todos os dados solicitados.
+
+5. Após a alocação, o ponteiro devolvido deve ser liberado com a função `free`, caso seja necessário usar novamente essa memória.
+
+6. A função `malloc` pode retornar NULL se a alocação falhar por algum motivo, como falta de memória disponível ou erro de configuração</td><td class="num">5</td><td class="num">0.20</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A função malloc em C aloca memória dinâmica para uma estrutura do tipo No e retorna um ponteiro para essa estrutura.</td><td class="num">4</td><td class="num">0.42</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A função malloc em C é usada para reservar memória dinamicamente alocando espaço suficiente para uma estrutura específica. Ela retorna um ponteiro para a estrutura No.</td><td class="num">4</td><td class="num">0.38</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A função `malloc` no C cria uma nova memória dinamicamente alocada na memória do sistema operacional. Ela recebe como argumento o número de bytes desejados para a alocação e retorna um ponteiro para essa área de memória.
+
+No seu exemplo, `malloc(sizeof(No))`, a função `malloc` está criando uma nova área de memória com o tamanho especificado por `sizeof(No)`. O valor retornado pela função `malloc` é um ponteiro para essa área de memória dinâmica. Este ponteiro pode ser usado para apontar para qualquer tipo de dados, incluindo outros ponteiros ou estruturas complexas. No entanto, não deve ser usado após a liberação da memória, pois ele será "destruído" automaticamente quando a função `free` for chamada.</td><td class="num">5</td><td class="num">0.25</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#19 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Em uma fila, após enfileirar 1, 2 e 3, qual elemento é retornado pela operação de desenfileirar?</p>
+<p class="qref"><strong>Referência:</strong> Retorna 1, pois a fila é FIFO: o primeiro elemento inserido é o primeiro a ser removido.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A operação `dequeue()` retornará o elemento 1, pois ele foi o primeiro a ser adicionado à fila.
+
+Vamos analisar o processo:
+
+1. Enfileira os elementos: 1, 2, 3.
+   Fila atual: [1, 2, 3]
+
+2. Desenfileira (remove) o primeiro elemento:
+   Fila atual: [2, 3]
+
+3. Desenfileira novamente:
+   Fila atual: [3]
+
+4. Finalmente, desenfileira mais uma vez:
+   Fila atual vazia
+
+Portanto, após todas as operações, a fila está vazia e a operação `dequeue()` retorna None ou indefinido dependendo do contexto específico, mas no caso de uma fila com três elementos, ela retornaria o elemento 1.</td><td class="num">2</td><td class="num">0.24</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">1</td><td class="num">5</td><td class="num">0.11</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">1</td><td class="num">5</td><td class="num">0.11</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A resposta para este exercício é o número 1.
+
+Explicação:
+- A função `enqueue` (enqueue significa "inserir") adiciona elementos à fila.
+- A função `dequeue` (dequeue significa "retornar" ou "desenfileirar") remove o primeiro elemento da fila.
+
+No exemplo fornecido:
+
+1. `enqueue(1)` adiciona o número 1 à fila.
+2. `enqueue(2)` adiciona o número 2 à fila.
+3. `enqueue(3)` adiciona o número 3 à fila.
+4. `dequeue()` retorna o primeiro elemento da fila, que é o número 1.
+
+Portanto, a operação de desenfileirar retornará o número 1.</td><td class="num">5</td><td class="num">0.23</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#20 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Qual o problema do código abaixo do ponto de vista de gerenciamento de memória?</p>
+<p class="qref"><strong>Referência:</strong> Há vazamento de memória (memory leak): o ponteiro p é reatribuído para NULL sem antes liberar (free) o bloco alocado, tornando essa memória inacessível e não liberada.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">O código apresentado possui alguns problemas relacionados ao gerenciamento de memória e a manipulação de ponteiros. Vamos analisar cada parte do código:
+
+1. `malloc(sizeof(No))`: Este comando aloca uma quantidade de memória suficiente para armazenar um objeto do tipo `No`. No entanto, após essa operação, o ponteiro `p` ainda aponta para esse espaço de memória.
+
+2. `p = NULL;`: Isso faz com que o ponteiro `p` se torna nulo (ou seja, não aponte para nada). No entanto, como ele ainda está apontando para a memória alocada pelo `malloc`, isso pode levar a erros no futuro caso você tentar acessar ou modificar esse espaço de memória diretamente através do ponteiro `p`.
+
+Aqui estão os principais problemas:
+
+- O ponteiro `p` continua apontando para a memória alocada, mesmo depois de atribuí-lo a `NULL`.
+- Se você tentar fazer algo com o ponteiro `p` agora, como por exemplo, tentar liberar a memória usando `free(p)`, você terá</td><td class="num">2</td><td class="num">0.16</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">O código apresentado possui um problema de gerenciamento de memória. O uso de `malloc` para alocação dinâmica de memória não é seguido pelo uso de uma variável local como ponteiro. Isso pode resultar em problemas de desalocamento ou leaks de memória se a função `free(p)` não for chamada adequadamente após a utilização do nó.</td><td class="num">4</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">O código apresentado possui um erro na passagem de parâmetro para a função `malloc()`. A função `malloc()` espera um tipo de dado como argumento, mas no código fornecido, `sizeof(No)` é usado diretamente sem converter para um tipo de dado válido. Isso resulta em uma tentativa de inicializar um ponteiro com o valor retornado por `malloc()`, que pode não ser um endereço de memória válido. Portanto, o problema está na falta de conversão adequada do tamanho de `No` para um tipo de dado correspondente ao tipo de ponteiro.</td><td class="num">1</td><td class="num">0.16</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O código apresentado possui alguns problemas no gerenciamento de memória. Aqui estão os principais problemas:
+
+1. **Liberar a alocação dinâmica**: O código não libera a alocação dinâmica (a alocação com `malloc`) antes de atribuir `NULL` à variável local `p`. Isso pode levar ao desperdício de memória.
+
+2. **Atribuição de `NULL`**: A atribuição de `NULL` à variável local `p` não resolve o problema de gerenciamento de memória. A função `free()` deve ser chamada para liberar a memória alocada por `malloc`.
+
+3. **Variável global ou estática**: Se a variável `p` for uma variável global ou estática, ela será mantida na memória até que seja explicitamente liberada. No entanto, se essa variável estiver sendo usada como ponteiro, isso pode causar bugs indesejados.
+
+### Solução correta
+
+Para resolver esses problemas, você pode fazer algo como:
+
+```c
+#include &lt;stdlib.h&gt;
+
+struct No {
+    // ... definir struct No ...
+};
+
+int main() {
+    struct No*</td><td class="num">4</td><td class="num">0.18</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#21 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Na disciplina de Estruturas de Dados I do Departamento de Computação da UFPI, qual é a ideia fundamental de acesso aos elementos de uma pilha?</p>
+<p class="qref"><strong>Referência:</strong> A ideia fundamental é que todo acesso aos elementos da pilha é feito através do seu topo: ao adicionar um novo elemento ele se torna o topo, e o elemento retirado é sempre o do topo.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A ideia fundamental de acesso aos elementos de uma pilha na disciplina de Estruturas de Dados I no Departamento de Computação da UFPI é o uso de um "topo" ou ponteiro para indicar onde está armazenado o último elemento inserido na pilha.
+
+Essa estrutura tem como principais características:
+
+1. **LIFO (Last In First Out)**: O último elemento inserido é o primeiro a ser removido.
+2. **Topo**: Um ponto que indica o topo da pilha, geralmente representado por `top`.
+3. **Inserção**: Novos elementos são adicionados ao topo da pilha.
+4. **Remoção**: Elementos são removidos do topo da pilha.
+
+O acesso aos elementos é feito através desse topo, permitindo que sejam facilmente acessados e manipulados conforme necessário. Isso torna a pilha útil para aplicações que requerem manutenção sequencial dos elementos, como pilhas de trabalho, pilhas de dados temporários, entre outras.</td><td class="num">5</td><td class="num">0.31</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A ideia fundamental de acesso aos elementos de uma pilha é que cada elemento tem seu próprio endereço na memória, permitindo que o acesso seja feito diretamente através desses endereços.</td><td class="num">1</td><td class="num">0.42</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A pilha permite apenas o acesso ao elemento mais recente.</td><td class="num">2</td><td class="num">0.26</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A ideia fundamental de acesso aos elementos de uma pilha (stack) na disciplina de Estruturas de Dados I no Departamento de Computação da UFPI é o uso de um "topo" ou topo da pilha para acessar os elementos.
+
+1. **Topo da Pilha**: O topo da pilha é o elemento mais recente inserido na pilha. Quando você insere um novo elemento na pilha, ele se torna o topo. Para remover um elemento da pilha, você remove o elemento atualmente no topo.
+
+2. **Simplificação do Acesso**: Isso simplifica significativamente o processo de inserir e remover elementos da pilha. Você não precisa verificar todos os elementos anteriores antes de poder inserir um novo elemento, pois sempre está seguro inserir um novo elemento no topo.
+
+3. **Lógica Simples**: A lógica de acesso ao topo da pilha é simples: você pode facilmente obter o último elemento adicionado à pilha sem precisar percorrer todos os elementos anteriormente inseridos.
+
+4. **Aplicações Práticas**: Essa abordagem é útil em muitos contextos, como programação de computadores</td><td class="num">4</td><td class="num">0.28</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#22 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Por que a pilha é considerada uma das estruturas de dados mais simples e comuns na computação?</p>
+<p class="qref"><strong>Referência:</strong> Porque possui poucas operações bem definidas (inserção e remoção sempre pelo topo), é fácil de implementar e aparece em muitas situações rotineiras da computação, como chamadas de função, desfazer/refazer e avaliação de expressões.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A pilha é considerada uma das estruturas de dados mais simples e comuns na computação por várias razões:
+
+1. Simplicidade: A pilha tem apenas dois métodos principais - `push` (adicionar elemento) e `pop` (remover o último elemento). Esses são os únicos métodos disponíveis para manipular elementos na pilha.
+
+2. Aplicações Práticas: Pilhas são frequentemente usadas em aplicações práticas como:
+   - Arquivos de texto: Para manter a ordem dos caracteres.
+   - Expressões matemáticas: Para resolver operações precedentes.
+   - Linguagens de programação: Para armazenar variáveis temporárias.
+   - Ferramentas de edição de texto: Para salvar e recuperar partes do documento.
+
+3. Eficiência: As operações básicas (inserir e remover) têm tempo de execução constante O(1), independentemente do tamanho da pilha.
+
+4. Manutenção de Ordem: A pilha mantém sempre seu conteúdo ordenado, garantindo que todos os elementos sejam acessíveis de maneira sequencial.
+
+5. Complexidade de Implementação: É fácil implementar uma</td><td class="num">4</td><td class="num">0.18</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A pilha é considerada uma das estruturas de dados mais simples e comuns na computação porque ela permite a adição ou remoção de elementos apenas no topo do conjunto, mantendo sempre o último elemento adicionado como o primeiro a ser removido. Isso torna a pilha útil para implementar funções como a função push (adicionar) e pop (remover), bem como para resolver problemas relacionados à sequência de chamadas de funções.</td><td class="num">5</td><td class="num">0.31</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A pilha é considerada uma das estruturas de dados mais simples e comuns na computação porque ela permite inserir e remover elementos apenas no topo do conjunto, sem afetar os outros elementos presentes na pilha. Isso torna a pilha útil para manter informações temporárias durante operações de processamento, como armazenar valores de variáveis locais ou registros de instruções.</td><td class="num">4</td><td class="num">0.24</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A pilha é considerada uma das estruturas de dados mais simples e comuns na computação por várias razões:
+
+1. Simplicidade: A pilha tem apenas dois operadores básicos - inserir (push) e remover (pop). Isso torna o código mais fácil de entender e escrever.
+
+2. Eficiência: O tempo de inserção e remoção em uma pilha é constante, independentemente do tamanho do conjunto de elementos. Isto significa que qualquer elemento pode ser adicionado ou removido em tempo linear.
+
+3. Aplicações Práticas: Pilhas são frequentemente usadas para implementar funções como "fazendo" e "restringindo". Por exemplo, quando você usa um programa de edição de texto, os caracteres podem ser inseridos no documento usando a função push e removidos usando a função pop.
+
+4. Complexidade Básica: As operações de inserção e remoção têm complexidade de tempo de execução constante, o que torna a pilha uma ótima escolha para problemas onde precisamos efetivamente manipular um conjunto de itens.
+
+5. Intuitivo: A pilha é intuitiva para muitas</td><td class="num">4</td><td class="num">0.18</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#23 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Cite um exemplo de uso de pilha no funcionamento de programas.</p>
+<p class="qref"><strong>Referência:</strong> A pilha de execução (call stack) gerencia as chamadas de função: cada chamada empilha um registro de ativação e cada retorno o desempilha, seguindo a ordem LIFO.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Uma das principais aplicações práticas da pilha na programação é a implementação do sistema de arquivos (FileSystem) em sistemas operacionais. Aqui está um exemplo simplificado:
+
+1. **Arquivo aberto**: Quando um arquivo é aberto para leitura ou escrita pela primeira vez, ele é adicionado à pilha.
+
+2. **Ler o próximo caractere**: Se você quiser ler o próximo caractere do arquivo, você deve desempilhar uma posição na pilha. Isso significa que você está esperando por mais bytes do arquivo.
+
+3. **Escrever o próximo caractere**: Para escrever o próximo caractere, você precisa empilhar uma nova posição na pilha. Isso indica que você está pronto para enviar mais dados ao arquivo.
+
+4. **Fechar o arquivo**: Quando o processo terminar com o arquivo, você deve desempilhar a última posição na pilha. Isso significa que o arquivo foi completamente lido ou escrito.
+
+5. **Reorganização da pilha**: Ao fechar o arquivo, a pilha pode ser reorganizada para garantir que todos os dados sejam armazenados corretamente.
+
+Essa estrutura permite</td><td class="num">2</td><td class="num">0.07</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A pilha pode ser usada para armazenar os parênteses de uma expressão matemática, onde cada parêntese é adicionado à pilha quando é aberto e removido quando é fechado. Isso permite verificar se a expressão está balanceada ou não.</td><td class="num">4</td><td class="num">0.18</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">O uso de pilhas pode ser visto na estrutura de controle de fluxo de um programa, onde a pilha auxiliar armazena os parâmetros passados para funções recursivas.</td><td class="num">3</td><td class="num">0.26</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Uma aplicação comum onde a pilha é usada é o gerenciador de arquivos (File Manager) na maioria dos sistemas operacionais modernos. Aqui está um exemplo simplificado:
+
+1. Quando você abre uma nova janela do File Manager, o sistema cria um novo diretório para essa nova janela.
+2. Essa nova estrutura de diretórios é chamada de "pilha" porque os diretórios são adicionados ao topo da pilha conforme eles são criados.
+
+3. Ao fechar a janela, o arquivo ou pasta é removido do topo da pilha, tornando-o acessível novamente.
+
+4. Se você abrir outra janela, o processo se repete: novos diretórios são adicionados à pilha.
+
+5. No final, quando todas as janelas estão fechadas, todos os diretórios removidos de sua pilha também serão removidos.
+
+Portanto, a pilha funciona como uma pilha de arquivos, onde cada novo item é adicionado ao topo da pilha até que seja removido. Isso permite a visualização de todos os itens abertos simultaneamente, permitindo que o usuário navegue</td><td class="num">2</td><td class="num">0.13</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#24 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Em uma implementação dinâmica de pilha com listas encadeadas, o que representa o ponteiro 'topo'?</p>
+<p class="qref"><strong>Referência:</strong> O ponteiro 'topo' aponta para o nó mais recentemente inserido na pilha; as operações push e pop manipulam esse ponteiro para inserir ou remover sempre na extremidade do topo.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">No contexto de uma implementação dinâmica de pilha usando listas encadeadas, o "ponteiro 'topo'" refere-se ao nó do último elemento (ou topo) na lista. Este nó contém informações sobre a topologia da pilha, como o valor armazenado no nó e as referências para os nós seguintes.
+
+Aqui está um esboço básico de como isso funciona:
+
+1. **Criação de Nó**: Cada novo elemento da pilha é criado como um novo nó na lista encadeada.
+
+2. **Inserção de Novos Elementos**: Quando você insere um novo elemento na pilha, ele é adicionado à frente do nó atualmente considerado o topo.
+
+3. **Remoção de Elementos**: Quando você remove um elemento da pilha, geralmente é removido o topo da lista.
+
+4. **Ponteiro 'Topo'**: O ponteiro 'topo' se refere ao nó que está no topo da pilha. Ele permite acessar facilmente o último elemento inserido.
+
+5. **Contagem de Elementos**: A quantidade total de elementos na pilha pode ser obtida verificando quantos nós existem na</td><td class="num">4</td><td class="num">0.17</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">O ponteiro 'topo' na implementação dinâmica de pilha com listas encadeadas representa a referência para o nó do topo da pilha.</td><td class="num">5</td><td class="num">0.40</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">O ponteiro 'topo' aponta para o primeiro elemento da pilha.</td><td class="num">2</td><td class="num">0.36</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">No contexto de uma pilha implementada por meio de listas encadeadas, o "topo" (ou topo do stack) é definido como a referência ou ponteiro que aponta para o último elemento na lista. Este elemento é geralmente chamado de "pilha atual". 
+
+Aqui está um esboço de como isso pode ser representado:
+
+```c++
+class Node {
+public:
+    int data;
+    Node* next;
+
+    // Construtor padrão
+    Node(int value) : data(value), next(nullptr) {}
+};
+
+class Stack {
+private:
+    Node* top = nullptr;  // Ponteiro para o topo
+
+public:
+    void push(int value) {
+        Node* newNode = new Node(value);
+        if (!top) {
+            top = newNode;
+        } else {
+            newNode-&gt;next = top;
+            top = newNode;
+        }
+    }
+
+    bool empty() const {
+        return top == nullptr;
+    }
+
+    int pop() {
+        if (empty()) throw std::out_of_range("Stack is empty");
+        Node* temp = top;
+        top = top-&gt;next;
+        delete temp;
+        return temp-&gt;data;
+    }
+
+    int peek() const {
+        if (</td><td class="num">4</td><td class="num">0.22</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#25 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Como a maioria das estruturas de dados, quais operações básicas a pilha permite?</p>
+<p class="qref"><strong>Referência:</strong> Permite operações de adição (inserção) e de remoção de dados; na pilha ambas ocorrem na mesma extremidade, o topo.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A pilha é uma estrutura de dados linear onde os elementos são inseridos e removidos no final (topo) da pilha. Aqui estão as principais operações básicas que uma pilha permite:
+
+1. Inserir elemento: Adicionar um novo elemento à pilha.
+2. Remover elemento: Retirar o último elemento adicionado à pilha.
+3. Verificar se está vazia: Determinar se a pilha não contém nenhum elemento.
+4. Verificar se está cheia: Confirmar se a pilha já contém todos os espaços disponíveis.
+
+Essas operações são fundamentais para muitos algoritmos e aplicações, como calculadoras de expressões matemáticas, pilhas de trabalho, entre outros.</td><td class="num">5</td><td class="num">0.17</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Inserir elemento (push) e remover elemento (pop).</td><td class="num">5</td><td class="num">0.08</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Inserir (push) e remover (pop) elementos</td><td class="num">5</td><td class="num">0.08</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A pilha (ou stack) é uma estrutura de dados linear onde os elementos são inseridos e removidos do final. As operações básicas permitidas pela pilha incluem:
+
+1. Inserir elemento: Adicionar um novo elemento à pilha.
+2. Remover elemento: Retirar o último elemento adicionado à pilha.
+3. Verificar se a pilha está vazia: Determinar se a pilha contém nenhum elemento.
+
+Essas operações permitem que a pilha seja usada para resolver problemas relacionados a programação funcional, como funções recursivas ou processamento de fluxos lógicos. A pilha também pode ser utilizada para implementar outras estruturas de dados mais complexas, como árvores binárias ou arcos de grafo.</td><td class="num">5</td><td class="num">0.13</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#26 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> O que acontece com um elemento recém-adicionado em uma pilha?</p>
+<p class="qref"><strong>Referência:</strong> Ele se torna o novo topo da pilha e será o primeiro a ser removido em uma futura operação de remoção, conforme a política LIFO.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Em uma pilha (ou stack), quando um novo elemento é adicionado à pilha, ele se encontra no topo da pilha. A pilha segue a regra do "primeiro que entra, primeiro que sai", ou seja, o último elemento inserido será o primeiro a ser removido.
+
+Aqui estão alguns pontos importantes sobre como funciona um elemento na pilha:
+
+1. **Topo**: O elemento mais recente adicional é chamado de topo da pilha.
+
+2. **Adição**: Novos elementos são sempre adicionados ao topo da pilha.
+
+3. **Remoção**: Elementos são removidos do topo da pilha.
+
+4. **Livreza**: Seu nome vem de "free" porque os elementos são liberados para uso após sua utilização.
+
+5. **Pilha Vazia**: Uma pilha vazia tem seu topo igualmente vazio.
+
+6. **Pilha Cheia**: Quando não há espaço suficiente para adicionar um novo elemento, a pilha está cheia.
+
+7. **Operações Principais**:
+   - `push`: Adiciona um novo elemento ao topo.
+   - `pop`: Remove o elemento do topo.
+   - `peek`</td><td class="num">2</td><td class="num">0.22</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">É movido para o topo da pilha.</td><td class="num">4</td><td class="num">0.31</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">o elemento é adicionado ao topo da pilha</td><td class="num">4</td><td class="num">0.30</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">No contexto de pilhas (também conhecidas como stacks), quando você adiciona um novo elemento à pilha, ocorre o seguinte:
+
+1. O novo elemento é inserido no topo da pilha.
+2. A pilha mantém a estrutura de "chave-chave" onde a chave do novo elemento está sempre acima da chave do elemento removido.
+
+Aqui estão alguns pontos importantes para entender melhor:
+
+- **Topo da Pilha**: É o elemento mais recentemente adicionado à pilha. Quando você remove um elemento da pilha, esse será o elemento que estava no topo antes.
+  
+- **Estrutura de Chaves**: Na maioria dos casos, os elementos são adicionados ao topo da pilha, então eles serão removidos do topo também.
+
+- **Não há espaço para adicionar mais elementos**: Uma pilha pode ser considerada cheia se tentar adicionar um novo elemento após o topo já estiver ocupado.
+
+Portanto, quando você adiciona um novo elemento à pilha, ele se tornará o elemento mais recente na pilha, assumindo o lugar do elemento removido anteriormente.</td><td class="num">4</td><td class="num">0.17</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#27 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> No contexto de inicialização de uma pilha dinâmica, o que faz a operação de inicializar?</p>
+<p class="qref"><strong>Referência:</strong> A inicialização prepara a pilha para uso, normalmente definindo o topo como vazio (por exemplo, atribuindo NULL ao ponteiro de topo), indicando que ainda não há elementos.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A operação de inicialização de uma pilha dinâmica (stack) geralmente envolve a alocação de memória para armazenar os elementos da pilha. Aqui estão alguns passos comuns para a inicialização:
+
+1. **Definir o tamanho máximo**: Antes de iniciar a pilha, é necessário definir o tamanho máximo que ela pode conter. Isso é feito especificando quantas posições podem ser ocupadas na memória.
+
+2. **Alocar memória**: A memória é então alocada no sistema de arquitetura do processador ou no espaço de dados disponível na memória RAM. O tamanho dessa memória deve ser suficiente para armazenar todos os elementos da pilha.
+
+3. **Iniciar a pilha**: Uma vez que a memória está alocada, a pilha começa a funcionar. Cada novo elemento adicionado à pilha será inserido na parte superior da pilha, enquanto os anteriores são removidos conforme necessário.
+
+4. **Manter a estrutura**: Para manter a pilha organizada, é importante garantir que cada elemento tenha acesso direto ao próximo elemento na pilha. Isso é</td><td class="num">2</td><td class="num">0.11</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A operação de inicializar na pilha dinâmica cria uma nova pilha com espaço suficiente para armazenar n elementos, onde n é o tamanho especificado pelo usuário.</td><td class="num">2</td><td class="num">0.23</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">alocar espaço suficiente na memória para os elementos da pilha</td><td class="num">2</td><td class="num">0.16</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A operação de inicializar na pilha dinâmica geralmente se refere ao processo de criar uma nova pilha ou reutilizar uma existente para armazenar dados temporariamente durante a execução de um programa.
+
+1. **Criando uma Nova Pilha**: Quando você inicia uma nova pilha dinâmica, isso significa que você está criando uma nova estrutura de dados contendo elementos (pilha) que podem ser adicionados, removidos, ou acessados por referências locais ou globais. Isso pode ser útil quando você precisa armazenar informações temporárias durante a execução do seu programa.
+
+2. **Reutilizando uma Pilha Exisitente**: Em alguns casos, você pode querer usar uma pilha que já foi criada anteriormente. Por exemplo, você pode ter uma pilha global que é usada por várias funções diferentes no seu programa. Se você quiser reutilizar essa pilha, você pode iniciar a pilha novamente usando a mesma função que inicializou a pilha antes.
+
+Em ambos os casos, a operação de inicializar tem como objetivo garantir que a pilha esteja pronta para receber novos elementos ou continuar a manipulação</td><td class="num">2</td><td class="num">0.11</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#28 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Qual a importância de estudar estruturas de dados em um curso de Ciência da Computação?</p>
+<p class="qref"><strong>Referência:</strong> Estruturas de dados permitem organizar e manipular informações de forma eficiente, sendo base para algoritmos, desempenho de programas e resolução de problemas computacionais; por isso são disciplina fundamental no curso.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Estudar estruturas de dados em um curso de Ciência da Computação é extremamente importante por várias razões:
+
+1. **Base para Soluções Práticas**: Estruturas de dados são fundamentais para resolver problemas computacionais eficientemente. Elas permitem organizar e manipular grandes quantidades de informações de maneira eficiente.
+
+2. **Desenvolvimento de Algoritmos Eficientes**: A compreensão de diferentes tipos de estruturas de dados ajuda a desenvolver algoritmos mais eficientes. Isso é crucial para otimizar sistemas computacionais e garantir que eles sejam rápidos e eficazes.
+
+3. **Gerenciamento de Memória**: As estruturas de dados permitem gerenciar melhor o uso de memória do sistema. Eles ajudam a evitar a sobrecarga de memória e a economia de recursos.
+
+4. **Solução de Problemas Complexos**: Em muitos casos, os problemas complexos envolvem a necessidade de usar uma combinação de diferentes estruturas de dados para modelar as entidades e relações presentes no problema.
+
+5. **Prática Profissional**: Em</td><td class="num">5</td><td class="num">0.26</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A compreensão das estruturas de dados é fundamental para o desenvolvimento de soluções eficientes e eficazes em sistemas computacionais. Isso inclui a capacidade de manipular e organizar grandes quantidades de informações de maneira eficiente, garantindo a performance desejada dos programas. Além disso, as estruturas de dados são essenciais para a implementação de algoritmos complexos e para a solução de problemas reais na prática.</td><td class="num">5</td><td class="num">0.43</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A importância de estudar estruturas de dados em um curso de Ciência da Computação está na capacidade de manipular informações de maneira eficiente e organizada, facilitando a solução de problemas e a criação de aplicações mais eficientes.</td><td class="num">5</td><td class="num">0.39</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Estudar estruturas de dados no curso de Ciência da Computação é extremamente importante por várias razões:
+
+1. **Facilidade de Manipulação**: Estruturas de dados permitem organizar e manipular informações de maneira eficiente. Isso torna o código mais fácil de ler, entender e manter.
+
+2. **Eficiência do Processamento**: As estruturas de dados podem ser usadas para otimizar os processos computacionais. Por exemplo, arrays são muito eficientes para operações de busca rápida.
+
+3. **Solução de Problemas Prácticos**: A compreensão de estruturas de dados ajuda na solução de problemas práticos, como a organização de dados para melhorar a eficácia dos algoritmos.
+
+4. **Prática de Pensamento Algorítmico**: O estudo dessas estruturas permite uma abordagem matemática e lógica ao resolver problemas, que é essencial em qualquer campo de ciência da computação.
+
+5. **Flexibilidade e Adaptabilidade**: Estruturas de dados oferecem diferentes formas de armazenar e acessar dados, permitindo a escolha adequ</td><td class="num">5</td><td class="num">0.25</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#29 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Em uma pilha, é possível acessar diretamente um elemento que não esteja no topo?</p>
+<p class="qref"><strong>Referência:</strong> Não. Pela definição da pilha, o acesso é restrito ao topo; para alcançar um elemento abaixo é preciso remover (pop) os elementos acima dele primeiro.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Sim, é possível acessar diretamente um elemento que não esteja no topo de uma pilha (ou stack) sem precisar desempilhar todos os elementos anteriores.
+
+A pilha funciona com a estrutura LIFO (Last In First Out), ou seja, o último item inserido é o primeiro a ser removido. Portanto, para acessar um elemento que está no meio da pilha, você pode:
+
+1. Remover todos os elementos até o ponto onde você deseja acessar.
+2. Acessar o elemento desejado.
+3. Reinserir todos os elementos removidos na pilha.
+
+Por exemplo, se você tem uma pilha com os seguintes elementos: [5, 3, 8, 1], e você quer acessar o elemento 3, você removeria os elementos 5 e 8, deixando apenas 1 na pilha. Depois disso, você poderia acessar o elemento 3 diretamente.
+
+É importante notar que esta abordagem requer tempo linear O(n) para remover todos os elementos antes do elemento desejado, onde n é o número total de elementos na pilha. Além disso, essa operação não é ef</td><td class="num">1</td><td class="num">0.15</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Não</td><td class="num">1</td><td class="num">0.08</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Não, é impossível acessar diretamente um elemento que não esteja no topo de uma pilha.</td><td class="num">5</td><td class="num">0.30</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Sim, é possível acessar diretamente um elemento que não esteja no topo de uma pilha (ou stack). Uma pilha é uma estrutura de dados que funciona de maneira lógica como se fosse uma pilha de livros ou objetos. No entanto, a principal característica de uma pilha é que os elementos são inseridos e removidos do topo.
+
+No entanto, o acesso direto ao topo da pilha pode ser considerado "diretamente" apenas quando estamos falando sobre a operação de remover o último elemento adicionado à pilha. Quando estamos falando de remover o primeiro elemento da pilha, precisamos deslocar todos os elementos para trás na pilha, o que não é considerado "diretamente".
+
+Portanto, se você está falando de remover o último elemento da pilha, sim, você pode acessar ele diretamente sem necessidade de deslocamento. Se estiverem falando de remover o primeiro elemento, essa operação requer deslocamento dos outros elementos para trás.</td><td class="num">2</td><td class="num">0.18</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#30 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Qual a diferença entre uma implementação de pilha estática (com vetor) e dinâmica (com lista encadeada)?</p>
+<p class="qref"><strong>Referência:</strong> A pilha estática usa um vetor de tamanho fixo, com limite de capacidade e risco de overflow; a dinâmica usa nós alocados sob demanda com ponteiros, crescendo conforme a memória disponível, ao custo de armazenar ponteiros e fazer alocações.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A diferença entre uma implementação de pilha estática (com vetor) e dinâmica (com lista encadeada) reside principalmente na maneira como os elementos são inseridos e removidos do topo da pilha.
+
+1. Implementação estática:
+   - O tamanho da pilha é fixo.
+   - Os elementos são armazenados em um vetor.
+   - Quando o vetor chega ao seu limite máximo, novos elementos precisam ser criados para suportar mais entradas.
+   - A operação de inserção ou remoção no topo da pilha tem tempo de execução constante (O(1)).
+
+2. Implementação dinâmica:
+   - O tamanho da pilha pode mudar durante o processo.
+   - Os elementos são armazenados em uma lista encadeada.
+   - As operações de inserção e remoção no topo da pilha têm tempo de execução linear (O(n)), onde n é o número de elementos já existentes na pilha.
+   - Essa estrutura permite que a pilha cresça automaticamente conforme necessário.
+
+Em resumo, a implementação estática oferece maior estabilidade e segurança, mas requer um esforço adicional</td><td class="num">3</td><td class="num">0.22</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A principal diferença entre uma implementação de pilha estática (com vetor) e dinâmica (com lista encadeada) reside na maneira como os elementos são inseridos e removidos do topo da pilha.
+
+Na implementação estática, o tamanho da pilha é fixo e determinado pelo tamanho do vetor usado para armazenar os elementos. Isso significa que ao tentar adicionar mais elementos à pilha, ocorre um overflow se o vetor estiver cheio. Em contraste, na implementação dinâmica, o tamanho da pilha pode ser aumentado automaticamente conforme necessário, evitando overflow.
+
+Outra diferença importante é que na implementação estática, todos os elementos devem ser acessados por meio de ponteiros, enquanto na implementação dinâmica, cada elemento é armazenado em uma posição diferente no vetor, permitindo acesso direto aos elementos sem necessidade de ponteiros.</td><td class="num">3</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma pilha estática usa um vetor para armazenar os elementos, enquanto uma pilha dinâmica usa uma lista encadeada. A pilha estática tem tamanho fixo, enquanto a pilha dinâmica pode crescer ou diminuir conforme necessário.</td><td class="num">4</td><td class="num">0.36</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A principal diferença entre uma pilha estática e dinâmica (ou com lista encadeada) reside na maneira como os elementos são inseridos e removidos do topo da pilha.
+
+1. Pilha estática:
+   - A pilha estática usa um vetor para armazenar os elementos.
+   - O acesso aos elementos no topo da pilha é eficiente, pois o vetor tem um índice linear que pode ser facilmente acessado.
+   - Quando se adiciona um novo elemento à pilha, deve-se expandir o tamanho do vetor para incluir o novo elemento.
+   - Quando se remove um elemento da pilha, deve-se deslocar todos os elementos abaixo dele para a direita, permitindo que o espaço ocupado pelo elemento a ser removido seja eliminado.
+
+2. Pilha dinâmica (com lista encadeada):
+   - A pilha dinâmica usa uma estrutura de dados chamada lista encadeada para armazenar os elementos.
+   - O acesso aos elementos no topo da pilha é eficiente, pois a lista encadeada permite navegar até o topo sem precisar percorrer toda a lista.
+   - Quando se adiciona um novo elemento à pil</td><td class="num">4</td><td class="num">0.17</td></tr>
+</tbody></table></div><h2>Qwen2.5-0.5b — respostas por questão (30 questões)</h2>
+<div class="qcard">
+<p class="qtipo">#1 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é uma pilha (stack) em estruturas de dados e qual sua política de acesso?</p>
+<p class="qref"><strong>Referência:</strong> Uma pilha é uma estrutura de dados linear que segue a política LIFO (Last In, First Out): o último elemento inserido é o primeiro a ser removido. O acesso é feito sempre pelo topo.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A pilha (ou stack) é uma estrutura de dados que se comporta como uma lista ordenada, mas com a capacidade de adicionar ou remover elementos de forma sequencial. Ela é útil para implementar operações de busca, inserção e remoção de elementos.
+
+### Política de Acesso na Pilha:
+
+1. **Inserção**: O elemento adicionado à pilha deve ser inserido no final.
+2. **Remoção**: O último elemento da pilha pode ser removido, mas não o primeiro.
+
+### Exemplo de Pilha:
+
+Suponhamos que temos uma pilha vazia chamada `pilha`. Para inserir um novo elemento, podemos fazer isso assim:
+
+```python
+pilha = []
+pilha.append(5)
+pilha.append(3)
+pilha.append(7)
+print(pilha)  # Imprime [5, 3, 7]
+```
+
+Para remover um elemento, podemos usar a função `pop()`:
+
+```python
+pilha.pop()  # Remover o último elemento da pilha
+print(pilha)  # Imprime [5, 3]
+```
+
+### Notas importantes:
+
+- **Inserção**: É importante lem</td><td class="num">4</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Um stack é uma estrutura de dados onde a primeira posição do topo é o último elemento inserido. A política de acesso é que os elementos são acessados de trás para frente.</td><td class="num">2</td><td class="num">0.52</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma pilha é uma estrutura de dados que permite a inserção e exclusão de elementos em ordem crescente ou decrescente. Ela tem uma política de acesso onde os elementos são acessados de trás para frente, o que significa que o último elemento adicionado será o primeiro elemento removido.</td><td class="num">2</td><td class="num">0.46</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A pilha (ou stack) é uma estrutura de dados que mantém-se na memória do computador enquanto não é usada. Ela é uma das principais estruturas de dados utilizadas no desenvolvimento de sistemas operacionais.
+
+### Política de Acesso à Pilha
+
+1. **Início**: O início da pilha está disponível para todos os processadores.
+2. **Finalidade**: As funções de inserção e exclusão dos elementos são limitadas aos processadores próximos ao início da pilha.
+3. **Sinalização**: Os processadores próximos ao início da pilha podem fazer chamadas de fora da pilha.
+
+### Exemplos de Pilhas:
+
+- **Pilha de Entrada (Input Stack)**: É usado quando o sistema operacional espera entrada de dados ou informações.
+  - Exemplo: O processo de um programa para solicitar entrada de dados do usuário.
+
+- **Pilha de Saída (Output Stack)**: É usado quando a informação finalizada deve ser exibida ou armazenada.
+  - Exemplo: O processo de um programa que imprime uma mensagem após a execução de um bloco de código.
+
+### Sintaxe da Pilha:</td><td class="num">1</td><td class="num">0.19</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#2 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> Quais são as duas operações fundamentais de uma pilha?</p>
+<p class="qref"><strong>Referência:</strong> As operações fundamentais são push (inserir um elemento no topo) e pop (remover e retornar o elemento do topo).</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">As duas operações fundamentais de uma pilha são:
+
+1. Inserir (Push): Adiciona um elemento à pilha.
+2. Extrair (Pop): Remove o último elemento da pilha.
+
+Essas operações permitem aos usuários manipular a estrutura de dados de maneira eficiente, garantindo que a pilha seja sempre organizada de forma ordenada.</td><td class="num">5</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Inserir e Remover</td><td class="num">2</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">inserir e remover</td><td class="num">2</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">As duas operações fundamentais de uma pilha são:
+
+1. Inserção: A inserção de um elemento no final da pilha.
+2. Deletar: O remoção do último elemento da pilha.
+
+Essas operações são fundamentais porque permitem manipular a estrutura da pilha de maneiras legais e eficientes.</td><td class="num">2</td><td class="num">0.35</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#3 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que diferencia uma fila (queue) de uma pilha?</p>
+<p class="qref"><strong>Referência:</strong> A fila segue a política FIFO (First In, First Out), em que o primeiro elemento inserido é o primeiro a sair, enquanto a pilha segue LIFO, em que o último a entrar é o primeiro a sair.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A diferença principais entre uma fila (queue) e uma pilha (stack) está na ordem de inserção e exclusão dos elementos.
+
+1. **Fila (Queue)**:
+   - A fila é uma lista ordenada onde os elementos são adicionados no final e excluídos no início.
+   - É útil para armazenar dados temporários ou para processamento sequencial de entradas.
+   - Exemplo: Uma fila de clientes na fila de espera de um restaurante.
+
+2. **Pilha (Stack)**:
+   - A pilha é uma lista ordenada onde os elementos são adicionados no topo e excluídos no topo.
+   - É útil para armazenar dados de maneira dinâmica e para manipulação de strings, listas e outros tipos de dados.
+   - Exemplo: Um código de texto que pode ser adcionado ao final e removido do topo.
+
+Em resumo, a principal diferença é a ordem de acesso aos elementos:
+
+- **Fila**: Adiciona elementos no final e remove-os no início.
+- **Pilha**: Adiciona elementos no topo e remove-os no topo.
+
+Esses dois sistemas são fundamentais na programação e podem ser usados em</td><td class="num">5</td><td class="num">0.12</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A fila (queue) é uma lista ordenada, enquanto a pilha é uma lista não ordenada.</td><td class="num">2</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma fila é uma lista ordenada, enquanto uma pilha pode ser vazia ou não ordenada.</td><td class="num">2</td><td class="num">0.15</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A diferença principais entre uma fila (queue) e uma pilha (stack) está na sua estrutura de dados:
+
+1. Estrutura de Dados:
+   - Fila: É uma lista ordenada onde cada elemento é acessado por meio de uma ponteira.
+   - Pilha: É uma lista não-ordenada onde os elementos são acessados por meio de uma ponteira.
+
+2. Operações:
+   - Fila: Possui acesso linear para todos os elementos.
+   - Pilha: Não possui acesso linear aos elementos, mas pode ser acessada de maneiras diferentes.
+
+3. Usos:
+   - Fila: Utilizada principalmente como uma representação dinâmica de uma cadeia de trabalho ou de uma fila de processamento.
+   - Pilha: Usada principalmente para manipular sequências de itens ordenadas, como listas de produtos na loja, cartões de pagamento na bancarrota, etc.
+
+4. Complexidade:
+   - Fila: Menor complexidade de operações comparado à pilha.
+   - Pilha: Maior complexity de operações comparado à fila.
+
+5. Desempenho:
+   - Fila: Pode ser mais eficiente em tempo de</td><td class="num">2</td><td class="num">0.10</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#4 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é um Tipo Abstrato de Dados (TAD)?</p>
+<p class="qref"><strong>Referência:</strong> Um Tipo Abstrato de Dados é a especificação de um conjunto de dados e das operações que podem ser realizadas sobre eles, separando o comportamento (interface) da implementação concreta.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Um TAD (Tipo de Dados) é uma estrutura de dados que possui características unificadas ou comum para todos os seus elementos. Esses tipos são geralmente definidos por um conjunto de propriedades unificadas, como a quantidade de elementos possíveis, o tipo de dado, a ordem dos elementos, entre outros.
+
+Os tipos abstratos de dados são essenciais para a programação funcional e a programação orientada a objetos. Eles permitem que você define padrões de comportamento para diferentes tipos de dados, sem ter a necessidade de especificar cada detalhe individual do elemento dentro desse tipo.
+
+Por exemplo, se você estiver trabalhando com listas de números inteiros, pode ser útil definir um tipo abstrato chamado "ListaInt" que seja capaz de representar qualquer lista de números inteiros. Isso permite que você não precisar especificar quantos elementos há na lista ou qual tipo de dado cada elemento representa.
+
+No entanto, é importante notar que não todas as linguagens de programação suportam tanto tipo abstrato de dados quanto tipo de dados abstratos. No Python, por exemplo, você pode usar classes para defin</td><td class="num">4</td><td class="num">0.18</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Um TAD é um tipo de dados que não possui uma implementação específica para a sua classe. Isso significa que ele não pode ser instanciado diretamente como um objeto do tipo.</td><td class="num">2</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Um TAD é um conjunto finito de elementos que podem ser usados para representar dados.</td><td class="num">2</td><td class="num">0.41</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Um tipo abstrato de dados (TAD) é uma classe ou conjunto de classes que não são implementadas por qualquer outra classe. Essas classes podem ser usadas como base para outras classes, mas não precisam ser implementadas.
+
+Aqui estão alguns pontos importantes sobre TADs:
+
+1. Definição: Um TAD é uma coleção de tipos definidos pelo usuário.
+2. Propriedades:
+   - Não pode ser instanciada diretamente por outros objetos.
+   - É uma representação simplificada do mundo real.
+3. Implementações: As classes que fazem parte do TAD devem ser implementadas por outros objetos.
+4. Usos:
+   - Para criar estruturas de dados mais complexas.
+   - Para criar interfaces de dados mais específicas.
+5. Limites:
+   - Não permite a criação de classes que possam ser usadas por outras classes.
+   - Não permite a criação de classes que possam ser usadas por outras classes.
+
+Por exemplo, o CArray é um exemplo de TADs:
+
+```csharp
+public class CArray&lt;T&gt;
+{
+    public int Size;
+    public T[] Data;
+
+    // Métodos adicionais
+}
+```
+
+No</td><td class="num">2</td><td class="num">0.20</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#5 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que significa a notação de complexidade O(1)?</p>
+<p class="qref"><strong>Referência:</strong> O(1) indica complexidade de tempo constante: o custo da operação não depende do tamanho da entrada. As operações push e pop de uma pilha são O(1).</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A notação O(1) representa uma função com tempo linear (linear complexity). Esta não é uma expressão matemática formal, mas sim uma abordagem para entender o comportamento de um algoritmo ou um processo computacional.
+
+Em termos de tempo, a função O(1) indica que o tempo necessário para executar o algoritmo é constante e depende apenas do número de elementos que ele processa. Isso significa que o tempo excedido pelo algoritmo é sempre igual ao tempo excedido pelo número de elementos processados.
+
+Por exemplo, considerando um algoritmo que percorre uma lista de n elementos, a função O(n) seria útil se você precisava calcular o tempo excedido por n elementos. No entanto, se você precisava calcular o tempo excedido por 2n elementos, a função O(2n) seria mais conveniente.
+
+É importante notar que esta não é uma representação matemática precisa, pois a complexidade de tempo pode variar dependendo do contexto específico do problema.</td><td class="num">1</td><td class="num">0.18</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A notação O(1) representa uma função que retorna o mesmo valor para qualquer entrada.</td><td class="num">2</td><td class="num">0.23</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A notação O(1) indica que a função retorna o mesmo valor para qualquer entrada, independentemente do tamanho da entrada. Isso significa que a função não utiliza memória além do espaço necessário para armazenar os valores de entrada.</td><td class="num">2</td><td class="num">0.30</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A notação de complexidade O(n) é uma maneira simplificada de representar o tempo necessário para realizar uma tarefa específica. Ela representa:
+
+1. A quantidade de vezes que a função pode ser chamada (n)
+2. O número máximo de passos que ela pode executar antes de retornar (n)
+
+Portanto, O(n) significa que a função pode ser chamada n vezes antes de retornar.
+
+Exemplo: Se você tem uma função que faz 500 chamadas ao longo do tempo, ela teria complexidade O(500).
+
+Esta notação é útil quando você está trabalhando com grandes volumes de dados ou processando grandes volumes de informações rapidamente.</td><td class="num">1</td><td class="num">0.17</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#6 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> Explique a diferença entre alocação estática e alocação dinâmica de memória.</p>
+<p class="qref"><strong>Referência:</strong> Na alocação estática o tamanho da estrutura é fixado em tempo de compilação; na alocação dinâmica a memória é reservada em tempo de execução (por exemplo com malloc em C), permitindo estruturas que crescem ou diminuem conforme a necessidade.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A alocação estática e dinâmica são duas maneiras diferentes de gerenciar o espaço de memória na CPU (Central Processing Unit) para evitar o uso excessivo de recursos.
+
+1. Alocação estática: Esta é uma maneira mais simples de lidar com a alocação de memória. Quando você define um tamanho máximo de memória disponível para cada processador, o sistema automaticamente reserva essa quantidade de memória para o processo atual. Isso pode ser útil se você quiser manter uma boa configuração de memória ou se você quer garantir que não haja sobrecarga de memória.
+
+2. Alocação dinâmica: A alocação dinâmica é uma maneira mais complexa de gerenciar a alocação de memória. Ela envolve a criação de tabelas de reservas temporárias (RAMs) que podem ser usadas quando necessário. Esses tamanhos de RAM são definidos por um sistema de controle de memória (como o Windows 7), que permite que os usuários defina quantos bytes de RAM podem ser reservados para cada processo. 
+
+Em resumo, a alocação estática é mais simples e eficiente, mas requer menos</td><td class="num">1</td><td class="num">0.18</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A alocação estática de memória permite que o sistema escolha a quantidade de memória para cada processador, enquanto a alocação dinâmica de memória permite que o sistema defina automaticamente a quantidade de memória necessária para cada processo.</td><td class="num">1</td><td class="num">0.29</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A alocação estática de memória permite que o sistema escolha onde cada membro será armazenado, sem considerar a localização exata do membro. Por outro lado, a alocação dinâmica de memória permite que o sistema determine a localização exata do membro, garantindo que ele esteja disponível quando necessário.</td><td class="num">1</td><td class="num">0.28</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A alocação estática de memória é quando o sistema de hardware determina quantas linhas de memória são necessárias para cada programa ou aplicativo executado na máquina. Isso ocorre automaticamente ao iniciar uma nova execução do programa.
+
+Por outro lado, a alocação dinâmica de memória é quando o sistema de hardware não determina quantas linhas de memória são necessárias, mas sim os recursos disponíveis no momento da execução do programa. Isso pode ser feito através de técnicas como uso de processadores mais rápidos, uso de memória compartilhada ou uso de recursos de rede.
+
+Em outras palavras, a alocação estática de memória permite que você tenha controle sobre quanto memória você tem disponível, enquanto a alocação dinâmica de memória permite que você use todas as linhas de memória disponíveis, independentemente de quantas linhas você realmente precisa.</td><td class="num">1</td><td class="num">0.22</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#7 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é uma lista encadeada (linked list)?</p>
+<p class="qref"><strong>Referência:</strong> Uma lista encadeada é uma estrutura de dados linear composta por nós, em que cada nó armazena um valor e um ponteiro para o próximo nó, permitindo inserções e remoções sem deslocar os demais elementos.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Um exemplo de uma lista encadeada é a lista de números inteiros. Aqui está um exemplo simples:
+
+1. 5
+2. 3
+3. 7
+
+A lista é formada por elementos que são armazenados em memória como ponteiros para os próximos elementos. Em cada passo, o próximo elemento é armazenado na posição do atual elemento.
+
+Para adicionar um novo elemento à lista, você pode usar um método chamado "inserir" que recebe dois parâmetros: o índice do elemento que quer inserir e o valor do novo elemento. O método então cria um novo nó com esse valor e insere-o no início da lista.
+
+Exemplo de uso:
+```
+lista = [None] * 10  # Cria uma lista vazia com tamanho 10
+lista[0] = 5  # Inserindo o número 5 na posição 0
+lista[1] = 3  # Inserindo o número 3 na posição 1
+lista[2] = 7  # Inserindo o número 7 na posição 2
+```
+
+Esta lista é representada pela seguinte estrutura de dados:
+
+- Lista vazia</td><td class="num">2</td><td class="num">0.25</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A lista encadeada (linked list) é uma estrutura de dados que utiliza ponteiros para armazenar os elementos. Ela permite a criação de novos nós ao final do conjunto de elementos, mantendo o controle sobre a posição dos elementos na lista.</td><td class="num">2</td><td class="num">0.35</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma lista encadeada é uma estrutura de dados onde os elementos são armazenados em posições separadas por ponteiros para cada elemento.</td><td class="num">2</td><td class="num">0.50</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A lista encadeada (ou linked list) é uma estrutura de dados que contém elementos (elementos de dados) conectados entre si através de ponteiros. Essas ponteiras representam os pontos de interligação entre os elementos.
+
+Em outras palavras, a lista encadeada é uma estrutura de dados que permite a manipulação de múltiplos itens sem necessidade de criar novos objetos para cada item. É útil quando você precisa manipular muitos itens de forma organizada e fácil de acessar.
+
+Uma lista encadeada pode ser implementada usando vários tipos de elementos, como números inteiros ou strings, ou qualquer outro tipo de dado que deseja ser armazenado na lista.
+
+Por exemplo, uma lista encadeada simples poderia ser representada por:
+
+```python
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next_node = None
+
+def append_to_list(node, value):
+    new_node = Node(value)
+    if node is None:
+        return new_node
+    current_node = node
+    while current_node.next_node is not None:
+        current_node = current_node.next_node
+    current_node.next_node = new_node</td><td class="num">4</td><td class="num">0.19</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#8 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é recursão em programação?</p>
+<p class="qref"><strong>Referência:</strong> Recursão é a técnica em que uma função chama a si mesma para resolver subproblemas menores; precisa de um caso base que encerra as chamadas e de um passo recursivo que aproxima do caso base.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Recursão é uma técnica de programação onde uma função ou método se chama recursivamente para executar a mesma função ou método várias vezes até chegar ao fim. Isso significa que a função ou método faz o mesmo trabalho várias vezes dentro dela mesmo.
+
+Em outras palavras, recursão é quando uma função ou método lida com seu próprio resultado, passando por uma sub-provação (ou chamada) que lhe permite continuar a execução. 
+
+Exemplos de recursão:
+
+1. Função de Fibonacci: A função fib(n) calcula o n-ésimo número da sequência de Fibonacci.
+2. Função de Lucas: A função lucas(n) calcula o n-ésimo número da sequência de Lucas.
+3. Função de Ackermann: A função ackermann(n,m) calcula o n-ésimo número da sequência de Ackermann.
+
+Recursão é útil porque ela pode simplificar a implementação de funções complexas, permitindo que elas sejam executadas mais rapidamente. No entanto, também pode ser um problema de escalabilidade, pois a repetição do mesmo trabalho pode levar a um aumento na complexidade da função.</td><td class="num">4</td><td class="num">0.20</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A recursão é a possibilidade de uma função chamada recursivamente para executar o mesmo processo várias vezes até chegar ao final.</td><td class="num">3</td><td class="num">0.29</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Recursão é a possibilidade de fazer uma tarefa ou executar uma função dentro de si mesma. Isso permite resolver problemas complexos através de soluções mais simples.</td><td class="num">4</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A recursão é uma técnica de programação onde uma função ou sequência de funções é chamada recursivamente, repetindo o processo até que a função final seja alcançada. É uma técnica poderosa para resolver problemas complexos usando técnicas mais simples.
+
+Em termos de exemplo, vamos falar sobre a função factorial:
+
+def factorial(n):
+    if n == 1:
+        return 1
+    else:
+        return n * factorial(n-1)
+
+print(factorial(5)) # Saída: 120
+
+Essa função faz uma recursão, pois ela chama a mesma função novamente com o valor do argumento (n) diminuído por 1 até chegar no caso base (n = 1).
+
+Aqui está um exemplo mais detalhado:
+
+def fibonacci(n):
+    if n &lt;= 1:
+        return n
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+
+print(fibonacci(6)) # Saída: 8
+
+Esta função também faz uma recursão, pois ela chama a mesma função duas vezes, primeiro com n=3 e depois com n=2.
+
+Recursões são úteis quando você precisa fazer algo várias vezes, mas não quer</td><td class="num">4</td><td class="num">0.22</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#9 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> Para que serve um ponteiro na linguagem C?</p>
+<p class="qref"><strong>Referência:</strong> Um ponteiro é uma variável que armazena o endereço de memória de outra variável, permitindo acesso indireto, passagem de argumentos por referência e a construção de estruturas dinâmicas como listas e árvores.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Um ponteiro no C pode ser útil para manipular ou manipular dados específicos dentro do programa, mas não deve ser usado diretamente para manipular a estrutura geral do código. Aqui estão alguns pontos importantes sobre o uso de ponteiros:
+
+1. **Manipulação de Dados**: Ponteiros são úteis para manipular dados específicos, como variáveis, arrays, ponteiros, etc.
+
+2. **Manutenção de Estruturas**: Ponteiros podem ser usados para manter uma estrutura específica, como uma lista de elementos, uma matriz, etc., mantendo os dados internos dessa estrutura.
+
+3. **Funções e Métodos**: Ponteiros permitem criar funções e métodos que manipulam dados específicos, permitindo que você faça alterações diretas aos dados.
+
+4. **Cálculo**: Ponteiros podem ser usados para realizar cálculos complexos, como operações matemáticas, onde você pode manipular valores específicos.
+
+5. **Inserção e Remoção de Elementos**: Ponteiros podem ser usadas para inserir ou remover elementos de uma lista, matriz, etc.
+
+6. **Método de</td><td class="num">2</td><td class="num">0.18</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Para acessar os dados do ponteiro, deve-se usar o operador * (até) para acessar a posição do ponteiro.</td><td class="num">2</td><td class="num">0.12</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">para referenciar uma variável local ou uma função</td><td class="num">2</td><td class="num">0.10</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Um ponteiro (que pode ser usado em várias linguagens de programação) serve para:
+
+1. Manter a estrutura do programa:
+   - Mantém os dados dentro do programa ao mesmo tempo que manipula-os.
+   - Garantir que os dados sejam acessados com segurança.
+
+2. Manipulação de objetos:
+   - Manipula objetos como arrays ou strings.
+   - Manipula variáveis como membros de classes.
+
+3. Interfaz com outras partes do sistema:
+   - Pode ser usado para interagir com outros programas ou bibliotecas externas.
+
+4. Manutenção de código:
+   - Manter o código atualizado e seguro.
+
+5. Desenvolvimento de sistemas complexos:
+   - Usado em sistemas operacionais mais avançados.
+
+6. Testes unitários:
+   - Facilita testar partes específicas do programa.
+
+7. Manutenção de recursos:
+   - Manter recursos do sistema (memória, processador, etc.) quando necessário.
+
+8. Manutenção de interfaces:
+   - Manter interface entre diferentes partes do programa.
+
+9. Manutenção de dependências:
+   - Manter dependências do sistema no código.
+
+10.</td><td class="num">2</td><td class="num">0.14</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#10 · <strong>conceitual</strong></p>
+<p><strong>Pergunta:</strong> O que é uma árvore binária de busca?</p>
+<p class="qref"><strong>Referência:</strong> É uma árvore binária em que, para cada nó, todos os valores da subárvore esquerda são menores que o do nó e todos os da subárvore direita são maiores, o que permite busca, inserção e remoção eficientes.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Uma árvore binária de busca (BST) é uma estrutura de dados que utiliza uma estrutura de nós para armazenar elementos ordenados. Ela é conhecida por sua eficiência na busca, pois a busca rápida pode ser realizada com apenas uma iteração no nó central.
+
+A estrutura básica de uma árvore binária de busca consiste em:
+
+1. **Nó Central**: É o nó mais alto do BST.
+2. **Nó Lateral**: É o nó mais baixo do BST.
+3. **Arvore de Navegação**: É uma lista de todos os nós que estão adjacentes ao nó central.
+
+Essas arvores são usadas principalmente para implementar algoritmos de busca, como a busca binária, onde cada nó representa um elemento e as arvores representam os vetores de pesquisa.
+
+Alguns pontos importantes sobre árvores binárias de busca:
+
+- A árvore deve ter pelo menos dois nós: um nó central e um nó lateral.
+- O nó central sempre será o maior nó da árvore.
+- Os nós lindos (nós ligeiros) têm um único filho.
+- As arvores binárias</td><td class="num">2</td><td class="num">0.22</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Um árvore binária de busca é uma estrutura de dados que permite a inserção e a remoção de elementos de forma ordenada, mantendo o menor número possível de operações. Ela também oferece acesso rápido ao elemento mais próximo do nó atualmente buscado.</td><td class="num">3</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma árvore binária de busca é uma estrutura de dados que organiza elementos de forma a permitir que eles sejam encontrados rapidamente através de buscas binárias.</td><td class="num">3</td><td class="num">0.22</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A árvore binária de busca é uma estrutura de dados que utiliza uma lista de nós para representar os elementos do conjunto de dados. Ela é conhecida por ser útil na implementação de algoritmos de busca, como a busca linear.
+
+A função principal da árvore binária de busca é:
+
+1. **Inserir**: Adicionar novos elementos à árvore.
+2. **Excluir**: Remover elementos da árvore.
+3. **Pesquisar**: Buscar elementos dentro da árvore.
+4. **Ordenar**: Ordenar elementos dentro da árvore (por exemplo, ordenando pelo valor).
+
+Essas funções são realizadas através de métodos específicos no nó da árvore, como o método `insert`, que adiciona um novo elemento ao final da lista de nós, e o método `delete`, que remove um elemento específico do nó.
+
+É importante notar que, embora seja chamada de árvore binária, não há nenhuma necessidade de ter dois nós para cada elemento na verdadeira árvore binária. A árvore binária é apenas uma estrutura de dados simplificada que pode ser usada para representar muitos tipos de</td><td class="num">2</td><td class="num">0.21</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#11 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Considerando uma pilha vazia, qual é o elemento no topo após executar o código?</p>
+<p class="qref"><strong>Referência:</strong> O elemento no topo é 'I', pois foi o último a ser inserido pela operação push.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Após executar o código `push('O'); push('C'); push('I');` na pilha vazia, o elemento no topo será `'I'`.</td><td class="num">5</td><td class="num">0.40</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">O elemento no topo após executar o código seria 'O'.</td><td class="num">1</td><td class="num">0.38</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">O; C I</td><td class="num">2</td><td class="num">0.21</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">No exemplo fornecido, a pilha vazia é representada pelo elemento '[]'. Quando você faz push(''), ele adiciona um novo elemento à pilha.
+
+Aqui está o código:
+
+```javascript
+let pilha = [];
+pilha.push('O');
+pilha.push('C');
+pilha.push('I');
+```
+
+Após executar esse código, o elemento no topo da pilha será 'I'.
+
+Se você tiver mais perguntas sobre pilhas ou qualquer outro assunto, sinta-se à vontade para perguntar!</td><td class="num">5</td><td class="num">0.22</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#12 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> O que o código a seguir imprime, partindo de uma pilha vazia?</p>
+<p class="qref"><strong>Referência:</strong> Imprime 'C'. Após push de 'A' e 'B', o pop remove 'B'; em seguida push de 'C' deixa 'C' no topo, que é removido e impresso pelo último pop.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">O código imprime 'D' na tela.
+
+Explicação:
+
+1. O código começa com `push('A')`, que adiciona o elemento 'A' à pilha.
+2. Depois, `pop()` é chamado, que remove o último elemento da pilha (o 'A').
+3. Agora, `push('B')` adiciona 'B' à pilha.
+4. Após isso, `printf("%c", pop())` é executado. No momento da chamada, a pilha está vazia, então `pop()` retorna 'B'. Então, `printf("%c", pop())` imprime 'B', que é o último elemento da pilha antes do 'D'.
+
+Portanto, o resultado final é 'D'.</td><td class="num">1</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">'B'</td><td class="num">2</td><td class="num">0.07</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">B</td><td class="num">2</td><td class="num">0.07</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O código que você forneceu imprime:
+
+'B' 
+
+Explicação:
+- `push('A')` insere 'A' na pilha.
+- `pop()` remove o último elemento (o 'B' no caso) da pilha.
+- `printf("%c", pop())` imprime o caractere correspondente ao último elemento da pilha.
+
+No exemplo fornecido, após executar `printf("%c", pop())`, ele imprime `'C'`.</td><td class="num">3</td><td class="num">0.42</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#13 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Quantas vezes o laço executa o corpo?</p>
+<p class="qref"><strong>Referência:</strong> O corpo executa 5 vezes, imprimindo os valores 0, 1, 2, 3 e 4.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">O laço `for` executará a expressão `printf("%d", i)` 5 vezes.
+
+Aqui está o código:
+
+```c
+for (int i = 0; i &lt; 5; i++)
+{
+    printf("%d", i);
+}
+```
+
+No entanto, você pode ver que o laço não executa a expressão `printf("%d", i)`. Isso acontece porque o `i` no bloco do laço é inicializado com zero (`i = 0`) e incrementado cada vez que o laço percorre os elementos da lista. Portanto, após o último parâmetro (`i = 4`), o valor de `i` será 4, e a função `printf` não irá imprimir nada.
+
+Para garantir que o laço execute a expressão `printf("%d", i)`, você precisaria ajustar o laço para começar com um valor diferente. Por exemplo, se você quiser exibir "Hello" 5 vezes, você poderia fazer algo como isso:
+
+```c
+for (int i = 0; i &lt; 5; i++)
+{
+    printf("Hello");
+}
+```
+
+Este código exibirá "HelloHello</td><td class="num">2</td><td class="num">0.10</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">4</td><td class="num">1</td><td class="num">0.13</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">4</td><td class="num">1</td><td class="num">0.13</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O corpo do laço executa a cada vez que ele é executado. No caso específico, o corpo do laço faz:
+
+1. `i = 0` - Inicia a execução do corpo.
+2. `printf("%d", i)` - Imprime o valor de `i`, que é `0`.
+3. `i++` - Incrementa `i` para `1`. Agora estamos no próximo bloco do laço.
+
+Portanto, após a primeira iteração (`i = 0`) e até a última iteração (`i = 4`), o corpo do laço executa `printf("%d", i)`, que imprime os valores `0`, `1`, `2`, `3` e `4` respectivamente. O resultado final será:
+
+```
+0
+1
+2
+3
+4
+```</td><td class="num">5</td><td class="num">0.20</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#14 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Qual o valor final da variável soma?</p>
+<p class="qref"><strong>Referência:</strong> O valor final de soma é 10, resultado de 1 + 2 + 3 + 4.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">O valor final da variável `soma` será:
+
+```
+soma = 1 + 2 + 3 + 4 = 10
+```</td><td class="num">5</td><td class="num">0.69</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">20</td><td class="num">1</td><td class="num">0.00</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">20</td><td class="num">1</td><td class="num">0.00</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O valor final da variável `soma` é igual a 15.
+
+Aqui está o código:
+
+```csharp
+int soma = 0;
+for (int i = 1; i &lt;= 4; i++)
+    soma += i;
+
+Console.WriteLine(soma); // Imprime 15
+```
+
+Este código faz uma contagem de 1 até 4, adicionando cada número ao acumulador `soma`. No final, `soma` terá o valor de 15.</td><td class="num">2</td><td class="num">0.26</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#15 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> O que a função abaixo calcula para n &gt;= 0?</p>
+<p class="qref"><strong>Referência:</strong> A função calcula o fatorial de n (n!), usando recursão com caso base f(0)=1 e passo recursivo n * f(n-1).</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A função `f` calcula o valor de uma expressão recursiva, onde `n` é um número inteiro positivo. A função é definida como:
+
+```c
+int f(int n)
+{
+    if (n == 0)
+        return 1;
+    else
+        return n * f(n - 1);
+}
+```
+
+Para entender melhor essa função, vamos analisar os passos:
+
+1. **Base Case**: Quando `n` é igual a zero, a função retorna 1.
+2. **Recursive Case**: Se `n` for maior que zero, a função multiplica `n` pelo resultado da chamada recursiva de `f` com `n-1`.
+
+### Explicação do Passo 2:
+- O passo 2 começa com `n = 1`.
+- A função então multiplica `n` por `f(n-1)`.
+
+### Explicação do Passo 3:
+- O passo 3 começa com `n = 2`.
+- A função então multiplica `n` por `f(1)`.
+
+### Explicação do Passo 4:
+- O passo 4 começa com `n = 3`.
+- A função então</td><td class="num">4</td><td class="num">0.23</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">n!</td><td class="num">1</td><td class="num">0.08</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">f(5) = 5 * f(4) = 5 * 4 * f(3) = 5 * 4 * 3 * f(2) = 5 * 4 * 3 * 2 * f(1) = 5 * 4 * 3 * 2 * 1 * 1 = 120</td><td class="num">2</td><td class="num">0.16</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A função `f` calcula o valor de `n!`, onde `!` representa o fatorial do número `n`. O fatorial de um número `n` é o produto dos números de 1 até `n`, ou seja:
+
+```
+n! = n * (n-1) * (n-2) * ... * 1
+```
+
+Para calcular `n!`, você começa com `n` e multiplica todos os números anteriores até `1`.
+
+No exemplo fornecido, `f(5)` seria:
+
+```
+5! = 5 * 4 * 3 * 2 * 1
+     = 5 * 4!
+```
+
+Portanto, a função `f` calcula `n!` para qualquer `n` maior ou igual a zero.
+
+Por exemplo, se `n == 5`, então `f(5)` retorna `120`, pois `5! = 5 * 4 * 3 * 2 * 1 = 120`.
+
+Lembre-se: `f(0)` deve retornar `1` porque `0!` é definido como `1`.</td><td class="num">5</td><td class="num">0.25</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#16 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> O acesso a p-&gt;dado em C corresponde a quê?</p>
+<p class="qref"><strong>Referência:</strong> p-&gt;dado acessa o campo 'dado' do nó apontado por p; é equivalente a (*p).dado, ou seja, desreferencia o ponteiro e acessa o membro.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">O acesso à `p-&gt;dado` em C corresponde ao acesso à propriedade "dado" do objeto `No`. 
+
+Aqui está uma explicação detalhada:
+
+1. **Structualidade**: O struct `No` define um tipo de dados para representar os nós de uma lista.
+
+2. **Ponteiro**: O ponteiro `p` refere-se a um nó específico na lista.
+
+3. **Accesso à Propriedade**: Para acessar o valor de uma propriedade específica no struct, você deve usar o operador `.` (ou `::`) após a propriedade.
+
+4. **Exemplo**: Se `No` for definido assim:
+   ```c
+   struct No {
+       int dado;
+       struct No *prox;
+   };
+   ```
+
+5. **Ponteiro `p`**:
+   - `p` refere-se a um nó específico na lista.
+   - `p-&gt;dado` acessa o valor de `dado` do nó especificado pelo ponteiro `p`.
+
+Portanto, o acesso à `p-&gt;dado` é equivalente ao acesso à propriedade "dado" do nó especificado pelo ponteiro `</td><td class="num">3</td><td class="num">0.22</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">a) O acesso a p-&gt;dado em C corresponde a p.dado</td><td class="num">1</td><td class="num">0.32</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">a referência ao elemento do tipo No</td><td class="num">1</td><td class="num">0.19</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A resposta correta é:
+
+O acesso a `p-&gt;dado` em C corresponde à propriedade do objeto `No`.
+
+Explicação:
+- O acesso a `p-&gt;dado` refere-se ao atributo ou propriedade do objeto `No`.
+- A propriedade do objeto `No` é o campo `dado`, que representa o valor do campo `dado` no objeto `No`.
+- Isso significa que quando você acessa `p-&gt;dado`, ele retorna o valor do campo `dado` no objeto `No`.
+
+Por exemplo, se você tiver uma estrutura `No` com um ponteiro `p` para o objeto `No`, você pode fazer algo como:
+
+```c
+No* p = ...;
+int dado = p-&gt;dado;
+```
+
+Neste caso, `p-&gt;dado` é a propriedade do objeto `No`, e `dado` é o campo `dado` do objeto `No`.</td><td class="num">2</td><td class="num">0.27</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#17 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Qual é o efeito de chamar pop() em uma pilha vazia, em uma implementação correta?</p>
+<p class="qref"><strong>Referência:</strong> Deve sinalizar erro de underflow (pilha vazia), pois não há elemento a remover; tipicamente retorna um código de erro ou lança uma condição de exceção, sem alterar a pilha.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Chamando `pop()` em uma pilha vazia não produzirá nenhum efeito significativo na implementação correta. A pilha é uma estrutura de dados que permite a inserção e a exclusão de elementos em ordem crescente.
+
+A função `pop()` remove e retorna o elemento mais recente da pilha. No caso de uma pilha vazia, essa função não faz nada porque a pilha está vazia e não há elementos para remover.
+
+No entanto, se você estiver tentando manipular uma pilha real ou implementar uma pilha fictícia, seria necessário considerar as regras específicas da sua implementação. Por exemplo:
+
+1. **Pilha vazia**: Se a pilha estiver vazia, `pop()` não faz nada.
+2. **Pilha com elementos**: Se a pilha contém elementos, `pop()` deve remover o último elemento e retorná-lo.
+
+Se você estiver usando uma implementação de pilha como uma lista dinâmica (como Python's list), a pilha vazia não fará nenhuma diferença. Se você estiver usando uma implementação de pilha como uma lista de elementos separados (como uma lista de strings no</td><td class="num">2</td><td class="num">0.16</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">chama a função pop() para remover o último elemento da pilha</td><td class="num">2</td><td class="num">0.20</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">chama pop() em uma pilha vazia resulta em erro de acesso ao final da pilha</td><td class="num">2</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Aqui está uma explicação detalhada sobre como chamar a função `pop()` em uma pilha vazia:
+
+1. **Inicialização do Array**: A primeira coisa que fazemos quando criamos uma pilha vazia é inicializar os elementos com valores nulos (ou qualquer valor não usado).
+
+2. **Chamando a Função Pop():**
+   - Quando chamamos a função `pop()` na pilha vazia, ela retorna o último elemento da pilha.
+   - No caso específico, para retornar o último elemento da pilha vazia, você deve usar:
+     ```javascript
+     const lastElement = array.pop();
+     ```
+
+3. **Retorno do Elemento:**
+   - O retorno do `pop()` é o elemento que foi removido da pilha.
+
+4. **Exemplo de uso:**
+   ```javascript
+   let array = [];
+   // Inicialmente, array é vazia
+   console.log(array);  // Imprime: []
+
+   // Chama a função pop()
+   const lastElement = array.pop();
+
+   // Retornar o último elemento da pilha vazia
+   console.log(lastElement);  // Imprime: undefined
+
+   // Se houver elementos</td><td class="num">1</td><td class="num">0.15</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#18 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> O que faz a função malloc em C e o que retorna?</p>
+<p class="qref"><strong>Referência:</strong> malloc reserva dinamicamente um bloco de memória do tamanho informado (sizeof(No)) e retorna um ponteiro para o início do bloco, ou NULL se a alocação falhar.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A função `malloc` em C é usada para criar memória para os objetos de uma estrutura de dados especificada. A função `sizeof` calcula o tamanho de memória necessária para o objeto.
+
+No exemplo fornecido:
+
+```c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct No {
+    int valor;
+    struct No* proximo;
+} No;
+
+int main() {
+    No* p = NULL; // Pode ser qualquer tipo de objeto
+
+    // Criando memória com sizeof
+    p = (No*) malloc(sizeof(No));
+
+    if (p != NULL) {
+        printf("Memórias criadas com sucesso!\n");
+    } else {
+        printf("Erro ao criar memória.\n");
+    }
+
+    return 0;
+}
+```
+
+### Explicação:
+1. **Função `malloc`:**
+   - Esta função cria uma memória temporária no sistema.
+   - O parâmetro `sizeof` é usado para determinar o tamanho da memória que será criada. Em este caso, `sizeof(No)` é igual a `sizeof(int)`, que é 4 bytes.
+
+2. **Criação da Memória:**
+   - `p</td><td class="num">2</td><td class="num">0.14</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A função `malloc` em C é usada para criar memória para os objetos de uma estrutura de dados. Ela retorna um ponteiro para a memória criada.</td><td class="num">4</td><td class="num">0.34</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A função malloc em C é usada para reservar memória e inicializar os dados na memória reservada. Ela retorna uma ponteiro para o nó criado na memória.</td><td class="num">2</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A função `malloc` em C é usada para obter uma memória de tamanho definido na qual pode ser criado um objeto de um tipo específico. A função retorna um ponteiro que representa o início do espaço reservado.
+
+Aqui está um exemplo simples:
+
+```c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void print_mem(void* ptr) {
+    printf("Memoria: %p\n", ptr);
+}
+
+int main() {
+    int* p = (int*) malloc(sizeof(int));
+    if(p == NULL) {
+        fprintf(stderr, "Erro ao criar memoria\n");
+        return -1;
+    }
+    print_mem(p); // Onde estamos armazenando o endereço de memória
+    free(p); // Deleta a memória quando não precisar mais dela
+    return 0;
+}
+```
+
+### Explicação:
+- **Função `malloc`**: Esta função recebe um número de bytes (`sizeof`) como argumento e retorna um ponteiro que representa o início de uma nova memória.
+  
+- **Criação de Memória**:
+  ```c
+  int* p = (int*) malloc(sizeof(int));
+  ```
+  Aqui, `p` é um pont</td><td class="num">4</td><td class="num">0.19</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#19 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Em uma fila, após enfileirar 1, 2 e 3, qual elemento é retornado pela operação de desenfileirar?</p>
+<p class="qref"><strong>Referência:</strong> Retorna 1, pois a fila é FIFO: o primeiro elemento inserido é o primeiro a ser removido.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">O elemento retornado pela operação de desenfileirar na fila de enfileira seria o número 4.
+
+Agora, vamos resolver a questão completa:
+
+1. Enfileira os números: 1, 2, 3.
+2. Deve-se retirar o primeiro número da fila (que é 1) para desenfilejar.
+3. O novo número será 2.
+4. Deve-se retirar o segundo número da fila (que é 2) para desenfilejar.
+5. O novo número será 3.
+6. Deve-se retirar o último número da fila (que é 3) para desenfilejar.
+7. O novo número será 4.
+
+Portanto, o número retornado pela operação de desenfileirar é **4**.</td><td class="num">1</td><td class="num">0.16</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">2</td><td class="num">2</td><td class="num">0.00</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">2</td><td class="num">2</td><td class="num">0.00</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O elemento retornado pelo desenfileiramento (dequeue()) naquele exemplo seria o número 4.
+
+Aqui está a explicação:
+
+1. Enfileira os elementos: `enqueue(1)`, `enqueue(2)` e `enqueue(3)`
+2. O desenfileiro será o último elemento enfilejado, que é o número 4.
+3. A operação de desenfileiro vai remover esse número do início da fila.
+
+Portanto, após o desenfileiro (`enqueue(4)`), o elemento retornado será o número 4.</td><td class="num">1</td><td class="num">0.22</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#20 · <strong>codigo</strong></p>
+<p><strong>Pergunta:</strong> Qual o problema do código abaixo do ponto de vista de gerenciamento de memória?</p>
+<p class="qref"><strong>Referência:</strong> Há vazamento de memória (memory leak): o ponteiro p é reatribuído para NULL sem antes liberar (free) o bloco alocado, tornando essa memória inacessível e não liberada.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">O problema no código `p = malloc(sizeof(No)); p = NULL;` está na declaração de uma ponteiro `p` que inicializa com a alocação de memória para um objeto `No`, mas depois passa a referenciar a memória vazia (`NULL`). Isso pode causar problemas de segurança ou ineficiência dependendo do contexto.
+
+### Problemas:
+
+1. **Inserção de objetos**: Se você tentar inserir um novo objeto `No` usando `malloc`, o código não irá funcionar porque `malloc` retorna uma ponteiro para a memória, então o objeto `No` será criado na memória vazia, o que pode causar erros de compilação ou de execução.
+   
+2. **Memoria excessiva**: O uso de `malloc` para criar objetos grandes pode levar à sobrecarga de memória, especialmente se o tamanho dos objetos for muito grande.
+
+3. **Erro de compilação**: Se o tamanho de `sizeof(No)` for muito grande, pode causar um erro de compilação ou de execução, pois o compilador não consegue determinar onde está a memoria suficiente para os objetos `</td><td class="num">2</td><td class="num">0.11</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">O problema do código mencionado está relacionado à falta de controle sobre a quantidade de memoria que será usada para cada nó na lista. Isso pode levar ao uso excessivo de memória se a lista for muito grande. Para resolver este problema, seria necessário implementar uma função que permita especificar a capacidade máxima de memória que deve ser utilizada por cada nó na lista.</td><td class="num">1</td><td class="num">0.11</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">O código apresentado não possui problemas de gerenciamento de memória. Ele cria uma ponte para um nó de lista (No) com a função `malloc`, inicializa o ponteiro `p` como `NULL`, e finalmente chama a função `free()` para liberar a memória associada ao nó criado. Isso indica que o código está bem estruturado para lidar com a alocação e liberação de memória de maneira correta.</td><td class="num">1</td><td class="num">0.31</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O problema no código `p = malloc(sizeof(No)); p = NULL;` está na falta de uma chamada para a função `malloc`. A função `malloc` retorna um ponteiro para uma estrutura de dados que representa espaço de memória contínua. No seu caso, você está usando `p = malloc(sizeof(No))`, mas não há nenhum argumento após essa chamada.
+
+Aqui estão os detalhes sobre como usar `malloc`:
+
+1. **Criação de um novo objeto**: Você usa `malloc` para criar um novo objeto (ou seja, uma estrutura de dados) com tamanho `sizeof(No)` na qual você pode adicionar outros objetos.
+   
+   ```c
+   No* p = malloc(sizeof(No));
+   ```
+
+2. **Adição de objetos ao objeto criado por `malloc`**:
+   
+   Depois de criar o objeto (`p`), você pode adicionar novos objetos à frente dele usando `p-&gt;next`.
+
+   ```c
+   p-&gt;next = malloc(sizeof(No));
+   ```
+
+3. **Finalização do objeto (`free`) antes de deletar o objeto (`p`)**:
+   
+   Após ter adicionado todos os objetos necessários</td><td class="num">2</td><td class="num">0.15</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#21 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Na disciplina de Estruturas de Dados I do Departamento de Computação da UFPI, qual é a ideia fundamental de acesso aos elementos de uma pilha?</p>
+<p class="qref"><strong>Referência:</strong> A ideia fundamental é que todo acesso aos elementos da pilha é feito através do seu topo: ao adicionar um novo elemento ele se torna o topo, e o elemento retirado é sempre o do topo.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A ideia fundamental de acesso aos elementos de uma pilha é garantir que o acesso ao topo (o elemento mais alto) seja eficiente e rápido. Isso permite que os usuários possam acessar qualquer elemento da pilha sem precisar recorrer a uma lista completa.
+
+Além disso, a pilha deve ser designada para permitir que as operações de inserção e de remoção sejam realizadas de maneira eficiente. Essas operações devem ocorrer rapidamente, mantendo-se eficientes mesmo com muitos elementos na pilha.
+
+Em outras palavras, a pilha deve oferecer uma estrutura de dados que permita que os usuários tenham acesso a elementos de forma rápida e segura, independentemente de quantos elementos estão presentes na pilha.</td><td class="num">2</td><td class="num">0.27</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A pilha é uma estrutura de dados que permite acessar os elementos de forma sequencial, sem necessidade de reorganizar o conteúdo.</td><td class="num">2</td><td class="num">0.21</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Acesso aos elementos de uma pilha é feito através de operações como 'inserir' e 'deslocar'.</td><td class="num">2</td><td class="num">0.31</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A ideia básica de acessar os elementos de uma pilha é garantir que o acesso seja seguro e eficiente. Isso significa:
+
+1. **Segurança**: A pilha deve ser construída com elementos úteis para manipulação (como números inteiros ou strings) e não com elementos que podem ser acessados sem segurança (como listas).
+
+2. **Eficiência**: O acesso às posições dentro da pilha deve ser feito de maneira eficaz, mantendo-se sempre disponível.
+
+3. **Consistência**: Os elementos na pilha devem estar organizados de maneira consistente, permitindo que eles sejam acessados de várias partes do programa.
+
+4. **Claramente**: As operações de inserção e de exclusão devem ser realizadas de maneira clara e segura, garantindo que nenhum elemento seja alterado sem verificação.
+
+5. **Simplicidade**: Os métodos de acesso ao elemento devem ser simples e fácil de usar, facilitando a manipulação dos dados.
+
+Essas são as principais ideias básicas de acesso aos elementos de uma pilha na estrutura de dados.</td><td class="num">1</td><td class="num">0.22</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#22 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Por que a pilha é considerada uma das estruturas de dados mais simples e comuns na computação?</p>
+<p class="qref"><strong>Referência:</strong> Porque possui poucas operações bem definidas (inserção e remoção sempre pelo topo), é fácil de implementar e aparece em muitas situações rotineiras da computação, como chamadas de função, desfazer/refazer e avaliação de expressões.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A pilha é considerada uma das estruturas de dados mais simples e comuns na computação por várias razões:
+
+1. **Lógica de Operações**: A pilha tem operações lógicas básicas como "adicionar" (push) e "remover" (pop). Isso permite que você possa manipular elementos de maneira sequencial.
+
+2. **Simplicidade de Implementação**: Embora o código seja simples, a implementação pode ser bastante simplificada para fins de aprendizado. Por exemplo, a pilha pode ser representada apenas pelo número de posições vazias no início e final da lista.
+
+3. **Fácil de Usar**: Os métodos de inserção e remoção são muito simples e podem ser facilmente implementados em qualquer linguagem de programação.
+
+4. **Repetição de Elementos**: Em muitas situações, é útil repetir elementos em uma pilha, como na implementação de sistemas de controle de fluxo ou na criação de listas de contatos.
+
+5. **Função de Controle**: A pilha também serve como uma função de controle, permitindo que você verifique se há algum elemento em uma pil</td><td class="num">4</td><td class="num">0.20</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A pilha é considerada uma das estruturas de dados mais simples e comuns na computação porque ela permite a manipulação de elementos de forma sequencial e ordenada, sem o uso de índices ou ponteiros para referenciar os elementos.</td><td class="num">2</td><td class="num">0.22</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A pilha é considerada uma das estruturas de dados mais simples e comuns na computação porque ela permite a inserção e exclusão de elementos de forma eficiente, sem a necessidade de reorganizar o espaço de memória como ocorre com as outras estruturas de dados.</td><td class="num">3</td><td class="num">0.26</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A pilha é uma das estruturas de dados mais simples e comuns na computação por várias razões:
+
+1. Simplicidade: A pilha é uma estrutura de dados muito simples de entender. É fácil de criar, manipular e manipar.
+
+2. Comunicação entre elementos: O sistema de pilhas permite a comunicação eficaz entre diferentes partes do sistema.
+
+3. Flexibilidade: As pilhas são flexíveis para adicionar ou remover itens, permitindo-se fazer operações complexas.
+
+4. Usabilidade: Os usuários podem entender facilmente como usar as pilhas.
+
+5. Consistência: As pilhas são consistentes e não mudam ao longo do tempo.
+
+6. Responsividade: As pilhas são responsivas ao entrar ou sair de um estado específico.
+
+7. Simplicidade de implementação: A implementação básica dos sistemas de pilhas é bastante simples.
+
+8. Foco na lógica: As pilhas focam na lógica de manipulação, enquanto outras estruturas de dados focam na representação de dados.
+
+9. Simplicidade de aprendizado: As pilhas são conhecidas e usadas frequentemente no ensino básico</td><td class="num">2</td><td class="num">0.12</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#23 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Cite um exemplo de uso de pilha no funcionamento de programas.</p>
+<p class="qref"><strong>Referência:</strong> A pilha de execução (call stack) gerencia as chamadas de função: cada chamada empilha um registro de ativação e cada retorno o desempilha, seguindo a ordem LIFO.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Uma maneira eficiente de usar uma pilha para implementar um sistema de armazenamento de dados é através do método de inserção-remoção (push-pop). Aqui está um exemplo simples:
+
+1. **Inserir**: Para adicionar um novo elemento à pilha, você faz o seguinte:
+   - Enquanto a pilha estiver vazia, você adiciona o elemento na frente.
+   - Quando a pilha estiver cheia, você remove o último elemento.
+
+2. **Remover**: Para remover um elemento da pilha, você faz o seguinte:
+   - Se a pilha estiver vazia, você não pode remover nada.
+   - Se a pilha estiver cheia, você remove o último elemento.
+
+Aqui está um exemplo de como isso funciona em Python:
+
+```python
+class Pilha:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        else:
+            raise IndexError("Pilha vazia")
+
+    def peek(self):
+        if not</td><td class="num">2</td><td class="num">0.10</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A pilha é usada para implementar uma estrutura de dados dinâmica onde cada elemento pode ser adicionado ou removido de acordo com a ordem de inserção. Por exemplo, na linguagem C++ o código abaixo usa uma pilha para armazenar os valores de uma matriz:
+
+```c++
+int mat[3][3] = {0};
+int i;
+for (i = 0; i &lt; 3; i++)
+    mat[i][i] = 1;
+```
+
+No caso acima, a pilha 'mat' serve como uma lista de elementos que podem ser acessados de qualquer lugar do programa.</td><td class="num">1</td><td class="num">0.18</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Uma pilha é usada para manipular uma sequência de elementos, como nomes de pessoas ou números. Por exemplo, na função 'add' do programa, a pilha 'p' é inicializada com os valores 10, 20 e 30. Em seguida, o programa solicita ao usuário que insira os valores para adicionar à pilha. A cada vez que um novo valor é inserido, ele é adicionado à pilha. Por fim, a função 'sum' é chamada, que soma todos os valores na pilha e retorna o resultado.</td><td class="num">2</td><td class="num">0.20</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Aqui está um exemplo de como a pilha pode ser usada na implementação de programas:
+
+1. Definição do tipo de dados: A primeira coisa que você faz quando se começa a trabalhar com uma pilha é definir o tipo de dados que ela representa. Por exemplo, pode ser um array de números inteiros ou strings.
+
+2. Inicialização: Uma vez que você define o tipo de dado, você então deve inicializar os elementos dentro dessa pilha. Isso geralmente é feito usando operações básicas de listas (como append, pop, etc.).
+
+3. Adição de elementos: Você pode adicionar elementos à pilha usando as operações básicas de lista (append).
+
+4. Remoção de elementos: Você também pode remover elementos da pilha usando as operações básicas de lista (pop).
+
+5. Verificação de vazia: Você pode verificar se a pilha está vazia usando a função isEmpty().
+
+6. Busca de elemento: Você pode buscar um elemento específico na pilha usando a função find().
+
+7. Ordenação: Você pode ordenar elementos na pilha usando a função sort().
+
+8. Limpeza: Você pode limpar elementos da pilha usando</td><td class="num">1</td><td class="num">0.11</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#24 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Em uma implementação dinâmica de pilha com listas encadeadas, o que representa o ponteiro 'topo'?</p>
+<p class="qref"><strong>Referência:</strong> O ponteiro 'topo' aponta para o nó mais recentemente inserido na pilha; as operações push e pop manipulam esse ponteiro para inserir ou remover sempre na extremidade do topo.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">No sistema dinâmico de pilha com listas encadeadas, o ponteiro 'topo' representa a posição do último elemento na lista.
+
+Aqui está um exemplo simples:
+
+1. **Lista**: [1, 2, 3]
+2. **Topo**: 3 (posição 2)
+3. **Pilha**: [3]
+
+O ponteiro 'topo' indica a posição do último elemento na lista. Se você tiver uma pilha com elementos `[5, 6, 7]`, então 'topo' seria 0 (posição 0) e 'pilha' seria `[5, 6, 7]`.
+
+Se você tiver uma pilha com elementos `[8, 9, 10]`, então 'topo' seria 2 (posição 2) e 'pilha' seria `[8, 9, 10]`.
+
+Portanto, o ponteiro 'topo' é crucial para entender como a pilha funciona.</td><td class="num">4</td><td class="num">0.20</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">topo = topo.next</td><td class="num">1</td><td class="num">0.12</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">topo = pilha.head</td><td class="num">2</td><td class="num">0.12</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">O ponteiro 'topo' na implementação dinâmica de pilhas com listas encadeadas é o elemento inicial do topo da lista. Ele representa a posição atual do elemento mais novo no topo da lista.
+
+Aqui está um exemplo simples:
+
+```python
+class PilhaEncadeada:
+    def __init__(self):
+        self.topo = None
+
+    def inserir(self, valor):
+        if not self.esquerda():
+            self.topo = Node(valor)
+            return True
+        else:
+            node = Node(valor)
+            node.set_proximo(self.topo)
+            self.topo = node
+            return True
+
+    def remover(self):
+        if not self.esquerda():
+            return False
+        else:
+            node = self.topo
+            self.topo = node.get_proximo()
+            del node
+            return True
+
+    def esquerda(self):
+        if not self.topo():
+            return None
+        else:
+            return self.topo.get_proximo()
+
+    def tamanho(self):
+        if not self.topo():
+            return 0
+        else:
+            return len(self.topo)
+
+    def vazia(self):
+        if not self.topo():
+            return True
+        else:</td><td class="num">4</td><td class="num">0.15</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#25 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Como a maioria das estruturas de dados, quais operações básicas a pilha permite?</p>
+<p class="qref"><strong>Referência:</strong> Permite operações de adição (inserção) e de remoção de dados; na pilha ambas ocorrem na mesma extremidade, o topo.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A pilha é uma estrutura de dados que permite várias operações básicas:
+
+1. **Inserir (Push)**: Adiciona um elemento à frente da pilha.
+
+2. **Extrair (Pop)**: Remove o último elemento da pilha.
+
+3. **Verificar se está vazia**: Verifica se a pilha está vazia ou não há elementos na pilha.
+
+4. **Obter o tamanho da pilha**: Obtem o número total de elementos na pilha.
+
+5. **Ordenar**: Ordena os elementos da pilha em ordem crescente.
+
+6. **Remover o primeiro elemento**: Remove e retorna o primeiro elemento da pilha.
+
+7. **Adicionar elementos ao final**: Adiciona um novo elemento à pilha no final.
+
+8. **Adicionar elementos ao início**: Adiciona um novo elemento à pilha no início.
+
+9. **Verificar se existe um elemento com determinado valor**: Verifica se a pilha contém um elemento com um determinado valor específico.
+
+10. **Verificar se a pilha está vazia**: Verifica se a pilha está vazia ou não há elementos na pilha.
+
+Estas são as principais operações básicas</td><td class="num">2</td><td class="num">0.11</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A pilha permite operações básicas como adição, subtração, multiplicação e divisão.</td><td class="num">1</td><td class="num">0.33</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">inserir, remover e consultar o topo</td><td class="num">4</td><td class="num">0.24</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A pilha é uma estrutura de dados que permite as seguintes operações básicas:
+
+1. Inserir elementos: A pilha pode ser usada para inserir novos elementos no final do conjunto.
+
+2. Remover elementos: A pilha também pode ser usada para remover os últimos elementos do conjunto.
+
+3. Consultar elementos: A pilha pode ser usada para consultar o elemento mais recente do conjunto.
+
+4. Ordenar elementos: A pilha pode ser usada para ordenar os elementos do conjunto de maneira crescente ou decrescente.
+
+5. Limpar elementos: A pilha pode ser usada para limpar todos os elementos do conjunto.
+
+6. Verificar se há elementos: A pilha pode ser usada para verificar se há elementos no conjunto.
+
+7. Contar elementos: A pilha pode ser usada para contar quantas vezes cada elemento apareceu no conjunto.
+
+8. Comparações: A pilha pode ser usada para comparar dois conjuntos de elementos.
+
+9. Mapeamento: A pilha pode ser usada para mapear elementos do conjunto para outros tipos de dados.
+
+10. Exclusão: A pilha pode ser usada para excluir elementos do conjunto.</td><td class="num">2</td><td class="num">0.09</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#26 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> O que acontece com um elemento recém-adicionado em uma pilha?</p>
+<p class="qref"><strong>Referência:</strong> Ele se torna o novo topo da pilha e será o primeiro a ser removido em uma futura operação de remoção, conforme a política LIFO.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Um elemento recém-adicionado na pilha ocorre quando a pilha está vazia ou quando o último elemento adicionado foi removido. Aqui estão alguns pontos importantes:
+
+1. **Vazia**: Se a pilha estiver vazia, então o novo elemento não pode ser adicionado.
+
+2. **Removido**: Se o último elemento adicionado for removido (ou seja, se ele tiver sido removido), então o novo elemento deve ser adicionado à frente do último elemento removido.
+
+3. **Adição**: O novo elemento adicional deve ser adicionado ao final da pilha.
+
+4. **Revisão da Pilha**: Após a adição do novo elemento, a pilha deve estar reordenada para garantir que todos os elementos permaneçam ordenados conforme a ordem inicial.
+
+5. **Caso de Erro**: Em casos excepcionais, como quando há mais elementos no topo da pilha do que podem ser adicionados, o sistema pode retornar um erro.
+
+É importante notar que essa reorganização da pilha é feita por meio de operações de inserção e remoção, e não por meio de uma nova adição de elementos.</td><td class="num">2</td><td class="num">0.19</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Ele permanece na pilha.</td><td class="num">1</td><td class="num">0.14</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Ele permanece no topo da pilha</td><td class="num">2</td><td class="num">0.26</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Um elemento recém-adicionado na pilha ocorre quando a pilha está vazia ou quando o último elemento adicionado foi removido. A situação geralmente é:
+
+1. O elemento adicional é adicionado à frente do último elemento existente na pilha.
+2. Se a pilha estiver vazia, ele é adicionado primeiro.
+3. Se não houver elementos na pilha inicial, ele é adicionado primeiro.
+
+A função principal do elemento adicional é garantir que a pilha tenha apenas um elemento no final, mantendo a ordem dos elementos na pilha original.</td><td class="num">2</td><td class="num">0.18</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#27 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> No contexto de inicialização de uma pilha dinâmica, o que faz a operação de inicializar?</p>
+<p class="qref"><strong>Referência:</strong> A inicialização prepara a pilha para uso, normalmente definindo o topo como vazio (por exemplo, atribuindo NULL ao ponteiro de topo), indicando que ainda não há elementos.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A operação de inicializar uma pilha dinâmica envolve os seguintes passos:
+
+1. Definir o tipo de pilha: A pilha pode ser definida como uma lista (ou array) ou uma estrutura de dados customizada.
+
+2. Criar um ponteiro para o topo da pilha: Este ponteiro deve representar o elemento mais alto na pilha atual.
+
+3. Inicializar o ponteiro para o topo da pilha com um valor específico, como 0 ou -1, dependendo do tipo de pilha escolhido.
+
+4. Adicionar elementos à pilha: Para cada elemento que deseja incluir na pilha, você adiciona-o ao ponteiro correspondente.
+
+5. Verificar se a pilha está vazia: Se o ponteiro for igual a zero, a pilha está vazia; caso contrário, ela está contendo elementos.
+
+6. Retornar o número de elementos na pilha: O número de elementos na pilha é o tamanho da pilha.
+
+É importante notar que, embora as pilhas dinâmicas possam ser usadas para implementar várias estruturas de dados, elas não são únicas</td><td class="num">2</td><td class="num">0.15</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">a) Criar um ponteiro para o topo da pilha
+b) Criar um ponteiro para o topo da pilha e setá-lo como zero</td><td class="num">4</td><td class="num">0.32</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">o ponteiro do topo da pilha (top) é setado para NULL</td><td class="num">4</td><td class="num">0.32</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A operação de inicializar uma pilha dinâmica envolve os seguintes passos:
+
+1. Definir os elementos do conjunto de entrada como valores iniciais (como 0 ou qualquer outro valor).
+
+2. Criar um ponteiro para o início da pilha (por exemplo, "pilha[0]").
+
+3. Criar um ponteiro para o final da pilha (por exemplo, "pilha[-1]").
+
+4. Cada elemento da pilha deve ser inicializado com o valor correspondente ao índice na lista.
+
+5. O ponteiro inicial deve ser inicializado com o valor zero.
+
+6. A função inicialização deve ser chamada no início da execução da função.
+
+7. Após a inicialização, o ponteiro inicial deve ser usado para acessar os elementos da pilha.
+
+8. Ao finalizar a execução da função, o ponteiro inicial deve ser liberado.
+
+Essas etapas são fundamentais para garantir que a pilha seja inicializada corretamente antes de ser usada.</td><td class="num">2</td><td class="num">0.17</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#28 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Qual a importância de estudar estruturas de dados em um curso de Ciência da Computação?</p>
+<p class="qref"><strong>Referência:</strong> Estruturas de dados permitem organizar e manipular informações de forma eficiente, sendo base para algoritmos, desempenho de programas e resolução de problemas computacionais; por isso são disciplina fundamental no curso.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A estudo de estruturas de dados é fundamental para o desenvolvimento de sistemas computacionais complexos. Elas fornecem uma abordagem eficaz para:
+
+1. Organização de dados: Estruturas como árvores, grafos e tabelas permitem organizar e manipular informações de maneira eficiente.
+
+2. Processamento de dados: Estes métodos são fundamentais para processamento de grandes volumes de dados, como na análise de big data.
+
+3. Análise de dados: Estruturas como algoritmos de busca e ordenação podem ser usadas para analisar e organizar dados.
+
+4. Interação com outros sistemas: Estruturas de dados permitem interações entre diferentes sistemas ou aplicações.
+
+5. Desenvolvimento de software: As estruturas de dados são usadas para criar interfaces gráficas, aplicativos web e sistemas operacionais.
+
+6. Modelagem de sistemas: Estruturas de dados ajudam a modelar e simular sistemas complexos.
+
+7. Desenvolvimento de soluções de problemas: Estruturas de dados podem ser utilizadas para resolver problemas específicos.
+
+8. Inteligência artificial: Estruturas de dados</td><td class="num">5</td><td class="num">0.21</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Aprender sobre estruturas de dados é essencial para entender como organizar e manipular informações em computadores. Isso ajuda na criação de programas mais eficientes e legíveis, além de facilitar o entendimento das operações básicas de programação.</td><td class="num">4</td><td class="num">0.42</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Estudar estruturas de dados é crucial para entender como organizar e manipular informações em sistemas digitais. Isso é fundamental para desenvolver soluções eficientes e úteis para problemas de computador.</td><td class="num">4</td><td class="num">0.44</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A estrutura de dados é uma das principais ferramentas de programação e manipulação de dados moderna. Ela oferece várias vantagens:
+
+1. Organização: A estrutura de dados permite organizar e manipular informações de maneira eficaz.
+
+2. Eficiência: As estruturas de dados são mais eficientes do que usar listas ou arrays para armazenar dados.
+
+3. Flexibilidade: As estruturas de dados podem ser usadas para representar diferentes tipos de dados (inteiros, strings, objetos, etc.).
+
+4. Compatibilidade: As estruturas de dados são compatíveis com muitos linguages de programação.
+
+5. Simplicidade: As estruturas de dados são simples de entender e manipular.
+
+6. Diversidade: As estruturas de dados são utilizadas em diversos campos da ciência da computação.
+
+7. Desenvolvimento: As estruturas de dados são fundamentais na criação de aplicativos e sistemas complexos.
+
+8. Teste: As estruturas de dados são essenciais para testar e garantir o funcionamento correto de programas.
+
+9. Análise: As estruturas de dados</td><td class="num">5</td><td class="num">0.16</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#29 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Em uma pilha, é possível acessar diretamente um elemento que não esteja no topo?</p>
+<p class="qref"><strong>Referência:</strong> Não. Pela definição da pilha, o acesso é restrito ao topo; para alcançar um elemento abaixo é preciso remover (pop) os elementos acima dele primeiro.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">Não, é impossível acessar diretamente um elemento que não esteja no topo de uma pilha. Em uma pilha, a ordem dos elementos é sempre a mesma: o topo (o elemento mais recente) está ao lado do topo, enquanto os outros elementos estão à esquerda.
+
+Para acessar um elemento que não esteja no topo:
+
+1. **Verifique a posição**: Primeiro, verifique se o elemento que você deseja acessar está na pilha.
+2. **Acessar o elemento**: Se o elemento estiver na pilha, ele pode ser acessado facilmente usando sua estrutura de dados ou métodos de acesso direto.
+
+Por exemplo, suponha que você tenha uma lista de alunos chamada `alunos` e quer acessar o aluno `João`. Você pode fazer isso usando a estrutura de dados `alunos` como segue:
+
+```python
+alunos = ["Maria", "Ana", "João"]
+print(alunos[0])  # Imprime "Maria"
+```
+
+No entanto, se você tiver uma pilha com elementos que não são alfabéticos, como por exemplo, `["João", "Ana", "Maria"]`, então</td><td class="num">1</td><td class="num">0.16</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">Sim, é possível acessar elementos que não estão no topo da pilha. Isso ocorre quando a pilha está vazia ou quando o elemento à ser acessado não existe na pilha.</td><td class="num">1</td><td class="num">0.29</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">Sim, é possível acessar elementos que não estão no topo da pilha. Isso ocorre quando o elemento a ser acessado está na última posição da pilha.</td><td class="num">1</td><td class="num">0.31</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">Não, é impossível acessar diretamente um elemento que não esteja no topo na pilha. Em uma pilha ordenada (como a pilha de Dijkstra), cada elemento tem apenas duas opções: ser o topo ou não ser.
+
+Se você tiver acesso a algum elemento que está fora do topo, isso pode significar que ele foi alterado ou que há algo errado na pilha. No entanto, sem mais informações sobre o estado atual da pilha, não posso afirmar se existe algum elemento que não está no topo.</td><td class="num">4</td><td class="num">0.17</td></tr>
+</tbody></table></div>
+<div class="qcard">
+<p class="qtipo">#30 · <strong>contextual</strong></p>
+<p><strong>Pergunta:</strong> Qual a diferença entre uma implementação de pilha estática (com vetor) e dinâmica (com lista encadeada)?</p>
+<p class="qref"><strong>Referência:</strong> A pilha estática usa um vetor de tamanho fixo, com limite de capacidade e risco de overflow; a dinâmica usa nós alocados sob demanda com ponteiros, crescendo conforme a memória disponível, ao custo de armazenar ponteiros e fazer alocações.</p>
+<table class="resp"><thead><tr><th>Modelo</th><th>Resposta gerada</th><th>Juiz</th><th>F1</th></tr></thead><tbody>
+<tr><td style="border-left:5px solid #9aa0a6"><strong>Base (antes)</strong></td><td class="gen">A diferença principais entre uma implementação de pilha estática (com vetor) e dinâmica (com lista encadeada) reside na estrutura de dados utilizadas para armazenar os elementos da pilha.
+
+1. **Implementação Dinâmica (Lista Encadeada)**:
+   - A lista encadeada é uma estrutura de dados que permite ao usuário adicionar ou remover elementos de qualquer lugar do vetor.
+   - É mais eficiente em termos de espaço, pois o tamanho máximo do vetor pode ser muito maior do que o número de elementos que você deseja armazenar.
+   - O tempo de execução para inserção e remoção de elementos é mais rápido do que no caso de uma pilha estática com vetor.
+
+2. **Implementação Estática (Vetor)**:
+   - Um vetor é uma estrutura de dados que armazena todos os elementos em memória simultaneamente.
+   - Isso significa que ele não permite inserções ou remoções de elementos, mas sim apenas acessões.
+   - O tempo de execução para operações como inserção e remoção de elementos é mais lento do que no caso de uma lista encadeada.
+
+Em resumo,</td><td class="num">2</td><td class="num">0.19</td></tr>
+<tr><td style="border-left:5px solid #1f77b4"><strong>SFT full (Q2)</strong></td><td class="gen">A implementação de pilha estática (com vetor) requer mais memória para armazenar os elementos, mas permite uma melhor eficiência na operação de inserção e exclusão. Por outro lado, a implementação de pilha dinâmica (com lista encadeada) utiliza menos memória, pois o espaço necessário para armazenar cada elemento é reduzido ao longo do tempo. Isso pode ser vantajoso em casos onde a quantidade de elementos é constante ou pequena.</td><td class="num">2</td><td class="num">0.34</td></tr>
+<tr><td style="border-left:5px solid #2ca02c"><strong>LoRA (Q3)</strong></td><td class="gen">A implementação de pilha estática (com vetor) requer mais tempo para inicializar o vetor, mas não necessita de memória extra além do tamanho do vetor. Por outro lado, a implementação de pilha dinâmica (com lista encadeada) requer menos tempo para inicializar o vetor, mas pode resultar em maior uso de memória se o tamanho do vetor for muito grande.</td><td class="num">2</td><td class="num">0.29</td></tr>
+<tr><td style="border-left:5px solid #ff7f0e"><strong>QLoRA (Q3)</strong></td><td class="gen">A diferença principais entre implementações de pilhas estárias e dinâmicas é na estrutura de dados utilizados para armazenar os elementos da pilha.
+
+1. Implementação Dinâmica:
+   - Utiliza uma estrutura de dados como uma lista encadeada.
+   - Os elementos são acessados através de indices (indexação por meio do índice).
+   - O tempo de execução é mais rápido porque o espaço de memória é compartilhado entre todos os elementos da pilha.
+
+2. Implementação Estática:
+   - Usa uma estrutura de dados como um vetor.
+   - Os elementos são acessados individualmente usando índices.
+   - O tempo de execução é mais lento porque cada elemento é processado individualmente antes que outros elementos sejam acessados.
+
+Em termos de complexidade de execução:
+
+- Implementação Dinâmica: Tempo de execução = N * M
+  onde N é o número de elementos e M é o tamanho do vetor.
+
+- Implementação Estática: Tempo de execução = N * index
+
+Ou seja, a implementação dinâmica pode ser mais rápida, mas também pode ter custos de execução associados ao uso de memoria e à troca</td><td class="num">2</td><td class="num">0.19</td></tr>
+</tbody></table></div>
+</main></body></html>

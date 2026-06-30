@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 import sys
 from pathlib import Path
 
@@ -53,6 +54,29 @@ ANSWER_SYSTEM_RAG = (
     ANSWER_SYSTEM
     + " Use exclusivamente o CONTEXTO fornecido. Se a resposta não estiver no contexto, diga que não consta."
 )
+
+# Contexto-ouro (braço G): a passagem-fonte de onde a pergunta foi gerada É o contexto.
+# Como a resposta está garantidamente na passagem, o professor nunca abstém ("não consta").
+ANSWER_SYSTEM_GOLD = (
+    ANSWER_SYSTEM
+    + " Use o CONTEXTO fornecido (que contém a resposta) e responda de forma direta, citando o fato."
+)
+
+_ABSTENCAO_RE = re.compile(
+    # "não <verbo> <especificado/informado/mencionado/...>" — pega as formas verbais ("não foi
+    # especificado", "não está disponível") além das diretas ("não consta", "não especifica").
+    r"n[ãa]o\s+(foi|est[áa]|é|s[ãa]o|h[áa]|consta|cont[eé]m|pode[m]?|aparece[m]?|se\s+aplica)\s*"
+    r"(poss\w*|especific\w*|inform\w*|mencion\w*|detalh\w*|dispon\w*|present\w*|descrit\w*|"
+    r"explicit\w*|encontrad\w*|determin\w*|abord\w*|apresent\w*|fornec\w*|clar\w*)"
+    r"|n[ãa]o\s+(consta|especifica|menciona|informa|aborda|h[áa]\b)"
+    r"|sem\s+informa\w*|nenhuma\s+informa\w*",
+    re.IGNORECASE,
+)
+
+
+def eh_abstencao(txt: str) -> bool:
+    """True se a resposta do professor é uma abstenção (não traz fato)."""
+    return bool(_ABSTENCAO_RE.search(txt or ""))
 
 
 # --------------------------------------------------------------------------- #
@@ -132,7 +156,14 @@ def main() -> None:
     ap.add_argument("--min-seed-chars", type=int, default=400,
                     help="comprimento mínimo da passagem-semente (baixar p/ corpora de passagens curtas, ex. futebol)")
     ap.add_argument("--topk", type=int, default=50, help="top-k logprobs por token (soft labels)")
-    ap.add_argument("--bracos", nargs="+", default=["A", "B"], choices=["A", "B"])
+    ap.add_argument("--bracos", nargs="+", default=["A", "B"], choices=["A", "B", "G"])
+    ap.add_argument("--gold-context", action="store_true",
+                    help="atalho p/ --bracos G: usa a passagem-fonte como contexto (zero abstenção)")
+    ap.add_argument("--only-source", choices=["DOM-PI", "docentesDC"], default=None,
+                    help="restringe a uma fonte (gera dataset especialista de 1 tópico)")
+    ap.add_argument("--filter-abstencao", dest="filter_abstencao", action="store_true", default=True,
+                    help="descarta respostas-abstenção do professor (default: ligado)")
+    ap.add_argument("--no-filter-abstencao", dest="filter_abstencao", action="store_false")
     ap.add_argument("--dompi-seeds", default="data/held_out.jsonl")
     ap.add_argument("--index-dir", default="rag/index", help="índice Q5 (braço B)")
     ap.add_argument("--rag-scripts", default="trabalho-final/Q5-rag/scripts")
@@ -151,6 +182,8 @@ def main() -> None:
     ap.add_argument("--no-enforce-eager", dest="enforce_eager", action="store_false")
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
+    if args.gold_context:
+        args.bracos = ["G"]
 
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -176,11 +209,12 @@ def main() -> None:
     # Ambas as fontes são tratadas como passagens-semente → o professor gera 1 pergunta por passagem
     # (self-instruct grounded). docentesDC NÃO é Q&A (colunas: text, nome_professor).
     print("[2/4] Construindo conjunto de perguntas (self-instruct nas 2 fontes)...", flush=True)
-    seeds: list[tuple[str, str]] = (
-        [("DOM-PI", p) for p in carregar_seeds_dompi(Path(args.dompi_seeds), args.n_dompi, args.seed,
-                                                     min_chars=args.min_seed_chars)]
-        + [("docentesDC", p) for p in carregar_seeds_docentes(args.n_docentes, args.seed)]
-    )
+    seeds: list[tuple[str, str]] = []
+    if args.only_source != "docentesDC":
+        seeds += [("DOM-PI", p) for p in carregar_seeds_dompi(
+            Path(args.dompi_seeds), args.n_dompi, args.seed, min_chars=args.min_seed_chars)]
+    if args.only_source != "DOM-PI":
+        seeds += [("docentesDC", p) for p in carregar_seeds_docentes(args.n_docentes, args.seed)]
 
     questoes: list[dict] = []
     if seeds:
@@ -200,8 +234,14 @@ def main() -> None:
     print(f"      {len(questoes)} perguntas ({sum(q['source']=='DOM-PI' for q in questoes)} DOM-PI + "
           f"{sum(q['source']=='docentesDC' for q in questoes)} docentesDC)", flush=True)
 
-    # ----- Etapa 2: contexto (braço B) --------------------------------------
+    # ----- Etapa 2a: contexto-ouro (braço G) — a passagem-fonte é o contexto ---
     contexto: dict[str, str] = {}
+    seed_passage_by_id = {q["id"]: q["seed_passage"] for q in questoes}
+    if "G" in args.bracos:
+        for q in questoes:
+            contexto[q["id"]] = q["seed_passage"][: args.max_context_chars]
+
+    # ----- Etapa 2b: contexto RAG (braço B) ---------------------------------
     if "B" in args.bracos:
         print("[3/4] Recuperando contexto (braço B) do índice Q5...", flush=True)
         sys.path.insert(0, str(Path(args.rag_scripts).resolve()))
@@ -226,7 +266,13 @@ def main() -> None:
     for braco in args.bracos:
         if braco == "A":
             prompts = [montar_chat(tok, ANSWER_SYSTEM, q["question"]) for q in questoes]
-        else:
+        elif braco == "G":   # contexto-ouro: passagem-fonte contém a resposta
+            prompts = [
+                montar_chat(tok, ANSWER_SYSTEM_GOLD,
+                            f"CONTEXTO:\n{contexto[q['id']]}\n\nPERGUNTA: {q['question']}")
+                for q in questoes
+            ]
+        else:                # B: contexto RAG
             prompts = [
                 montar_chat(tok, ANSWER_SYSTEM_RAG,
                             f"CONTEXTO:\n{contexto[q['id']]}\n\nPERGUNTA: {q['question']}")
@@ -236,21 +282,27 @@ def main() -> None:
 
         f_ds = open(out / f"dataset_{braco}.jsonl", "w", encoding="utf-8")
         f_lg = open(out / f"logits_{braco}.jsonl", "w", encoding="utf-8")
+        n_ok, n_skip = 0, 0
         for q, pr, o in zip(questoes, prompts, outs):
             comp = o.outputs[0]
+            ans = comp.text.strip()
+            if args.filter_abstencao and eh_abstencao(ans):
+                n_skip += 1           # descarta abstenção (não é fato → polui a destilação)
+                continue
             rec = {
                 "id": q["id"], "source": q["source"], "question": q["question"],
-                "context": contexto.get(q["id"], "") if braco == "B" else "",
+                "context": contexto.get(q["id"], ""),
                 "prompt": pr,  # prompt renderizado (chat template) — usado tal-e-qual na destilação
-                "answer": comp.text.strip(),
+                "answer": ans,
                 "answer_token_ids": [int(t) for t in comp.token_ids],
             }
             f_ds.write(json.dumps(rec, ensure_ascii=False) + "\n")
             f_lg.write(json.dumps({"id": q["id"], "topk": extrair_topk(comp, args.topk)},
                                   ensure_ascii=False) + "\n")
+            n_ok += 1
         f_ds.close()
         f_lg.close()
-        print(f"      braço {braco}: {len(questoes)} respostas salvas", flush=True)
+        print(f"      braço {braco}: {n_ok} respostas salvas, {n_skip} abstenções descartadas", flush=True)
 
     print(f"OK — dataset em {out}/", flush=True)
 
