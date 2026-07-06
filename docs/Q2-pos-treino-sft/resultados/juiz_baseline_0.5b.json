@@ -1,0 +1,321 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "gen_json": "trabalho-final/Q2-pos-treino-sft/resultados/bench_baseline_0.5b.json",
+  "juiz_media": 2.7667,
+  "juiz_media_norm5": 0.5533,
+  "distribuicao": {
+    "1": 5,
+    "2": 13,
+    "3": 1,
+    "4": 6,
+    "5": 5
+  },
+  "media_por_tipo": {
+    "conceitual": 3.0,
+    "codigo": 2.7,
+    "contextual": 2.6
+  },
+  "n": 30,
+  "per_item": [
+    {
+      "instruction": "O que é uma pilha (stack) em estruturas de dados e qual sua política de acesso?",
+      "tipo": "conceitual",
+      "resposta_ref": "Uma pilha é uma estrutura de dados linear que segue a política LIFO (Last In, First Out): o último elemento inserido é o primeiro a ser removido. O acesso é feito sempre pelo topo.",
+      "geracao": "A pilha (ou stack) é uma estrutura de dados que se comporta como uma lista ordenada, mas com a capacidade de adicionar ou remover elementos de forma sequencial. Ela é útil para implementar operações de busca, inserção e remoção de elementos.\n\n### Política de Acesso na Pilha:\n\n1. **Inserção**: O elemento adicionado à pilha deve ser inserido no final.\n2. **Remoção**: O último elemento da pilha pode ser removido, mas não o primeiro.\n\n### Exemplo de Pilha:\n\nSuponhamos que temos uma pilha vazia chamada `pilha`. Para inserir um novo elemento, podemos fazer isso assim:\n\n```python\npilha = []\npilha.append(5)\npilha.append(3)\npilha.append(7)\nprint(pilha)  # Imprime [5, 3, 7]\n```\n\nPara remover um elemento, podemos usar a função `pop()`:\n\n```python\npilha.pop()  # Remover o último elemento da pilha\nprint(pilha)  # Imprime [5, 3]\n```\n\n### Notas importantes:\n\n- **Inserção**: É importante lem",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2674,
+      "juiz": 4
+    },
+    {
+      "instruction": "Quais são as duas operações fundamentais de uma pilha?",
+      "tipo": "conceitual",
+      "resposta_ref": "As operações fundamentais são push (inserir um elemento no topo) e pop (remover e retornar o elemento do topo).",
+      "geracao": "As duas operações fundamentais de uma pilha são:\n\n1. Inserir (Push): Adiciona um elemento à pilha.\n2. Extrair (Pop): Remove o último elemento da pilha.\n\nEssas operações permitem aos usuários manipular a estrutura de dados de maneira eficiente, garantindo que a pilha seja sempre organizada de forma ordenada.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3284,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que diferencia uma fila (queue) de uma pilha?",
+      "tipo": "conceitual",
+      "resposta_ref": "A fila segue a política FIFO (First In, First Out), em que o primeiro elemento inserido é o primeiro a sair, enquanto a pilha segue LIFO, em que o último a entrar é o primeiro a sair.",
+      "geracao": "A diferença principais entre uma fila (queue) e uma pilha (stack) está na ordem de inserção e exclusão dos elementos.\n\n1. **Fila (Queue)**:\n   - A fila é uma lista ordenada onde os elementos são adicionados no final e excluídos no início.\n   - É útil para armazenar dados temporários ou para processamento sequencial de entradas.\n   - Exemplo: Uma fila de clientes na fila de espera de um restaurante.\n\n2. **Pilha (Stack)**:\n   - A pilha é uma lista ordenada onde os elementos são adicionados no topo e excluídos no topo.\n   - É útil para armazenar dados de maneira dinâmica e para manipulação de strings, listas e outros tipos de dados.\n   - Exemplo: Um código de texto que pode ser adcionado ao final e removido do topo.\n\nEm resumo, a principal diferença é a ordem de acesso aos elementos:\n\n- **Fila**: Adiciona elementos no final e remove-os no início.\n- **Pilha**: Adiciona elementos no topo e remove-os no topo.\n\nEsses dois sistemas são fundamentais na programação e podem ser usados em",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1206,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que é um Tipo Abstrato de Dados (TAD)?",
+      "tipo": "conceitual",
+      "resposta_ref": "Um Tipo Abstrato de Dados é a especificação de um conjunto de dados e das operações que podem ser realizadas sobre eles, separando o comportamento (interface) da implementação concreta.",
+      "geracao": "Um TAD (Tipo de Dados) é uma estrutura de dados que possui características unificadas ou comum para todos os seus elementos. Esses tipos são geralmente definidos por um conjunto de propriedades unificadas, como a quantidade de elementos possíveis, o tipo de dado, a ordem dos elementos, entre outros.\n\nOs tipos abstratos de dados são essenciais para a programação funcional e a programação orientada a objetos. Eles permitem que você define padrões de comportamento para diferentes tipos de dados, sem ter a necessidade de especificar cada detalhe individual do elemento dentro desse tipo.\n\nPor exemplo, se você estiver trabalhando com listas de números inteiros, pode ser útil definir um tipo abstrato chamado \"ListaInt\" que seja capaz de representar qualquer lista de números inteiros. Isso permite que você não precisar especificar quantos elementos há na lista ou qual tipo de dado cada elemento representa.\n\nNo entanto, é importante notar que não todas as linguagens de programação suportam tanto tipo abstrato de dados quanto tipo de dados abstratos. No Python, por exemplo, você pode usar classes para defin",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1765,
+      "juiz": 4
+    },
+    {
+      "instruction": "O que significa a notação de complexidade O(1)?",
+      "tipo": "conceitual",
+      "resposta_ref": "O(1) indica complexidade de tempo constante: o custo da operação não depende do tamanho da entrada. As operações push e pop de uma pilha são O(1).",
+      "geracao": "A notação O(1) representa uma função com tempo linear (linear complexity). Esta não é uma expressão matemática formal, mas sim uma abordagem para entender o comportamento de um algoritmo ou um processo computacional.\n\nEm termos de tempo, a função O(1) indica que o tempo necessário para executar o algoritmo é constante e depende apenas do número de elementos que ele processa. Isso significa que o tempo excedido pelo algoritmo é sempre igual ao tempo excedido pelo número de elementos processados.\n\nPor exemplo, considerando um algoritmo que percorre uma lista de n elementos, a função O(n) seria útil se você precisava calcular o tempo excedido por n elementos. No entanto, se você precisava calcular o tempo excedido por 2n elementos, a função O(2n) seria mais conveniente.\n\nÉ importante notar que esta não é uma representação matemática precisa, pois a complexidade de tempo pode variar dependendo do contexto específico do problema.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1768,
+      "juiz": 1
+    },
+    {
+      "instruction": "Explique a diferença entre alocação estática e alocação dinâmica de memória.",
+      "tipo": "conceitual",
+      "resposta_ref": "Na alocação estática o tamanho da estrutura é fixado em tempo de compilação; na alocação dinâmica a memória é reservada em tempo de execução (por exemplo com malloc em C), permitindo estruturas que crescem ou diminuem conforme a necessidade.",
+      "geracao": "A alocação estática e dinâmica são duas maneiras diferentes de gerenciar o espaço de memória na CPU (Central Processing Unit) para evitar o uso excessivo de recursos.\n\n1. Alocação estática: Esta é uma maneira mais simples de lidar com a alocação de memória. Quando você define um tamanho máximo de memória disponível para cada processador, o sistema automaticamente reserva essa quantidade de memória para o processo atual. Isso pode ser útil se você quiser manter uma boa configuração de memória ou se você quer garantir que não haja sobrecarga de memória.\n\n2. Alocação dinâmica: A alocação dinâmica é uma maneira mais complexa de gerenciar a alocação de memória. Ela envolve a criação de tabelas de reservas temporárias (RAMs) que podem ser usadas quando necessário. Esses tamanhos de RAM são definidos por um sistema de controle de memória (como o Windows 7), que permite que os usuários defina quantos bytes de RAM podem ser reservados para cada processo. \n\nEm resumo, a alocação estática é mais simples e eficiente, mas requer menos",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1818,
+      "juiz": 1
+    },
+    {
+      "instruction": "O que é uma lista encadeada (linked list)?",
+      "tipo": "conceitual",
+      "resposta_ref": "Uma lista encadeada é uma estrutura de dados linear composta por nós, em que cada nó armazena um valor e um ponteiro para o próximo nó, permitindo inserções e remoções sem deslocar os demais elementos.",
+      "geracao": "Um exemplo de uma lista encadeada é a lista de números inteiros. Aqui está um exemplo simples:\n\n1. 5\n2. 3\n3. 7\n\nA lista é formada por elementos que são armazenados em memória como ponteiros para os próximos elementos. Em cada passo, o próximo elemento é armazenado na posição do atual elemento.\n\nPara adicionar um novo elemento à lista, você pode usar um método chamado \"inserir\" que recebe dois parâmetros: o índice do elemento que quer inserir e o valor do novo elemento. O método então cria um novo nó com esse valor e insere-o no início da lista.\n\nExemplo de uso:\n```\nlista = [None] * 10  # Cria uma lista vazia com tamanho 10\nlista[0] = 5  # Inserindo o número 5 na posição 0\nlista[1] = 3  # Inserindo o número 3 na posição 1\nlista[2] = 7  # Inserindo o número 7 na posição 2\n```\n\nEsta lista é representada pela seguinte estrutura de dados:\n\n- Lista vazia",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2526,
+      "juiz": 2
+    },
+    {
+      "instruction": "O que é recursão em programação?",
+      "tipo": "conceitual",
+      "resposta_ref": "Recursão é a técnica em que uma função chama a si mesma para resolver subproblemas menores; precisa de um caso base que encerra as chamadas e de um passo recursivo que aproxima do caso base.",
+      "geracao": "Recursão é uma técnica de programação onde uma função ou método se chama recursivamente para executar a mesma função ou método várias vezes até chegar ao fim. Isso significa que a função ou método faz o mesmo trabalho várias vezes dentro dela mesmo.\n\nEm outras palavras, recursão é quando uma função ou método lida com seu próprio resultado, passando por uma sub-provação (ou chamada) que lhe permite continuar a execução. \n\nExemplos de recursão:\n\n1. Função de Fibonacci: A função fib(n) calcula o n-ésimo número da sequência de Fibonacci.\n2. Função de Lucas: A função lucas(n) calcula o n-ésimo número da sequência de Lucas.\n3. Função de Ackermann: A função ackermann(n,m) calcula o n-ésimo número da sequência de Ackermann.\n\nRecursão é útil porque ela pode simplificar a implementação de funções complexas, permitindo que elas sejam executadas mais rapidamente. No entanto, também pode ser um problema de escalabilidade, pois a repetição do mesmo trabalho pode levar a um aumento na complexidade da função.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1961,
+      "juiz": 4
+    },
+    {
+      "instruction": "Para que serve um ponteiro na linguagem C?",
+      "tipo": "conceitual",
+      "resposta_ref": "Um ponteiro é uma variável que armazena o endereço de memória de outra variável, permitindo acesso indireto, passagem de argumentos por referência e a construção de estruturas dinâmicas como listas e árvores.",
+      "geracao": "Um ponteiro no C pode ser útil para manipular ou manipular dados específicos dentro do programa, mas não deve ser usado diretamente para manipular a estrutura geral do código. Aqui estão alguns pontos importantes sobre o uso de ponteiros:\n\n1. **Manipulação de Dados**: Ponteiros são úteis para manipular dados específicos, como variáveis, arrays, ponteiros, etc.\n\n2. **Manutenção de Estruturas**: Ponteiros podem ser usados para manter uma estrutura específica, como uma lista de elementos, uma matriz, etc., mantendo os dados internos dessa estrutura.\n\n3. **Funções e Métodos**: Ponteiros permitem criar funções e métodos que manipulam dados específicos, permitindo que você faça alterações diretas aos dados.\n\n4. **Cálculo**: Ponteiros podem ser usados para realizar cálculos complexos, como operações matemáticas, onde você pode manipular valores específicos.\n\n5. **Inserção e Remoção de Elementos**: Ponteiros podem ser usadas para inserir ou remover elementos de uma lista, matriz, etc.\n\n6. **Método de",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1798,
+      "juiz": 2
+    },
+    {
+      "instruction": "O que é uma árvore binária de busca?",
+      "tipo": "conceitual",
+      "resposta_ref": "É uma árvore binária em que, para cada nó, todos os valores da subárvore esquerda são menores que o do nó e todos os da subárvore direita são maiores, o que permite busca, inserção e remoção eficientes.",
+      "geracao": "Uma árvore binária de busca (BST) é uma estrutura de dados que utiliza uma estrutura de nós para armazenar elementos ordenados. Ela é conhecida por sua eficiência na busca, pois a busca rápida pode ser realizada com apenas uma iteração no nó central.\n\nA estrutura básica de uma árvore binária de busca consiste em:\n\n1. **Nó Central**: É o nó mais alto do BST.\n2. **Nó Lateral**: É o nó mais baixo do BST.\n3. **Arvore de Navegação**: É uma lista de todos os nós que estão adjacentes ao nó central.\n\nEssas arvores são usadas principalmente para implementar algoritmos de busca, como a busca binária, onde cada nó representa um elemento e as arvores representam os vetores de pesquisa.\n\nAlguns pontos importantes sobre árvores binárias de busca:\n\n- A árvore deve ter pelo menos dois nós: um nó central e um nó lateral.\n- O nó central sempre será o maior nó da árvore.\n- Os nós lindos (nós ligeiros) têm um único filho.\n- As arvores binárias",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2189,
+      "juiz": 2
+    },
+    {
+      "instruction": "Considerando uma pilha vazia, qual é o elemento no topo após executar o código?",
+      "tipo": "codigo",
+      "resposta_ref": "O elemento no topo é 'I', pois foi o último a ser inserido pela operação push.",
+      "geracao": "Após executar o código `push('O'); push('C'); push('I');` na pilha vazia, o elemento no topo será `'I'`.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.4,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que o código a seguir imprime, partindo de uma pilha vazia?",
+      "tipo": "codigo",
+      "resposta_ref": "Imprime 'C'. Após push de 'A' e 'B', o pop remove 'B'; em seguida push de 'C' deixa 'C' no topo, que é removido e impresso pelo último pop.",
+      "geracao": "O código imprime 'D' na tela.\n\nExplicação:\n\n1. O código começa com `push('A')`, que adiciona o elemento 'A' à pilha.\n2. Depois, `pop()` é chamado, que remove o último elemento da pilha (o 'A').\n3. Agora, `push('B')` adiciona 'B' à pilha.\n4. Após isso, `printf(\"%c\", pop())` é executado. No momento da chamada, a pilha está vazia, então `pop()` retorna 'B'. Então, `printf(\"%c\", pop())` imprime 'B', que é o último elemento da pilha antes do 'D'.\n\nPortanto, o resultado final é 'D'.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3333,
+      "juiz": 1
+    },
+    {
+      "instruction": "Quantas vezes o laço executa o corpo?",
+      "tipo": "codigo",
+      "resposta_ref": "O corpo executa 5 vezes, imprimindo os valores 0, 1, 2, 3 e 4.",
+      "geracao": "O laço `for` executará a expressão `printf(\"%d\", i)` 5 vezes.\n\nAqui está o código:\n\n```c\nfor (int i = 0; i < 5; i++)\n{\n    printf(\"%d\", i);\n}\n```\n\nNo entanto, você pode ver que o laço não executa a expressão `printf(\"%d\", i)`. Isso acontece porque o `i` no bloco do laço é inicializado com zero (`i = 0`) e incrementado cada vez que o laço percorre os elementos da lista. Portanto, após o último parâmetro (`i = 4`), o valor de `i` será 4, e a função `printf` não irá imprimir nada.\n\nPara garantir que o laço execute a expressão `printf(\"%d\", i)`, você precisaria ajustar o laço para começar com um valor diferente. Por exemplo, se você quiser exibir \"Hello\" 5 vezes, você poderia fazer algo como isso:\n\n```c\nfor (int i = 0; i < 5; i++)\n{\n    printf(\"Hello\");\n}\n```\n\nEste código exibirá \"HelloHello",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1039,
+      "juiz": 2
+    },
+    {
+      "instruction": "Qual o valor final da variável soma?",
+      "tipo": "codigo",
+      "resposta_ref": "O valor final de soma é 10, resultado de 1 + 2 + 3 + 4.",
+      "geracao": "O valor final da variável `soma` será:\n\n```\nsoma = 1 + 2 + 3 + 4 = 10\n```",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.6923,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que a função abaixo calcula para n >= 0?",
+      "tipo": "codigo",
+      "resposta_ref": "A função calcula o fatorial de n (n!), usando recursão com caso base f(0)=1 e passo recursivo n * f(n-1).",
+      "geracao": "A função `f` calcula o valor de uma expressão recursiva, onde `n` é um número inteiro positivo. A função é definida como:\n\n```c\nint f(int n)\n{\n    if (n == 0)\n        return 1;\n    else\n        return n * f(n - 1);\n}\n```\n\nPara entender melhor essa função, vamos analisar os passos:\n\n1. **Base Case**: Quando `n` é igual a zero, a função retorna 1.\n2. **Recursive Case**: Se `n` for maior que zero, a função multiplica `n` pelo resultado da chamada recursiva de `f` com `n-1`.\n\n### Explicação do Passo 2:\n- O passo 2 começa com `n = 1`.\n- A função então multiplica `n` por `f(n-1)`.\n\n### Explicação do Passo 3:\n- O passo 3 começa com `n = 2`.\n- A função então multiplica `n` por `f(1)`.\n\n### Explicação do Passo 4:\n- O passo 4 começa com `n = 3`.\n- A função então",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2264,
+      "juiz": 4
+    },
+    {
+      "instruction": "O acesso a p->dado em C corresponde a quê?",
+      "tipo": "codigo",
+      "resposta_ref": "p->dado acessa o campo 'dado' do nó apontado por p; é equivalente a (*p).dado, ou seja, desreferencia o ponteiro e acessa o membro.",
+      "geracao": "O acesso à `p->dado` em C corresponde ao acesso à propriedade \"dado\" do objeto `No`. \n\nAqui está uma explicação detalhada:\n\n1. **Structualidade**: O struct `No` define um tipo de dados para representar os nós de uma lista.\n\n2. **Ponteiro**: O ponteiro `p` refere-se a um nó específico na lista.\n\n3. **Accesso à Propriedade**: Para acessar o valor de uma propriedade específica no struct, você deve usar o operador `.` (ou `::`) após a propriedade.\n\n4. **Exemplo**: Se `No` for definido assim:\n   ```c\n   struct No {\n       int dado;\n       struct No *prox;\n   };\n   ```\n\n5. **Ponteiro `p`**:\n   - `p` refere-se a um nó específico na lista.\n   - `p->dado` acessa o valor de `dado` do nó especificado pelo ponteiro `p`.\n\nPortanto, o acesso à `p->dado` é equivalente ao acesso à propriedade \"dado\" do nó especificado pelo ponteiro `",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2166,
+      "juiz": 3
+    },
+    {
+      "instruction": "Qual é o efeito de chamar pop() em uma pilha vazia, em uma implementação correta?",
+      "tipo": "codigo",
+      "resposta_ref": "Deve sinalizar erro de underflow (pilha vazia), pois não há elemento a remover; tipicamente retorna um código de erro ou lança uma condição de exceção, sem alterar a pilha.",
+      "geracao": "Chamando `pop()` em uma pilha vazia não produzirá nenhum efeito significativo na implementação correta. A pilha é uma estrutura de dados que permite a inserção e a exclusão de elementos em ordem crescente.\n\nA função `pop()` remove e retorna o elemento mais recente da pilha. No caso de uma pilha vazia, essa função não faz nada porque a pilha está vazia e não há elementos para remover.\n\nNo entanto, se você estiver tentando manipular uma pilha real ou implementar uma pilha fictícia, seria necessário considerar as regras específicas da sua implementação. Por exemplo:\n\n1. **Pilha vazia**: Se a pilha estiver vazia, `pop()` não faz nada.\n2. **Pilha com elementos**: Se a pilha contém elementos, `pop()` deve remover o último elemento e retorná-lo.\n\nSe você estiver usando uma implementação de pilha como uma lista dinâmica (como Python's list), a pilha vazia não fará nenhuma diferença. Se você estiver usando uma implementação de pilha como uma lista de elementos separados (como uma lista de strings no",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1641,
+      "juiz": 2
+    },
+    {
+      "instruction": "O que faz a função malloc em C e o que retorna?",
+      "tipo": "codigo",
+      "resposta_ref": "malloc reserva dinamicamente um bloco de memória do tamanho informado (sizeof(No)) e retorna um ponteiro para o início do bloco, ou NULL se a alocação falhar.",
+      "geracao": "A função `malloc` em C é usada para criar memória para os objetos de uma estrutura de dados especificada. A função `sizeof` calcula o tamanho de memória necessária para o objeto.\n\nNo exemplo fornecido:\n\n```c\n#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct No {\n    int valor;\n    struct No* proximo;\n} No;\n\nint main() {\n    No* p = NULL; // Pode ser qualquer tipo de objeto\n\n    // Criando memória com sizeof\n    p = (No*) malloc(sizeof(No));\n\n    if (p != NULL) {\n        printf(\"Memórias criadas com sucesso!\\n\");\n    } else {\n        printf(\"Erro ao criar memória.\\n\");\n    }\n\n    return 0;\n}\n```\n\n### Explicação:\n1. **Função `malloc`:**\n   - Esta função cria uma memória temporária no sistema.\n   - O parâmetro `sizeof` é usado para determinar o tamanho da memória que será criada. Em este caso, `sizeof(No)` é igual a `sizeof(int)`, que é 4 bytes.\n\n2. **Criação da Memória:**\n   - `p",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1375,
+      "juiz": 2
+    },
+    {
+      "instruction": "Em uma fila, após enfileirar 1, 2 e 3, qual elemento é retornado pela operação de desenfileirar?",
+      "tipo": "codigo",
+      "resposta_ref": "Retorna 1, pois a fila é FIFO: o primeiro elemento inserido é o primeiro a ser removido.",
+      "geracao": "O elemento retornado pela operação de desenfileirar na fila de enfileira seria o número 4.\n\nAgora, vamos resolver a questão completa:\n\n1. Enfileira os números: 1, 2, 3.\n2. Deve-se retirar o primeiro número da fila (que é 1) para desenfilejar.\n3. O novo número será 2.\n4. Deve-se retirar o segundo número da fila (que é 2) para desenfilejar.\n5. O novo número será 3.\n6. Deve-se retirar o último número da fila (que é 3) para desenfilejar.\n7. O novo número será 4.\n\nPortanto, o número retornado pela operação de desenfileirar é **4**.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1565,
+      "juiz": 1
+    },
+    {
+      "instruction": "Qual o problema do código abaixo do ponto de vista de gerenciamento de memória?",
+      "tipo": "codigo",
+      "resposta_ref": "Há vazamento de memória (memory leak): o ponteiro p é reatribuído para NULL sem antes liberar (free) o bloco alocado, tornando essa memória inacessível e não liberada.",
+      "geracao": "O problema no código `p = malloc(sizeof(No)); p = NULL;` está na declaração de uma ponteiro `p` que inicializa com a alocação de memória para um objeto `No`, mas depois passa a referenciar a memória vazia (`NULL`). Isso pode causar problemas de segurança ou ineficiência dependendo do contexto.\n\n### Problemas:\n\n1. **Inserção de objetos**: Se você tentar inserir um novo objeto `No` usando `malloc`, o código não irá funcionar porque `malloc` retorna uma ponteiro para a memória, então o objeto `No` será criado na memória vazia, o que pode causar erros de compilação ou de execução.\n   \n2. **Memoria excessiva**: O uso de `malloc` para criar objetos grandes pode levar à sobrecarga de memória, especialmente se o tamanho dos objetos for muito grande.\n\n3. **Erro de compilação**: Se o tamanho de `sizeof(No)` for muito grande, pode causar um erro de compilação ou de execução, pois o compilador não consegue determinar onde está a memoria suficiente para os objetos `",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1087,
+      "juiz": 2
+    },
+    {
+      "instruction": "Na disciplina de Estruturas de Dados I do Departamento de Computação da UFPI, qual é a ideia fundamental de acesso aos elementos de uma pilha?",
+      "tipo": "contextual",
+      "resposta_ref": "A ideia fundamental é que todo acesso aos elementos da pilha é feito através do seu topo: ao adicionar um novo elemento ele se torna o topo, e o elemento retirado é sempre o do topo.",
+      "geracao": "A ideia fundamental de acesso aos elementos de uma pilha é garantir que o acesso ao topo (o elemento mais alto) seja eficiente e rápido. Isso permite que os usuários possam acessar qualquer elemento da pilha sem precisar recorrer a uma lista completa.\n\nAlém disso, a pilha deve ser designada para permitir que as operações de inserção e de remoção sejam realizadas de maneira eficiente. Essas operações devem ocorrer rapidamente, mantendo-se eficientes mesmo com muitos elementos na pilha.\n\nEm outras palavras, a pilha deve oferecer uma estrutura de dados que permita que os usuários tenham acesso a elementos de forma rápida e segura, independentemente de quantos elementos estão presentes na pilha.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2703,
+      "juiz": 2
+    },
+    {
+      "instruction": "Por que a pilha é considerada uma das estruturas de dados mais simples e comuns na computação?",
+      "tipo": "contextual",
+      "resposta_ref": "Porque possui poucas operações bem definidas (inserção e remoção sempre pelo topo), é fácil de implementar e aparece em muitas situações rotineiras da computação, como chamadas de função, desfazer/refazer e avaliação de expressões.",
+      "geracao": "A pilha é considerada uma das estruturas de dados mais simples e comuns na computação por várias razões:\n\n1. **Lógica de Operações**: A pilha tem operações lógicas básicas como \"adicionar\" (push) e \"remover\" (pop). Isso permite que você possa manipular elementos de maneira sequencial.\n\n2. **Simplicidade de Implementação**: Embora o código seja simples, a implementação pode ser bastante simplificada para fins de aprendizado. Por exemplo, a pilha pode ser representada apenas pelo número de posições vazias no início e final da lista.\n\n3. **Fácil de Usar**: Os métodos de inserção e remoção são muito simples e podem ser facilmente implementados em qualquer linguagem de programação.\n\n4. **Repetição de Elementos**: Em muitas situações, é útil repetir elementos em uma pilha, como na implementação de sistemas de controle de fluxo ou na criação de listas de contatos.\n\n5. **Função de Controle**: A pilha também serve como uma função de controle, permitindo que você verifique se há algum elemento em uma pil",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1969,
+      "juiz": 4
+    },
+    {
+      "instruction": "Cite um exemplo de uso de pilha no funcionamento de programas.",
+      "tipo": "contextual",
+      "resposta_ref": "A pilha de execução (call stack) gerencia as chamadas de função: cada chamada empilha um registro de ativação e cada retorno o desempilha, seguindo a ordem LIFO.",
+      "geracao": "Uma maneira eficiente de usar uma pilha para implementar um sistema de armazenamento de dados é através do método de inserção-remoção (push-pop). Aqui está um exemplo simples:\n\n1. **Inserir**: Para adicionar um novo elemento à pilha, você faz o seguinte:\n   - Enquanto a pilha estiver vazia, você adiciona o elemento na frente.\n   - Quando a pilha estiver cheia, você remove o último elemento.\n\n2. **Remover**: Para remover um elemento da pilha, você faz o seguinte:\n   - Se a pilha estiver vazia, você não pode remover nada.\n   - Se a pilha estiver cheia, você remove o último elemento.\n\nAqui está um exemplo de como isso funciona em Python:\n\n```python\nclass Pilha:\n    def __init__(self):\n        self.items = []\n\n    def is_empty(self):\n        return len(self.items) == 0\n\n    def push(self, item):\n        self.items.append(item)\n\n    def pop(self):\n        if not self.is_empty():\n            return self.items.pop()\n        else:\n            raise IndexError(\"Pilha vazia\")\n\n    def peek(self):\n        if not",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1017,
+      "juiz": 2
+    },
+    {
+      "instruction": "Em uma implementação dinâmica de pilha com listas encadeadas, o que representa o ponteiro 'topo'?",
+      "tipo": "contextual",
+      "resposta_ref": "O ponteiro 'topo' aponta para o nó mais recentemente inserido na pilha; as operações push e pop manipulam esse ponteiro para inserir ou remover sempre na extremidade do topo.",
+      "geracao": "No sistema dinâmico de pilha com listas encadeadas, o ponteiro 'topo' representa a posição do último elemento na lista.\n\nAqui está um exemplo simples:\n\n1. **Lista**: [1, 2, 3]\n2. **Topo**: 3 (posição 2)\n3. **Pilha**: [3]\n\nO ponteiro 'topo' indica a posição do último elemento na lista. Se você tiver uma pilha com elementos `[5, 6, 7]`, então 'topo' seria 0 (posição 0) e 'pilha' seria `[5, 6, 7]`.\n\nSe você tiver uma pilha com elementos `[8, 9, 10]`, então 'topo' seria 2 (posição 2) e 'pilha' seria `[8, 9, 10]`.\n\nPortanto, o ponteiro 'topo' é crucial para entender como a pilha funciona.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1955,
+      "juiz": 4
+    },
+    {
+      "instruction": "Como a maioria das estruturas de dados, quais operações básicas a pilha permite?",
+      "tipo": "contextual",
+      "resposta_ref": "Permite operações de adição (inserção) e de remoção de dados; na pilha ambas ocorrem na mesma extremidade, o topo.",
+      "geracao": "A pilha é uma estrutura de dados que permite várias operações básicas:\n\n1. **Inserir (Push)**: Adiciona um elemento à frente da pilha.\n\n2. **Extrair (Pop)**: Remove o último elemento da pilha.\n\n3. **Verificar se está vazia**: Verifica se a pilha está vazia ou não há elementos na pilha.\n\n4. **Obter o tamanho da pilha**: Obtem o número total de elementos na pilha.\n\n5. **Ordenar**: Ordena os elementos da pilha em ordem crescente.\n\n6. **Remover o primeiro elemento**: Remove e retorna o primeiro elemento da pilha.\n\n7. **Adicionar elementos ao final**: Adiciona um novo elemento à pilha no final.\n\n8. **Adicionar elementos ao início**: Adiciona um novo elemento à pilha no início.\n\n9. **Verificar se existe um elemento com determinado valor**: Verifica se a pilha contém um elemento com um determinado valor específico.\n\n10. **Verificar se a pilha está vazia**: Verifica se a pilha está vazia ou não há elementos na pilha.\n\nEstas são as principais operações básicas",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1136,
+      "juiz": 2
+    },
+    {
+      "instruction": "O que acontece com um elemento recém-adicionado em uma pilha?",
+      "tipo": "contextual",
+      "resposta_ref": "Ele se torna o novo topo da pilha e será o primeiro a ser removido em uma futura operação de remoção, conforme a política LIFO.",
+      "geracao": "Um elemento recém-adicionado na pilha ocorre quando a pilha está vazia ou quando o último elemento adicionado foi removido. Aqui estão alguns pontos importantes:\n\n1. **Vazia**: Se a pilha estiver vazia, então o novo elemento não pode ser adicionado.\n\n2. **Removido**: Se o último elemento adicionado for removido (ou seja, se ele tiver sido removido), então o novo elemento deve ser adicionado à frente do último elemento removido.\n\n3. **Adição**: O novo elemento adicional deve ser adicionado ao final da pilha.\n\n4. **Revisão da Pilha**: Após a adição do novo elemento, a pilha deve estar reordenada para garantir que todos os elementos permaneçam ordenados conforme a ordem inicial.\n\n5. **Caso de Erro**: Em casos excepcionais, como quando há mais elementos no topo da pilha do que podem ser adicionados, o sistema pode retornar um erro.\n\nÉ importante notar que essa reorganização da pilha é feita por meio de operações de inserção e remoção, e não por meio de uma nova adição de elementos.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1905,
+      "juiz": 2
+    },
+    {
+      "instruction": "No contexto de inicialização de uma pilha dinâmica, o que faz a operação de inicializar?",
+      "tipo": "contextual",
+      "resposta_ref": "A inicialização prepara a pilha para uso, normalmente definindo o topo como vazio (por exemplo, atribuindo NULL ao ponteiro de topo), indicando que ainda não há elementos.",
+      "geracao": "A operação de inicializar uma pilha dinâmica envolve os seguintes passos:\n\n1. Definir o tipo de pilha: A pilha pode ser definida como uma lista (ou array) ou uma estrutura de dados customizada.\n\n2. Criar um ponteiro para o topo da pilha: Este ponteiro deve representar o elemento mais alto na pilha atual.\n\n3. Inicializar o ponteiro para o topo da pilha com um valor específico, como 0 ou -1, dependendo do tipo de pilha escolhido.\n\n4. Adicionar elementos à pilha: Para cada elemento que deseja incluir na pilha, você adiciona-o ao ponteiro correspondente.\n\n5. Verificar se a pilha está vazia: Se o ponteiro for igual a zero, a pilha está vazia; caso contrário, ela está contendo elementos.\n\n6. Retornar o número de elementos na pilha: O número de elementos na pilha é o tamanho da pilha.\n\nÉ importante notar que, embora as pilhas dinâmicas possam ser usadas para implementar várias estruturas de dados, elas não são únicas",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1505,
+      "juiz": 2
+    },
+    {
+      "instruction": "Qual a importância de estudar estruturas de dados em um curso de Ciência da Computação?",
+      "tipo": "contextual",
+      "resposta_ref": "Estruturas de dados permitem organizar e manipular informações de forma eficiente, sendo base para algoritmos, desempenho de programas e resolução de problemas computacionais; por isso são disciplina fundamental no curso.",
+      "geracao": "A estudo de estruturas de dados é fundamental para o desenvolvimento de sistemas computacionais complexos. Elas fornecem uma abordagem eficaz para:\n\n1. Organização de dados: Estruturas como árvores, grafos e tabelas permitem organizar e manipular informações de maneira eficiente.\n\n2. Processamento de dados: Estes métodos são fundamentais para processamento de grandes volumes de dados, como na análise de big data.\n\n3. Análise de dados: Estruturas como algoritmos de busca e ordenação podem ser usadas para analisar e organizar dados.\n\n4. Interação com outros sistemas: Estruturas de dados permitem interações entre diferentes sistemas ou aplicações.\n\n5. Desenvolvimento de software: As estruturas de dados são usadas para criar interfaces gráficas, aplicativos web e sistemas operacionais.\n\n6. Modelagem de sistemas: Estruturas de dados ajudam a modelar e simular sistemas complexos.\n\n7. Desenvolvimento de soluções de problemas: Estruturas de dados podem ser utilizadas para resolver problemas específicos.\n\n8. Inteligência artificial: Estruturas de dados",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2123,
+      "juiz": 5
+    },
+    {
+      "instruction": "Em uma pilha, é possível acessar diretamente um elemento que não esteja no topo?",
+      "tipo": "contextual",
+      "resposta_ref": "Não. Pela definição da pilha, o acesso é restrito ao topo; para alcançar um elemento abaixo é preciso remover (pop) os elementos acima dele primeiro.",
+      "geracao": "Não, é impossível acessar diretamente um elemento que não esteja no topo de uma pilha. Em uma pilha, a ordem dos elementos é sempre a mesma: o topo (o elemento mais recente) está ao lado do topo, enquanto os outros elementos estão à esquerda.\n\nPara acessar um elemento que não esteja no topo:\n\n1. **Verifique a posição**: Primeiro, verifique se o elemento que você deseja acessar está na pilha.\n2. **Acessar o elemento**: Se o elemento estiver na pilha, ele pode ser acessado facilmente usando sua estrutura de dados ou métodos de acesso direto.\n\nPor exemplo, suponha que você tenha uma lista de alunos chamada `alunos` e quer acessar o aluno `João`. Você pode fazer isso usando a estrutura de dados `alunos` como segue:\n\n```python\nalunos = [\"Maria\", \"Ana\", \"João\"]\nprint(alunos[0])  # Imprime \"Maria\"\n```\n\nNo entanto, se você tiver uma pilha com elementos que não são alfabéticos, como por exemplo, `[\"João\", \"Ana\", \"Maria\"]`, então",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1564,
+      "juiz": 1
+    },
+    {
+      "instruction": "Qual a diferença entre uma implementação de pilha estática (com vetor) e dinâmica (com lista encadeada)?",
+      "tipo": "contextual",
+      "resposta_ref": "A pilha estática usa um vetor de tamanho fixo, com limite de capacidade e risco de overflow; a dinâmica usa nós alocados sob demanda com ponteiros, crescendo conforme a memória disponível, ao custo de armazenar ponteiros e fazer alocações.",
+      "geracao": "A diferença principais entre uma implementação de pilha estática (com vetor) e dinâmica (com lista encadeada) reside na estrutura de dados utilizadas para armazenar os elementos da pilha.\n\n1. **Implementação Dinâmica (Lista Encadeada)**:\n   - A lista encadeada é uma estrutura de dados que permite ao usuário adicionar ou remover elementos de qualquer lugar do vetor.\n   - É mais eficiente em termos de espaço, pois o tamanho máximo do vetor pode ser muito maior do que o número de elementos que você deseja armazenar.\n   - O tempo de execução para inserção e remoção de elementos é mais rápido do que no caso de uma pilha estática com vetor.\n\n2. **Implementação Estática (Vetor)**:\n   - Um vetor é uma estrutura de dados que armazena todos os elementos em memória simultaneamente.\n   - Isso significa que ele não permite inserções ou remoções de elementos, mas sim apenas acessões.\n   - O tempo de execução para operações como inserção e remoção de elementos é mais lento do que no caso de uma lista encadeada.\n\nEm resumo,",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1881,
+      "juiz": 2
+    }
+  ]
+}

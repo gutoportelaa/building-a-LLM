@@ -1,0 +1,931 @@
+{
+  "recall_contexto": {
+    "standard": {
+      "recall": 0.421,
+      "hits": 8,
+      "avaliaveis": 19
+    },
+    "hyde": {
+      "recall": 0.421,
+      "hits": 8,
+      "avaliaveis": 19
+    }
+  },
+  "tabela_geracao": [
+    {
+      "gerador": "G1 base (antes)",
+      "no_rag": 0.0,
+      "standard": 0.111,
+      "delta": 0.111,
+      "acertos_norag": 0,
+      "acertos_rag": 2,
+      "avaliaveis": 18
+    },
+    {
+      "gerador": "G2 DAPT (pré-treinado)",
+      "no_rag": 0.0,
+      "standard": 0.167,
+      "delta": 0.167,
+      "acertos_norag": 0,
+      "acertos_rag": 3,
+      "avaliaveis": 18
+    },
+    {
+      "gerador": "G3 qwen2.5:14b (qualif.)",
+      "no_rag": 0.0,
+      "standard": 0.333,
+      "delta": 0.333,
+      "acertos_norag": 0,
+      "acertos_rag": 6,
+      "avaliaveis": 18
+    }
+  ],
+  "exemplos": [
+    {
+      "pergunta": "Qual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?",
+      "resposta_ref": "ANTARES COMERCIO ATACADISTA LTDA (CNPJ 28.766.496/0001-28)",
+      "modo_q": "rag",
+      "geradores": {
+        "G1_base": {
+          "no_rag": {
+            "answer": "Qual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?处置\n处置assistant\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?处置\n处置assistant\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?处置\n处置assistant\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?处置\n处置assistant\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?处置\n处置assistant\nQual empresa venceu o Pregão Eletrônico nº 040/2",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 9.8
+          },
+          "standard": {
+            "answer": "ONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 8.2
+          }
+        },
+        "G2_DAPT": {
+          "no_rag": {
+            "answer": "Qual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual empresa venceu o Pregão Eletrônico nº 040/2024 da Pref",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 23.6
+          },
+          "standard": {
+            "answer": "[1] e contas de convênios e contratos do Município de Pedro II, bem como acrescer o percentual de 16,6% ao contrato inicial, contrato nº. 209/2023, referente ao Pregão Eletrônico nº. 035/2023, Processo Administrativo nº. 3601/2023. Prazo: 12 (doze) meses. Pedro II, 15 de Janeiro de 2025.\n\nElisabete Rodrigues de O. Nunes Brandão Prefeita Municipal /PMPII/PI\n\n[2] O Município de Pedro II - PI, atraves de seu Secretario Municipal, no uso de suas\natribuicoes legais, tomando por base a adesao (documento em anexo), ADJUDICA a adesao a\nAt",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 19.5
+          }
+        },
+        "G3_14b": {
+          "no_rag": {
+            "answer": "Não tenho acesso a informações específicas sobre o resultado do Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II em tempo real. Para obter essa informação precisa, você deve consultar diretamente o Diário Oficial dos Municípios do Piauí (DOM-PI) ou entrar em contato com a Prefeitura de Pedro II.",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 98.3
+          },
+          "standard": {
+            "answer": "Não encontrado no corpus.",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 11.9
+          }
+        }
+      }
+    },
+    {
+      "pergunta": "Quem foi nomeado para a função de Coordenação de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?",
+      "resposta_ref": "EULILIA DA SILVA CARVALHO ALBUQUERQUE (CPF 047.870.323-64)",
+      "modo_q": "rag",
+      "geradores": {
+        "G1_base": {
+          "no_rag": {
+            "answer": "Quem foi nomeado para a função de Coordenador de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?猞\n猞assistant\nQuem foi nomeado para a função de Coordenador de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?猞\n猞assistant\nQuem foi nomeado para a função de Coordenador de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?猞\n猞assistant\nQuem foi nomeado para a função de Coordenador de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?猞\n猞assistant\nQuem foi nomeado para a função de Coordenador de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 6.6
+          },
+          "standard": {
+            "answer": "Ņ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ\nŅ",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 7.8
+          }
+        },
+        "G2_DAPT": {
+          "no_rag": {
+            "answer": "Qual o nome do secretário de Obras da Prefeitura de Cocal?猞\n猞secretarioobras\nQual o nome do secretário de Obras da Prefeitura de Cocal?猞\n猞secretarioobras\nQual o nome do secretário de Obras da Prefeitura de Cocal?猞\n猞secretarioobras\nQual o nome do secretário de Obras da Prefeitura de Cocal?猞\n猞secretarioobras\nQual o nome do secretário de Obras da Prefeitura de Cocal?猞\n猞secretarioobras\nQual o nome do secretário de Obras da Prefeitura de Cocal?猞\n猞secretarioobras\nQual o nome do secretário de Obras da Prefeitura de Cocal?猞\n猞secretarioobras\nQual o nome do secretário de Obras da Prefeitura de Cocal?猞\n猞secretarioobras",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 17.2
+          },
+          "standard": {
+            "answer": "Porno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 16.1
+          }
+        },
+        "G3_14b": {
+          "no_rag": {
+            "answer": "Não há informações disponíveis sobre a Portaria nº 130/2025 referente à Coordenação de Solenidades Oficiais em Cocal, Piauí. Para obter essa informação precisa, você deve consultar diretamente o Diário Oficial dos Municípios do Piauí (DOM-PI) ou entrar em contato com a Prefeitura Municipal de Cocal.",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 0,
+            "segundos": 16.4
+          },
+          "standard": {
+            "answer": "Eulilia da Silva Carvalho Albuquerque foi nomeada para a função de Coordenação de Solenidades Oficiais junto à Secretaria de Governo pelo Prefeito Municipal de Cocal através da Portaria nº 130/2025.",
+            "acerto": true,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 25.2
+          }
+        }
+      }
+    },
+    {
+      "pergunta": "De que trata a Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025?",
+      "resposta_ref": "Dispõe sobre a nomeação para cargos de provimento em comissão e de funções de confiança e gratificadas, integrantes da estrutura organizacional da Administração Direta e Indireta do Poder Executivo do Município de Cocal/PI.",
+      "modo_q": "rag",
+      "geradores": {
+        "G1_base": {
+          "no_rag": {
+            "answer": "O que é a Portaria nº 130/2025 do Município de Cocal?猞\n猞assistant\nA Portaria nº 130/2025 do Município de Cocal trata de assuntos relacionados com a administração pública municipal. A publicação desta portaria no Diário Oficial dos Municípios do Piauí (DOM-PI) indica que ela é um documento oficial do município, que regula determinadas questões e determina ações a serem tomadas. A publicação desta portaria no DOM-PI é uma forma de divulgar informações relevantes para a comunidade local e para os cidadãos que vivem no município.猞\n猞assistant\nA Portaria nº 130/2025 do Município de Cocal trata de assuntos relacionados com a administração pública municipal. A publicação desta portaria no Diário",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 7.8
+          },
+          "standard": {
+            "answer": "[6] 182\nAno XxIll Teresina (Pl) - Terca-Feira, 14 de Janeiro de 2025 - Edicao VccxxxvIII\n\nPrefeitura\nPrefeitura\nCOCAL\nCOCAL\nUm Nouo Tempo para Todos!\nUm Novo Tempo para Todos!\nPortaria n 100/2025\nPortaria n102/2025\nDISPOE SOBRE NOMEACAO DE PESSOAI\nDISPOE SOBRE NOMEACAO DE PESSOAL\nNO AMBITO DO SERVIGO PUBLICO\nMunicipal E DA OUTRAS PROVIDENCIAS\nMunicipal E DA OUTRAS PROVIDENCIAS.\nO PREFEITO DO Município DE COCAL, ESTADO DO Piauí, CRISTIANO\nFELIPPE DE ME",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 6.8
+          }
+        },
+        "G2_DAPT": {
+          "no_rag": {
+            "answer": "O que é a Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025?猞\n猞\nA Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025, trata da Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025.猞\n猞\nA Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025, trata da Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025.猞",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 17.2
+          },
+          "standard": {
+            "answer": "[6] 182\nAno XxIll Teresina (Pl) - Terca-Feira, 14 de Janeiro de 2025 - Edicao VccxxxvIII\n\nPrefeitura\nPrefeitura\nCOCAL\nCOCAL\nUm Nouo Tempo para Todos!\nUm Novo Tempo para Todos!\nPortaria n 100/2025\nPortaria n102/2025\nDISPOE SOBRE NOMEACAO DE PESSOAI\nDISPOE SOBRE NOMEACAO DE PESSOAL\nNO AMBITO DO SERVIGO PUBLICO\nMunicipal E DA OUTRAS PROVIDENCIAS\nMunicipal E DA OUTRAS PROVIDENCIAS.\nO PREFEITO DO Municpio DE COCAL, ESTADO DO Piaul, CRISTIANO\nFELIPPE DE ME",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 17.2
+          }
+        },
+        "G3_14b": {
+          "no_rag": {
+            "answer": "Como não há informações específicas sobre a Portaria nº 130/2025 do Município de Cocal no meu banco de dados, não posso fornecer detalhes concretos sobre o conteúdo dessa portaria. Para obter as informações corretas e atualizadas, recomendo consultar diretamente o Diário Oficial dos Municípios do Piauí (DOM-PI) ou entrar em contato com a Prefeitura de Cocal para solicitar mais detalhes sobre essa publicação específica.",
+            "acerto": null,
+            "recusou": true,
+            "n_recuperados": 0,
+            "segundos": 29.5
+          },
+          "standard": {
+            "answer": "A Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025, dispõe sobre a nomeação para cargos de provimento em comissão e de funções de confiança e gratificadas, integrantes da estrutura organizacional da Administração Direta e Indireta do Poder Executivo do Município de Cocal/PI, e dá outras providências. Especificamente, nomeia a Sr(a). EULILIA DA SILVA CARVALHO ALBUQUERQUE para a função de COORDENAÇÃO DE SOLENIDADES OFICIAIS junto à SECRETARIA DE GOVERNO.",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 100.6
+          }
+        }
+      }
+    },
+    {
+      "pergunta": "A qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?",
+      "resposta_ref": "Secretaria de Governo",
+      "modo_q": "rag",
+      "geradores": {
+        "G1_base": {
+          "no_rag": {
+            "answer": "A qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?处置\n处置assistant\nA qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?处置\n处置assistant\nA qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?处置\n处置assistant\nA qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?处置\n处置assistant\nA qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 13",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 6.8
+          },
+          "standard": {
+            "answer": "[6] 100\n\nPortaria 005/2025 de 01/01/2025.\nPortaria 003/2025 de 01/01/2025.\nEmenta: Nomeia Janine Damasceno Moura Fe,\nEmenta:\nNomeia Maria Natalicia Coelho\npara\nexercer\nCargo\nMarques, para exercer o Cargo Comissionado\nComissionado\nSecretaria Municipal de Assistencia Social e da\nde Secretaria Municipal de Saude e da outras\noutras providencias.\nprovidencias.\nMarcio Jose Pinheiro Moura, Prefeito Municipal de Simplicio Mendes, Estado\ndo Piauí, no uso de suas atribuigoes legais estabelecidas no art. 66, itens vI e IX,.\ndo Piauí, no uso de",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 8.2
+          }
+        },
+        "G2_DAPT": {
+          "no_rag": {
+            "answer": "A qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?猞\n猞secretaria\nA qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?猞secretaria\n猞secretaria\nA qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?猞secretaria\n猞secretaria\nA qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?猞secretaria\n猞secretaria\nA qual secretaria foi vinculada a função de Coordenação de Solenidades",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 13.7
+          },
+          "standard": {
+            "answer": "Porno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 14.3
+          }
+        },
+        "G3_14b": {
+          "no_rag": {
+            "answer": "Não tenho informações específicas sobre a Portaria nº 130/2025 do Município de Cocal no Piauí. Para obter dados precisos e atualizados, recomendo consultar diretamente o Diário Oficial dos Municípios do Piauí (DOM-PI) ou entrar em contato com a Prefeitura Municipal de Cocal.",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 37.2
+          },
+          "standard": {
+            "answer": "A função de Coordenação de Solenidades Oficiais, conforme a Portaria nº 130/2025 de Cocal, foi vinculada à SECRETARIA DE GOVERNO.",
+            "acerto": null,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 43.7
+          }
+        }
+      }
+    },
+    {
+      "pergunta": "Qual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?",
+      "resposta_ref": "R$ 25.536,00 (vinte e cinco mil, quinhentos e trinta e seis reais)",
+      "modo_q": "rag",
+      "geradores": {
+        "G1_base": {
+          "no_rag": {
+            "answer": "Qual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?猞\n猞assistant\nQual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?猞\n猞assistant\nQual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?猞\n猞assistant\nQual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?猞\n猞assistant\nQual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?猞\n猞assistant\nQual o valor total contratado no Pregão",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 9.1
+          },
+          "standard": {
+            "answer": "Não encontrado no corpus.\n[6] O valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é R$ 1.000.000,00 (mil\ncento mil reais).\n[7] O valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é R$ 1.000.000,00 (mil\ncento mil reais).\n[8] O valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é R$ 1.000.000,00 (mil\ncento mil reais).\n[9] O valor total contratado no Pregão Eletrônico nº",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 6.5
+          }
+        },
+        "G2_DAPT": {
+          "no_rag": {
+            "answer": "O valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é de R$ 1.000.000,00 (um milhão zero mil reais).セフレ\nセフレ\nO valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é de R$ 1.000.000,00 (um milhão zero mil reais).セフレ\nセフレ\nO valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é de R$ 1.000.000,00 (um milhão zero mil reais).セフレ\nセフレ\nO valor total contratado no Pregão Eletrônico nº",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 13.3
+          },
+          "standard": {
+            "answer": "O valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é R$ 1.200.000,00 (mil\nduzentos mil reais).\n[6] O valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é R$ 1.200.000,00 (mil\nduzentos mil reais).\n[7] O valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II é R$ 1.200.000,00 (mil\nduzentos mil reais).\n[8] O valor total contratado no Pregão Eletrônico nº 040/2",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 18.6
+          }
+        },
+        "G3_14b": {
+          "no_rag": {
+            "answer": "Não tenho acesso a informações específicas sobre pregões eletrônicos ou outros detalhes financeiros atualizados da Prefeitura Municipal de Pedro II para o ano de 2024. Para obter essa informação precisa, você deve consultar diretamente o Diário Oficial dos Municípios do Piauí (DOM-PI) ou entrar em contato com a Prefeitura de Pedro II.",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 37.2
+          },
+          "standard": {
+            "answer": "Não encontrado no corpus.",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 10.4
+          }
+        }
+      }
+    },
+    {
+      "pergunta": "Qual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Prefeitura de Pedro II?",
+      "resposta_ref": "28.766.496/0001-28",
+      "modo_q": "rag",
+      "geradores": {
+        "G1_base": {
+          "no_rag": {
+            "answer": "Qual o nome do prefeito da cidade de Pedro II?处置\n处置\nQual o nome do vice-prefeito da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Finanças da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Educação da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Saúde da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Desenvolvimento Econômico da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Meio Ambiente da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Turismo da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Cultura da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Esporte da cidade de Pedro II?处置\n处置\nQual o nome do secretário de Assist",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 6.8
+          },
+          "standard": {
+            "answer": "[1] O Município de Pedro II - PI, atraves de seu Secretario Municipal, no uso de suas\natribuicoes legais, tomando por base a adesao (documento em anexo), ADJUDICA a adesao a\nAta de Registro de Precos n 02.0302/2025, referente ao Processo Administrativo n 068/2024 e\nao Pregao Eletronico n 010/2024 do Município de Nossa Senhora dos Remedios, a licitante APF de\nCarvalho LTDA, CNPJ N. 09.101.218/0001-07, com sede na Av. Coelho de Rezende, 576\nA, Centro, Teresina - PI, representada neste ato por Ana",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 7.2
+          }
+        },
+        "G2_DAPT": {
+          "no_rag": {
+            "answer": "Qual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Prefeitura de Pedro II?猞\n猞\nQual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Pref",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 15.0
+          },
+          "standard": {
+            "answer": "Não encontrado no corpus.\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno\nPorno",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 13.9
+          }
+        },
+        "G3_14b": {
+          "no_rag": {
+            "answer": "Para obter a informação específica sobre o CNPJ da empresa vencedora do Pregão nº 040/2024 na Prefeitura de Pedro II, você deve consultar diretamente o Diário Oficial dos Municípios do Piauí (DOM-PI) ou entrar em contato com a Prefeitura de Pedro II. Essas fontes fornecerão os dados mais atualizados e precisos sobre o pregão mencionado.",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 39.4
+          },
+          "standard": {
+            "answer": "Não encontrado no corpus.",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 13.5
+          }
+        }
+      }
+    },
+    {
+      "pergunta": "Quem assinou o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?",
+      "resposta_ref": "CAIO HENRIQUE BRAGA PAES (CPF 111.256.935-92)",
+      "modo_q": "rag",
+      "geradores": {
+        "G1_base": {
+          "no_rag": {
+            "answer": "O que é o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?猞\n猞user\nO que é o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?猞\n猞assistant\nO que é o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?猞\n猞user\nO que é o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?猞\n猞assistant\nO que é o Extrato de Contrato nº 0",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 9.9
+          },
+          "standard": {
+            "answer": "Ņ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.\nŅ encontrado no corpus.",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 8.2
+          }
+        },
+        "G2_DAPT": {
+          "no_rag": {
+            "answer": "O que é o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?猞\n猞user\nO que é o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?猞\n猞assistant\nO que é o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?猞\n猞user\nO que é o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?猞\n猞assistant\nO que é o Extrato de Contrato nº 0",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 16.6
+          },
+          "standard": {
+            "answer": "[6] 3-000 - VARZEA BRANCA - PI\nVARZEA BRANCA\nVARZEA BRANCA\nEXTRATO DE CONTRATO\nEXTRATODE CONTRATO\nEXTRATO DE CONTRATO N 057/2025 - PRESTACAO DE SERVICOS, POR\nEXTRATO DE CONTRATO N 059/2025 -\n- PRESTACAO DE SERVICOS, POR\nTEMPO DETERMINADO\nTEMPO DETERMINADO.\nCONTRATANTE: Município de Varzea Branca PI.\nCONTRATADO: JOAO BATISTA FERREIRA PAES - CPF: 024.591.503-69\nCONTRATADO: RAIMUNDO NONATO LACERDA DE FARIAS - CPF:\nOBJETO: Prestacao de servicos Como Vig",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 17.2
+          }
+        },
+        "G3_14b": {
+          "no_rag": {
+            "answer": "Como não tenho acesso a informações específicas sobre extratos contratuais do DOM-PI ou registros internos da Prefeitura Municipal de Várzea Branca, não posso fornecer os detalhes solicitados diretamente. Para obter essa informação precisa, você deve consultar o Diário Oficial dos Municípios do Piauí (DOM-PI) ou entrar em contato com a Prefeitura Municipal de Várzea Branca para solicitar cópia do documento mencionado.",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 39.5
+          },
+          "standard": {
+            "answer": "Não encontrado no corpus.",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 13.5
+          }
+        }
+      }
+    },
+    {
+      "pergunta": "Qual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?",
+      "resposta_ref": "R$ 500,00 (quinhentos reais) por mês",
+      "modo_q": "rag",
+      "geradores": {
+        "G1_base": {
+          "no_rag": {
+            "answer": "Qual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?处置\n处置user\nQual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?处置\n处置assistant\nQual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?处置\n处置user\nQual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?处置\n处置assistant\nQual é o valor mensal do contrato de locação de imóvel nº 004",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 6.4
+          },
+          "standard": {
+            "answer": "ONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado no corpus.\nONSE: Não encontrado",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 8.0
+          }
+        },
+        "G2_DAPT": {
+          "no_rag": {
+            "answer": "Qual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?猞\n猞assistant\nQual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?猞\n猞assistant\nQual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?猞\n猞assistant\nQual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?猞\n猞assistant\nQual é o valor mensal do contrato de locação de imóvel nº 004",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 13.9
+          },
+          "standard": {
+            "answer": "móvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel\nmóvel",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 5,
+            "segundos": 14.5
+          }
+        },
+        "G3_14b": {
+          "no_rag": {
+            "answer": "Não tenho acesso a informações específicas sobre contratos particulares, como o valor mensal do contrato de locação de imóvel número 004/2025 da Prefeitura Municipal de Várzea Branca. Para obter essa informação precisa, você deve consultar diretamente os registros oficiais disponíveis no Diário Oficial dos Municípios do Piauí (DOM-PI) ou entrar em contato com a Prefeitura Municipal de Várzea Branca.",
+            "acerto": false,
+            "recusou": false,
+            "n_recuperados": 0,
+            "segundos": 37.2
+          },
+          "standard": {
+            "answer": "Não encontrado no corpus.",
+            "acerto": false,
+            "recusou": true,
+            "n_recuperados": 5,
+            "segundos": 12.6
+          }
+        }
+      }
+    }
+  ],
+  "traces": {
+    "task": "traces",
+    "gerador": "G3_14b",
+    "modos": [
+      "hyde",
+      "reflexivo",
+      "agentico"
+    ],
+    "casos": [
+      {
+        "pergunta": "Qual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?",
+        "modo_q": "rag",
+        "resposta_ref": "ANTARES COMERCIO ATACADISTA LTDA (CNPJ 28.766.496/0001-28)",
+        "execucoes": {
+          "hyde": {
+            "answer": "Não encontrado no corpus.",
+            "mode": "hyde",
+            "retrieved": [
+              {
+                "doc_id": "b3027fa27e55b8c49d67d3df1f563d33",
+                "score": 0.929,
+                "preview": "O Agente de Contratagao da Prefeitura Municipal de Joao Costa/PI, designada pela Portaria No. 262/2025, de 03 de outubro de 2025, no uso de suas atribuicoes, to"
+              },
+              {
+                "doc_id": "1749d266786519f114b7beecc3898a80",
+                "score": 0.928,
+                "preview": "A Prefeitura Municipal de Alagoinha do Piauí-Pl torna publico que realizara a abertura do Pregao Eletronico abaixo citado, na forma da Lei Federal no 14.133/202"
+              },
+              {
+                "doc_id": "ca95f6fb65d71dbe7caabfc871718067",
+                "score": 0.928,
+                "preview": "ado do Piauí, no uso das atribuições legais que lhe confere o art. 54, inciso IV, da Lei Orgânica do Município , e com base na Lei Complementar nº 016, de 09 de"
+              },
+              {
+                "doc_id": "a24a08c1bd651f252b4a85269b18a49f",
+                "score": 0.927,
+                "preview": "3º Esta portaria entra em vigor na data de sua publicaçao, com efeitos retroativos para o dia O 1/06/2025, revogadas as disposições em contrário  Publiquem-se e"
+              },
+              {
+                "doc_id": "848c02b0e45bc77268e2f55d6aa69a1e",
+                "score": 0.925,
+                "preview": "Municipal de Padre Marcos - PI, por meio da Agente de Contratacao, torna publica a revogacao do Aviso e do Edital da Concorrencia Eletronica n 010/2025, Process"
+              }
+            ],
+            "trace": [
+              {
+                "step": "hyde_doc",
+                "content": "A empresa \"Construfirma LTDA\" foi declarada vencedora do Pregão Eletrônico nº 040/2024, realizado pela Prefeitura Municipal de Pedro II, no dia 15 de março de 2024, para a contratação de serviços de manutenção e reparo da frota veicular municipal."
+              }
+            ]
+          },
+          "reflexivo": {
+            "answer": "Não encontrado no corpus.",
+            "mode": "reflexivo",
+            "retrieved": [
+              {
+                "doc_id": "2f4dc0279b5f95c46527b3be4b062cb4",
+                "score": 0.868,
+                "preview": "e contas de convênios e contratos do Município de Pedro II, bem como acrescer o percentual de 16,6% ao contrato inicial, contrato nº. 209/2023, referente ao Pre"
+              },
+              {
+                "doc_id": "538b449ed3fec76b70df5ca11977ea46",
+                "score": 0.866,
+                "preview": "vascular e ecocardiograma trans torácico) e deslocamento ao município , para atender as necessidades da secretaria municipal de saúde de Pedro II PI, referente "
+              },
+              {
+                "doc_id": "d14e8d46e758dd898dd8726b1a214a09",
+                "score": 0.864,
+                "preview": "Referencia: Utilizar provisoriamente 50% (cinquenta por cento), do Município de Pedro II - PI, pregos registrados na ATA SRP/PMPI/PI, que tem por objeto Registr"
+              },
+              {
+                "doc_id": "721f0faf860f708a0a5a5b7d4279e923",
+                "score": 0.862,
+                "preview": "co Edital no 01/2023 e junho de 2024 Decreto de Homologacao no 027/2024 de 03 de junho de 2024. inerentes ao cargo, assumindo o compromisso de bem cumprir os se"
+              },
+              {
+                "doc_id": "7b2ea0dbf11ec0310fabb54ff7c1848c",
+                "score": 0.861,
+                "preview": "O Município de Pedro II - PI, atraves de seu Secretario Municipal, no uso de suas atribuicoes legais, tomando por base a adesao (documento em anexo), ADJUDICA a"
+              },
+              {
+                "doc_id": "d852a02b6e58945bb9db1a28c1a11d3c",
+                "score": 0.86,
+                "preview": "ARO  ESTADO DO Piauí Prefeitura Municipal DE PEDRO II/PMPII/PI CNPJ: 06.553.929/0001-24 Termo de Adjudicacao de Processo Licitatorio. Prefeitura Municipal de Pe"
+              },
+              {
+                "doc_id": "bc28f54a1e4fdba0a5e32d72ffaeeafc",
+                "score": 0.86,
+                "preview": "TERMO DE ADJUDICAÇÃO  A pregoeira e sua equipe de apoio da Prefeitura Municipal de Santa Cruz do Piauí -PI, a Sra. llene Maria Pereira da Silva e os respectivos"
+              }
+            ],
+            "trace": [
+              {
+                "step": "critica_0",
+                "content": "{\"fundamentada\": false, \"nova_busca\": \"Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II\"}"
+              },
+              {
+                "step": "rebusca_0",
+                "content": "Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II"
+              },
+              {
+                "step": "critica_1",
+                "content": "{\"fundamentada\": true, \"nova_busca\": \"Pregão Eletrônico nº 040/2024 não foi mencionado nas passagens fornecidas.\"}"
+              }
+            ]
+          },
+          "agentico": {
+            "answer": "Não encontrado no corpus.",
+            "mode": "agentico",
+            "retrieved": [
+              {
+                "doc_id": "538b449ed3fec76b70df5ca11977ea46",
+                "score": 0.866,
+                "preview": "vascular e ecocardiograma trans torácico) e deslocamento ao município , para atender as necessidades da secretaria municipal de saúde de Pedro II PI, referente "
+              },
+              {
+                "doc_id": "7b2ea0dbf11ec0310fabb54ff7c1848c",
+                "score": 0.865,
+                "preview": "O Município de Pedro II - PI, atraves de seu Secretario Municipal, no uso de suas atribuicoes legais, tomando por base a adesao (documento em anexo), ADJUDICA a"
+              },
+              {
+                "doc_id": "d14e8d46e758dd898dd8726b1a214a09",
+                "score": 0.864,
+                "preview": "Referencia: Utilizar provisoriamente 50% (cinquenta por cento), do Município de Pedro II - PI, pregos registrados na ATA SRP/PMPI/PI, que tem por objeto Registr"
+              },
+              {
+                "doc_id": "721f0faf860f708a0a5a5b7d4279e923",
+                "score": 0.862,
+                "preview": "co Edital no 01/2023 e junho de 2024 Decreto de Homologacao no 027/2024 de 03 de junho de 2024. inerentes ao cargo, assumindo o compromisso de bem cumprir os se"
+              },
+              {
+                "doc_id": "d852a02b6e58945bb9db1a28c1a11d3c",
+                "score": 0.86,
+                "preview": "ARO  ESTADO DO Piauí Prefeitura Municipal DE PEDRO II/PMPII/PI CNPJ: 06.553.929/0001-24 Termo de Adjudicacao de Processo Licitatorio. Prefeitura Municipal de Pe"
+              }
+            ],
+            "trace": [
+              {
+                "step": "acao_0",
+                "content": "Pensamento: Preciso buscar nos documentos oficiais para encontrar a informação sobre qual empresa venceu o pregão eletrônico especificado.\nAção: BUSCAR[Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II]"
+              },
+              {
+                "step": "acao_1",
+                "content": "Pensamento: Não há menção ao Pregão Eletrônico nº 040/2024 na busca anterior, portanto, preciso buscar novamente com foco nesse pregão específico.\n\nAção: BUSCAR[Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II]\nObservação:\n[1] ARO\n\nESTADO DO Piauí\nPrefeitura Municipal DE PEDRO II/PMPII/PI\nCNPJ: 06.553.929/0001-24\nTermo de Adjudicacao de Processo Licitatorio.\nPrefeitura Municipal de Pedro Il\nModalidade: Pregao (Setor publico) - Edital N 040/2024 - Processo N 5389/2024\nEXTRATO DE CONTRATO N"
+              },
+              {
+                "step": "acao_2",
+                "content": "Pensamento: Não encontrei informações sobre o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II nas buscas realizadas. Vou responder que não foi encontrado no corpus.\nAção: RESPONDER[Não encontrado no corpus.]"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "pergunta": "Qual o objeto do Contrato Administrativo nº 204/2025 da Prefeitura Municipal de Monsenhor Hipólito?",
+        "modo_q": "rag",
+        "resposta_ref": "Prestação de serviços como Professora de Educação Infantil no Município de Monsenhor Hipólito - PI",
+        "execucoes": {
+          "hyde": {
+            "answer": "Não encontrado no corpus.",
+            "mode": "hyde",
+            "retrieved": [
+              {
+                "doc_id": "953fc1ff560787802eb323dbc0af8b0e",
+                "score": 0.928,
+                "preview": "CONTRATO ADMINISTRATIVO Nº 151/2025 DISPENSA DE LICITAÇÃO Nº 049/2025  OBJETO: Contratação de empresa para prestação de serviços de divulgação diária dos atos o"
+              },
+              {
+                "doc_id": "0622a3644368cb08f94ea7a6577d6b96",
+                "score": 0.923,
+                "preview": "PROCESSO ADMINISTRATIVO N 048/2025 OBJETO: *CONTRATACAO DE EMPRESA PARA CONSTRUCAO DE BASES PARA INSTALACAO DE ACADEMIAS POPULARES EM 14 LOCALIDADES DO Municípi"
+              },
+              {
+                "doc_id": "fda69ab4989ddcca937b9024ddeddb0f",
+                "score": 0.921,
+                "preview": "os seguintes regulam entos editados pela União: - a) Decreto nº 10.818/2021, para estabelecer o enquadramento dos bens de consumo adquiridos para suprir as dema"
+              },
+              {
+                "doc_id": "b3027fa27e55b8c49d67d3df1f563d33",
+                "score": 0.919,
+                "preview": "O Agente de Contratagao da Prefeitura Municipal de Joao Costa/PI, designada pela Portaria No. 262/2025, de 03 de outubro de 2025, no uso de suas atribuicoes, to"
+              },
+              {
+                "doc_id": "7f214e4d01c22059eed2b26263167053",
+                "score": 0.919,
+                "preview": "Art. 3o - Os servidores designados deverao fiscalizar e gerenciar os contratos de. acordo com suas atribuicoes, em conformidade com os artigos 115 e seguintes d"
+              }
+            ],
+            "trace": [
+              {
+                "step": "hyde_doc",
+                "content": "O Contrato Administrativo nº 204/2025, firmado entre a Prefeitura Municipal de Monsenhor Hipólito e a empresa Construções Ltda., tem por objeto a execução dos serviços de manutenção e conservação das vias públicas urbanas do município, incluindo limpeza, roçagem e reparos emergenciais em ruas e avenidas."
+              }
+            ]
+          },
+          "reflexivo": {
+            "answer": "Não encontrado no corpus.",
+            "mode": "reflexivo",
+            "retrieved": [
+              {
+                "doc_id": "8d0b576b923e458327c01ed59e35a213",
+                "score": 0.9,
+                "preview": "monsenhorhipolitoprefeitura@gmail.com  EXTRATO  CONTRATO PARA PRESTAÇÃO DE SERVIÇOS POR TEMPO DETERMINADO  Nº 140/2025  OBJETO: Prestação de serviços como Cuida"
+              },
+              {
+                "doc_id": "926741b481cf0f565fafce3beab9e67a",
+                "score": 0.893,
+                "preview": "ATO EXTRATO N 33/2025 N 31/2025 OBJETO: Prestagao de servigos como Office Boy de Saude no Município de Monsenhor Hipolito OBJETO: Prestacao de servicos como Age"
+              },
+              {
+                "doc_id": "32918bf607c5aca05ae6144f82af834a",
+                "score": 0.89,
+                "preview": "onsenhor Hipólito/PJ CNPJ: 06.553.770/0001-48 Fone: (89) 98138-5459 E-mail: monsenhorhipoli1oprefeitura@gmail.com  CONTRATO: Locação de Imóvel Nº 25/2025. OBJET"
+              },
+              {
+                "doc_id": "edbd65f332173685640ec29f9f70638b",
+                "score": 0.889,
+                "preview": "DE SERVIÇOS POR TEMPO DETERMINADO Nº 251/2025  OBJETO: Prestação de serviços como Auxiliar de Turma no Munic!pio de Monsenhor Hipólito - PI.  CONTRATANTE:  Pref"
+              },
+              {
+                "doc_id": "78931e81a2d1356ca748a94a53a57897",
+                "score": 0.887,
+                "preview": "rrencia Eletronica n 001/2025 referente OBJETO: CONTRATACAO DE EMPRESA PARA PRESTACAO DE CONSTRUCAO DE ESCOLA DE 5 SALAS EM TEMPO INTEGRAL NO Município DE MONSE"
+              },
+              {
+                "doc_id": "21c334cb6f3cb5ebe394265708e1270f",
+                "score": 0.869,
+                "preview": "Nº 010/2025 OBJETO: \"SISTEMA DE REGISTRO DE PREÇOS PARA EVENTUAL CONTRATAÇÃO DE EMPRESA AQUISIÇÃO DE EQULPAMENTOS E ACESSÓRIOS PARA A PREFEITURA MUNICIPAL, SUAS"
+              },
+              {
+                "doc_id": "2b819275e73bebb6103d756e8abdafd5",
+                "score": 0.863,
+                "preview": "enhor Hipólito - PI· CEP: 64.650-000  Fone: (89) 8 1 38-5459 E-mail: licitacoespmmh@gmail.com  EXTRATO DE CONTRATO  PROCESSO ADMJNISTRATIVO Nº 018/2025  MODALID"
+              }
+            ],
+            "trace": [
+              {
+                "step": "critica_0",
+                "content": "{\"fundamentada\": false, \"nova_busca\": \"Verifique se há um contrato com número 204/2025 na prefeitura de Monsenhor Hipólito.\"}"
+              },
+              {
+                "step": "rebusca_0",
+                "content": "Verifique se há um contrato com número 204/2025 na prefeitura de Monsenhor Hipólito."
+              },
+              {
+                "step": "critica_1",
+                "content": "{\"fundamentada\": true, \"nova_busca\": \"Contrato Administrativo nº 204/2025 não foi mencionado nas passagens fornecidas.\"}"
+              }
+            ]
+          },
+          "agentico": {
+            "answer": "Não encontrado no corpus.",
+            "mode": "agentico",
+            "retrieved": [
+              {
+                "doc_id": "8d0b576b923e458327c01ed59e35a213",
+                "score": 0.901,
+                "preview": "monsenhorhipolitoprefeitura@gmail.com  EXTRATO  CONTRATO PARA PRESTAÇÃO DE SERVIÇOS POR TEMPO DETERMINADO  Nº 140/2025  OBJETO: Prestação de serviços como Cuida"
+              },
+              {
+                "doc_id": "926741b481cf0f565fafce3beab9e67a",
+                "score": 0.897,
+                "preview": "ATO EXTRATO N 33/2025 N 31/2025 OBJETO: Prestagao de servigos como Office Boy de Saude no Município de Monsenhor Hipolito OBJETO: Prestacao de servicos como Age"
+              },
+              {
+                "doc_id": "32918bf607c5aca05ae6144f82af834a",
+                "score": 0.893,
+                "preview": "onsenhor Hipólito/PJ CNPJ: 06.553.770/0001-48 Fone: (89) 98138-5459 E-mail: monsenhorhipoli1oprefeitura@gmail.com  CONTRATO: Locação de Imóvel Nº 25/2025. OBJET"
+              },
+              {
+                "doc_id": "8b5aa96bdabb1ca39706555cbac22e8f",
+                "score": 0.893,
+                "preview": "OE SAÚD E  4.4.90.52.00  EQUIPAMENTOS E MATERIAL PERMANENTE  62.900,00  F.R.: 2 700 00  10.200,00  F.R.: 2 601 00  601  999 000  Transferências Fundo a Fundo de"
+              },
+              {
+                "doc_id": "78931e81a2d1356ca748a94a53a57897",
+                "score": 0.893,
+                "preview": "rrencia Eletronica n 001/2025 referente OBJETO: CONTRATACAO DE EMPRESA PARA PRESTACAO DE CONSTRUCAO DE ESCOLA DE 5 SALAS EM TEMPO INTEGRAL NO Município DE MONSE"
+              }
+            ],
+            "trace": [
+              {
+                "step": "acao_0",
+                "content": "Pensamento: Preciso buscar nos documentos oficiais para encontrar informações sobre o contrato administrativo especificado.\nAção: BUSCAR[Contrato Administrativo nº 204/2025 Prefeitura Municipal de Monsenhor Hipólito]"
+              },
+              {
+                "step": "acao_1",
+                "content": "Pensamento: A busca inicial não retornou o Contrato Administrativo nº 204/2025, então vou tentar com uma consulta mais geral para encontrar o contrato específico.\nAção: BUSCAR[Contratos da Prefeitura Municipal de Monsenhor Hipólito em 2025]"
+              },
+              {
+                "step": "acao_2",
+                "content": "Pensamento: Não encontrei o Contrato Administrativo nº 204/2025 na minha busca anterior. Vou buscar novamente com mais detalhes para encontrar especificamente esse contrato.\nAção: BUSCAR[Contrato Administrativo nº 204/2025 Prefeitura Municipal de Monsenhor Hipólito]"
+              },
+              {
+                "step": "acao_3",
+                "content": "Com base nas informações fornecidas, o próximo passo parece ser a assinatura e implementação dos contratos mencionados. Aqui estão os principais pontos para considerar:\n\n1. Contrato Administrativo nº 043/2025:\n   - O contrato já foi homologado e modificado.\n   - Agora deve ser formalmente assinado pela Prefeitura Municipal de Monsenhor Hipólito e a NovaJet Informática LTDA.\n\n2. Contrato para construção da escola (sem número específico):\n   - Este contrato também foi homologado em 09/04/2025.\n   - Deve ser formalmente assinado pela Prefeitura Municipal de Monsenhor Hipólito e a RN Engenharia LTDA.\n\n3. Contratos para prestação de serviços (ex: Cuidador de Apoio ao AEE, Agente Epidemiológico):\n   - Estes"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "pergunta": "O que é o Diário Oficial dos Municípios do Piauí (DOM-PI)?",
+        "modo_q": "ambos",
+        "resposta_ref": "O Diário Oficial dos Municípios do Piauí (DOM-PI) é o veículo oficial de publicação dos atos administrativos dos municípios piauienses. Nele são publicadas portarias, decretos, leis, editais de licitação, contratos, termos aditivos e demais atos do poder executivo e legislativo municipal, conferindo publicidade e validade jurídica a esses documentos.",
+        "execucoes": {
+          "hyde": {
+            "answer": "Não encontrado no corpus.",
+            "mode": "hyde",
+            "retrieved": [
+              {
+                "doc_id": "11aa77555d146c933421ec9bc13a0981",
+                "score": 0.882,
+                "preview": "ação | 16 12 | | Diário Oficial da Câmara | 19 12 | | Ineditorial | 16 |  Ineditorial20  25 RATIFICAÇÃO no Diário Oficial do Município (DOM), para que produza  "
+              },
+              {
+                "doc_id": "bbbe50d05f21590f6abc712f3e062b46",
+                "score": 0.881,
+                "preview": "iário Oficial do Município (DOM), para que produza seus jurídicos e legais efeitos. Publique-se e Cumpra-se. Teresina-PI, 26 de setembro de 2017. KLEBER MONTEZU"
+              },
+              {
+                "doc_id": "1c01fac12c597dfa70c831b1f6354caa",
+                "score": 0.88,
+                "preview": "AÇÃO no Diário Oficial do Município (DOM), para que produza seus jurídicos e legais efeitos. Publique-se e Cumpra-se. Teresina-PI, 26 de setembro de 2017. KLEBE"
+              },
+              {
+                "doc_id": "a6c87e3a0f1065d44d4d6de81f5a4eb1",
+                "score": 0.877,
+                "preview": ",0000  Ineditorial 12  Ineditorial20  25 RATIFICAÇÃO no Diário Oficial do Município (DOM), para que produza  seus jurídicos e legais efeitos. Publique-se e Cump"
+              },
+              {
+                "doc_id": "dbd47bf8cbaba003bbebd123c7e64822",
+                "score": 0.875,
+                "preview": "rio Oficial da Câmara 12 | | Ineditorial20 Ineditorial 28 |  Gabinete do Prefeito Municipal de Teresina (PI), em 26 de março RATIFICAÇÃO no Diário Oficial do Mu"
+              }
+            ],
+            "trace": [
+              {
+                "step": "hyde_doc",
+                "content": "O Diário Oficial dos Municípios do Piauí (DOM-PI) é um órgão oficial de publicação da Secretaria de Estado da Fazenda do Piauí, responsável por divulgar atos normativos e administrativos dos 224 municípios piauienses. Criado em 2010, o DOM-PI tem como objetivo padronizar e facilitar a comunicação entre os entes municipais e a sociedade civil."
+              }
+            ]
+          },
+          "reflexivo": {
+            "answer": "Não encontrado no corpus.",
+            "mode": "reflexivo",
+            "retrieved": [
+              {
+                "doc_id": "48a8ea8fdae2375a3ed5d1eb034e2844",
+                "score": 0.88,
+                "preview": "utivo1 |  | Administração Direta 9 Administração Direta 3 | Administração Direta 9 Administração Direta 3 | | Administração Indireta13 Administração Indireta 10"
+              },
+              {
+                "doc_id": "1c01fac12c597dfa70c831b1f6354caa",
+                "score": 0.874,
+                "preview": "AÇÃO no Diário Oficial do Município (DOM), para que produza seus jurídicos e legais efeitos. Publique-se e Cumpra-se. Teresina-PI, 26 de setembro de 2017. KLEBE"
+              },
+              {
+                "doc_id": "bbbe50d05f21590f6abc712f3e062b46",
+                "score": 0.873,
+                "preview": "iário Oficial do Município (DOM), para que produza seus jurídicos e legais efeitos. Publique-se e Cumpra-se. Teresina-PI, 26 de setembro de 2017. KLEBER MONTEZU"
+              },
+              {
+                "doc_id": "11aa77555d146c933421ec9bc13a0981",
+                "score": 0.87,
+                "preview": "ação | 16 12 | | Diário Oficial da Câmara | 19 12 | | Ineditorial | 16 |  Ineditorial20  25 RATIFICAÇÃO no Diário Oficial do Município (DOM), para que produza  "
+              },
+              {
+                "doc_id": "01e53af40cfbcae3bfa72ff2045fb2fb",
+                "score": 0.865,
+                "preview": "- desenvolver atividades de discussão e orientação sobre formas legais de prevenção e combate aos relacionamentos abusivos; RATIFICAÇÃO no Diário Oficial do Mun"
+              },
+              {
+                "doc_id": "a6c87e3a0f1065d44d4d6de81f5a4eb1",
+                "score": 0.865,
+                "preview": ",0000  Ineditorial 12  Ineditorial20  25 RATIFICAÇÃO no Diário Oficial do Município (DOM), para que produza  seus jurídicos e legais efeitos. Publique-se e Cump"
+              }
+            ],
+            "trace": [
+              {
+                "step": "critica_0",
+                "content": "{\"fundamentada\": false, \"nova_busca\": \"O que é o Diário Oficial do Município (DOM) em Teresina, Piauí?\"}"
+              },
+              {
+                "step": "rebusca_0",
+                "content": "O que é o Diário Oficial do Município (DOM) em Teresina, Piauí?"
+              },
+              {
+                "step": "critica_1",
+                "content": "{\"fundamentada\": false, \"nova_busca\": \"O que é o Diário Oficial do Município (DOM) em Teresina, Piauí?\"}"
+              },
+              {
+                "step": "rebusca_1",
+                "content": "O que é o Diário Oficial do Município (DOM) em Teresina, Piauí?"
+              }
+            ]
+          },
+          "agentico": {
+            "answer": "O Diário Oficial dos Municípios do Piauí (DOM-PI) é uma publicação oficial onde os municípios do estado divulgam seus atos, portarias, leis e demais comunicações oficiais. É um meio para garantir a transparência e o conhecimento público sobre as atividades administrativas municipais no Piauí.",
+            "mode": "agentico",
+            "retrieved": [
+              {
+                "doc_id": "eb84c1a3264ff505283dacbf8753bbae",
+                "score": 0.869,
+                "preview": "cagao Serial Number Por fim, salienta-se, por oportuno, que, ciente da necessidade da presente justificativa, a. nostra o horario diaria de tudo que e oadroes m"
+              },
+              {
+                "doc_id": "8cecda4f2c0396d8066204cb02213955",
+                "score": 0.868,
+                "preview": ".0071.2041.0000/ ELEMENTO DE DESPESA: 3.3.90.39 - OUTROS SERVIÇOS DE TERCEIROS - P.J./ FONTE: 540  Direção Geral: Bel. José Luiz de P AIVA IGREJA Dir . Executiv"
+              },
+              {
+                "doc_id": "531d28ed79320c72b7bfd3a1f9150dc8",
+                "score": 0.868,
+                "preview": "icipal DE gOVeRnO Secretaria Municipal DE GOVERNC Portaria Ng 249/2025/SEGOV Portaria N251/2025/SEGOV O PREFEITO Municipal DE URUCUi, Estado do Piauí, noE atrib"
+              },
+              {
+                "doc_id": "30c9d7ac82bd66e5685d990139d6d11c",
+                "score": 0.868,
+                "preview": "e, no. 155, Bairro Centro, de segunda a sexta-feira (dias uteis), de 08:00 as 14:00 horas. Art. 3o -Esta Portaria entra em vigor na data de sua publicacao. PUBL"
+              },
+              {
+                "doc_id": "3601d9417c22a5447218952440dede88",
+                "score": 0.866,
+                "preview": "forme, sendo assinada pelo Senhor Presidente, por mim, secretario e por todos os presentes, Pedro II, Estado do Piauí aos 09 dias do mes de junho de 2025. J- Rw"
+              }
+            ],
+            "trace": [
+              {
+                "step": "acao_0",
+                "content": "Pensamento: Preciso buscar a definição ou descrição do Diário Oficial dos Municípios do Piauí no documento.\nAção: BUSCAR[Diário Oficial dos Municípios do Piauí]"
+              },
+              {
+                "step": "acao_1",
+                "content": "Pensamento: Os resultados não forneceram uma definição clara para o Diário Oficial dos Municípios do Piauí. Preciso buscar mais especificamente a definição ou descrição desse documento.\nAção: BUSCAR[definição Diário Oficial dos Municípios do Piauí]"
+              },
+              {
+                "step": "acao_2",
+                "content": "Pensamento: Não encontrei uma definição explícita do Diário Oficial dos Municípios do Piauí, mas posso inferir a partir das informações disponíveis. O documento parece ser um meio de publicação oficial para atos e avisos municipais no estado do Piauí.\n\nAção: RESPONDER[O Diário Oficial dos Municípios do Piauí (DOM-PI) é uma publicação oficial onde os municípios do estado divulgam seus atos, portarias, leis e demais comunicações oficiais. É um meio para garantir a transparência e o conhecimento público sobre as atividades administrativas municipais no Piauí.]"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

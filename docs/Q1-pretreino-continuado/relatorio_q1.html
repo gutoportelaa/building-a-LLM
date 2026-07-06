@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questão 1 — Pré-treino Continuado (DAPT) | DOM-PI / UFPI-DC</title>
+<style>
+/* Estilo compartilhado dos relatórios — Trabalho Final DOM-PI/UFPI-DC.
+   Extraído do relatorio_tecnico_completo.html; usado por todos os relatórios individuais + o consolidado. */
+  :root {
+    --txt:    #1c1c1c;
+    --muted:  #5a5a5a;
+    --border: #d2d2d2;
+    --bg-alt: #f7f7f5;
+    --bg-code:#f2f2ef;
+    --accent: #1e3a5f;
+    --accent2:#2e5ca0;
+    --a-light:#e6ecf5;
+    --done-bg:#eaf5ea;
+    --done-fg:#1a4a1a;
+    --pend-bg:#fdf3e7;
+    --pend-fg:#6b3a00;
+    --bad-bg: #f5eaea;
+    --bad-fg: #5a1818;
+    --warn-bg:#fef9e7;
+    --warn-fg:#5c4500;
+    --ok-bg:  #eaf5ea;
+    --ok-fg:  #1a4a1a;
+    --mono:   "Courier New", Courier, monospace;
+    --sans:   "Helvetica Neue", Arial, sans-serif;
+    --serif:  Georgia, "Times New Roman", serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--txt);
+    background: #fff;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 48px 36px 100px;
+  }
+  a { color: var(--accent2); }
+
+  /* ── Títulos ── */
+  h1 { font-family: var(--sans); font-size: 1.9rem; font-weight: 700;
+       color: var(--accent); border-bottom: 3px solid var(--accent);
+       padding-bottom: 12px; margin-bottom: 10px; }
+  h2 { font-family: var(--sans); font-size: 1.25rem; font-weight: 700;
+       color: var(--accent); margin-top: 56px; margin-bottom: 14px;
+       border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+  h3 { font-family: var(--sans); font-size: 1.05rem; font-weight: 600;
+       color: #2a2a2a; margin-top: 30px; margin-bottom: 8px; }
+  h4 { font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+       color: var(--muted); margin-top: 20px; margin-bottom: 6px; font-style: italic; }
+  p  { margin-bottom: 13px; }
+  ul, ol { margin: 8px 0 14px 26px; }
+  li { margin-bottom: 5px; }
+  code { font-family: var(--mono); font-size: 0.82em; background: var(--bg-code);
+         padding: 1px 5px; border-radius: 3px; }
+
+  /* ── Meta do relatório ── */
+  .report-meta {
+    font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+    border-left: 4px solid var(--accent); padding: 10px 16px;
+    margin-bottom: 32px; background: var(--a-light);
+  }
+  .report-meta strong { color: var(--accent); }
+
+  /* ── Status badges ── */
+  .status {
+    display: inline-block; font-family: var(--sans); font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 3px; vertical-align: middle; margin-left: 8px;
+  }
+  .done    { background: var(--done-bg); color: var(--done-fg); border: 1px solid #a0cca0; }
+  .pending { background: var(--pend-bg); color: var(--pend-fg); border: 1px solid #d0aa60; }
+  .partial { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0c050; }
+
+  /* ── Tabelas ── */
+  table { width: 100%; border-collapse: collapse; font-family: var(--sans);
+          font-size: 0.83rem; margin: 14px 0 22px; }
+  th { background: var(--accent); color: #fff; text-align: left;
+       padding: 8px 11px; font-weight: 600; }
+  td { padding: 7px 11px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg-alt); }
+  tr:hover td { background: var(--a-light); }
+  .num { font-family: var(--mono); text-align: right; }
+  .tc  { text-align: center; }
+
+  /* ── Callouts ── */
+  .callout { border-left: 4px solid var(--border); padding: 11px 16px;
+             margin: 16px 0; font-family: var(--sans); font-size: 0.88rem;
+             border-radius: 0 4px 4px 0; }
+  .callout.info    { border-color: var(--accent2); background: var(--a-light); }
+  .callout.warn    { border-color: #c08000;         background: var(--warn-bg); }
+  .callout.danger  { border-color: #a02020;         background: var(--bad-bg);  }
+  .callout.success { border-color: #20802a;         background: var(--ok-bg);   }
+  .callout strong  { font-weight: 700; }
+
+  /* ── Caixas de seção de questão ── */
+  .q-header {
+    background: var(--accent); color: #fff; padding: 14px 20px;
+    border-radius: 4px 4px 0 0; font-family: var(--sans);
+    display: flex; align-items: baseline; gap: 12px; margin-top: 56px;
+  }
+  .q-header .q-num { font-size: 1.5rem; font-weight: 900; opacity: 0.6; }
+  .q-header .q-title { font-size: 1.1rem; font-weight: 700; }
+  .q-header .q-status { margin-left: auto; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px;
+    border-radius: 3px; border: 1px solid rgba(255,255,255,0.4); }
+  .q-header .q-status.done    { background: rgba(255,255,255,0.15); }
+  .q-header .q-status.pending { background: rgba(255,180,0,0.25); color: #ffe080; border-color: #ffe080; }
+  .q-header .q-status.partial { background: rgba(255,200,0,0.2);  color: #ffd060; border-color: #ffd060; }
+  .q-body { border: 1px solid var(--border); border-top: none; padding: 24px 24px 20px;
+            margin-bottom: 8px; }
+  .q-enunciado { font-family: var(--sans); font-size: 0.83rem; color: var(--muted);
+                 background: var(--bg-alt); border-left: 3px solid var(--border);
+                 padding: 10px 14px; margin-bottom: 20px; border-radius: 0 3px 3px 0; }
+
+  /* ── Inferências ── */
+  .inf-block { border: 1px solid var(--border); border-radius: 4px; margin: 18px 0 24px; overflow: hidden; }
+  .inf-prompt { background: var(--bg-code); border-bottom: 1px solid var(--border);
+                padding: 10px 14px; font-family: var(--mono); font-size: 0.8rem;
+                color: #222; white-space: pre-wrap; }
+  .inf-prompt .lbl { font-family: var(--sans); font-size: 0.68rem; font-weight: 700;
+                     text-transform: uppercase; letter-spacing: 0.07em;
+                     color: var(--muted); display: block; margin-bottom: 4px; }
+  .inf-resp { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .inf-resp:last-child { border-bottom: none; }
+  .model-tag { display: inline-block; font-family: var(--sans); font-size: 0.68rem;
+               font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+               padding: 2px 8px; border-radius: 3px; margin-bottom: 6px; }
+  .tag-base   { background: var(--a-light);   color: var(--accent2); }
+  .tag-lora   { background: var(--bad-bg);    color: var(--bad-fg); }
+  .tag-qlora  { background: var(--warn-bg);   color: var(--warn-fg); }
+  .tag-fullft { background: var(--ok-bg);     color: var(--ok-fg); }
+  .inf-txt { font-family: var(--mono); font-size: 0.78rem; color: #222;
+             white-space: pre-wrap; line-height: 1.55; margin-top: 4px; }
+  .inf-note { font-family: var(--sans); font-size: 0.8rem; color: var(--muted);
+              border-top: 1px solid var(--border); padding: 8px 14px;
+              background: var(--bg-alt); font-style: italic; }
+
+  /* ── Cards de estratégia ── */
+  .strat-card { border: 1px solid var(--border); border-radius: 4px;
+                padding: 16px 18px; margin: 14px 0; }
+  .strat-card .sc-title { font-family: var(--sans); font-size: 0.95rem;
+                          font-weight: 700; color: var(--accent2); margin-bottom: 6px; }
+  .strat-card .sc-meta { font-family: var(--sans); font-size: 0.75rem;
+                         color: var(--muted); margin-bottom: 10px; display: flex;
+                         flex-wrap: wrap; gap: 10px; }
+  .badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem;
+           font-weight: 600; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+  .b-high   { background: var(--ok-bg);   color: var(--ok-fg);   border: 1px solid #90c090; }
+  .b-med    { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid #d0a040; }
+  .b-low    { background: var(--bg-alt);  color: var(--muted);   border: 1px solid var(--border); }
+  .b-info   { background: var(--a-light); color: var(--accent2); border: 1px solid #90b0d8; }
+
+  /* ── Mapa de experimentos ── */
+  .exp-map { border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; margin: 20px 0; }
+  .exp-map-row { display: grid; grid-template-columns: 140px 1fr 1fr;
+                 border-bottom: 1px solid var(--border); }
+  .exp-map-row:last-child { border-bottom: none; }
+  .exp-map-cell { padding: 9px 14px; font-family: var(--sans); font-size: 0.82rem; }
+  .exp-map-hdr  { background: var(--accent); color: #fff; font-weight: 700; }
+  .exp-map-row:nth-child(even) .exp-map-cell:not(.exp-map-hdr) { background: var(--bg-alt); }
+  .arrow { color: var(--muted); font-size: 1.1em; }
+
+  /* ── Índice ── */
+  .toc { font-family: var(--sans); font-size: 0.85rem; background: var(--bg-alt);
+         border: 1px solid var(--border); border-radius: 4px; padding: 18px 22px;
+         margin: 24px 0 40px; }
+  .toc h3 { margin-top: 0; margin-bottom: 10px; font-size: 0.9rem; color: var(--accent); }
+  .toc ol { margin-left: 20px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { color: var(--accent2); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-status { font-size: 0.72rem; margin-left: 6px; }
+
+  /* ── Linha separadora de sub-seção ── */
+  hr.sub { border: none; border-top: 1px dashed var(--border); margin: 24px 0; }
+
+  figure { margin: 16px 0 22px; }
+  figure img { max-width: 100%; border: 1px solid var(--border); border-radius: 4px; display: block; }
+  figcaption { font-family: var(--sans); font-size: 0.78rem; color: var(--muted);
+               margin-top: 6px; font-style: italic; }
+
+  footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--border);
+           font-family: var(--sans); font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<h1>Questão 1 — Pré-treino Continuado (DAPT) <span class="status done">concluída</span></h1>
+
+<div class="report-meta">
+  <strong>Dataset:</strong> diariosPrefeituras (DOM-PI), unificado + subcorpus Teresina ·
+  <strong>Modelos:</strong> Qwen2.5-1.5B <em>e</em> Llama-3.2-3B (cross-família) ·
+  <strong>Métodos:</strong> Full FT · QLoRA ·
+  <strong>Melhor:</strong> Llama-3.2-3B −23,3% PPL · Qwen unificado −11,1% · Teresina −12,8% · retenção geral preservada.
+</div>
+
+<div class="q-enunciado">
+  Fazer <strong>pré-treinamento continuado</strong> de um LLM sobre o dataset <em>diariosPrefeituras</em> (DOM-PI) e
+  avaliar a qualidade <strong>antes e depois</strong>. Benchmark com ≥25 perguntas. Métricas: <strong>perplexidade,
+  entropia cruzada e acurácia de previsão de tokens</strong>.
+</div>
+
+<div class="callout success">
+  <strong>Resposta em uma frase.</strong> O DAPT do <code>Qwen2.5-1.5B</code> no corpus DOM-PI reduz a perplexidade
+  de domínio em <strong>−11,1%</strong> (dataset completo) e <strong>−12,8%</strong> (subcorpus curado de Teresina),
+  com a acurácia de token subindo — e <strong>sem esquecimento catastrófico</strong> no domínio geral. O efeito
+  <strong>generaliza entre famílias</strong>: repetido num <strong>Llama-3.2-3B (Meta)</strong>, o ganho é de
+  <strong>−23,3%</strong> (§8).
+</div>
+
+<h2>1. Fundamentos teóricos</h2>
+<p>O <strong>pré-treino continuado</strong> (<em>Domain-Adaptive Pre-Training</em>, DAPT) é o mesmo objetivo
+auto-supervisionado do pré-treino de Raschka (cap. 5): modelagem de linguagem causal, em que o modelo prevê o
+<strong>próximo token</strong> e é otimizado por <strong>entropia cruzada</strong>. Partimos de pesos já treinados e
+continuamos o treino sobre o corpus do domínio (DOM-PI), deslocando a distribuição do modelo para a linguagem
+administrativa dos diários oficiais.</p>
+<ul>
+  <li><strong>Entropia cruzada (CE)</strong> — perda média por token (NLL); mede o "espanto" do modelo.</li>
+  <li><strong>Perplexidade (PPL)</strong> = <code>exp(CE)</code> — quantos tokens "igualmente prováveis" o modelo
+  hesita; quanto menor, melhor.</li>
+  <li><strong>Acurácia de previsão de token</strong> — fração de posições em que <code>argmax(logits)</code> acerta o
+  próximo token.</li>
+</ul>
+
+<h2>2. Modelo, corpus, benchmark e protocolo de avaliação</h2>
+<table>
+  <tr><th>Item</th><th>Descrição</th></tr>
+  <tr><td>Base <strong>Qwen2.5-1.5B</strong></td><td>Forte em português, licença permissiva, cabe full-FT na L4 (24 GB) com AdamW 8-bit.</td></tr>
+  <tr><td>Corpus <strong>unificado</strong> e <strong>Teresina</strong></td><td>DOM-PI (224 municípios + capital, ~50 M tokens de OCR ruidoso); Teresina curado (~9,3 M tokens, texto mais limpo).</td></tr>
+  <tr><td>Held-out fixo (seed=42)</td><td>Separado antes do treino — avaliação antes×depois reproduzível e sem vazamento.</td></tr>
+  <tr><td>Benchmark <code>dompi_qa.jsonl</code></td><td><strong>49 perguntas</strong> com fatos verificados do tier A (supera o mínimo de 25).</td></tr>
+</table>
+<p>A avaliação segue o <strong>protocolo de três camadas</strong> consolidado para continued-pretraining
+(tutorial NAACL'25, <a href="https://arxiv.org/abs/2504.03931">arXiv:2504.03931</a>):</p>
+<table>
+  <tr><th>Camada</th><th>O que mede</th><th>Como</th></tr>
+  <tr><td><strong>1. Ganho de domínio</strong></td><td>o modelo ficou melhor no DOM-PI?</td><td>PPL/CE/token-acc no held-out e no benchmark (§3)</td></tr>
+  <tr><td><strong>2. Retenção</strong></td><td>o DAPT estragou o conhecimento geral?</td><td>PPL num held-out de domínio <em>geral</em> (Wikipedia-PT) (§4)</td></tr>
+  <tr><td><strong>3. Utilidade downstream</strong></td><td>serve numa tarefa real?</td><td>usado como gerador no RAG da Q5</td></tr>
+</table>
+
+<h2>3. Camada 1 — Ganho de domínio (resultado central)</h2>
+<p>Avaliação antes×depois no held-out de domínio (mesma execução das §4–§5):</p>
+<table>
+  <tr><th>Modelo</th><th>Corpus</th><th class="num">PPL held-out</th><th class="num">Δ vs baseline</th><th class="num">token-acc</th></tr>
+  <tr><td>Baseline 1.5B</td><td>—</td><td class="num">9,82 / 6,91 *</td><td class="num">—</td><td class="num">0,545</td></tr>
+  <tr style="font-weight:bold;background:var(--ok-bg)"><td>Full FT unificado</td><td>completo</td><td class="num">8,74</td><td class="num">−11,1%</td><td class="num">0,562</td></tr>
+  <tr style="font-weight:bold;background:var(--ok-bg)"><td>Full FT Teresina</td><td>Teresina</td><td class="num">6,02 *</td><td class="num">−12,8%</td><td class="num">0,608</td></tr>
+  <tr><td>QLoRA unificado</td><td>completo</td><td class="num">9,88</td><td class="num">−1,4%</td><td class="num">~</td></tr>
+</table>
+<p style="font-size:0.82rem;color:var(--muted)">* Teresina mede no held-out curado de Teresina (baseline 6,91); o unificado, no held-out geral DOM-PI (baseline 9,82).</p>
+<div class="callout info">
+  <strong>Full-FT &gt; PEFT</strong> nos dois corpora — como a teoria de DAPT prevê: parâmetros plenos absorvem mais do
+  domínio; o low-rank (NF4/QLoRA) regulariza, é mais robusto ao ruído, mas conservador (ganho marginal, −1,4%).
+</div>
+
+<h2>4. Camada 2 — Retenção de capacidade (anti-esquecimento)</h2>
+<p>Held-out de <strong>domínio geral</strong> (Wikipedia-PT, fora dos diários), PPL antes×depois — mesma execução que
+mediu o domínio:</p>
+<table>
+  <tr><th>Modelo</th><th class="num">PPL domínio <em>geral</em></th><th class="num">PPL domínio <em>DOM-PI</em></th><th class="num">token-acc dom.</th></tr>
+  <tr><td>Baseline 1.5B</td><td class="num">8,80</td><td class="num">9,82</td><td class="num">0,545</td></tr>
+  <tr><td>Full FT unificado</td><td class="num">8,79 (−0,2%)</td><td class="num">8,74 (−11,1%)</td><td class="num">0,562</td></tr>
+  <tr><td>Full FT Teresina</td><td class="num">8,77 (−0,4%)</td><td class="num">6,02 (−12,8%)</td><td class="num">0,608</td></tr>
+</table>
+<div class="callout success">
+  <strong>Resultado forte.</strong> A PPL no domínio <strong>geral não se move</strong> (varia &lt;0,5%) enquanto a PPL
+  de domínio cai 11–13% — ou seja, <strong>zero esquecimento catastrófico</strong>. É um trade-off ainda mais favorável
+  que o do <strong>Juru</strong> (<a href="https://arxiv.org/abs/2403.18140">arXiv:2403.18140</a>), que ganha no domínio
+  jurídico mas <em>perde</em> fora dele. O <code>lr</code> conservador (2e-6) preserva as representações originais
+  enquanto especializa o modelo.
+</div>
+
+<h2>5. Camada 1 (legível) — acurácia de geração no benchmark</h2>
+<p>Tentamos a métrica mais palpável ("acertou X de 49"): o modelo <strong>gera</strong> a resposta e comparamos com a
+referência.</p>
+<table>
+  <tr><th>Modelo</th><th class="num">contains (ref na geração)</th><th class="num">token-F1 médio</th><th class="num">exact-match</th></tr>
+  <tr><td>Baseline 1.5B</td><td class="num">0 / 49</td><td class="num">0,158</td><td class="num">0 / 49</td></tr>
+  <tr><td>Full FT unificado</td><td class="num">0 / 49</td><td class="num">0,163</td><td class="num">0 / 49</td></tr>
+  <tr><td>Full FT Teresina</td><td class="num">0 / 49</td><td class="num">0,148</td><td class="num">0 / 49</td></tr>
+</table>
+<div class="callout warn">
+  <strong>Achado (negativo informativo).</strong> <em>Exact-match</em> e <em>contains</em> de geração gulosa são
+  <strong>0 para todos os modelos</strong>, inclusive os DAPT. Reproduzir <strong>literalmente</strong> um CNPJ, CPF ou
+  nome próprio exato é um teto alto demais para um modelo desta escala decodificando <em>greedy</em> — o DAPT aumenta a
+  <em>probabilidade</em> da resposta certa (cai a NLL/PPL), mas não o suficiente para emergir como string exata na
+  geração livre. <strong>Conclusão metodológica:</strong> para este par tarefa×escala, as métricas informativas são as
+  que o enunciado pede — <strong>PPL, CE e acurácia de token</strong> (§3–§4), não o exact-match de geração.
+</div>
+
+<h2>6. Curva dose-resposta — PPL cai com log(tokens)</h2>
+<p>Treinamos o full-FT em frações crescentes do corpus (mesmo held-out fixo):</p>
+<figure>
+  <img src="resultados/figuras/curva_dose_resposta.png" alt="Curva dose-resposta: PPL no held-out versus tokens de DAPT (escala log)">
+  <figcaption>PPL no held-out cai monotonicamente e achata com log(tokens) de pré-treino continuado.</figcaption>
+</figure>
+<table>
+  <tr><th class="num">Tokens de DAPT</th><th class="num">PPL held-out</th><th class="num">Δ vs baseline</th></tr>
+  <tr><td class="num">0 (baseline)</td><td class="num">9,82</td><td class="num">—</td></tr>
+  <tr><td class="num">~4,2 M (10%)</td><td class="num">9,28</td><td class="num">−5,5%</td></tr>
+  <tr><td class="num">~12,5 M (30%)</td><td class="num">8,99</td><td class="num">−8,4%</td></tr>
+  <tr><td class="num">~41,7 M (100%)</td><td class="num">8,80</td><td class="num">−10,4%</td></tr>
+</table>
+<p>Cada ~3× mais tokens rende um decréscimo de PPL cada vez menor — o mesmo padrão de ganho-por-checkpoint que o Juru
+observa até ~7 B tokens. Confirma que o gargalo aqui é <strong>volume/qualidade de corpus</strong>, não a receita de
+treino.</p>
+
+<h2>7. Limpeza de OCR não melhora a PPL (negativo informativo)</h2>
+<p>Hipótese: remover ruído de OCR (IDs colados, linhas de baixa razão alfabética, cabeçalhos quebrados) daria um sinal
+de treino mais limpo e mais ganho — como o subcorpus curado de Teresina sugere. Aplicamos um filtro heurístico
+(<code>limpar_corpus_ocr.py</code>): <strong>−13% de caracteres</strong>, 98% dos documentos preservados.</p>
+<table>
+  <tr><th>Treino</th><th class="num">PPL held-out</th><th class="num">Δ</th></tr>
+  <tr><td>Corpus <strong>bruto</strong> (unificado)</td><td class="num">8,74</td><td class="num">−11,1%</td></tr>
+  <tr><td>Corpus <strong>limpo</strong> (mesmo volume relativo)</td><td class="num">8,80</td><td class="num">−10,4%</td></tr>
+</table>
+<div class="callout warn">
+  <strong>Resultado:</strong> a limpeza <strong>não ajudou</strong> — ficou marginalmente pior. Causa provável: o
+  <strong>held-out continua sendo OCR bruto</strong>, então um modelo treinado em texto limpo sofre leve descasamento de
+  distribuição (treino limpo × avaliação ruidosa) e ainda vê ~13% menos tokens. Mostrar o benefício real da limpeza
+  exigiria também um held-out limpo — mas aí os números deixariam de ser comparáveis. <strong>Decisão (canônica):</strong>
+  mantém-se o full-FT do corpus bruto unificado (−11,1%); a limpeza entra como análise, não como resposta.
+</div>
+
+<h2>8. Generalização cross-família — Qwen vs Llama</h2>
+<p>O enunciado permite outra família. Repetimos o DAPT canônico (full-FT, mesmo corpus bruto unificado, mesmo held-out,
+mesmos hiperparâmetros) num modelo de <strong>família diferente</strong>, o <strong>Llama-3.2-3B (Meta)</strong>, para
+testar se o ganho é específico do Qwen ou um efeito geral.</p>
+<table>
+  <tr><th>Modelo</th><th>Família</th><th class="num">PPL antes</th><th class="num">PPL depois</th><th class="num">Δ</th><th class="num">token-acc</th></tr>
+  <tr><td>Qwen2.5-1.5B</td><td>Qwen (Alibaba)</td><td class="num">9,82</td><td class="num">8,74</td><td class="num">−11,1%</td><td class="num">0,545 → 0,562</td></tr>
+  <tr style="font-weight:bold;background:var(--ok-bg)"><td>Llama-3.2-3B</td><td>Meta</td><td class="num">10,55</td><td class="num">8,09</td><td class="num">−23,3%</td><td class="num">0,566 → 0,605</td></tr>
+</table>
+<div class="callout success">
+  <strong>O DAPT generaliza entre arquiteturas.</strong> Ambas as famílias melhoram substancialmente — o ganho não é um
+  artefato do Qwen. E <strong>quem parte mais fraco no domínio ganha mais</strong>: o Llama começa pior (PPL 10,55 &gt;
+  9,82 — o Qwen2.5 é mais forte em PT de fábrica), mas o DAPT rende o <strong>dobro</strong> (−23,3% vs −11,1%) e o
+  Llama-3.2-3B <strong>ultrapassa</strong> o Qwen pós-adaptação (8,09 &lt; 8,74): mais capacidade (3 B) e mais "espaço
+  para aprender" absorvem mais sinal.
+</div>
+<p style="font-size:0.82rem;color:var(--muted)">Nota técnica: 3 B em full-FT cabe numa única L4 (24 GB) com AdamW-8bit +
+gradient checkpointing; treino distribuído (FSDP) só seria necessário a partir de ~7 B.</p>
+
+<h3>Exemplos de inferência (verbatim) — Llama-3.2-3B antes × depois do DAPT</h3>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Prompt</span>De que trata a Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025? Resposta:</div>
+  <div class="inf-resp"><span class="model-tag tag-base">baseline (Llama-3.2-3B)</span>
+    <div class="inf-txt">Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025, dispõe sobre o estabelecimento de normas para a realização da eleição dos representantes dos trabalhadores e dos empregadores no</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">DAPT (Llama-3.2-3B)</span>
+    <div class="inf-txt">1. Fica revogado o artigo 2° da Portaria nº 129/2024, de 28 de dezembro de 2024, e fica substituído pelo seguinte: "Art. 2° - A Secretaria Municipal de Educação, por meio da Diret</div></div>
+  <div class="inf-note">Referência: "Dispõe sobre a nomeação para cargos de provimento em comissão e de funções de confiança…". Nenhum dos dois acerta o fato exato (por isso EM=0, §5) — mas o DAPT desloca o <strong>registro</strong> para a linguagem de ato administrativo (revogação de artigo, "Art. 2°", secretarias), evidenciando a absorção de domínio que a PPL capta.</div>
+</div>
+<div class="inf-block">
+  <div class="inf-prompt"><span class="lbl">Prompt</span>Qual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II? Resposta:</div>
+  <div class="inf-resp"><span class="model-tag tag-base">baseline (Llama-3.2-3B)</span>
+    <div class="inf-txt">1. A Empresa Construtora e Engenharia Ltda. A Empresa Construtora e Engenharia Ltda. foi a vencedora do Pregão Eletrônico nº 040/2024, com valor estimado em R$ 2.000.000,00 (do</div></div>
+  <div class="inf-resp"><span class="model-tag tag-fullft">DAPT (Llama-3.2-3B)</span>
+    <div class="inf-txt">1. A Empresa: SANTOS DE SOUSA E FILHO LTDA, com CNPJ nº 00.000.000/0000-00, inscrita no CNPJ sob o nº 00.000.000/0000-00, localizada na Rua Joaquim</div></div>
+  <div class="inf-note">Referência: "ANTARES COMERCIO ATACADISTA LTDA (CNPJ 28.766.496/0001-28)". Ambos alucinam a empresa; o DAPT adota a formatação típica dos extratos ("inscrita no CNPJ sob o nº…"), mas não recupera o CNPJ correto — o limite de escala/decodificação da §5.</div>
+</div>
+
+<h2>9. Comparação com DAPT públicos (contextualização)</h2>
+<table>
+  <tr><th>Projeto</th><th>Base</th><th>Domínio / Idioma</th><th>O que evidenciam</th></tr>
+  <tr><td><strong>Este trabalho</strong></td><td>Qwen2.5-1.5B + Llama-3.2-3B</td><td>Diários oficiais PI / PT</td><td>−11% (Qwen) a −23% (Llama) PPL de domínio, retenção geral preservada, ganho cross-família</td></tr>
+  <tr><td><strong>Juru</strong> (<a href="https://arxiv.org/abs/2403.18140">2403.18140</a>)</td><td>Mistral-7B</td><td>Jurídico BR / PT</td><td>ganho em benchmark legal + esquecimento fora do domínio</td></tr>
+  <tr><td><strong>Tucano</strong></td><td>—</td><td>PT-BR geral</td><td>escala de dados em continued-pretraining PT</td></tr>
+  <tr><td><strong>Curió-Edu</strong></td><td>7B</td><td>Educação / PT</td><td>impacto da <em>seleção de dados</em> no DAPT</td></tr>
+  <tr><td><strong>AdaptLLM</strong> (<a href="https://arxiv.org/abs/2309.09530">2309.09530</a>)</td><td>7B</td><td>Bio/Fin/Lei</td><td>corpus cru ganha conhecimento mas pode ferir Q&amp;A → medir ambos</td></tr>
+</table>
+<p>Magnitude e trade-off do nosso resultado são coerentes com a literatura: DAPT em corpus pequeno/ruidoso entrega
+ganho de domínio mensurável, com retenção preservada quando o <code>lr</code> é conservador.</p>
+
+<h2>10. Nota de validação do pipeline</h2>
+<div class="callout info">
+  Antes de confiar nas métricas, validamos a sanidade do <em>loop</em> de treino: a CE do baseline interno deve bater o
+  <code>avaliar_modelo.py</code> (<strong>PPL ≈ 10</strong>, não dezenas de milhar). Essa checagem expôs e corrigiu um
+  <em>duplo deslocamento de rótulos</em> no <code>PackedTextDataset</code> (o objetivo otimizava "prever 2 tokens à
+  frente"); após a correção (<code>labels = input_ids.clone()</code> — o shift fica só por conta do modelo), o baseline
+  interno reconcilia com a avaliação e os ganhos acima são reais. <strong>Lição metodológica:</strong> validar o
+  pipeline antes de atribuir resultados ao corpus.
+</div>
+
+<h2>11. Modelos publicados e reprodução</h2>
+<ul>
+  <li><code>gutoportelaa/qwen2.5-1.5b-dompi-fullft-unificado</code> — canônica (dataset completo).</li>
+  <li><code>gutoportelaa/qwen2.5-1.5b-dompi-teresina-v3</code> — alternativa (corpus curado).</li>
+  <li><code>gutoportelaa/qwen2.5-1.5b-dompi-dapt</code> — variante QLoRA (gerador G2 da Q5).</li>
+</ul>
+<p>Reprodução (ordem de execução): treino com <code>run_fullft_unificado.sbatch</code> / <code>run_q1_fullft_teresina_v3.sbatch</code>
+/ <code>run_q1_llama32_1gpu.sbatch</code> (cross-família); evidências (retenção + geração + curva) com
+<code>run_q1_evidencias.sbatch</code>; avaliação com <code>avaliar_modelo.py</code> + <code>avaliar_geracao.py</code>.</p>
+
+<footer>
+  Questão 1 — Pré-treino Continuado (DAPT) · Trabalho Final "Construindo um LLM" (DOM-PI / UFPI-DC).
+  Relatório consolidado: <a href="../relatorio_tecnico_completo.html">relatorio_tecnico_completo.html</a>.
+</footer>
+
+</body>
+</html>
