@@ -1,0 +1,6 @@
+[
+  {"tokens": 0,        "ppl": 9.822, "corpus": "unificado-limpo", "baseline": true, "fonte": "baseline Qwen2.5-1.5B (held-out unificado)"},
+  {"tokens": 4162547,  "ppl": 9.282, "corpus": "unificado-limpo", "fonte": "dose 10% corpus limpo"},
+  {"tokens": 12502872, "ppl": 8.994, "corpus": "unificado-limpo", "fonte": "dose 30% corpus limpo"},
+  {"tokens": 41739759, "ppl": 8.798, "corpus": "unificado-limpo", "fonte": "100% corpus limpo (Eixo A full-FT)"}
+]

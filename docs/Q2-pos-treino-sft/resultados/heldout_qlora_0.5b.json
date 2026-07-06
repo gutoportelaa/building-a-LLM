@@ -1,0 +1,1811 @@
+{
+  "modo": "intrinseca",
+  "n": 300,
+  "cross_entropy": 1.7443,
+  "perplexity": 5.7222,
+  "token_accuracy": 0.627,
+  "per_item": [
+    {
+      "instruction": "Corrija a função 'sinal' para que ela funcione corretamente e determine o sinal de um número inteiro, retornando 1 para positivo, -1 para negativo e 0 para zero.",
+      "tipo": "codigo",
+      "ref_nll": 0.8056,
+      "ref_tok_acc": 0.8611
+    },
+    {
+      "instruction": "Implemente a função que calcula a tangente de ângulos e imprime o resultado, ignorando os valores em que a tangente é indefinida.",
+      "tipo": "codigo",
+      "ref_nll": 1.5081,
+      "ref_tok_acc": 0.6774
+    },
+    {
+      "instruction": "Explique como o operador de atribuição += funciona em C/C++.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4187,
+      "ref_tok_acc": 0.6625
+    },
+    {
+      "instruction": "Qual é a definição de estatística descritiva?",
+      "tipo": "factual",
+      "ref_nll": 2.0,
+      "ref_tok_acc": 0.6765
+    },
+    {
+      "instruction": "De acordo com a passagem, o que é a definição do PMI para Gestão de Projetos?",
+      "tipo": "factual",
+      "ref_nll": 2.4333,
+      "ref_tok_acc": 0.5333
+    },
+    {
+      "instruction": "Qual método é usado para pegar o tempo em nanossegundos no exemplo?",
+      "tipo": "factual",
+      "ref_nll": 3.3281,
+      "ref_tok_acc": 0.75
+    },
+    {
+      "instruction": "Explique por que os sistemas operacionais tornaram a interação com os computadores mais fácil, confiável e eficiente.",
+      "tipo": "explicacao",
+      "ref_nll": 1.514,
+      "ref_tok_acc": 0.6262
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a Seleção por Nivelamento Exponencial.",
+      "tipo": "resumo",
+      "ref_nll": 2.098,
+      "ref_tok_acc": 0.6176
+    },
+    {
+      "instruction": "Compare as instruções 'add' e 'lw' em termos de função e formato.",
+      "tipo": "comparacao",
+      "ref_nll": 2.0421,
+      "ref_tok_acc": 0.4947
+    },
+    {
+      "instruction": "Compare o método de comunicação cross-technology via emulation com o método via payload encoding.",
+      "tipo": "comparacao",
+      "ref_nll": 2.0435,
+      "ref_tok_acc": 0.6087
+    },
+    {
+      "instruction": "Qual é o prazo máximo que o departamento ou unidade acadêmica especializada tem para cumprir as exigências estabelecidas?",
+      "tipo": "factual",
+      "ref_nll": 3.6,
+      "ref_tok_acc": 0.4
+    },
+    {
+      "instruction": "Explique por que o problema do caixeiro viajante é considerado NP-hard e como a heurística influencia os resultados.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8333,
+      "ref_tok_acc": 0.5444
+    },
+    {
+      "instruction": "Explique o conceito de 'drought' (seca) apresentado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.125,
+      "ref_tok_acc": 0.5156
+    },
+    {
+      "instruction": "Explique como um sistema de gerenciamento inteligente de loja funciona.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9518,
+      "ref_tok_acc": 0.6145
+    },
+    {
+      "instruction": "Implemente a função que calcula o custo total por produto",
+      "tipo": "codigo",
+      "ref_nll": 1.6033,
+      "ref_tok_acc": 0.6942
+    },
+    {
+      "instruction": "Explique o que é um vírus de computador.",
+      "tipo": "explicacao",
+      "ref_nll": 1.5962,
+      "ref_tok_acc": 0.5897
+    },
+    {
+      "instruction": "O que é necessário além do conjunto de treinamento para treinar uma rede neural?",
+      "tipo": "factual",
+      "ref_nll": 2.1463,
+      "ref_tok_acc": 0.5366
+    },
+    {
+      "instruction": "O que é a Ciência da Computação que se preocupa com o projeto, análise e implementação de sistemas interativos para o uso do homem e o estudo dos fenômenos que o cercam?",
+      "tipo": "factual",
+      "ref_nll": 5.5417,
+      "ref_tok_acc": 0.1667
+    },
+    {
+      "instruction": "Explique como um iterador funciona em PHP, incluindo as funções current(), next(), e reset().",
+      "tipo": "codigo",
+      "ref_nll": 1.4105,
+      "ref_tok_acc": 0.6316
+    },
+    {
+      "instruction": "Implemente a função 'somaLista' em Haskell, que soma todos os elementos de uma lista de inteiros.",
+      "tipo": "codigo",
+      "ref_nll": 0.3845,
+      "ref_tok_acc": 0.9394
+    },
+    {
+      "instruction": "Explique o que acontece quando você executa um programa em C.",
+      "tipo": "codigo",
+      "ref_nll": 1.5066,
+      "ref_tok_acc": 0.5921
+    },
+    {
+      "instruction": "Explique a implementação da função factorial e como ela é chamada no exemplo fornecido.",
+      "tipo": "codigo",
+      "ref_nll": 1.2308,
+      "ref_tok_acc": 0.6923
+    },
+    {
+      "instruction": "Explique por que um programa pode tentar acessar endereços de memória de elementos fictícios em um array.",
+      "tipo": "explicacao",
+      "ref_nll": 1.7024,
+      "ref_tok_acc": 0.6429
+    },
+    {
+      "instruction": "Explique por que um mapa estratégico é comparado a um mapa geográfico e qual é a importância dessa comparação para a empresa.",
+      "tipo": "explicacao",
+      "ref_nll": 1.7647,
+      "ref_tok_acc": 0.5882
+    },
+    {
+      "instruction": "Implemente a função areaRetangulo que calcula a área de um retângulo com base e altura fornecidas pelo usuário e exibe o resultado formatado.",
+      "tipo": "codigo",
+      "ref_nll": 0.8706,
+      "ref_tok_acc": 0.8118
+    },
+    {
+      "instruction": "Explique como a composição (3,1)-mer funciona e por que ela é útil para diferenciar sequências de DNA que têm a mesma composição 3-mer.",
+      "tipo": "explicacao",
+      "ref_nll": 2.0086,
+      "ref_tok_acc": 0.6207
+    },
+    {
+      "instruction": "Explique a função da diretiva #define em C e como ela é utilizada para substituir macros simplesmente no texto.",
+      "tipo": "codigo",
+      "ref_nll": 1.4393,
+      "ref_tok_acc": 0.7009
+    },
+    {
+      "instruction": "Explique como a função fclose() funciona e qual é o propósito dela.",
+      "tipo": "explicacao",
+      "ref_nll": 1.7015,
+      "ref_tok_acc": 0.5373
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a Árvore Geradora Mínima (AGM).",
+      "tipo": "resumo",
+      "ref_nll": 2.2381,
+      "ref_tok_acc": 0.5238
+    },
+    {
+      "instruction": "Resuma os principais pontos da passagem sobre os typhoons.",
+      "tipo": "resumo",
+      "ref_nll": 2.785,
+      "ref_tok_acc": 0.4486
+    },
+    {
+      "instruction": "Compare o modelo Perceptron de Rosenblatt com o modelo conexionista em termos de limitações e impulsionamento da pesquisa.",
+      "tipo": "comparacao",
+      "ref_nll": 2.3053,
+      "ref_tok_acc": 0.5368
+    },
+    {
+      "instruction": "Resuma os principais pontos discutidos na aula sobre aprendizagem supervisionada e construção de bases de conhecimento.",
+      "tipo": "resumo",
+      "ref_nll": 2.5224,
+      "ref_tok_acc": 0.5075
+    },
+    {
+      "instruction": "Qual é o DOI do artigo 'From Software Product Lines to Software Ecosystems'?",
+      "tipo": "factual",
+      "ref_nll": 2.1705,
+      "ref_tok_acc": 0.4091
+    },
+    {
+      "instruction": "Como corrigir o aviso sobre a falta de DVFSHandler em uma simulação?",
+      "tipo": "codigo",
+      "ref_nll": 2.264,
+      "ref_tok_acc": 0.6193
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre funções básicas e desfazer ações em documentos do Microsoft Office.",
+      "tipo": "resumo",
+      "ref_nll": 1.8085,
+      "ref_tok_acc": 0.5532
+    },
+    {
+      "instruction": "Compare o papel dos sistemas legados e dos atores que representam recursos de hardware e comunicação no contexto do produto.",
+      "tipo": "comparacao",
+      "ref_nll": 1.9726,
+      "ref_tok_acc": 0.589
+    },
+    {
+      "instruction": "Explique a função do código wd() e como ele é utilizado na função main().",
+      "tipo": "codigo",
+      "ref_nll": 1.6619,
+      "ref_tok_acc": 0.6403
+    },
+    {
+      "instruction": "Explique como os sistemas ciber-físicos são criados e funcionam em relação à Indústria 4.0, conforme mencionado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8,
+      "ref_tok_acc": 0.6087
+    },
+    {
+      "instruction": "Explique por que a passagem menciona a confirmação conclusiva de destroços do voo MH370 por parte do Primeiro-Ministro da Malásia.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4466,
+      "ref_tok_acc": 0.699
+    },
+    {
+      "instruction": "Explique como o laço while é utilizado para imprimir todos os números pares entre 1 e 20.",
+      "tipo": "explicacao",
+      "ref_nll": 1.1222,
+      "ref_tok_acc": 0.7
+    },
+    {
+      "instruction": "Implemente a verificação de um triângulo reto em C, incluindo as condições de Pitágoras e a condição de que os lados devem ser positivos.",
+      "tipo": "codigo",
+      "ref_nll": 1.0469,
+      "ref_tok_acc": 0.8021
+    },
+    {
+      "instruction": "Explique por que um ISA de código aberto permite mais liberdade de inovação com custo mais baixo e maior flexibilidade.",
+      "tipo": "explicacao",
+      "ref_nll": 1.7826,
+      "ref_tok_acc": 0.6304
+    },
+    {
+      "instruction": "Explique como criar um objeto esférico usando a biblioteca GLUT e GLU, incluindo a definição do estilo de desenho e a adição de normais.",
+      "tipo": "codigo",
+      "ref_nll": 1.125,
+      "ref_tok_acc": 0.75
+    },
+    {
+      "instruction": "Compare as características da Estrutura de Dados Pilha com a Fila.",
+      "tipo": "comparacao",
+      "ref_nll": 1.3476,
+      "ref_tok_acc": 0.689
+    },
+    {
+      "instruction": "O que é uma linguagem de programação de acordo com a passagem?",
+      "tipo": "factual",
+      "ref_nll": 1.9153,
+      "ref_tok_acc": 0.678
+    },
+    {
+      "instruction": "Explique o conceito de Análise de Sentimentos, de acordo com Liu (2010).",
+      "tipo": "explicacao",
+      "ref_nll": 2.3378,
+      "ref_tok_acc": 0.4865
+    },
+    {
+      "instruction": "Explique a função da função 'link' em relação ao restante do código.",
+      "tipo": "codigo",
+      "ref_nll": 2.7568,
+      "ref_tok_acc": 0.3604
+    },
+    {
+      "instruction": "Compare o retorno de um operador lógico AND com um operador lógico OR em termos de avaliacao curta.",
+      "tipo": "comparacao",
+      "ref_nll": 1.3258,
+      "ref_tok_acc": 0.7079
+    },
+    {
+      "instruction": "Compare as funcionalidades de listagem e visualização em termos de como o sistema apresenta os objetos multimídia aos usuários.",
+      "tipo": "comparacao",
+      "ref_nll": 1.9264,
+      "ref_tok_acc": 0.5951
+    },
+    {
+      "instruction": "Explique como o indexamento funciona em matrizes na linguagem Ada.",
+      "tipo": "explicacao",
+      "ref_nll": 2.181,
+      "ref_tok_acc": 0.5048
+    },
+    {
+      "instruction": "Explique o que é um protocolo de roteamento intrassistema autônomo e como ele funciona.",
+      "tipo": "explicacao",
+      "ref_nll": 1.7083,
+      "ref_tok_acc": 0.7167
+    },
+    {
+      "instruction": "Explique por que a passagem não segue uma estrutura de revisão de restaurante tradicional.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8917,
+      "ref_tok_acc": 0.6
+    },
+    {
+      "instruction": "Implemente a função 'total' em Haskell que soma os valores de uma função 'f' aplicada de 0 até 'n'.",
+      "tipo": "codigo",
+      "ref_nll": 1.1062,
+      "ref_tok_acc": 0.775
+    },
+    {
+      "instruction": "Explique o conceito de polimorfismo na orientação a objetos.",
+      "tipo": "explicacao",
+      "ref_nll": 2.125,
+      "ref_tok_acc": 0.5455
+    },
+    {
+      "instruction": "Explique como a função 'push' de uma pilha funciona em um programa Java, usando a passagem como referência.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8947,
+      "ref_tok_acc": 0.5526
+    },
+    {
+      "instruction": "Explique por que os efeitos colaterais funcionais em expressões aritméticas podem ser problemáticos.",
+      "tipo": "explicacao",
+      "ref_nll": 2.2558,
+      "ref_tok_acc": 0.5581
+    },
+    {
+      "instruction": "Explique a lógica fuzzy, incluindo uma breve descrição sobre conjuntos e regras fuzzy, bem como sobre regras de inferência fuzzy.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4961,
+      "ref_tok_acc": 0.6512
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre comunicação em redes sociais.",
+      "tipo": "resumo",
+      "ref_nll": 2.4719,
+      "ref_tok_acc": 0.4831
+    },
+    {
+      "instruction": "Compare as estruturas de repetição usadas nos exemplos de execução do VisualG apresentados na passagem.",
+      "tipo": "comparacao",
+      "ref_nll": 2.2,
+      "ref_tok_acc": 0.5529
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a evolução dos sistemas operacionais.",
+      "tipo": "resumo",
+      "ref_nll": 2.086,
+      "ref_tok_acc": 0.5914
+    },
+    {
+      "instruction": "Quais são os três fundamentais do pensamento?",
+      "tipo": "factual",
+      "ref_nll": 1.9189,
+      "ref_tok_acc": 0.6486
+    },
+    {
+      "instruction": "Compare o papel dos tratadores de interrupção e os controladores de interrupção na gestão de interrupções.",
+      "tipo": "comparacao",
+      "ref_nll": 2.101,
+      "ref_tok_acc": 0.5657
+    },
+    {
+      "instruction": "Implemente a remoção de um valor do dicionário utilizando o método pop e mostre o dicionário resultante.",
+      "tipo": "codigo",
+      "ref_nll": 1.7595,
+      "ref_tok_acc": 0.5696
+    },
+    {
+      "instruction": "Explique por que a seguinte inicialização de array é inválida em C e qual seria a maneira correta de inicializar o array no contexto onde ele é definido.",
+      "tipo": "codigo",
+      "ref_nll": 1.1842,
+      "ref_tok_acc": 0.6754
+    },
+    {
+      "instruction": "Explique como as expressões lambda funcionam em Haskell, baseado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4444,
+      "ref_tok_acc": 0.6222
+    },
+    {
+      "instruction": "Quem é o autor do trabalho 'Trace cache: a low latency approach to high bandwidth instruction fetching'?",
+      "tipo": "factual",
+      "ref_nll": 5.3929,
+      "ref_tok_acc": 0.3571
+    },
+    {
+      "instruction": "Explique por que os ajustes de modelagem são necessários em problemas de otimização contínua.",
+      "tipo": "explicacao",
+      "ref_nll": 2.1089,
+      "ref_tok_acc": 0.5446
+    },
+    {
+      "instruction": "Implemente a função que simula a máquina de Ackley para Expressões Aritméticas (EA) com base na definição dada na passagem. Essa função deve retornar True se a entrada for uma expressão válida e False caso contrário.",
+      "tipo": "codigo",
+      "ref_nll": 1.1157,
+      "ref_tok_acc": 0.7273
+    },
+    {
+      "instruction": "Explique como a função 'mint' de um token ERC-20 funciona.",
+      "tipo": "explicacao",
+      "ref_nll": 2.4607,
+      "ref_tok_acc": 0.4494
+    },
+    {
+      "instruction": "Explique como funciona a regra de atribuição da nota 0 para alunos que não participam de nenhuma avaliação.",
+      "tipo": "explicacao",
+      "ref_nll": 2.2547,
+      "ref_tok_acc": 0.4528
+    },
+    {
+      "instruction": "Explique como a regra de inferência funciona na Inteligência Artificial, usando a proposição 'IF duração = longa AND qualidade = alta THEN risco = médio' como exemplo.",
+      "tipo": "explicacao",
+      "ref_nll": 1.1532,
+      "ref_tok_acc": 0.7661
+    },
+    {
+      "instruction": "Compare as características dos sistemas de middleware e de dados apresentados na passagem.",
+      "tipo": "comparacao",
+      "ref_nll": 2.2906,
+      "ref_tok_acc": 0.5556
+    },
+    {
+      "instruction": "Compare o processo de amostragem com o processo de quantização em termos de sua função na digitalização de sinais contínuos.",
+      "tipo": "comparacao",
+      "ref_nll": 1.5397,
+      "ref_tok_acc": 0.6429
+    },
+    {
+      "instruction": "Explique por que alinhar o 'else' com o 'if' é importante em uma estrutura condicional em Python.",
+      "tipo": "explicacao",
+      "ref_nll": 1.5,
+      "ref_tok_acc": 0.6324
+    },
+    {
+      "instruction": "Resuma os pontos principais da lista de verbos em português na passagem.",
+      "tipo": "resumo",
+      "ref_nll": 2.3889,
+      "ref_tok_acc": 0.4444
+    },
+    {
+      "instruction": "Compare o processo de cálculo dos limiares ótimos em Otsu para Limiarização Global Dupla com a medida de separabilidade η.",
+      "tipo": "comparacao",
+      "ref_nll": 1.6437,
+      "ref_tok_acc": 0.6092
+    },
+    {
+      "instruction": "Explique como o assembler mantém o contador de localização alinhado a múltiplos de 4 bytes.",
+      "tipo": "explicacao",
+      "ref_nll": 1.7664,
+      "ref_tok_acc": 0.6715
+    },
+    {
+      "instruction": "Explique a estrutura de dados de uma lista circular duplamente encadeada e calcule o espaço ocupado pelos apontadores.",
+      "tipo": "codigo",
+      "ref_nll": 1.9167,
+      "ref_tok_acc": 0.5833
+    },
+    {
+      "instruction": "Explique como a funcionalidade de cadastro de taxas funciona.",
+      "tipo": "explicacao",
+      "ref_nll": 2.0246,
+      "ref_tok_acc": 0.5082
+    },
+    {
+      "instruction": "Explique por que a camada lógica sem servidor é considerada revolucionária na arquitetura de três camadas.",
+      "tipo": "explicacao",
+      "ref_nll": 2.2897,
+      "ref_tok_acc": 0.5448
+    },
+    {
+      "instruction": "Resuma os pontos principais da lista de verbos em português fornecida na passagem.",
+      "tipo": "resumo",
+      "ref_nll": 2.0938,
+      "ref_tok_acc": 0.6094
+    },
+    {
+      "instruction": "Implemente a função que preenche a mensagem oculta a partir da linha fornecida, seguindo as diretrizes da passagem.",
+      "tipo": "codigo",
+      "ref_nll": 1.4348,
+      "ref_tok_acc": 0.7464
+    },
+    {
+      "instruction": "Implemente a função que altera a quantidade do estoque de um produto em um armazem, considerando a passagem fornecida.",
+      "tipo": "codigo",
+      "ref_nll": 0.8699,
+      "ref_tok_acc": 0.8185
+    },
+    {
+      "instruction": "Explique como a lógica probabilística funciona para lidar com incertezas em um processo dedutivo.",
+      "tipo": "explicacao",
+      "ref_nll": 1.6854,
+      "ref_tok_acc": 0.6292
+    },
+    {
+      "instruction": "Compare o Wi-Fi e o Bluetooth no ESP32 em termos de versão e faixa de frequência.",
+      "tipo": "comparacao",
+      "ref_nll": 1.7807,
+      "ref_tok_acc": 0.6842
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a verificação de tipos em linguagens de programação.",
+      "tipo": "resumo",
+      "ref_nll": 2.0417,
+      "ref_tok_acc": 0.6042
+    },
+    {
+      "instruction": "Compare o processo de 'I-FETCH INTO FETCHBUF' com o processo de 'ADDRENQUEUE SCHEDULE AND ISSUE'.",
+      "tipo": "comparacao",
+      "ref_nll": 1.5878,
+      "ref_tok_acc": 0.6622
+    },
+    {
+      "instruction": "Resuma os principais pontos mencionados na passagem sobre as visões da Smart City em Singapura.",
+      "tipo": "resumo",
+      "ref_nll": 2.4362,
+      "ref_tok_acc": 0.5319
+    },
+    {
+      "instruction": "Explique como os dados são armazenados em um disco rígido.",
+      "tipo": "explicacao",
+      "ref_nll": 2.3273,
+      "ref_tok_acc": 0.5455
+    },
+    {
+      "instruction": "Explique como a funcionalidade de pesquisa funciona para objetos multimídia usando as propriedades definidas pelo usuário.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8507,
+      "ref_tok_acc": 0.597
+    },
+    {
+      "instruction": "Explique o conceito do tripé da Engenharia de Software.",
+      "tipo": "explicacao",
+      "ref_nll": 1.3065,
+      "ref_tok_acc": 0.6452
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre operações de inserção e remoção em uma lista.",
+      "tipo": "resumo",
+      "ref_nll": 2.0248,
+      "ref_tok_acc": 0.5528
+    },
+    {
+      "instruction": "Implemente a lógica de encontrar a moda em um array de inteiros usando Java.",
+      "tipo": "codigo",
+      "ref_nll": 0.8913,
+      "ref_tok_acc": 0.8304
+    },
+    {
+      "instruction": "Explique a importância da confidencialidade na comunicação entre pacientes e profissionais de saúde, conforme mencionado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.1014,
+      "ref_tok_acc": 0.5797
+    },
+    {
+      "instruction": "Explique a questão moral levantada pela passagem sobre a criação de robôs que pareçam humanos ou animais.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9027,
+      "ref_tok_acc": 0.5929
+    },
+    {
+      "instruction": "Explique como os sistemas RFID melhoram a identificação de recipientes e ferramentas em indústrias.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9695,
+      "ref_tok_acc": 0.6031
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a unidade de tags e as estações de reserva em uma arquitetura de processador.",
+      "tipo": "resumo",
+      "ref_nll": 2.1589,
+      "ref_tok_acc": 0.5607
+    },
+    {
+      "instruction": "Compare as vantagens do sistema Computer Aided Despatch (CAD) em relação à gestão e operações da LAS (London Ambulance Service).",
+      "tipo": "comparacao",
+      "ref_nll": 1.76,
+      "ref_tok_acc": 0.5467
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre o livro de Bueno.",
+      "tipo": "resumo",
+      "ref_nll": 2.5,
+      "ref_tok_acc": 0.5426
+    },
+    {
+      "instruction": "Explique a estrutura da árvore de derivação (AD) para a palavra 01010110 usando a gramática fornecida.",
+      "tipo": "codigo",
+      "ref_nll": 0.8657,
+      "ref_tok_acc": 0.7917
+    },
+    {
+      "instruction": "Compare a importância da criatividade na implementação do jogo em 3D com o uso obrigatório de um relatório técnico no projeto.",
+      "tipo": "comparacao",
+      "ref_nll": 2.2973,
+      "ref_tok_acc": 0.6081
+    },
+    {
+      "instruction": "Explique a função do método 'push' em uma pilha em Java.",
+      "tipo": "codigo",
+      "ref_nll": 1.1975,
+      "ref_tok_acc": 0.6296
+    },
+    {
+      "instruction": "Explique como a função 'multiplica' funciona e forneça um exemplo de sua utilização seguindo a estrutura fornecida na passagem.",
+      "tipo": "codigo",
+      "ref_nll": 1.6129,
+      "ref_tok_acc": 0.6855
+    },
+    {
+      "instruction": "Implemente a função 'processa' que transforma uma string em outra string processando cada aluno individualmente. A função 'processaAluno' deve retornar uma string formatada com base nas informações do aluno.",
+      "tipo": "codigo",
+      "ref_nll": 1.5177,
+      "ref_tok_acc": 0.695
+    },
+    {
+      "instruction": "Compare as vantagens de ter conhecimentos em desenvolvimento de aplicações web e em engenharia de software no contexto do curso AWS Academy Cloud Foundation.",
+      "tipo": "comparacao",
+      "ref_nll": 1.375,
+      "ref_tok_acc": 0.625
+    },
+    {
+      "instruction": "Resuma os principais pontos da tarefa de trabalho prático da disciplina INTRODUÇÃO E ALGORITMOS.",
+      "tipo": "resumo",
+      "ref_nll": 2.1386,
+      "ref_tok_acc": 0.505
+    },
+    {
+      "instruction": "Explique por que os estudos de caso são importantes na avaliação de diferentes métodos e ambientes?",
+      "tipo": "explicacao",
+      "ref_nll": 2.3925,
+      "ref_tok_acc": 0.5047
+    },
+    {
+      "instruction": "De acordo com a passagem, quais são as duas opções para um usuário contribuir em tempo parcial?",
+      "tipo": "factual",
+      "ref_nll": 2.7875,
+      "ref_tok_acc": 0.35
+    },
+    {
+      "instruction": "Resuma os pontos principais sobre listas encadeadas.",
+      "tipo": "resumo",
+      "ref_nll": 1.6538,
+      "ref_tok_acc": 0.6026
+    },
+    {
+      "instruction": "Compare o uso da rede Benes na divisão e conquista de imagens com o uso da camada de entrada do LeNet-5.",
+      "tipo": "comparacao",
+      "ref_nll": 1.8543,
+      "ref_tok_acc": 0.6424
+    },
+    {
+      "instruction": "Explique como o TCP estabelece uma conexão entre um cliente e um servidor.",
+      "tipo": "explicacao",
+      "ref_nll": 2.045,
+      "ref_tok_acc": 0.5405
+    },
+    {
+      "instruction": "Explique por que a tabela de páginas deve ser rápida no mapeamento do endereço virtual para o endereço físico.",
+      "tipo": "explicacao",
+      "ref_nll": 1.3736,
+      "ref_tok_acc": 0.6322
+    },
+    {
+      "instruction": "Resuma os pontos principais da explicação sobre planos recuperáveis.",
+      "tipo": "resumo",
+      "ref_nll": 2.5238,
+      "ref_tok_acc": 0.4881
+    },
+    {
+      "instruction": "Compare o papel da variável 'trocou' e da variável 'fim' no algoritmo de ordenação por bolhas.",
+      "tipo": "comparacao",
+      "ref_nll": 1.6842,
+      "ref_tok_acc": 0.5965
+    },
+    {
+      "instruction": "Implemente a função extrato para a classe Conta que imprime o número da conta e o saldo, usando o formato fornecido na passagem.",
+      "tipo": "codigo",
+      "ref_nll": 1.41,
+      "ref_tok_acc": 0.64
+    },
+    {
+      "instruction": "Compare as atividades de 'Pesquisa Bibliográfica' e 'Implementação de software' em termos de seus objetivos principais e a fase do projeto em que geralmente ocorrem.",
+      "tipo": "comparacao",
+      "ref_nll": 1.4296,
+      "ref_tok_acc": 0.6479
+    },
+    {
+      "instruction": "Explique por que a curva de perda torna-se horizontal quando o modelo aprende tudo que ele pode?",
+      "tipo": "explicacao",
+      "ref_nll": 1.2679,
+      "ref_tok_acc": 0.6875
+    },
+    {
+      "instruction": "Explique como o método format funciona em Python, baseado no trecho fornecido.",
+      "tipo": "codigo",
+      "ref_nll": 1.6667,
+      "ref_tok_acc": 0.5985
+    },
+    {
+      "instruction": "Compare o produto interno (escalar) com o produto vetorial.",
+      "tipo": "comparacao",
+      "ref_nll": 1.4426,
+      "ref_tok_acc": 0.6803
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre tratamento de erros em construtores e manipulação de datas em Python.",
+      "tipo": "resumo",
+      "ref_nll": 1.8194,
+      "ref_tok_acc": 0.625
+    },
+    {
+      "instruction": "Explique como a translação inversa funciona para retornar um objeto à sua posição original após uma rotação.",
+      "tipo": "explicacao",
+      "ref_nll": 1.3254,
+      "ref_tok_acc": 0.6686
+    },
+    {
+      "instruction": "Explique por que os conselhos escolares precisam de informações de contato telefônico?",
+      "tipo": "explicacao",
+      "ref_nll": 2.2589,
+      "ref_tok_acc": 0.5357
+    },
+    {
+      "instruction": "Qual é o termo usado para descrever a maneira de passar argumentos em que o valor da expressão é avaliado antes de ser passado para a função?",
+      "tipo": "factual",
+      "ref_nll": 9.125,
+      "ref_tok_acc": 0.0
+    },
+    {
+      "instruction": "Explique como o Sistema de Gerenciamento Multimídia (SGM) permite que os usuários realizem operações CRUD (Create, Read, Update, Delete) em objetos multimídia.",
+      "tipo": "explicacao",
+      "ref_nll": 1.5676,
+      "ref_tok_acc": 0.6216
+    },
+    {
+      "instruction": "De acordo com a passagem, o que as empresas de tecnologia geralmente associam ao termo Big Data?",
+      "tipo": "factual",
+      "ref_nll": 3.5536,
+      "ref_tok_acc": 0.6429
+    },
+    {
+      "instruction": "Compare o método de busca em profundidade (DFS) com a propriedade de um grafo ser acíclico.",
+      "tipo": "comparacao",
+      "ref_nll": 1.5879,
+      "ref_tok_acc": 0.6606
+    },
+    {
+      "instruction": "Crie uma função que retorna a letra mais comum em uma string, usando um dicionário para contar as letras.",
+      "tipo": "codigo",
+      "ref_nll": 0.4328,
+      "ref_tok_acc": 0.9104
+    },
+    {
+      "instruction": "Implemente a função solve que calcula o número total de maneiras de produzir uma quantia x usando as moedas, usando a técnica de memoização.",
+      "tipo": "codigo",
+      "ref_nll": 0.6115,
+      "ref_tok_acc": 0.8649
+    },
+    {
+      "instruction": "Explique a função do código que configura a textura e o modelo de sombreamento Gouraud.",
+      "tipo": "codigo",
+      "ref_nll": 2.1875,
+      "ref_tok_acc": 0.5268
+    },
+    {
+      "instruction": "Explique a diferença entre variáveis locais e variáveis globais e como elas são utilizadas em um programa C.",
+      "tipo": "codigo",
+      "ref_nll": 1.7303,
+      "ref_tok_acc": 0.5955
+    },
+    {
+      "instruction": "Explique como funciona a nota do TCC I e TCC II de acordo com o texto.",
+      "tipo": "explicacao",
+      "ref_nll": 2.0,
+      "ref_tok_acc": 0.6
+    },
+    {
+      "instruction": "O que é considerado positivo para uma Rede Social?",
+      "tipo": "factual",
+      "ref_nll": 3.6167,
+      "ref_tok_acc": 0.4667
+    },
+    {
+      "instruction": "O que é importante frisar sobre os diagramas de objetos?",
+      "tipo": "factual",
+      "ref_nll": 2.9,
+      "ref_tok_acc": 0.52
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a execução de uma rede neural usando um sistema acelerado com BEANNA.",
+      "tipo": "resumo",
+      "ref_nll": 2.3936,
+      "ref_tok_acc": 0.5638
+    },
+    {
+      "instruction": "Corrija os erros de sintaxe do programa fornecido e explique o que está incorreto.",
+      "tipo": "codigo",
+      "ref_nll": 1.4713,
+      "ref_tok_acc": 0.6034
+    },
+    {
+      "instruction": "Explique como uma tupla pode ser usada para representar os dados de um aluno na disciplina de Ciência da Computação.",
+      "tipo": "explicacao",
+      "ref_nll": 1.1849,
+      "ref_tok_acc": 0.6891
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre as áreas de pesquisa e experiência profissional.",
+      "tipo": "resumo",
+      "ref_nll": 2.4773,
+      "ref_tok_acc": 0.5455
+    },
+    {
+      "instruction": "Explique o que a última linha de código faz e os valores que ela imprime na tela.",
+      "tipo": "codigo",
+      "ref_nll": 1.7467,
+      "ref_tok_acc": 0.5733
+    },
+    {
+      "instruction": "Explique como o método 'Tree of thought (ToT) prompting' funciona e por que é útil para planejar uma viagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.0198,
+      "ref_tok_acc": 0.6337
+    },
+    {
+      "instruction": "Explique como a reexportação funciona em C++ e forneça um exemplo de código que mostra a visibilidade de membros após a reexportação.",
+      "tipo": "codigo",
+      "ref_nll": 1.7904,
+      "ref_tok_acc": 0.607
+    },
+    {
+      "instruction": "Explique o conceito de 'venue' usado na Figura 3.",
+      "tipo": "explicacao",
+      "ref_nll": 2.3036,
+      "ref_tok_acc": 0.4107
+    },
+    {
+      "instruction": "Implemente a função init_glut, que inicializa o GLUT e define algumas propriedades do OpenGL, como modo de exibição e callbacks para teclado, display, reshape e timer.",
+      "tipo": "codigo",
+      "ref_nll": 1.0292,
+      "ref_tok_acc": 0.7833
+    },
+    {
+      "instruction": "O que representa uma string em Python?",
+      "tipo": "factual",
+      "ref_nll": 2.2019,
+      "ref_tok_acc": 0.6923
+    },
+    {
+      "instruction": "Explique a função do método transfere_para() na classe Conta.",
+      "tipo": "codigo",
+      "ref_nll": 1.4742,
+      "ref_tok_acc": 0.5979
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a inspeção de arquivos objeto e executável.",
+      "tipo": "resumo",
+      "ref_nll": 2.1,
+      "ref_tok_acc": 0.5778
+    },
+    {
+      "instruction": "Compare o 'princípio do dano' de Mill com o 'paradoxo da tolerância' de Popper.",
+      "tipo": "comparacao",
+      "ref_nll": 1.825,
+      "ref_tok_acc": 0.6667
+    },
+    {
+      "instruction": "Resuma os principais pontos da passagem sobre redes de acesso e sua classificação geográfica.",
+      "tipo": "resumo",
+      "ref_nll": 2.3415,
+      "ref_tok_acc": 0.5488
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre as características das imagens de satélite e seu uso.",
+      "tipo": "resumo",
+      "ref_nll": 2.1176,
+      "ref_tok_acc": 0.605
+    },
+    {
+      "instruction": "Compare as estratégias de formação de comboios grandes e pequenos em termos de efetividade contra perdas.",
+      "tipo": "comparacao",
+      "ref_nll": 1.8426,
+      "ref_tok_acc": 0.5648
+    },
+    {
+      "instruction": "Implemente a função que calcula o IMC dado os campos de um aluno.",
+      "tipo": "codigo",
+      "ref_nll": 1.1009,
+      "ref_tok_acc": 0.7523
+    },
+    {
+      "instruction": "Explique por que a utilização da hierarquia de memória proposta ajuda a reduzir a largura de banda da memória externa para o ME.",
+      "tipo": "explicacao",
+      "ref_nll": 1.6983,
+      "ref_tok_acc": 0.6207
+    },
+    {
+      "instruction": "Resuma os principais pontos da passagem sobre boatos e tecnologias de telepresença.",
+      "tipo": "resumo",
+      "ref_nll": 2.2987,
+      "ref_tok_acc": 0.5714
+    },
+    {
+      "instruction": "Explique como a Unidade de Controle (Control Unit) inicia e repete o ciclo de vida das instruções durante a execução de um programa.",
+      "tipo": "explicacao",
+      "ref_nll": 1.6341,
+      "ref_tok_acc": 0.6341
+    },
+    {
+      "instruction": "Implemente a função somaImposto que altera o valor de custo para incluir o imposto sobre vendas.",
+      "tipo": "codigo",
+      "ref_nll": 0.7578,
+      "ref_tok_acc": 0.875
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a evolução do conceito de privacidade.",
+      "tipo": "resumo",
+      "ref_nll": 1.9892,
+      "ref_tok_acc": 0.5806
+    },
+    {
+      "instruction": "De acordo com o texto, quais são as ações disponíveis para o agente?",
+      "tipo": "factual",
+      "ref_nll": 4.425,
+      "ref_tok_acc": 0.25
+    },
+    {
+      "instruction": "De acordo com a passagem, quais linguagens de programação permitem subprogramas sobrecarregados?",
+      "tipo": "factual",
+      "ref_nll": 4.4722,
+      "ref_tok_acc": 0.3333
+    },
+    {
+      "instruction": "Explique como os sensores em uma rede de sensores sem fio (WSN) podem ser usados para monitorar o ambiente remoto.",
+      "tipo": "explicacao",
+      "ref_nll": 1.5096,
+      "ref_tok_acc": 0.6635
+    },
+    {
+      "instruction": "Resuma os pontos principais da explicação sobre segmentação de imagem apresentada na passagem.",
+      "tipo": "resumo",
+      "ref_nll": 1.9775,
+      "ref_tok_acc": 0.5955
+    },
+    {
+      "instruction": "Explique por que um autômato com pilha não precisa de múltiplos estados para 'memorizar' o passado, segundo a passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.033,
+      "ref_tok_acc": 0.5495
+    },
+    {
+      "instruction": "Explique como a matriz F é calculada a partir da matriz E e B.",
+      "tipo": "explicacao",
+      "ref_nll": 2.6349,
+      "ref_tok_acc": 0.4444
+    },
+    {
+      "instruction": "Explique o que será impresso no console quando a última função main é executada.",
+      "tipo": "codigo",
+      "ref_nll": 1.4328,
+      "ref_tok_acc": 0.6642
+    },
+    {
+      "instruction": "Resuma os principais pontos da passagem sobre a performance das estruturas de dados de busca e inserção.",
+      "tipo": "resumo",
+      "ref_nll": 2.4427,
+      "ref_tok_acc": 0.5344
+    },
+    {
+      "instruction": "Compare as características da Revisão Técnica e da Inspeção.",
+      "tipo": "comparacao",
+      "ref_nll": 2.0455,
+      "ref_tok_acc": 0.5758
+    },
+    {
+      "instruction": "Compare o PC Register com o AC Register na estrutura do Banco de Registradores MIC.",
+      "tipo": "comparacao",
+      "ref_nll": 1.6442,
+      "ref_tok_acc": 0.7115
+    },
+    {
+      "instruction": "Compare as aplicações do WSN e do IoT em termos de benefícios para a vida humana.",
+      "tipo": "comparacao",
+      "ref_nll": 1.8158,
+      "ref_tok_acc": 0.5351
+    },
+    {
+      "instruction": "Implemente a função pop() em uma pilha genérica em Java, incluindo a verificação de subfluxo e a redução do tamanho do array quando necessário.",
+      "tipo": "codigo",
+      "ref_nll": 1.8289,
+      "ref_tok_acc": 0.6053
+    },
+    {
+      "instruction": "Explique como o protocolo HTTP é utilizado para fazer o download de uma página do site usando um navegador da Web, conforme descrito na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.1831,
+      "ref_tok_acc": 0.5775
+    },
+    {
+      "instruction": "Compare as funções do 'Prompt Management features' e do 'Amazon Bedrock Guardrails'.",
+      "tipo": "comparacao",
+      "ref_nll": 2.6833,
+      "ref_tok_acc": 0.5
+    },
+    {
+      "instruction": "Resuma os principais pontos de manipulação de dados apresentados na passagem.",
+      "tipo": "resumo",
+      "ref_nll": 2.4771,
+      "ref_tok_acc": 0.4954
+    },
+    {
+      "instruction": "Explique como a estrutura condicional Se b então S funciona em termos de complexidade computacional, com base na passagem fornecida.",
+      "tipo": "explicacao",
+      "ref_nll": 1.2613,
+      "ref_tok_acc": 0.6847
+    },
+    {
+      "instruction": "Compare o nome 'Meredith' com o nome 'Andrew' em termos de gênero e uso cultural.",
+      "tipo": "comparacao",
+      "ref_nll": 1.2784,
+      "ref_tok_acc": 0.6804
+    },
+    {
+      "instruction": "Explique a função de transição de um Autômato com Pilha (AP).",
+      "tipo": "codigo",
+      "ref_nll": 1.9895,
+      "ref_tok_acc": 0.6053
+    },
+    {
+      "instruction": "Implemente a função keyboard_normal que ajusta o valor de graus e fps_desejado com base nas teclas pressionadas",
+      "tipo": "codigo",
+      "ref_nll": 1.25,
+      "ref_tok_acc": 0.7071
+    },
+    {
+      "instruction": "Explique como os indivíduos são representados em um algoritmo genético, conforme a passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 1.5185,
+      "ref_tok_acc": 0.6667
+    },
+    {
+      "instruction": "Explique a função 'areaRetangulo' e como ela é utilizada na versão 2 do código para calcular a área de um retângulo.",
+      "tipo": "codigo",
+      "ref_nll": 1.1538,
+      "ref_tok_acc": 0.7308
+    },
+    {
+      "instruction": "Compare a supressão dos não máximos e a primeira derivada de uma Gaussiana em termos de seus objetivos principais na detecção de bordas.",
+      "tipo": "comparacao",
+      "ref_nll": 1.98,
+      "ref_tok_acc": 0.59
+    },
+    {
+      "instruction": "Compare as fórmulas de rotação em notação matricial e a notação composta (x', y') fornecida na passagem.",
+      "tipo": "comparacao",
+      "ref_nll": 1.6413,
+      "ref_tok_acc": 0.6141
+    },
+    {
+      "instruction": "Compare o processo de tramitação da documentação para transferência com a efetivação da matrícula institucional, destacando os documentos necessários para cada procedimento.",
+      "tipo": "comparacao",
+      "ref_nll": 1.8478,
+      "ref_tok_acc": 0.6359
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a metodologia de revisão sistemática da literatura (SLR) e os exemplos de estudos revisados.",
+      "tipo": "resumo",
+      "ref_nll": 2.0421,
+      "ref_tok_acc": 0.5684
+    },
+    {
+      "instruction": "Explique o conceito de tratamento do legado digital pós-morte, conforme apresentado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.1509,
+      "ref_tok_acc": 0.5472
+    },
+    {
+      "instruction": "De acordo com a notação apresentada, qual é a regra geral associada a Px?",
+      "tipo": "factual",
+      "ref_nll": 3.0,
+      "ref_tok_acc": 0.5484
+    },
+    {
+      "instruction": "Explique o que é a matriz de coocorrência e como ela é calculada na imagem dada, sabendo que 𝐿= 4 e 𝑄 = 'um pixel imediatamente à direita'.",
+      "tipo": "explicacao",
+      "ref_nll": 1.5038,
+      "ref_tok_acc": 0.6617
+    },
+    {
+      "instruction": "Resuma os principais pontos da tabela de modelos gerativos.",
+      "tipo": "resumo",
+      "ref_nll": 2.0828,
+      "ref_tok_acc": 0.5724
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a limitação de fluxo de dados na execução de programas.",
+      "tipo": "resumo",
+      "ref_nll": 2.3333,
+      "ref_tok_acc": 0.5362
+    },
+    {
+      "instruction": "Explique por que não é necessário nenhum trabalho para combinar os subarranjos no algoritmo de Quicksort.",
+      "tipo": "explicacao",
+      "ref_nll": 1.6134,
+      "ref_tok_acc": 0.6387
+    },
+    {
+      "instruction": "Explique a Hipótese de Church em termos de linguagens recursivamente enumeráveis.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9655,
+      "ref_tok_acc": 0.6437
+    },
+    {
+      "instruction": "Resuma os principais pontos da passagem sobre Coding Dojo em Java.",
+      "tipo": "resumo",
+      "ref_nll": 2.7083,
+      "ref_tok_acc": 0.4688
+    },
+    {
+      "instruction": "Explique como a descrição da tarefa influencia a instrução e o formato da resposta em um modelo de IA.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9242,
+      "ref_tok_acc": 0.5909
+    },
+    {
+      "instruction": "Explique por que a solução básica não é viável quando a matriz B não possui inversa?",
+      "tipo": "explicacao",
+      "ref_nll": 2.0,
+      "ref_tok_acc": 0.5694
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a criação de expressões matemáticas usando funções e terminais.",
+      "tipo": "resumo",
+      "ref_nll": 2.0565,
+      "ref_tok_acc": 0.5806
+    },
+    {
+      "instruction": "O que é a taxa de compressão denotada por C em termos de bits?",
+      "tipo": "factual",
+      "ref_nll": 2.1618,
+      "ref_tok_acc": 0.5294
+    },
+    {
+      "instruction": "Explique o conceito de 'functionário' na passagem e como eles atuam em relação aos outros personagens.",
+      "tipo": "explicacao",
+      "ref_nll": 2.6863,
+      "ref_tok_acc": 0.5
+    },
+    {
+      "instruction": "Explique a profundidade e altura de uma Árvore Binária.",
+      "tipo": "codigo",
+      "ref_nll": 1.7869,
+      "ref_tok_acc": 0.541
+    },
+    {
+      "instruction": "Compare as vantagens da utilização dos serviços da Automobile Association (AA) para manutenção e assistência na estrada com as do Rapid Response Units (RRUs).",
+      "tipo": "comparacao",
+      "ref_nll": 2.2429,
+      "ref_tok_acc": 0.5714
+    },
+    {
+      "instruction": "Compare o método de avaliação usado para verificar o aumento do conhecimento teórico e prático dos estudantes com a realização de um teste t para comparar os resultados entre estudantes que participaram ou não do projeto.",
+      "tipo": "comparacao",
+      "ref_nll": 1.3525,
+      "ref_tok_acc": 0.6721
+    },
+    {
+      "instruction": "O que é a parte real em um número complexo?",
+      "tipo": "factual",
+      "ref_nll": 1.7308,
+      "ref_tok_acc": 0.5641
+    },
+    {
+      "instruction": "De acordo com a passagem, quais são alguns exemplos de 'Defects' que podem estar presentes em obras do Project Gutenberg?",
+      "tipo": "factual",
+      "ref_nll": 3.6571,
+      "ref_tok_acc": 0.4
+    },
+    {
+      "instruction": "Compare o estado 'esperando execução' com o estado 'executando' para uma instrução em um buffer de reordenação.",
+      "tipo": "comparacao",
+      "ref_nll": 1.4671,
+      "ref_tok_acc": 0.6974
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a energia colhida por dispositivos e seus desafios.",
+      "tipo": "resumo",
+      "ref_nll": 2.3382,
+      "ref_tok_acc": 0.5735
+    },
+    {
+      "instruction": "Resuma os principais pontos da pesquisa com DNA antigo (aDNA) mencionados na passagem.",
+      "tipo": "resumo",
+      "ref_nll": 2.4142,
+      "ref_tok_acc": 0.5503
+    },
+    {
+      "instruction": "Explique por que a velocidade de disseminação do conhecimento via voluntários digitais durante as catástrofes pode ter um impacto imediato.",
+      "tipo": "explicacao",
+      "ref_nll": 1.5259,
+      "ref_tok_acc": 0.7586
+    },
+    {
+      "instruction": "Explique por que um carregamento (load) pode ou não bypassar uma instrução de armazenamento (store).",
+      "tipo": "explicacao",
+      "ref_nll": 1.0664,
+      "ref_tok_acc": 0.7876
+    },
+    {
+      "instruction": "Explique a fórmula do custo do caminho em um algoritmo A*",
+      "tipo": "codigo",
+      "ref_nll": 1.2105,
+      "ref_tok_acc": 0.7237
+    },
+    {
+      "instruction": "Explique a construção do SCP S a partir de uma MT M e uma palavra w.",
+      "tipo": "codigo",
+      "ref_nll": 2.7573,
+      "ref_tok_acc": 0.4272
+    },
+    {
+      "instruction": "Corrija o código para que ele funcione corretamente e calcule o valor ganho.",
+      "tipo": "codigo",
+      "ref_nll": 1.2207,
+      "ref_tok_acc": 0.7172
+    },
+    {
+      "instruction": "Explique como a função 'astype()' é usada na limpeza de dados e por que é importante.",
+      "tipo": "explicacao",
+      "ref_nll": 1.7396,
+      "ref_tok_acc": 0.6042
+    },
+    {
+      "instruction": "Explique por que a detecção de colisões por esferas envolventes é considerada simples.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4145,
+      "ref_tok_acc": 0.6842
+    },
+    {
+      "instruction": "Explique a Computação Móvel e como ela funciona, de acordo com a passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.0472,
+      "ref_tok_acc": 0.5189
+    },
+    {
+      "instruction": "Explique por que a técnica de aprendizado de máquina profundo (Deep Learning) é considerada superior ao aprendizado de máquina tradicional em termos de segurança em IoT.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9397,
+      "ref_tok_acc": 0.5819
+    },
+    {
+      "instruction": "De acordo com o texto, o que a Lógica Fuzzy reflete?",
+      "tipo": "factual",
+      "ref_nll": 5.0833,
+      "ref_tok_acc": 0.3333
+    },
+    {
+      "instruction": "Resuma os principais pontos da passagem sobre cibercrimes.",
+      "tipo": "resumo",
+      "ref_nll": 2.2321,
+      "ref_tok_acc": 0.5179
+    },
+    {
+      "instruction": "Corrija a função leData2 para que ela funcione corretamente.",
+      "tipo": "codigo",
+      "ref_nll": 1.8016,
+      "ref_tok_acc": 0.6111
+    },
+    {
+      "instruction": "Explique o conceito de 'arsonist' conforme apresentado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.6422,
+      "ref_tok_acc": 0.5138
+    },
+    {
+      "instruction": "Quais são as quatro atividades básicas do processo de design de interação?",
+      "tipo": "factual",
+      "ref_nll": 2.7159,
+      "ref_tok_acc": 0.5
+    },
+    {
+      "instruction": "Corrija o código para calcular a média corretamente após ler os valores e exibir os valores inseridos.",
+      "tipo": "codigo",
+      "ref_nll": 0.6632,
+      "ref_tok_acc": 0.8351
+    },
+    {
+      "instruction": "Compare o benefício da 'distribuição de conhecimento especializado' em SE's com a 'aquisição de conhecimento' em IA simbólica.",
+      "tipo": "comparacao",
+      "ref_nll": 1.2294,
+      "ref_tok_acc": 0.7523
+    },
+    {
+      "instruction": "Explique a função do código em 'main.c' e os resultados que serão exibidos na tela ao executá-lo.",
+      "tipo": "codigo",
+      "ref_nll": 0.9929,
+      "ref_tok_acc": 0.766
+    },
+    {
+      "instruction": "Compare o uso de 'calafetar' e 'calafetarai' na passagem.",
+      "tipo": "comparacao",
+      "ref_nll": 1.3043,
+      "ref_tok_acc": 0.6957
+    },
+    {
+      "instruction": "Compare a segurança da função Lambda quando invocada por uma solicitação do API Gateway e quando disparada por um evento ou serviço com permissão via política do IAM.",
+      "tipo": "comparacao",
+      "ref_nll": 1.8315,
+      "ref_tok_acc": 0.6124
+    },
+    {
+      "instruction": "Explique a estrutura de dados **kargs no Python e como ela é utilizada em uma função.",
+      "tipo": "codigo",
+      "ref_nll": 1.2463,
+      "ref_tok_acc": 0.6567
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a segurança do e-mail.",
+      "tipo": "resumo",
+      "ref_nll": 1.906,
+      "ref_tok_acc": 0.5812
+    },
+    {
+      "instruction": "Explique como os valores são armazenados em uma variável composta em C.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8312,
+      "ref_tok_acc": 0.5455
+    },
+    {
+      "instruction": "Implemente a função substs :: Prop -> [Memoria] que gera todas as substituições possíveis para as variáveis que ocorrem em uma proposição.",
+      "tipo": "codigo",
+      "ref_nll": 1.4727,
+      "ref_tok_acc": 0.6864
+    },
+    {
+      "instruction": "Corrija os erros de sintaxe do código fornecido e explique o que foi corrigido.",
+      "tipo": "codigo",
+      "ref_nll": 1.0638,
+      "ref_tok_acc": 0.7281
+    },
+    {
+      "instruction": "Explique como o Código de Ética da SBC contribui para a ética no mercado de Informática no Brasil.",
+      "tipo": "explicacao",
+      "ref_nll": 2.2404,
+      "ref_tok_acc": 0.5385
+    },
+    {
+      "instruction": "Resuma os pontos principais da implementação de um banco de registradores em um módulo Verilog para um FPGA.",
+      "tipo": "resumo",
+      "ref_nll": 2.7059,
+      "ref_tok_acc": 0.4183
+    },
+    {
+      "instruction": "Explique como a Máquina de Hollerith funcionava para armazenar e processar dados.",
+      "tipo": "explicacao",
+      "ref_nll": 2.129,
+      "ref_tok_acc": 0.6129
+    },
+    {
+      "instruction": "Corrija o código para que ele funcione corretamente utilizando estruturas condicionais adequadas.",
+      "tipo": "codigo",
+      "ref_nll": 0.8438,
+      "ref_tok_acc": 0.8214
+    },
+    {
+      "instruction": "Implemente a etapa 2 da transformação do lado direito das produções de uma gramática, conforme descrito na passagem.",
+      "tipo": "codigo",
+      "ref_nll": 0.8295,
+      "ref_tok_acc": 0.7984
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre o desempenho do ACO no estudo de caso 1.",
+      "tipo": "resumo",
+      "ref_nll": 2.4571,
+      "ref_tok_acc": 0.5714
+    },
+    {
+      "instruction": "Explique o que é o problema de inversão de prioridade em computação e como o protocolo de herança de prioridade (PIP) resolve esse problema.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4414,
+      "ref_tok_acc": 0.6552
+    },
+    {
+      "instruction": "Implemente a função loop() para o Arduino escravo, que deve receber um caractere e ajustar o estado do LED conforme o caractere recebido.",
+      "tipo": "codigo",
+      "ref_nll": 0.7328,
+      "ref_tok_acc": 0.8168
+    },
+    {
+      "instruction": "Compare o cadastro do empregado com a associação a projetos.",
+      "tipo": "comparacao",
+      "ref_nll": 1.6522,
+      "ref_tok_acc": 0.6196
+    },
+    {
+      "instruction": "Explique a função da Política de Acesso em um aplicativo web que utiliza S3 e RDS.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8452,
+      "ref_tok_acc": 0.5357
+    },
+    {
+      "instruction": "Implemente a função que realiza a divisão entre dois números, incluindo a verificação para divisão por zero.",
+      "tipo": "codigo",
+      "ref_nll": 1.8488,
+      "ref_tok_acc": 0.6512
+    },
+    {
+      "instruction": "De acordo com a passagem, quais são as oito perspectivas temáticas contribuídas pelo estudo selecionado?",
+      "tipo": "factual",
+      "ref_nll": 5.5952,
+      "ref_tok_acc": 0.381
+    },
+    {
+      "instruction": "Explique por que a execução de criminosos em massa era comum na Inglaterra do século XVIII, conforme mencionado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 2.5306,
+      "ref_tok_acc": 0.5204
+    },
+    {
+      "instruction": "Explique como funciona a verificação de segunda chamada na UFPI.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9625,
+      "ref_tok_acc": 0.5375
+    },
+    {
+      "instruction": "Explique o conceito de dívida técnica arquitetônica e por que ela é considerada perigosa, conforme mencionado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4815,
+      "ref_tok_acc": 0.6389
+    },
+    {
+      "instruction": "Explique a estrutura de dados 'tex_coords' e seu propósito.",
+      "tipo": "codigo",
+      "ref_nll": 1.7565,
+      "ref_tok_acc": 0.6174
+    },
+    {
+      "instruction": "Compare as expressões booleanas em FORTRAN 77 e FORTRAN 90 com as expressões booleanas em C, destacando as diferenças e as particularidades de cada linguagem.",
+      "tipo": "comparacao",
+      "ref_nll": 2.0255,
+      "ref_tok_acc": 0.5478
+    },
+    {
+      "instruction": "Explique a diferença entre vinculação rasa, vinculação profunda e vinculação ad hoc em relação ao código fornecido.",
+      "tipo": "codigo",
+      "ref_nll": 1.2287,
+      "ref_tok_acc": 0.7234
+    },
+    {
+      "instruction": "Qual é a estrutura de repetição usada quando se sabe o número de vezes que um trecho do algoritmo deve ser repetido?",
+      "tipo": "factual",
+      "ref_nll": 2.2778,
+      "ref_tok_acc": 0.5
+    },
+    {
+      "instruction": "Explique a sequência de eventos que ocorre durante a chamada de subprogramas em uma pilha de execução, conforme descrito na passagem.",
+      "tipo": "codigo",
+      "ref_nll": 1.5638,
+      "ref_tok_acc": 0.6711
+    },
+    {
+      "instruction": "Compare o conforto e a qualidade sonora do fone de ouvido mencionado na passagem com o do aparelho Razr.",
+      "tipo": "comparacao",
+      "ref_nll": 1.411,
+      "ref_tok_acc": 0.6712
+    },
+    {
+      "instruction": "Identifique a sequência que não pode ser a sequência de chaves examinadas em uma busca pela chave 5 em uma BST.",
+      "tipo": "codigo",
+      "ref_nll": 1.243,
+      "ref_tok_acc": 0.715
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre programação de produção e algoritmos meta-heurísticos.",
+      "tipo": "resumo",
+      "ref_nll": 2.5133,
+      "ref_tok_acc": 0.4956
+    },
+    {
+      "instruction": "Explique por que um robô móvel pode usar uma equação do segundo grau para navegar em um ambiente?",
+      "tipo": "explicacao",
+      "ref_nll": 1.7229,
+      "ref_tok_acc": 0.6747
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a programação da produção de calças e camisas em uma confecção.",
+      "tipo": "resumo",
+      "ref_nll": 2.2065,
+      "ref_tok_acc": 0.5355
+    },
+    {
+      "instruction": "Compare o conceito de 'chamadas de procedimento locais' com o 'Remote Method Invocation' (RMI) em termos de funcionalidade e utilização.",
+      "tipo": "comparacao",
+      "ref_nll": 1.7455,
+      "ref_tok_acc": 0.6
+    },
+    {
+      "instruction": "Explique o que é um sistema de informação e por que ele é importante na era da internet.",
+      "tipo": "explicacao",
+      "ref_nll": 1.3311,
+      "ref_tok_acc": 0.6892
+    },
+    {
+      "instruction": "Explique por que o µIP é considerado uma das menores pilhas TCP/IP existentes.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9324,
+      "ref_tok_acc": 0.5811
+    },
+    {
+      "instruction": "Explique como o sistema operacional gerencia múltiplos programas e recursos simultaneamente.",
+      "tipo": "explicacao",
+      "ref_nll": 1.474,
+      "ref_tok_acc": 0.6234
+    },
+    {
+      "instruction": "Explique como o RISC-V Co re é utilizado em um FPGA para fins educacionais, segundo a passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 1.6829,
+      "ref_tok_acc": 0.622
+    },
+    {
+      "instruction": "Implemente a classe TipoTelefone em Python, incluindo os métodos _ _str_ _, _ _eq_ _ e _ _lt_ _. Esses métodos devem ser capazes de exibir o tipo de telefone entre parênteses, comparar e ordenar os tipos de telefone corretamente.",
+      "tipo": "codigo",
+      "ref_nll": 0.4677,
+      "ref_tok_acc": 0.8925
+    },
+    {
+      "instruction": "Explique por que um sistema de microsserviços pode ser considerado complexo.",
+      "tipo": "explicacao",
+      "ref_nll": 2.2687,
+      "ref_tok_acc": 0.5224
+    },
+    {
+      "instruction": "Explique por que a Lógica Fuzzy é vantajosa para lidar com incertezas e raciocínio aproximado.",
+      "tipo": "explicacao",
+      "ref_nll": 1.747,
+      "ref_tok_acc": 0.6627
+    },
+    {
+      "instruction": "Implemente a função 'imprime' que recebe dois números e uma função de operação e retorna o resultado da operação.",
+      "tipo": "codigo",
+      "ref_nll": 1.3816,
+      "ref_tok_acc": 0.7368
+    },
+    {
+      "instruction": "Implemente a função digitos que preenche um vetor com os dígitos de um número e retorna a quantidade de dígitos.",
+      "tipo": "codigo",
+      "ref_nll": 0.6852,
+      "ref_tok_acc": 0.8519
+    },
+    {
+      "instruction": "Explique por que era importante para a equipe do Halt and Catch Fire realizar o engenharia reversa do BIOS, mesmo sem poder utilizá-lo diretamente.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8356,
+      "ref_tok_acc": 0.6027
+    },
+    {
+      "instruction": "Explique como funciona a descrição de um caso de uso em termos de fluxo principal, usando a passagem como referência.",
+      "tipo": "explicacao",
+      "ref_nll": 2.4444,
+      "ref_tok_acc": 0.5263
+    },
+    {
+      "instruction": "Implemente a função 'removerLivro' que remove um livro da lista ordenada baseada na chave. A função deve retornar 1 se a remoção foi bem sucedida e 0 se a chave não foi encontrada.",
+      "tipo": "codigo",
+      "ref_nll": 1.223,
+      "ref_tok_acc": 0.7122
+    },
+    {
+      "instruction": "Explique como uma máquina de Turing (mT) aceita uma cadeia de entrada.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9881,
+      "ref_tok_acc": 0.5119
+    },
+    {
+      "instruction": "Explique o conceito de predição de dependência de memória usando conjuntos de armazenamento, conforme mencionado na passagem.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9569,
+      "ref_tok_acc": 0.5862
+    },
+    {
+      "instruction": "Explique a função do código fornecido na passagem que calcula a área de um círculo.",
+      "tipo": "codigo",
+      "ref_nll": 1.3756,
+      "ref_tok_acc": 0.6341
+    },
+    {
+      "instruction": "Explique a estrutura de um prompt de engenharia de prompt para um sistema de aprendizagem de máquina (LLM).",
+      "tipo": "codigo",
+      "ref_nll": 2.2182,
+      "ref_tok_acc": 0.5545
+    },
+    {
+      "instruction": "Corrija o loop while na função alteraProduto para garantir que a nova quantidade seja maior ou igual a zero.",
+      "tipo": "codigo",
+      "ref_nll": 1.0427,
+      "ref_tok_acc": 0.7439
+    },
+    {
+      "instruction": "Explique o processo de conversão de um número decimal para binário utilizando divisões sucessivas por 2.",
+      "tipo": "explicacao",
+      "ref_nll": 1.8554,
+      "ref_tok_acc": 0.6386
+    },
+    {
+      "instruction": "Explique como funciona a criação do Sprint Backlog em um processo Scrum.",
+      "tipo": "explicacao",
+      "ref_nll": 2.1053,
+      "ref_tok_acc": 0.5395
+    },
+    {
+      "instruction": "Compare o consumo de energia associado a uma operação de memória de spike (Erd/8) com o consumo de energia total associado às memórias de pesos e spikes (Erdtot).",
+      "tipo": "comparacao",
+      "ref_nll": 1.3795,
+      "ref_tok_acc": 0.6928
+    },
+    {
+      "instruction": "Compare o papel da Lógica antigamente com o papel atual da Lógica no ordenamento do raciocínio humano.",
+      "tipo": "comparacao",
+      "ref_nll": 1.8857,
+      "ref_tok_acc": 0.6143
+    },
+    {
+      "instruction": "Implemente a função que retorna o produto cartesiano de dois conjuntos A e B em Python.",
+      "tipo": "codigo",
+      "ref_nll": 0.5096,
+      "ref_tok_acc": 0.9231
+    },
+    {
+      "instruction": "Explique a gramática livre de contexto que gera a linguagem não regular L(G) = {0^n1^n | n ∈ N}.",
+      "tipo": "codigo",
+      "ref_nll": 1.8203,
+      "ref_tok_acc": 0.6094
+    },
+    {
+      "instruction": "Compare o comportamento dos pilotos ao identificar submarinos na superfície e submarinos submersos.",
+      "tipo": "comparacao",
+      "ref_nll": 2.255,
+      "ref_tok_acc": 0.5369
+    },
+    {
+      "instruction": "Compare o uso da FIFO para transporte de dados de entrada e saída com a escrita dos dados de entrada no BUFFER IN para maximizar a reutilização de dados.",
+      "tipo": "comparacao",
+      "ref_nll": 1.5966,
+      "ref_tok_acc": 0.7143
+    },
+    {
+      "instruction": "Explique como o protocolo TCP/IP funciona para conectar diferentes redes de computadores.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4796,
+      "ref_tok_acc": 0.6837
+    },
+    {
+      "instruction": "De acordo com a passagem, o que é um sistema falha-seguro?",
+      "tipo": "factual",
+      "ref_nll": 2.7581,
+      "ref_tok_acc": 0.5806
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a solução gráfica de problemas de otimização e a complexidade de problemas de programação não linear.",
+      "tipo": "resumo",
+      "ref_nll": 1.7195,
+      "ref_tok_acc": 0.6585
+    },
+    {
+      "instruction": "Explique como o contraste é utilizado na criação de designs eficazes.",
+      "tipo": "explicacao",
+      "ref_nll": 2.4512,
+      "ref_tok_acc": 0.4512
+    },
+    {
+      "instruction": "Resuma os pontos principais do Processo Práxis.",
+      "tipo": "resumo",
+      "ref_nll": 2.3294,
+      "ref_tok_acc": 0.5529
+    },
+    {
+      "instruction": "Explique a lógica do código fornecido e o que ele faz.",
+      "tipo": "codigo",
+      "ref_nll": 1.7556,
+      "ref_tok_acc": 0.5852
+    },
+    {
+      "instruction": "Compare o processo de verificar se um quadrado é mágico com a criação de um quadrado mágico.",
+      "tipo": "comparacao",
+      "ref_nll": 1.5114,
+      "ref_tok_acc": 0.6818
+    },
+    {
+      "instruction": "Compare o método de simulação de uma máquina de Turing (MT) sobre outra na passagem e o método de decisão baseado em uma MT que decide sobre a entrada codificada de uma MT.",
+      "tipo": "comparacao",
+      "ref_nll": 1.4712,
+      "ref_tok_acc": 0.7019
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a descoberta de conhecimento em bases de dados.",
+      "tipo": "resumo",
+      "ref_nll": 2.2584,
+      "ref_tok_acc": 0.4944
+    },
+    {
+      "instruction": "Explique por que a família considerava a comunicação do jovem com o camponês como degradante e ridícula.",
+      "tipo": "explicacao",
+      "ref_nll": 1.4583,
+      "ref_tok_acc": 0.6562
+    },
+    {
+      "instruction": "Explique a fórmula de minimização do custo total apresentada na passagem",
+      "tipo": "codigo",
+      "ref_nll": 1.7238,
+      "ref_tok_acc": 0.5801
+    },
+    {
+      "instruction": "Explique como a transformada de Hough é usada para detectar linhas em uma imagem.",
+      "tipo": "explicacao",
+      "ref_nll": 1.9674,
+      "ref_tok_acc": 0.5543
+    },
+    {
+      "instruction": "Compare a distâncias euclidianas com a técnica de agrupamento k-means em termos de aplicação em agrupamentos.",
+      "tipo": "comparacao",
+      "ref_nll": 1.124,
+      "ref_tok_acc": 0.6899
+    },
+    {
+      "instruction": "Explique a estratégia utilizada por Choudhary e Singh (2016) para identificar candidatos à refatoração arquitetônica.",
+      "tipo": "explicacao",
+      "ref_nll": 2.0583,
+      "ref_tok_acc": 0.575
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre estruturas de repetição e o exemplo de cálculo da média aritmética.",
+      "tipo": "resumo",
+      "ref_nll": 1.6929,
+      "ref_tok_acc": 0.6286
+    },
+    {
+      "instruction": "Resuma os pontos principais da implementação de pilha em Java apresentada na passagem.",
+      "tipo": "resumo",
+      "ref_nll": 2.2584,
+      "ref_tok_acc": 0.5056
+    },
+    {
+      "instruction": "Implemente um programa que calcule a área de um ambiente a partir da leitura da largura e comprimento. O programa deve exibir a área calculada.",
+      "tipo": "codigo",
+      "ref_nll": 0.8187,
+      "ref_tok_acc": 0.8022
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre a Teoria Fundamentada nos Dados.",
+      "tipo": "resumo",
+      "ref_nll": 1.9296,
+      "ref_tok_acc": 0.6056
+    },
+    {
+      "instruction": "Qual mensageiro mais popular nos Estados Unidos sobreviveu à era das redes sociais?",
+      "tipo": "factual",
+      "ref_nll": 4.0625,
+      "ref_tok_acc": 0.375
+    },
+    {
+      "instruction": "Implemente a função desenhaCirculo() para desenhar um círculo preenchido com OpenGL, utilizando a função glBegin() com o modo GL_TRIANGLE_FAN e finalizando com glEnd().",
+      "tipo": "codigo",
+      "ref_nll": 1.0348,
+      "ref_tok_acc": 0.7565
+    },
+    {
+      "instruction": "Compare as interfaces dos sistemas de gerenciamento de ambulâncias e de gerenciamento de estações e tripulações mencionados na passagem.",
+      "tipo": "comparacao",
+      "ref_nll": 2.1342,
+      "ref_tok_acc": 0.5906
+    },
+    {
+      "instruction": "Explique o sistema de proteção em quatro níveis do IA-32 e como ele evita brechas de segurança.",
+      "tipo": "explicacao",
+      "ref_nll": 2.256,
+      "ref_tok_acc": 0.552
+    },
+    {
+      "instruction": "Resuma os pontos principais da passagem sobre tipos de variáveis e estruturas de controle em C.",
+      "tipo": "resumo",
+      "ref_nll": 1.8359,
+      "ref_tok_acc": 0.6094
+    },
+    {
+      "instruction": "Explique por que o custo unitário de transporte do fornecedor i para o consumidor j via ponto de transbordo k é a soma dos custos unitários de transporte do fornecedor i para o ponto de transbordo k e do ponto de transbordo k para o consumidor j.",
+      "tipo": "explicacao",
+      "ref_nll": 0.8562,
+      "ref_tok_acc": 0.7808
+    }
+  ],
+  "model": "trabalho-final/Q2-pos-treino-sft/modelos/sft_qlora_0.5b",
+  "data": "trabalho-final/Q2-pos-treino-sft/dados/pares_heldout.jsonl"
+}

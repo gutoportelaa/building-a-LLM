@@ -1,0 +1,321 @@
+{
+  "model": "trabalho-final/Q2-pos-treino-sft/modelos/sft_lora_1.5b",
+  "gen_json": "trabalho-final/Q2-pos-treino-sft/resultados/bench_lora_1.5b.json",
+  "juiz_media": 3.4,
+  "juiz_media_norm5": 0.68,
+  "distribuicao": {
+    "1": 4,
+    "2": 7,
+    "3": 2,
+    "4": 7,
+    "5": 10
+  },
+  "media_por_tipo": {
+    "conceitual": 3.9,
+    "codigo": 2.7,
+    "contextual": 3.6
+  },
+  "n": 30,
+  "per_item": [
+    {
+      "instruction": "O que é uma pilha (stack) em estruturas de dados e qual sua política de acesso?",
+      "tipo": "conceitual",
+      "resposta_ref": "Uma pilha é uma estrutura de dados linear que segue a política LIFO (Last In, First Out): o último elemento inserido é o primeiro a ser removido. O acesso é feito sempre pelo topo.",
+      "geracao": "Uma pilha é uma estrutura de dados linear onde os elementos são inseridos e removidos no final do mesmo. A pilha segue a política de acesso 'first in, first out' (primeiro entra, primeiro sai).",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.5294,
+      "juiz": 2
+    },
+    {
+      "instruction": "Quais são as duas operações fundamentais de uma pilha?",
+      "tipo": "conceitual",
+      "resposta_ref": "As operações fundamentais são push (inserir um elemento no topo) e pop (remover e retornar o elemento do topo).",
+      "geracao": "Inserção (push) e Saida (pop)",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.25,
+      "juiz": 4
+    },
+    {
+      "instruction": "O que diferencia uma fila (queue) de uma pilha?",
+      "tipo": "conceitual",
+      "resposta_ref": "A fila segue a política FIFO (First In, First Out), em que o primeiro elemento inserido é o primeiro a sair, enquanto a pilha segue LIFO, em que o último a entrar é o primeiro a sair.",
+      "geracao": "Uma fila (queue) tem a característica de adicionar elementos no final e remover elementos do início, enquanto uma pilha tem a característica de adicionar elementos no topo e remover elementos do fundo.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2029,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que é um Tipo Abstrato de Dados (TAD)?",
+      "tipo": "conceitual",
+      "resposta_ref": "Um Tipo Abstrato de Dados é a especificação de um conjunto de dados e das operações que podem ser realizadas sobre eles, separando o comportamento (interface) da implementação concreta.",
+      "geracao": "Um tipo abstrato de dados define uma interface para objetos que possuem características específicas.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3256,
+      "juiz": 2
+    },
+    {
+      "instruction": "O que significa a notação de complexidade O(1)?",
+      "tipo": "conceitual",
+      "resposta_ref": "O(1) indica complexidade de tempo constante: o custo da operação não depende do tamanho da entrada. As operações push e pop de uma pilha são O(1).",
+      "geracao": "A notação O(1) representa tempo ou espaço constante, indicando que o tempo ou espaço necessário para executar uma operação não depende do tamanho do dado.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.4074,
+      "juiz": 5
+    },
+    {
+      "instruction": "Explique a diferença entre alocação estática e alocação dinâmica de memória.",
+      "tipo": "conceitual",
+      "resposta_ref": "Na alocação estática o tamanho da estrutura é fixado em tempo de compilação; na alocação dinâmica a memória é reservada em tempo de execução (por exemplo com malloc em C), permitindo estruturas que crescem ou diminuem conforme a necessidade.",
+      "geracao": "A alocação estática é quando o tamanho da memória é definido antes do programa ser executado, geralmente durante a compilação. Por outro lado, a alocação dinâmica ocorre durante o processo de execução do programa, onde o tamanho da memória é determinado pelo usuário ao invés de ser previamente definido.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3864,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que é uma lista encadeada (linked list)?",
+      "tipo": "conceitual",
+      "resposta_ref": "Uma lista encadeada é uma estrutura de dados linear composta por nós, em que cada nó armazena um valor e um ponteiro para o próximo nó, permitindo inserções e remoções sem deslocar os demais elementos.",
+      "geracao": "Uma lista encadeada é uma estrutura de dados onde os elementos são organizados de forma lógica, mas não sequencial. Cada elemento, chamado nó, contém dois campos: o valor do dado e um ponteiro para o próximo nó na lista.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.5405,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que é recursão em programação?",
+      "tipo": "conceitual",
+      "resposta_ref": "Recursão é a técnica em que uma função chama a si mesma para resolver subproblemas menores; precisa de um caso base que encerra as chamadas e de um passo recursivo que aproxima do caso base.",
+      "geracao": "Recursão é uma técnica onde um programa se recusa a executar novamente o mesmo código para resolver um problema, ao invés de repetir o processo até obter uma solução.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3125,
+      "juiz": 2
+    },
+    {
+      "instruction": "Para que serve um ponteiro na linguagem C?",
+      "tipo": "conceitual",
+      "resposta_ref": "Um ponteiro é uma variável que armazena o endereço de memória de outra variável, permitindo acesso indireto, passagem de argumentos por referência e a construção de estruturas dinâmicas como listas e árvores.",
+      "geracao": "Um ponteiro em C é uma variável que armazena o endereço de memória de outra variável ou de outro tipo de dado. Isso significa que o ponteiro pode ser usado para apontar para qualquer local de memória onde a variável foi declarada.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.4595,
+      "juiz": 4
+    },
+    {
+      "instruction": "O que é uma árvore binária de busca?",
+      "tipo": "conceitual",
+      "resposta_ref": "É uma árvore binária em que, para cada nó, todos os valores da subárvore esquerda são menores que o do nó e todos os da subárvore direita são maiores, o que permite busca, inserção e remoção eficientes.",
+      "geracao": "Uma árvore binária de busca é uma estrutura de dados onde cada nó possui ao máximo dois filhos: um à esquerda e outro à direita. A chave do nó é maior ou igual a todas as chaves nos nós da subárvore à sua esquerda e menor ou igual às chaves nos nós da subárvore à sua direita.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3617,
+      "juiz": 5
+    },
+    {
+      "instruction": "Considerando uma pilha vazia, qual é o elemento no topo após executar o código?",
+      "tipo": "codigo",
+      "resposta_ref": "O elemento no topo é 'I', pois foi o último a ser inserido pela operação push.",
+      "geracao": "'O'",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1176,
+      "juiz": 1
+    },
+    {
+      "instruction": "O que o código a seguir imprime, partindo de uma pilha vazia?",
+      "tipo": "codigo",
+      "resposta_ref": "Imprime 'C'. Após push de 'A' e 'B', o pop remove 'B'; em seguida push de 'C' deixa 'C' no topo, que é removido e impresso pelo último pop.",
+      "geracao": "BC",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0,
+      "juiz": 1
+    },
+    {
+      "instruction": "Quantas vezes o laço executa o corpo?",
+      "tipo": "codigo",
+      "resposta_ref": "O corpo executa 5 vezes, imprimindo os valores 0, 1, 2, 3 e 4.",
+      "geracao": "5 vezes",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.25,
+      "juiz": 4
+    },
+    {
+      "instruction": "Qual o valor final da variável soma?",
+      "tipo": "codigo",
+      "resposta_ref": "O valor final de soma é 10, resultado de 1 + 2 + 3 + 4.",
+      "geracao": "10",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1429,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que a função abaixo calcula para n >= 0?",
+      "tipo": "codigo",
+      "resposta_ref": "A função calcula o fatorial de n (n!), usando recursão com caso base f(0)=1 e passo recursivo n * f(n-1).",
+      "geracao": "n!",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0833,
+      "juiz": 1
+    },
+    {
+      "instruction": "O acesso a p->dado em C corresponde a quê?",
+      "tipo": "codigo",
+      "resposta_ref": "p->dado acessa o campo 'dado' do nó apontado por p; é equivalente a (*p).dado, ou seja, desreferencia o ponteiro e acessa o membro.",
+      "geracao": "referência ao campo dado do nó apontado por p",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.4118,
+      "juiz": 3
+    },
+    {
+      "instruction": "Qual é o efeito de chamar pop() em uma pilha vazia, em uma implementação correta?",
+      "tipo": "codigo",
+      "resposta_ref": "Deve sinalizar erro de underflow (pilha vazia), pois não há elemento a remover; tipicamente retorna um código de erro ou lança uma condição de exceção, sem alterar a pilha.",
+      "geracao": "O programa produzirá um erro (Exception), pois a pilha está vazia e não há espaço para adicionar mais elementos.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3333,
+      "juiz": 2
+    },
+    {
+      "instruction": "O que faz a função malloc em C e o que retorna?",
+      "tipo": "codigo",
+      "resposta_ref": "malloc reserva dinamicamente um bloco de memória do tamanho informado (sizeof(No)) e retorna um ponteiro para o início do bloco, ou NULL se a alocação falhar.",
+      "geracao": "A função malloc em C é usada para reservar memória dinamicamente alocando espaço suficiente para uma estrutura específica. Ela retorna um ponteiro para a estrutura No.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3774,
+      "juiz": 4
+    },
+    {
+      "instruction": "Em uma fila, após enfileirar 1, 2 e 3, qual elemento é retornado pela operação de desenfileirar?",
+      "tipo": "codigo",
+      "resposta_ref": "Retorna 1, pois a fila é FIFO: o primeiro elemento inserido é o primeiro a ser removido.",
+      "geracao": "1",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1111,
+      "juiz": 5
+    },
+    {
+      "instruction": "Qual o problema do código abaixo do ponto de vista de gerenciamento de memória?",
+      "tipo": "codigo",
+      "resposta_ref": "Há vazamento de memória (memory leak): o ponteiro p é reatribuído para NULL sem antes liberar (free) o bloco alocado, tornando essa memória inacessível e não liberada.",
+      "geracao": "O código apresentado possui um erro na passagem de parâmetro para a função `malloc()`. A função `malloc()` espera um tipo de dado como argumento, mas no código fornecido, `sizeof(No)` é usado diretamente sem converter para um tipo de dado válido. Isso resulta em uma tentativa de inicializar um ponteiro com o valor retornado por `malloc()`, que pode não ser um endereço de memória válido. Portanto, o problema está na falta de conversão adequada do tamanho de `No` para um tipo de dado correspondente ao tipo de ponteiro.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1565,
+      "juiz": 1
+    },
+    {
+      "instruction": "Na disciplina de Estruturas de Dados I do Departamento de Computação da UFPI, qual é a ideia fundamental de acesso aos elementos de uma pilha?",
+      "tipo": "contextual",
+      "resposta_ref": "A ideia fundamental é que todo acesso aos elementos da pilha é feito através do seu topo: ao adicionar um novo elemento ele se torna o topo, e o elemento retirado é sempre o do topo.",
+      "geracao": "A pilha permite apenas o acesso ao elemento mais recente.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2609,
+      "juiz": 2
+    },
+    {
+      "instruction": "Por que a pilha é considerada uma das estruturas de dados mais simples e comuns na computação?",
+      "tipo": "contextual",
+      "resposta_ref": "Porque possui poucas operações bem definidas (inserção e remoção sempre pelo topo), é fácil de implementar e aparece em muitas situações rotineiras da computação, como chamadas de função, desfazer/refazer e avaliação de expressões.",
+      "geracao": "A pilha é considerada uma das estruturas de dados mais simples e comuns na computação porque ela permite inserir e remover elementos apenas no topo do conjunto, sem afetar os outros elementos presentes na pilha. Isso torna a pilha útil para manter informações temporárias durante operações de processamento, como armazenar valores de variáveis locais ou registros de instruções.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2391,
+      "juiz": 4
+    },
+    {
+      "instruction": "Cite um exemplo de uso de pilha no funcionamento de programas.",
+      "tipo": "contextual",
+      "resposta_ref": "A pilha de execução (call stack) gerencia as chamadas de função: cada chamada empilha um registro de ativação e cada retorno o desempilha, seguindo a ordem LIFO.",
+      "geracao": "O uso de pilhas pode ser visto na estrutura de controle de fluxo de um programa, onde a pilha auxiliar armazena os parâmetros passados para funções recursivas.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2593,
+      "juiz": 3
+    },
+    {
+      "instruction": "Em uma implementação dinâmica de pilha com listas encadeadas, o que representa o ponteiro 'topo'?",
+      "tipo": "contextual",
+      "resposta_ref": "O ponteiro 'topo' aponta para o nó mais recentemente inserido na pilha; as operações push e pop manipulam esse ponteiro para inserir ou remover sempre na extremidade do topo.",
+      "geracao": "O ponteiro 'topo' aponta para o primeiro elemento da pilha.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.359,
+      "juiz": 2
+    },
+    {
+      "instruction": "Como a maioria das estruturas de dados, quais operações básicas a pilha permite?",
+      "tipo": "contextual",
+      "resposta_ref": "Permite operações de adição (inserção) e de remoção de dados; na pilha ambas ocorrem na mesma extremidade, o topo.",
+      "geracao": "Inserir (push) e remover (pop) elementos",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.08,
+      "juiz": 5
+    },
+    {
+      "instruction": "O que acontece com um elemento recém-adicionado em uma pilha?",
+      "tipo": "contextual",
+      "resposta_ref": "Ele se torna o novo topo da pilha e será o primeiro a ser removido em uma futura operação de remoção, conforme a política LIFO.",
+      "geracao": "o elemento é adicionado ao topo da pilha",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.303,
+      "juiz": 4
+    },
+    {
+      "instruction": "No contexto de inicialização de uma pilha dinâmica, o que faz a operação de inicializar?",
+      "tipo": "contextual",
+      "resposta_ref": "A inicialização prepara a pilha para uso, normalmente definindo o topo como vazio (por exemplo, atribuindo NULL ao ponteiro de topo), indicando que ainda não há elementos.",
+      "geracao": "alocar espaço suficiente na memória para os elementos da pilha",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1622,
+      "juiz": 2
+    },
+    {
+      "instruction": "Qual a importância de estudar estruturas de dados em um curso de Ciência da Computação?",
+      "tipo": "contextual",
+      "resposta_ref": "Estruturas de dados permitem organizar e manipular informações de forma eficiente, sendo base para algoritmos, desempenho de programas e resolução de problemas computacionais; por isso são disciplina fundamental no curso.",
+      "geracao": "A importância de estudar estruturas de dados em um curso de Ciência da Computação está na capacidade de manipular informações de maneira eficiente e organizada, facilitando a solução de problemas e a criação de aplicações mais eficientes.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3881,
+      "juiz": 5
+    },
+    {
+      "instruction": "Em uma pilha, é possível acessar diretamente um elemento que não esteja no topo?",
+      "tipo": "contextual",
+      "resposta_ref": "Não. Pela definição da pilha, o acesso é restrito ao topo; para alcançar um elemento abaixo é preciso remover (pop) os elementos acima dele primeiro.",
+      "geracao": "Não, é impossível acessar diretamente um elemento que não esteja no topo de uma pilha.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3,
+      "juiz": 5
+    },
+    {
+      "instruction": "Qual a diferença entre uma implementação de pilha estática (com vetor) e dinâmica (com lista encadeada)?",
+      "tipo": "contextual",
+      "resposta_ref": "A pilha estática usa um vetor de tamanho fixo, com limite de capacidade e risco de overflow; a dinâmica usa nós alocados sob demanda com ponteiros, crescendo conforme a memória disponível, ao custo de armazenar ponteiros e fazer alocações.",
+      "geracao": "Uma pilha estática usa um vetor para armazenar os elementos, enquanto uma pilha dinâmica usa uma lista encadeada. A pilha estática tem tamanho fixo, enquanto a pilha dinâmica pode crescer ou diminuir conforme necessário.",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3562,
+      "juiz": 4
+    }
+  ]
+}
