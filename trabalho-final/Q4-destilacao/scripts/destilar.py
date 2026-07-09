@@ -157,6 +157,8 @@ def main() -> None:
     ap.add_argument("--grad-accum", type=int, default=16)
     ap.add_argument("--max-len", type=int, default=1024)
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--optim", choices=["adamw", "adamw8bit"], default="adamw",
+                    help="adamw8bit (bitsandbytes) p/ alunos grandes (3B) caberem na L4")
     args = ap.parse_args()
 
     torch.manual_seed(args.seed)
@@ -182,7 +184,11 @@ def main() -> None:
     print(f"{len(exemplos)} exemplos de treino", flush=True)
 
     steps_total = (len(exemplos) * args.epochs) // args.grad_accum
-    opt = AdamW(model.parameters(), lr=args.lr, weight_decay=0.0)
+    if args.optim == "adamw8bit":  # estados do otimizador em 8-bit → aluno 3B cabe na L4 (receita da Q1)
+        from bitsandbytes.optim import AdamW8bit
+        opt = AdamW8bit(model.parameters(), lr=args.lr, weight_decay=0.0)
+    else:
+        opt = AdamW(model.parameters(), lr=args.lr, weight_decay=0.0)
     sched = get_cosine_schedule_with_warmup(
         opt, int(steps_total * args.warmup_ratio), steps_total
     )

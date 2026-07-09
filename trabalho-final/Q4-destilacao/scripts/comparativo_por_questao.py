@@ -79,26 +79,33 @@ ORDEM = [
 ]
 rotulos = [r for r in ORDEM if r in modelos] + [r for r in modelos if r not in ORDEM]
 
+# Núcleo monolítico (braço A, sem RAG) — os gráficos principais focam nele para não poluir.
+NUCLEO = ["base_05", "base_15",
+          "d_0.5b_A_ce", "d_0.5b_A_kl", "d_0.5b_A_combined",
+          "d_1.5b_A_ce", "d_1.5b_A_kl", "d_1.5b_A_combined"]
+rot_n = [r for r in NUCLEO if r in modelos]
+
 # matrizes [modelo, pergunta]
 KR = np.array([[modelos[r][i][1] for i in ids] for r in rotulos])
 RG = np.array([[modelos[r][i][0] for i in ids] for r in rotulos])
+KRn = np.array([[modelos[r][i][1] for i in ids] for r in rot_n])
 
-# ================== FIG 1: heatmap key_recall ==================
-fig, ax = plt.subplots(figsize=(16, 9))
+# ================== FIG 1: heatmap key_recall (só núcleo) ==================
+fig, ax = plt.subplots(figsize=(15, 4.2))
 cmap = matplotlib.colormaps["viridis"].with_extremes(bad="lightgray")
-im = ax.imshow(np.ma.masked_invalid(KR), aspect="auto", cmap=cmap, vmin=0, vmax=1)
-ax.set_yticks(range(len(rotulos)))
-ax.set_yticklabels(rotulos, fontsize=8)
+im = ax.imshow(np.ma.masked_invalid(KRn), aspect="auto", cmap=cmap, vmin=0, vmax=1)
+ax.set_yticks(range(len(rot_n)))
+ax.set_yticklabels([r.replace("d_", "").replace("_A_", "·") for r in rot_n], fontsize=9)
 ax.set_xticks(range(0, len(ids), 5))
 ax.set_xticklabels(range(0, len(ids), 5), fontsize=7)
-ax.set_xlabel("pergunta (bm000…bm099)  —  ●=fato real abaixo, resto abstenção")
-ax.set_title("key_recall por pergunta × modelo (benchmark 100Q, sem RAG; futebol excluído)")
+ax.set_xlabel("pergunta (bm000…bm099)  —  faixa: cinza=abstenção, preto=fato real")
+ax.set_title("Núcleo (braço A, sem RAG): key_recall por pergunta × modelo")
 # faixa indicando abstenção (cinza) vs fato (preto) no topo
 for j, i in enumerate(ids):
-    ax.add_patch(plt.Rectangle((j - .5, -1.5), 1, 1,
+    ax.add_patch(plt.Rectangle((j - .5, -1.2), 1, .8,
                  color="0.7" if abst[i] else "0.1", clip_on=False))
-ax.set_ylim(len(rotulos) - .5, -2)
-cbar = fig.colorbar(im, ax=ax, fraction=0.025)
+ax.set_ylim(len(rot_n) - .5, -1.6)
+cbar = fig.colorbar(im, ax=ax, fraction=0.02)
 cbar.set_label("key_recall")
 fig.tight_layout()
 fig.savefig(os.path.join(FIG, "heatmap_keyrecall.png"), dpi=130)
@@ -123,16 +130,16 @@ fig.tight_layout()
 fig.savefig(os.path.join(FIG, "delta_base_vs_melhor.png"), dpi=130)
 plt.close(fig)
 
-# ================== FIG 3: key_recall médio abstenção vs fato ==================
+# ================== FIG 3: key_recall médio abstenção vs fato (só núcleo) ==================
 ab_mask = np.array([abst[i] for i in ids])
-kr_ab = np.nanmean(KR[:, ab_mask], axis=1)
-kr_ft = np.nanmean(KR[:, ~ab_mask], axis=1)
-y = np.arange(len(rotulos))
-fig, ax = plt.subplots(figsize=(11, 10))
+kr_ab = np.nanmean(KRn[:, ab_mask], axis=1)
+kr_ft = np.nanmean(KRn[:, ~ab_mask], axis=1)
+y = np.arange(len(rot_n))
+fig, ax = plt.subplots(figsize=(10, 5.2))
 ax.barh(y - .2, kr_ab, height=.4, label=f"abstenção (n={int(ab_mask.sum())})", color="#7f8c8d")
 ax.barh(y + .2, kr_ft, height=.4, label=f"fato real (n={int((~ab_mask).sum())})", color="#c0392b")
 ax.set_yticks(y)
-ax.set_yticklabels(rotulos, fontsize=8)
+ax.set_yticklabels([r.replace("d_", "").replace("_A_", "·") for r in rot_n], fontsize=9)
 ax.invert_yaxis()
 ax.set_xlabel("key_recall médio")
 ax.set_title("Onde mora o ganho: abstenção vs fato real (sem RAG)\n"
@@ -142,12 +149,12 @@ fig.tight_layout()
 fig.savefig(os.path.join(FIG, "abstencao_vs_fato.png"), dpi=130)
 plt.close(fig)
 
-# ================== FIG 4: box-plot por método (só núcleo) ==================
+# ================== FIG 4: box-plot por método (só núcleo, braço A) ==================
 grupos = OrderedDict([
     ("base", ["base_05", "base_15"]),
-    ("ce", [r for r in rotulos if r.startswith("d_") and r.endswith("_ce")]),
-    ("kl", [r for r in rotulos if r.startswith("d_") and r.endswith("_kl")]),
-    ("combined", [r for r in rotulos if r.startswith("d_") and r.endswith("_combined")]),
+    ("ce", [r for r in rot_n if "_A_ce" in r]),
+    ("kl", [r for r in rot_n if "_A_kl" in r]),
+    ("combined", [r for r in rot_n if "_A_combined" in r]),
 ])
 data, labels = [], []
 for g, rs in grupos.items():
@@ -161,7 +168,7 @@ bp = ax.boxplot(data, labels=labels, showmeans=True, patch_artist=True)
 for patch, c in zip(bp["boxes"], ["#bdc3c7", "#3498db", "#2ecc71", "#e74c3c"]):
     patch.set_facecolor(c)
 ax.set_ylabel("key_recall (por pergunta)")
-ax.set_title("Distribuição de key_recall por método de destilação (núcleo)")
+ax.set_title("Distribuição de key_recall por método (núcleo monolítico — braço A)")
 fig.tight_layout()
 fig.savefig(os.path.join(FIG, "box_por_metodo.png"), dpi=130)
 plt.close(fig)

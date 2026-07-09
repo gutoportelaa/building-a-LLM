@@ -67,40 +67,60 @@ def color_for(rot):
 
 
 # ───────────────────────── 1. Barras key_recall por config ─────────────────────────
-def fig_barras(d):
-    ms = d["modelos"]
-    rot = [m["rotulo"] for m in ms]
-    kr = [m["geral"]["key_recall"] for m in ms]
-    cols = [color_for(r) for r in rot]
-    base15 = by_label(d)["base_15"]["geral"]["key_recall"]
+# Núcleo (monolítico) = bases + braço A (professor de memória, SEM RAG).
+NUCLEO = ["base_05", "base_15",
+          "d_0.5b_A_ce", "d_0.5b_A_kl", "d_0.5b_A_combined",
+          "d_1.5b_A_ce", "d_1.5b_A_kl", "d_1.5b_A_combined"]
+# Extra = braço B (professor aterrado por RAG).
+EXTRA_B = ["d_0.5b_B_ce", "d_0.5b_B_kl", "d_0.5b_B_combined",
+           "d_1.5b_B_ce", "d_1.5b_B_kl", "d_1.5b_B_combined"]
 
-    fig, ax = plt.subplots(figsize=(11, 4.6))
+
+def _barras(d, subset, titulo, arquivo, ylim=0.80):
+    bl = by_label(d)
+    rot = [r for r in subset if r in bl]
+    kr = [bl[r]["geral"]["key_recall"] for r in rot]
+    cols = [color_for(r) for r in rot]
+    base15 = bl["base_15"]["geral"]["key_recall"]
+
+    fig, ax = plt.subplots(figsize=(8.4, 4.6))
     x = np.arange(len(rot))
     bars = ax.bar(x, kr, color=cols, edgecolor="#333", linewidth=0.4)
-    ax.axhline(base15, color=BAD, ls="--", lw=1.2, label=f"base 1.5B (referência) = {base15:.3f}")
-    # destaca o campeão
-    imax = int(np.argmax(kr))
-    bars[imax].set_edgecolor(OK)
-    bars[imax].set_linewidth(2.0)
-    ax.annotate("★", (x[imax], kr[imax] + 0.012), ha="center", fontsize=13)
+    ax.axhline(base15, color=BAD, ls="--", lw=1.2, label=f"base 1.5B = {base15:.3f}")
+    # destaca o melhor do subconjunto (ignora as bases)
+    idx_dest = [i for i, r in enumerate(rot) if not r.startswith("base")]
+    if idx_dest:
+        imax = max(idx_dest, key=lambda i: kr[i])
+        bars[imax].set_edgecolor(OK)
+        bars[imax].set_linewidth(2.0)
+        ax.annotate("★", (x[imax], kr[imax] + 0.012), ha="center", fontsize=13)
 
     ax.set_xticks(x)
-    ax.set_xticklabels([r.replace("d_", "").replace("_", "·") for r in rot],
-                       rotation=45, ha="right", fontsize=8)
+    ax.set_xticklabels([r.replace("d_", "").replace("_A_", "·").replace("_B_", "·").replace("_", "·")
+                        for r in rot], rotation=30, ha="right", fontsize=9)
     ax.set_ylabel("key_recall (acerto factual)")
-    ax.set_ylim(0, 0.80)
-    ax.set_title("Acerto factual por configuração — os 12 destilados superam as bases",
-                 color=ACCENT, fontweight="bold", fontsize=12)
+    ax.set_ylim(0, ylim)
+    ax.set_title(titulo, color=ACCENT, fontweight="bold", fontsize=12)
     from matplotlib.patches import Patch
     leg = [Patch(facecolor=MUTED, label="base"), Patch(facecolor=WARN, label="ce (texto)"),
            Patch(facecolor=ACCENT2, label="kl (logits)"), Patch(facecolor=OK, label="combinado")]
-    ax.legend(handles=leg + [plt.Line2D([], [], color=BAD, ls="--", label="base 1.5B")],
-              loc="upper left", fontsize=8, ncol=2)
+    ax.legend(handles=leg, loc="upper left", fontsize=8, ncol=2)
     fig.tight_layout()
-    out = os.path.join(FIG, "barras_keyrecall_config.png")
+    out = os.path.join(FIG, arquivo)
     fig.savefig(out, bbox_inches="tight")
     plt.close(fig)
     print("escrito:", out)
+
+
+def fig_barras(d):
+    # Núcleo monolítico: bases + braço A (o que responde a questão).
+    _barras(d, NUCLEO,
+            "Núcleo (monolítico): acerto factual por configuração — braço A, sem RAG",
+            "barras_keyrecall_nucleo.png")
+    # Extra: braço B (professor aterrado por RAG).
+    _barras(d, ["base_05", "base_15"] + EXTRA_B,
+            "Extra: professor aterrado por RAG (braço B)",
+            "barras_keyrecall_extra_B.png")
 
 
 # ───────────────────────── 2. Compressão × key_recall ─────────────────────────
@@ -160,7 +180,7 @@ def fig_compressao(d):
 def fig_antes_depois(d):
     bl = by_label(d)
     base = bl["base_15"]["por_dominio"]
-    best = bl["d_1.5b_B_combined"]["por_dominio"]
+    best = bl["d_1.5b_A_ce"]["por_dominio"]  # melhor do NÚCLEO (monolítico, sem RAG)
     doms = ["DOM-PI", "docentesDC"]
 
     fig, ax = plt.subplots(figsize=(7.2, 4.6))
@@ -169,7 +189,7 @@ def fig_antes_depois(d):
     kr_base = [base[dm]["key_recall"] for dm in doms]
     kr_best = [best[dm]["key_recall"] for dm in doms]
     b1 = ax.bar(x - w / 2, kr_base, w, color=MUTED, edgecolor="#333", label="base 1.5B")
-    b2 = ax.bar(x + w / 2, kr_best, w, color=OK, edgecolor="#333", label="melhor aluno (1.5B·B·comb)")
+    b2 = ax.bar(x + w / 2, kr_best, w, color=OK, edgecolor="#333", label="melhor do núcleo (1.5B·ce)")
     for bars in (b1, b2):
         for r in bars:
             ax.annotate(f"{r.get_height():.3f}", (r.get_x() + r.get_width() / 2, r.get_height() + 0.008),

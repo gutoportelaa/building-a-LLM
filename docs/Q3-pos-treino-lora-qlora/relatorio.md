@@ -48,7 +48,7 @@ Exemplo (cod01, resposta certa **'I'**):
 > **full FT:** *"O"* ❌  · **QLoRA:** *"…o elemento no topo será 'I'."* ✅
 
 Ou seja: a **mesma conservadoria** do PEFT preserva a capacidade de raciocínio do backbone,
-evitando o sobre-ajuste ao estilo terso do corpus. O que custa em PPL **ganha** em qualidade percebida.
+evitando o sobre-ajuste ao estilo polido do corpus. O que custa em PPL **ganha** em qualidade percebida.
 
 ![Nota do juiz 1-5 por método e tamanho](fig_juiz.png)
 
