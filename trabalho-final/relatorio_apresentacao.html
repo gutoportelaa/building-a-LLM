@@ -1271,7 +1271,7 @@ não de modelagem de linguagem — por isso as métricas são RG/KR e não PPL/C
 </div>
 
 <h3>4.7 A análise honesta — o que foi transferido, de verdade?</h3>
-<p>Abrindo as respostas uma a uma, <strong>69 das 100 referências</strong> do benchmark v1 eram abstenções
+<p>Abrindo as respostas uma a uma, <strong>69 das 100 referências</strong> do benchmark eram abstenções
 ("Não consta…") — nessas perguntas de conjunto de teste, o RAG que gerou a referência muitas vezes não recuperou o
 documento-fonte, e o próprio professor se absteve. Separando o key_recall por subconjunto:</p>
 
@@ -1407,7 +1407,7 @@ de conjunto de teste de 41 fatos.</p>
   <tr class="destaque"><td>aluno 1.5B · professor com RAG (B)</td><td class="num">0,209</td><td class="num">0,640</td></tr>
 </table>
 <p class="small-note">Aqui há <strong>recordação factual real</strong> (KR 0,48 → 0,64) — o contraponto que prova
-que a fraca recordação do núcleo v1 era efeito das referências "Não consta", não um limite da técnica. E para tema
+que a fraca recordação do núcleo era efeito das referências "Não consta", não um limite da técnica. E para tema
 pós-corte, o professor <em>precisa</em> do RAG: zerado, ele raciocina mas alucina os fatos.</p>
 
 <h4>c) O DAPT da Q1 como ponto de partida do aluno — negativo informativo</h4>
@@ -1514,7 +1514,7 @@ o aluno fora da família parte com atrito real de template/tokenizador, que vale
 controlado.
 <span class="small-note"><strong>Execução:</strong> aluno 1B treinado no cluster (CE, braço B, loss 0,93 → 0,45);
 avaliação dos 3 modelos prontos feita <em>na máquina local</em> (RTX 4070, ~45 min) por bloqueio temporário de
-quota no cluster — mesmo script, mesmo benchmark v1, geração gulosa. O aluno 3B (correção AdamW-8bit) completa o
+quota no cluster — mesmo script, mesmo benchmark, geração gulosa. O aluno 3B (correção AdamW-8bit) completa o
 eixo de tamanho quando a quota recontabilizar.</span></p>
 
 <h3>4.11 Entregas e ordem de execução</h3>
