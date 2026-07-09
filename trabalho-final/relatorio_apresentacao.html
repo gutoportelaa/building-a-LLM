@@ -223,27 +223,27 @@
   </div>
 </div>
 
-<h3>O fio condutor entre as seis questões</h3>
-<p>As questões não são ilhas — elas formam um arco de construção de um assistente de domínio:</p>
+<!-- <h3>Relação entre as seis questões</h3>
+<p>As questões não precisam ser isoladas, elas formam um arco de construção de um assistente de domínio:</p> -->
 
-<div class="flow">
-  <div class="step"><span class="st-t">Q1 · DAPT</span>ensina o <em>idioma do domínio</em> aos pesos (pré-treino continuado no DOM-PI)</div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q2 · SFT</span>ensina o modelo a <em>seguir instruções</em> do domínio docentesDC</div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q3 · LoRA/QLoRA</span>repete a Q2 gastando <em>~1% dos parâmetros</em></div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q4 · Destilação</span>um professor 14B <em>transfere conhecimento</em> para alunos 0.5B/1.5B</div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q5 · RAG</span>traz o conhecimento <em>de fora dos pesos</em>, na hora da resposta</div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q6 · Guardrails</span><em>protege</em> o assistente RAG em produção</div>
-</div>
+<!-- <div class="flow"> -->
+  <!-- <div class="step"><span class="st-t">Q1 · DAPT</span>ensina o <em>idioma do domínio</em> aos pesos (pré-treino continuado no DOM-PI)</div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q2 · SFT</span>ensina o modelo a <em>seguir instruções</em> do domínio docentesDC</div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q3 · LoRA/QLoRA</span>repete a Q2 gastando <em>~1% dos parâmetros</em></div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q4 · Destilação</span>um professor 14B <em>transfere conhecimento</em> para alunos 0.5B/1.5B</div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q5 · RAG</span>traz o conhecimento <em>de fora dos pesos</em>, na hora da resposta</div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q6 · Guardrails</span><em>protege</em> o assistente RAG em produção</div>
+</div> -->
 
-<p>E há conexões cruzadas que aparecem ao longo do relatório: o modelo DAPT da Q1 vira o gerador <strong>G2</strong>
+<!-- <p>E há conexões cruzadas que aparecem ao longo do relatório: o modelo DAPT da Q1 vira o gerador <strong>G2</strong>
 do RAG da Q5 e é testado como ponto de partida do aluno na Q4; o RAG da Q5 "aterra" o professor no braço&nbsp;B da Q4;
 os guardrails da Q6 protegem exatamente o pipeline da Q5. A pergunta de fundo que atravessa tudo:
-<em>onde deve morar o conhecimento — nos pesos do modelo (Q1–Q4) ou fora deles, recuperado na hora (Q5)?</em></p>
+<em>onde deve morar o conhecimento — nos pesos do modelo (Q1–Q4) ou fora deles, recuperado na hora (Q5)?</em></p> -->
 
 <h3>Mapa de algoritmos — o que roda por baixo de cada questão</h3>
 <p>Para referência rápida na apresentação: os algoritmos centrais de cada questão, separados em
@@ -251,7 +251,7 @@ os guardrails da Q6 protegem exatamente o pipeline da Q5. A pergunta de fundo qu
 didaticamente na sua seção.</p>
 
 <table>
-  <tr><th>Questão</th><th>Algoritmos de treino / inferência</th><th>Algoritmos de avaliação</th></tr>
+  <tr><th>Questão</th><th>Algoritmos de treino / inferência</th><th>Avaliação</th></tr>
   <tr><td><strong>Q1</strong> · DAPT</td>
       <td>Modelagem causal de linguagem (previsão do próximo token) com <strong>cross-entropy</strong>, treino
       <em>packed</em> em blocos de 512; otimizador <strong>AdamW 8-bit</strong> + <em>gradient checkpointing</em>;
@@ -293,7 +293,7 @@ didaticamente na sua seção.</p>
   <li><strong>Cores dos gráficos:</strong> <span style="color:#5b93d8;font-weight:700">azul-claro = antes / sem intervenção</span> ·
       <span style="color:#256abf;font-weight:700">azul-escuro = depois / com intervenção</span>. Um único par de cores,
       seguro para daltonismo, usado em todo o relatório.</li>
-  <li><strong>Respostas dos modelos</strong> aparecem <em>verbatim</em> em blocos monoespaçados
+  <li><strong>Respostas dos modelos</strong> aparecem em blocos monoespaçados
       (<span class="model-tag tag-antes">antes</span> / <span class="model-tag tag-depois">depois</span>), com a
       pergunta e a resposta de referência do benchmark. Quando um modelo degenera em repetição, mostramos o trecho
       representativo e indicamos que o loop continua até o limite de tokens.</li>
