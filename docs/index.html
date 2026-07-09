@@ -591,6 +591,15 @@ mostram <em>o que</em> a PPL está captando — e o que ela não resolve. Primei
     <code>gutoportelaa/qwen2.5-1.5b-dompi-fullft-unificado</code> (resposta canônica),
     <code>gutoportelaa/qwen2.5-1.5b-dompi-teresina-v3</code> (corpus curado),
     <code>gutoportelaa/qwen2.5-1.5b-dompi-dapt</code> (variante QLoRA — gerador G2 da Q5).</li>
+  <li><strong>Pesos — de partida → resultantes → atualização pelos resultados:</strong> partimos dos pesos oficiais
+    <code>Qwen/Qwen2.5-1.5B</code> (base, sem instruction tuning) e <code>unsloth/Llama-3.2-3B</code> (espelho dos
+    pesos Meta); todos os 1,54&nbsp;B / 3,2&nbsp;B de parâmetros foram atualizados no full FT (no QLoRA, só o
+    adapter de 18,5&nbsp;M sobre a base congelada em NF4). Com base nos resultados: (a) os pesos canônicos passaram
+    a ser os do <em>rerun corrigido</em> pós-bug do duplo-shift — os checkpoints da run pré-correção foram
+    descartados; (b) Teresina v1/v2 foram superados pelo v3 (curadoria + correção) e removidos na limpeza,
+    preservando <code>best/final</code> dos canônicos; (c) o QLoRA <em>não</em> é recomendado como resposta de CPT
+    (−1,4%), mas seus pesos seguem em uso como gerador G2 da Q5; (d) o Llama-3.2-3B DAPT (−23,3%, o maior ganho)
+    permanece no cluster como candidato a publicação.</li>
   <li><strong>Benchmark:</strong> <code>dompi_qa.jsonl</code> (49 perguntas + referências).</li>
   <li><strong>Ordem das execuções (com duração em 1× GPU L4):</strong> 1º treino full FT unificado (6h41) →
       2º treino Teresina (2h36–2h51) → 3º variante QLoRA (17h22 — cada passo paga a dequantização NF4 e o adapter
@@ -879,6 +888,13 @@ sobre os dados brutos:</p>
 <ul>
   <li><strong>Dataset:</strong> 1.500 pares instruction/output limpos (1.200 treino / 300 de conjunto de teste), com score de juiz.</li>
   <li><strong>Modelos:</strong> SFT full 1.5B e 0.5B (+ adapters LoRA/QLoRA da Q3, mesma cadeia).</li>
+  <li><strong>Pesos — de partida → resultantes → atualização pelos resultados:</strong> partida =
+    <code>Qwen2.5-1.5B-Instruct</code> e <code>0.5B-Instruct</code> oficiais; o SFT full atualiza todos os
+    parâmetros, salvos em <code>modelos/sft_full_{1.5b,0.5b}</code>. Pelos resultados, o full 1.5B responde à
+    questão (PPL −18%) mas <em>não</em> é promovido como assistente de uso: a compressão de estilo derruba código
+    (juiz 2,5). A atualização recomendada — testável pela H3 — seria re-treinar com <strong>1 época</strong> (a
+    validação satura em ~1,3, §2.10) e enriquecer os pares com raciocínio passo-a-passo antes de atualizar
+    qualquer peso em produção.</li>
   <li><strong>Benchmark:</strong> <code>dc_bench.jsonl</code> — 30 perguntas CC/UFPI com referências e tipos.</li>
   <li><strong>Ordem das execuções (com duração em 1× GPU L4):</strong> 1º geração dos pares (professor 14B em
       vLLM, 29min) → 2º treino + avaliação (todos os braços Q2/Q3 na mesma cadeia, 1h10) →
@@ -1022,6 +1038,12 @@ Adaptação de baixo custo não é imune a regressões pontuais; é para isso qu
       QLoRA <strong>2,15&nbsp;GB</strong>; o QLoRA é de novo o mais barato e o que melhor preserva o raciocínio do
       backbone pequeno.</li>
   <li><strong>Adapters</strong> LoRA/QLoRA de 1.5B e 0.5B salvos em <code>Q2-pos-treino-sft/modelos/</code>.</li>
+  <li><strong>Pesos — de partida → resultantes → atualização pelos resultados:</strong> mesma partida da Q2, mas
+    aqui a base fica <em>congelada</em> — só os 18,5&nbsp;M de parâmetros do adapter (r=16, α=32, 7 projeções)
+    são atualizados; no QLoRA, sobre a base quantizada em NF4. O adapter é um "plugin": pode ser fundido à base
+    (<em>merge</em>) ou trocado sem retreino. Pelos resultados, o peso recomendado para uso é o
+    <strong>adapter QLoRA 1.5B</strong> (melhor juiz, 4,07 — a adaptação conservadora preservou o raciocínio);
+    o LoRA 1.5B fica como a opção de paridade com o full a ~1% do custo.</li>
   <li><strong>Ordem das execuções:</strong> mesma cadeia da Q2 (os seis braços — full/LoRA/QLoRA × 1.5B/0.5B —
       treinaram e foram avaliados na mesma sequência dentro da mesma 1h10 de job, seguidos do julgamento LLM e da
       consolidação; tempos individuais de treino na tabela da §3.2: full 9min · LoRA 6min · QLoRA 16min).</li>
@@ -1271,7 +1293,7 @@ não de modelagem de linguagem — por isso as métricas são RG/KR e não PPL/C
 </div>
 
 <h3>4.7 A análise honesta — o que foi transferido, de verdade?</h3>
-<p>Abrindo as respostas uma a uma, <strong>69 das 100 referências</strong> do benchmark v1 eram abstenções
+<p>Abrindo as respostas uma a uma, <strong>69 das 100 referências</strong> do benchmark eram abstenções
 ("Não consta…") — nessas perguntas de conjunto de teste, o RAG que gerou a referência muitas vezes não recuperou o
 documento-fonte, e o próprio professor se absteve. Separando o key_recall por subconjunto:</p>
 
@@ -1407,7 +1429,7 @@ de conjunto de teste de 41 fatos.</p>
   <tr class="destaque"><td>aluno 1.5B · professor com RAG (B)</td><td class="num">0,209</td><td class="num">0,640</td></tr>
 </table>
 <p class="small-note">Aqui há <strong>recordação factual real</strong> (KR 0,48 → 0,64) — o contraponto que prova
-que a fraca recordação do núcleo v1 era efeito das referências "Não consta", não um limite da técnica. E para tema
+que a fraca recordação do núcleo era efeito das referências "Não consta", não um limite da técnica. E para tema
 pós-corte, o professor <em>precisa</em> do RAG: zerado, ele raciocina mas alucina os fatos.</p>
 
 <h4>c) O DAPT da Q1 como ponto de partida do aluno — negativo informativo</h4>
@@ -1514,7 +1536,7 @@ o aluno fora da família parte com atrito real de template/tokenizador, que vale
 controlado.
 <span class="small-note"><strong>Execução:</strong> aluno 1B treinado no cluster (CE, braço B, loss 0,93 → 0,45);
 avaliação dos 3 modelos prontos feita <em>na máquina local</em> (RTX 4070, ~45 min) por bloqueio temporário de
-quota no cluster — mesmo script, mesmo benchmark v1, geração gulosa. O aluno 3B (correção AdamW-8bit) completa o
+quota no cluster — mesmo script, mesmo benchmark, geração gulosa. O aluno 3B (correção AdamW-8bit) completa o
 eixo de tamanho quando a quota recontabilizar.</span></p>
 
 <h3>4.11 Entregas e ordem de execução</h3>
@@ -1525,6 +1547,16 @@ eixo de tamanho quando a quota recontabilizar.</span></p>
       <code>benchmark_v2_100.jsonl</code> (factual, 0 abstenções).</li>
   <li><strong>Modelos:</strong> 12 alunos do fatorial + especialistas v2 por tópico + extensões
       (cross-família, ULD, Copa 2026).</li>
+  <li><strong>Pesos — de partida → resultantes → atualização pelos resultados:</strong> o professor
+    (<code>Qwen2.5-14B-Instruct</code>) permanece <em>congelado</em> em todo o processo — destilação nunca atualiza
+    o professor. Os alunos partem dos pesos base pristinos (<code>Qwen2.5-0.5B/1.5B</code>;
+    <code>unsloth/Llama-3.2-1B/3B</code> no cross-família) e são atualizados por <em>full fine-tuning</em>
+    (~29 conjuntos de pesos resultantes, ~60&nbsp;GB em <code>modelos/</code>). Pelos resultados: o peso campeão do
+    fatorial é o <strong>1.5B·B·combinado</strong> (KR 0,717); para uso por domínio, os
+    <strong>especialistas v2</strong> (contexto-ouro) são os recomendados; a surpresa
+    <strong>xfam_llama1b_B_ce</strong> (KR 0,779) é candidata a peso canônico da célula black-box quando o 3B
+    fechar o eixo de tamanho; e <em>todos</em> os alunos se beneficiariam de uma atualização final barata — um SFT
+    curto pós-destilação para disciplina de EOS (remove os tokens espúrios registrados nas ressalvas).</li>
   <li><strong>Ordem das execuções (com duração; GPUs L4):</strong> 1º geração do dataset (professor 14B em
       2 GPUs, 21min) → 2º varredura dos 12 alunos (um por GPU, em paralelo, 1h26) → 3º avaliação dos 14 modelos →
       4º extensões: cross-família 43min · ULD 1h08 · Copa 2026 2h19 → 5º v2 (contexto-ouro + 4 especialistas +
