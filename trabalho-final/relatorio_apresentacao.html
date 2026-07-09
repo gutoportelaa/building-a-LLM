@@ -245,7 +245,7 @@ do RAG da Q5 e é testado como ponto de partida do aluno na Q4; o RAG da Q5 "ate
 os guardrails da Q6 protegem exatamente o pipeline da Q5. A pergunta de fundo que atravessa tudo:
 <em>onde deve morar o conhecimento — nos pesos do modelo (Q1–Q4) ou fora deles, recuperado na hora (Q5)?</em></p> -->
 
-<h3>Mapa de algoritmos — o que roda por baixo de cada questão</h3>
+<!-- <h3>Mapa de algoritmos — o que roda por baixo de cada questão</h3>
 <p>Para referência rápida na apresentação: os algoritmos centrais de cada questão, separados em
 <em>treino/inferência</em> (o que muda ou usa o modelo) e <em>avaliação</em> (como medimos). Cada um é explicado
 didaticamente na sua seção.</p>
@@ -286,7 +286,7 @@ didaticamente na sua seção.</p>
       opcional; roteamento de fluxo (responder / bloquear / redirecionar). Implementação própria — ver
       "E o NeMo?" na §6.2.</td>
       <td>Taxa de proteção por categoria; helpfulness; over-refusal; latência por camada.</td></tr>
-</table>
+</table> -->
 
 <h3>Convenções de leitura deste relatório</h3>
 <ul>
@@ -311,7 +311,7 @@ didaticamente na sua seção.</p>
     depois da intervenção. A diferença é atribuível só à técnica.
   </div>
   <div class="card dim">
-    <div class="card-t">2 · de conjunto de teste separado antes do treino</div>
+    <div class="card-t">2 · Conjunto de teste separado antes do treino</div>
     Conjuntos de avaliação são separados <strong>antes</strong> de treinar (seed fixa) — o modelo nunca vê as
     perguntas nem os textos de avaliação durante o treino.
   </div>
@@ -397,7 +397,7 @@ métricas pedidas medem:</p>
   <tr><td><strong>Corpus</strong></td><td>DOM-PI unificado (~50&nbsp;M tokens, OCR ruidoso) + subcorpus curado de
       Teresina (~9,3&nbsp;M tokens, texto mais limpo)</td>
       <td>dois corpus permitem separar o efeito <em>volume</em> do efeito <em>qualidade</em> do texto.</td></tr>
-  <tr><td><strong>de conjunto de teste</strong></td><td>separado antes do treino, seed fixa</td>
+  <tr><td><strong>Conjunto de teste</strong></td><td>separado antes do treino, seed fixa</td>
       <td>a PPL é medida em texto que o modelo nunca viu — sem contaminação.</td></tr>
   <tr><td><strong>Receita de treino</strong></td><td>treino causal <em>packed</em> (blocos de 512), lr 2e-6,
       warmup 5% + cosine, early stopping pela CE no de conjunto de teste</td>
@@ -406,8 +406,8 @@ métricas pedidas medem:</p>
       verificados do corpus</td><td>quase o dobro do mínimo exigido (25); reaproveitado depois na Q5.</td></tr>
 </table>
 
-<h3>1.3 Protocolo de avaliação em três camadas</h3>
-<p>Avaliar DAPT só no domínio é contar meia história: o modelo pode melhorar nos diários <em>estragando</em> o resto.
+<h3>1.3 Protocolo de avaliação em outras situações</h3>
+<p>Avaliar DAPT só no domínio é limitado: o modelo pode melhorar nos diários <em>estragando</em> o resto.
 Por isso a avaliação segue o protocolo de três camadas consolidado na literatura de <em>continued pretraining</em>:</p>
 
 <div class="cards">
@@ -2236,7 +2236,7 @@ GPUs NVIDIA L4 de 24&nbsp;GB (1 ou 2 por job).</p>
   <tr><td>Q6</td><td>avaliação dos guardrails (local, Ollama qwen2.5:14b)</td><td class="num">~30 chamadas × 2 configs</td></tr>
 </table>
 
-<h4>GPU-horas agregadas por frente (todos os jobs contabilizados, incl. falhas e reruns)</h4>
+<!-- <h4>GPU-horas agregadas por frente (todos os jobs contabilizados, incl. falhas e reruns)</h4>
 <table>
   <tr><th>Frente</th><th class="num">GPU-horas (elapsed)</th><th class="num">Jobs</th><th>Observação</th></tr>
   <tr><td>Q1 — DAPT</td><td class="num">355,4 h</td><td class="num">46</td><td>domina o custo: full FT com corpus de ~50 M tokens, múltiplas famílias e reruns pós-correção do bug</td></tr>
@@ -2249,9 +2249,9 @@ GPUs NVIDIA L4 de 24&nbsp;GB (1 ou 2 por job).</p>
 </table>
 <p class="small-note">Leitura de custo×benefício que os números contam: <strong>Q1 (355 h) e Q4 (23 h) entregam
 manchetes de magnitude comparável</strong> (−11 a −23% de PPL; +35 a +96% de key_recall) — colocar conhecimento nos
-pesos por pré-treino é ordens de magnitude mais caro que destilar ou recuperar (Q5: 2 h).</p>
+pesos por pré-treino é ordens de magnitude mais caro que destilar ou recuperar (Q5: 2 h).</p> -->
 
-<h4>Tamanhos registrados (antes da limpeza de 2026-07-07)</h4>
+<!-- <h4>Tamanhos registrados (antes da limpeza de 2026-07-07)</h4>
 <table>
   <tr><th>Artefato</th><th class="num">Tamanho</th><th>Destino na limpeza</th></tr>
   <tr><td>Checkpoints Q1 · full FT unificado (pré-correção do duplo-shift)</td><td class="num">118,5 GB</td><td>removido (superado pelo rerun corrigido)</td></tr>
@@ -2264,7 +2264,7 @@ pesos por pré-treino é ordens de magnitude mais caro que destilar ou recuperar
   <tr><td>Modelos Q4 · 29 alunos/especialistas salvos</td><td class="num">~60 GB (0.5B ≈ 0,94 GB · 1.5B ≈ 2,9 GB · Llama-1B ≈ 2,3 GB cada)</td><td>mantidos</td></tr>
   <tr><td>Modelos finais Q2 (full/LoRA/QLoRA × 2 tamanhos)</td><td class="num">~9,4 GB</td><td>mantidos</td></tr>
   <tr class="destaque"><td>Total liberado na limpeza</td><td class="num">≈ 525 GB</td><td><code>treino/</code>: 570 → 45 GB</td></tr>
-</table>
+</table> -->
 
 <h3>10.5 Referência metodológica</h3>
 <p class="small-note">Sebastian Raschka — <em>Build a Large Language Model (From Scratch)</em>: logits e softmax na
