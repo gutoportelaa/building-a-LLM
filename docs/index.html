@@ -466,7 +466,7 @@ A comparação Teresina usa o held-out curado de Teresina (baseline 6,91).</p>
   pesos, ele precisa vir <em>de fora</em> (RAG).
 </div>
 
-<h3>1.8 As respostas dos modelos — antes × depois (verbatim)</h3>
+<h3>1.8 As respostas dos modelos — antes × depois  </h3>
 <p>As gerações completas dos <strong>seis modelos</strong> (baseline Qwen, full FT unificado, Teresina, corpus limpo,
 Llama baseline e Llama DAPT) para as <strong>49 perguntas</strong> do benchmark estão em
 <code>resultados/geracao_*.json</code> (campo <code>per_item.geracao</code>). Os exemplos abaixo, em geração gulosa,
@@ -687,7 +687,7 @@ puro (o LLM inventa perguntas do nada — e alucina), usamos <strong>grounded se
   erra (3,4 → 2,5). O mesmo treino melhora um tipo de tarefa e piora outro.</figcaption>
 </figure>
 
-<h3>2.7 As respostas dos modelos (verbatim) — o trade-off ao vivo</h3>
+<h3>2.7 As respostas dos modelos   — o trade-off ao vivo</h3>
 
 <div class="inf-block">
   <div class="inf-prompt"><span class="lbl">Pergunta do benchmark (conceitual)</span>
@@ -744,7 +744,7 @@ Portanto, após executar todos os comandos, o elemento no topo da pilha será 'I
   <div class="inf-resp"><span class="model-tag tag-depois">depois · SFT full 1.5B (resposta completa)</span>
     <div class="inf-txt">O</div></div>
   <div class="inf-note">O baseline <span class="verdict v-ok">acerta ('I')</span> raciocinando passo a passo; o SFT
-  full, treinado a ser terso, responde <span class="verdict v-bad">uma única letra — e errada ('O')</span>: ao
+  full, treinado a ser polido, responde <span class="verdict v-bad">uma única letra — e errada ('O')</span>: ao
   suprimir o raciocínio intermediário, perdeu a resposta. Este item (e seus vizinhos de código) é a evidência viva
   de que <strong>PPL menor não significa modelo melhor</strong> — o ajuste fino à distribuição-alvo custou a
   capacidade de "pensar em voz alta". A resolução deste conflito aparece na Q3, com o QLoRA.</div>
@@ -766,7 +766,7 @@ quanto o SFT ajuda ou atrapalha — um prenúncio do papel do tamanho do aluno n
 </div>
 
 <h3>2.10 Análise complementar — o mesmo SFT sob perguntas de outra natureza</h3>
-<p>Para testar a robustez das nossas conclusões, incorporamos ao trabalho um <strong>experimento-irmão</strong> da
+<p>Para testar a robustez das nossas conclusões, incorporamos ao trabalho um <strong>experimento complementar</strong> da
 mesma questão: um SFT LoRA da <strong>mesma base</strong> (Qwen2.5-1.5B-Instruct), com 3 épocas e ~1.317 pares —
 mas avaliado com perguntas de <strong>conhecimento geral de CC</strong> (QuickSort, TCP×UDP, three-way handshake,
 HTTP), não ancoradas em trechos do corpus como as nossas. Os artefatos brutos dessa execução (benchmark,
@@ -930,7 +930,7 @@ comprimiu</strong> — comprimento médio 777 chars, perto do baseline:</p>
   <tr class="destaque"><td>QLoRA</td><td class="num">777 chars</td><td class="num">4,5</td><td class="num">4,07</td></tr>
 </table>
 
-<h3>3.4 As respostas dos modelos (verbatim) — a mesma pergunta, quatro braços</h3>
+<h3>3.4 As respostas dos modelos   — a mesma pergunta, quatro braços</h3>
 <p>A pergunta de código da Q2, agora com os quatro braços lado a lado:</p>
 
 <div class="inf-block">
@@ -944,14 +944,14 @@ comprimiu</strong> — comprimento médio 777 chars, perto do baseline:</p>
     <span class="small-note"><span class="verdict v-ok">✔ acerta</span>, com raciocínio completo (resposta íntegra na §2.7)</span></div>
   <div class="inf-resp"><span class="model-tag tag-ruim">SFT full (resposta completa)</span>
     <div class="inf-txt">O</div>
-    <span class="small-note"><span class="verdict v-bad">✘ errou</span> — terso demais, perdeu o raciocínio</span></div>
+    <span class="small-note"><span class="verdict v-bad">✘ errou</span> — polido demais, perdeu o raciocínio</span></div>
   <div class="inf-resp"><span class="model-tag tag-ruim">LoRA (resposta completa)</span>
     <div class="inf-txt">'O'</div>
     <span class="small-note"><span class="verdict v-bad">✘ errou</span> — mesma compressão, mesmo erro</span></div>
   <div class="inf-resp"><span class="model-tag tag-bom">QLoRA (resposta completa)</span>
     <div class="inf-txt">Após executar o código `push('O')`, `push('C')`, `push('I')` na pilha vazia, o elemento no topo será `'I'`.</div>
     <span class="small-note"><span class="verdict v-ok">✔ acerta</span> — adaptou o estilo sem destruir o raciocínio</span></div>
-  <div class="inf-note">Full FT e LoRA absorveram <em>demais</em> o estilo terso do corpus e erraram; o QLoRA
+  <div class="inf-note">Full FT e LoRA absorveram <em>demais</em> o estilo polido do corpus e erraram; o QLoRA
   aprendeu o domínio <em>sem</em> sobre-ajustar ao estilo — e é exatamente essa adaptação parcial que o juiz
   premia (4,5 em código, vs 2,5 do full FT).</div>
 </div>
@@ -1562,7 +1562,7 @@ correto na resposta.</p>
   que um gerador maior.</figcaption>
 </figure>
 
-<h3>5.6 As respostas dos modelos (verbatim) — a mesma pergunta, três geradores</h3>
+<h3>5.6 As respostas dos modelos   — a mesma pergunta, três geradores</h3>
 
 <div class="inf-block">
   <div class="inf-prompt"><span class="lbl">Pergunta do benchmark</span>
@@ -1622,7 +1622,7 @@ correto na resposta.</p>
   e exploratórias; para perguntas factuais precisas, a própria pergunta já é a melhor query.
 </div>
 
-<h4>Por dentro dos modos — os traces reais (verbatim)</h4>
+<h4>Por dentro dos modos — os traces reais  </h4>
 <p>Os registros de execução (<code>traces.json</code>) mostram <em>como</em> cada modo pensa. Primeiro, o documento
 hipotético que o HyDE gerou para a pergunta do Pregão 040/2024 — a falha em flagrante:</p>
 
@@ -1801,7 +1801,7 @@ cada item <em>com e sem</em> guardrails e classifica a saída. As métricas capt
   guardrail não se empilha por precaução; cada camada precisa provar que protege mais do que atrapalha.
 </div>
 
-<h3>6.6 As respostas do sistema (verbatim) — sem → com guardrails</h3>
+<h3>6.6 As respostas do sistema   — sem → com guardrails</h3>
 
 <div class="inf-block">
   <div class="inf-prompt"><span class="lbl">Ataque · prompt injection</span>

@@ -86,7 +86,10 @@ def key_term_recall(pred: str, ref: str) -> float:
 @torch.no_grad()
 def responder(model, tok, question: str, max_new_tokens: int = 200) -> str:
     msgs = [{"role": "system", "content": ANSWER_SYSTEM}, {"role": "user", "content": question}]
-    prompt = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
+    if getattr(tok, "chat_template", None):
+        prompt = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
+    else:  # modelos base sem template (ex.: Llama-3.2 base, alunos cross-família)
+        prompt = f"{ANSWER_SYSTEM}\n\nPERGUNTA: {question}\nRESPOSTA:"
     ids = tok(prompt, return_tensors="pt", add_special_tokens=False).to(DEVICE)
     out = model.generate(**ids, max_new_tokens=max_new_tokens, do_sample=False,
                          pad_token_id=tok.eos_token_id)

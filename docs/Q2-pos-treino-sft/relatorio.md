@@ -68,7 +68,7 @@ brevidade extrema **remove o raciocínio** e erra. Exemplo (cod01, "topo após p
 push('C'), push('I')"; resposta certa: **'I'**):
 
 > **Base 1.5B:** *"Para resolver, vamos analisar passo a passo: push('O') → ['O']; push('C') → …"* (raciocínio correto)
-> **SFT full 1.5B:** *"O"* ❌ (terso demais → perdeu o raciocínio e errou)
+> **SFT full 1.5B:** *"O"* ❌ (polido demais → perdeu o raciocínio e errou)
 
 Ou seja: o **full FT ajusta melhor a distribuição-alvo (menor PPL)**, mas o próprio
 ajuste à brevidade **degrada tarefas que exigem passos**. Lição clássica de SFT:

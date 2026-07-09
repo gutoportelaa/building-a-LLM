@@ -153,7 +153,7 @@ raciocínio** e erra. Exemplo verbatim (cod01 — resposta certa: **'I'**):
 >
 > **Base 1.5B:** *"Para resolver, vamos analisar passo a passo: `push('O')`→['O']; `push('C')`→['O','C']; `push('I')`→['O','C','I']. O topo é 'I'."* ✅
 >
-> **SFT full 1.5B:** *"O"* ❌ — terso demais, perdeu o raciocínio e errou.
+> **SFT full 1.5B:** *"O"* ❌ — polido demais, perdeu o raciocínio e errou.
 
 **Lição:** PPL menor (full ajusta melhor a distribuição-alvo) **não** garante melhor qualidade
 em tarefas de raciocínio.
@@ -194,7 +194,7 @@ isso **quase não comprimiu** a resposta (**777 chars**, perto do baseline). Man
 | **QLoRA** | **777 chars** | **4,5** | **4,07** |
 
 O que o QLoRA perde em PPL, **ganha** em qualidade percebida — exatamente por **não** sobre-ajustar
-o estilo terso do corpus.
+o estilo polido do corpus.
 
 ---
 

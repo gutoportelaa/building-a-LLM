@@ -1,0 +1,388 @@
+=== DU_TREINO (KB)
+40	treino/__pycache__
+12746196	treino/checkpoints
+24245152	treino/checkpoints_dose_0p1
+30306448	treino/checkpoints_dose_0p3
+45459664	treino/checkpoints_fullft_teresina
+51520956	treino/checkpoints_fullft_teresina_v2
+63643536	treino/checkpoints_fullft_teresina_v3
+48490308	treino/checkpoints_fullft_unif_limpo
+124256432	treino/checkpoints_fullft_unificado
+39398380	treino/checkpoints_fullft_unificado_v2
+132128560	treino/checkpoints_llama32_3b_dompi
+2510428	treino/checkpoints_lora_0.5b
+7026212	treino/checkpoints_lora_1.5b
+7026216	treino/checkpoints_lora_1.5b_v2
+3229060	treino/checkpoints_qlora_1.5b
+3229060	treino/checkpoints_qlora_1.5b_v2
+1960956	treino/checkpoints_teresina
+4	treino/config_qwen05b.yaml
+4	treino/instalar_deps.sh
+80	treino/log_fullft_unificado_487.txt
+12	treino/log_inferencias_q1_385.txt
+20	treino/log_job389_teresina_394.txt
+12	treino/log_q1_eval_v3_490.txt
+36	treino/log_q1_fullft_teresina_v2_488.txt
+32	treino/log_q1_fullft_teresina_v3_489.txt
+48	treino/log_q1_fullft_unificado_v2_491.txt
+44	treino/log_q1_qlora_unificado_v2_492.txt
+20	treino/log_q2_lora_0.5b_386.txt
+8	treino/log_q2_lora_0.5b_390.txt
+44	treino/log_q2_lora_0.5b_395.txt
+24	treino/log_q2_lora_0.5b_400.txt
+44	treino/log_q2_lora_0.5b_419.txt
+48	treino/log_q2_lora_1.5b_396.txt
+40	treino/log_q2_lora_1.5b_v2_426.txt
+12	treino/log_q2_qlora_1.5b_397.txt
+44	treino/log_q2_qlora_1.5b_421.txt
+36	treino/log_q3_fullft_teresina_429.txt
+4	treino/log_relatorio_q2_427.txt
+4	treino/log_slurm_370.txt
+36	treino/log_slurm_371.txt
+36	treino/log_slurm_381.txt
+36	treino/log_slurm_383.txt
+36	treino/log_slurm_384.txt
+164	treino/log_upload_q1.txt
+84	treino/log_upload_q1_v2.txt
+8	treino/preparar_corpus_teresina.py
+16	treino/pretreino_continuado.py
+16	treino/pretreino_fullft.py
+16	treino/pretreino_lora.py
+4	treino/run_avaliacao_step5000.sbatch
+4	treino/run_eval_v3.sbatch
+4	treino/run_fullft_unificado.sbatch
+4	treino/run_gerar_relatorio_q2.sbatch
+4	treino/run_inferencias_q1.sbatch
+8	treino/run_job389_teresina.sbatch
+4	treino/run_pretreino.sbatch
+8	treino/run_q1_fullft_teresina_v2.sbatch
+8	treino/run_q1_fullft_teresina_v3.sbatch
+4	treino/run_q1_fullft_unificado_v2.sbatch
+4	treino/run_q1_qlora_unificado_v2.sbatch
+4	treino/run_q2_lora_0.5b.sbatch
+4	treino/run_q2_lora_1.5b.sbatch
+4	treino/run_q2_lora_1.5b_v2.sbatch
+8	treino/run_q2_qlora_1.5b.sbatch
+8	treino/run_q3_fullft_teresina.sbatch
+=== DU_Q4_MODELOS (KB)
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_daptT_B_combined
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_daptT_Bxf_ce
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_dapt_B_combined
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_dapt_Bxf_ce
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_A_ce
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_A_combined
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_A_kl
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_B_ce
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_B_combined
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_B_kl
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_Bxf_ce
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_fut_A_combined
+980480	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-0.5b_fut_B_combined
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_A_ce
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_A_combined
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_A_kl
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_B_ce
+3030652	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_B_combined
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_B_kl
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_Bxf_ce
+3030648	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_fut_A_combined
+3030652	trabalho-final/Q4-destilacao/modelos/aluno_qwen2.5-1.5b_fut_B_combined
+980480	trabalho-final/Q4-destilacao/modelos/aluno_uld_0.5b
+3030652	trabalho-final/Q4-destilacao/modelos/aluno_uld_1.5b
+980480	trabalho-final/Q4-destilacao/modelos/esp_docentes_0.5b
+3030648	trabalho-final/Q4-destilacao/modelos/esp_docentes_1.5b
+980480	trabalho-final/Q4-destilacao/modelos/esp_dompi_0.5b
+3030648	trabalho-final/Q4-destilacao/modelos/esp_dompi_1.5b
+2430596	trabalho-final/Q4-destilacao/modelos/xfam_llama1b_B_ce
+=== DU_Q2_MODELOS (KB)
+980480	trabalho-final/Q2-pos-treino-sft/modelos/sft_full_0.5b
+3030648	trabalho-final/Q2-pos-treino-sft/modelos/sft_full_1.5b
+1030432	trabalho-final/Q2-pos-treino-sft/modelos/sft_lora_0.5b
+3118368	trabalho-final/Q2-pos-treino-sft/modelos/sft_lora_1.5b
+512120	trabalho-final/Q2-pos-treino-sft/modelos/sft_qlora_0.5b
+1219792	trabalho-final/Q2-pos-treino-sft/modelos/sft_qlora_1.5b
+4	trabalho-final/Q5-rag/index
+=== SACCT
+JobID|JobName|State|Elapsed|Start|AllocTRES
+244|bash|CANCELLED by 1122600047|00:00:00|None|
+245|bash|COMPLETED|00:04:13|2026-05-25T19:41:10|billing=1,cpu=1,mem=62900M,node=1
+246|bash|FAILED|00:50:29|2026-05-26T02:19:38|billing=1,cpu=1,mem=62900M,node=1
+247|bash|COMPLETED|00:03:45|2026-05-26T14:44:40|billing=1,cpu=1,mem=62900M,node=1
+248|bash|COMPLETED|00:00:34|2026-05-26T16:03:30|billing=1,cpu=1,mem=62900M,node=1
+249|bash|FAILED|00:08:29|2026-05-26T18:09:10|billing=1,cpu=1,mem=62900M,node=1
+250|bash|FAILED|00:00:00|2026-05-26T18:20:14|
+251|bash|CANCELLED by 1122600047|00:00:00|None|
+252|bash|FAILED|00:10:35|2026-05-26T18:22:40|billing=1,cpu=1,mem=62900M,node=1
+253|bash|CANCELLED by 1122600047|00:00:00|None|
+254|bash|FAILED|00:00:24|2026-05-26T18:35:22|billing=1,cpu=1,mem=62900M,node=1
+255|bash|CANCELLED by 1122600047|00:00:00|None|
+256|bash|CANCELLED by 1122600047|00:00:00|None|
+257|bash|COMPLETED|01:23:01|2026-05-26T18:57:37|billing=1,cpu=1,mem=62900M,node=1
+258|bash|CANCELLED by 1122600047|00:00:00|None|
+259|extracao_diarios|FAILED|10:35:42|2026-05-26T20:20:38|billing=1,cpu=1,mem=62900M,node=1
+263|extracao_tabuleiros|FAILED|00:00:01|2026-05-27T14:47:00|billing=1,cpu=1,mem=62900M,node=1
+264|bash|COMPLETED|00:00:06|2026-05-27T14:51:40|billing=1,cpu=1,mem=62900M,node=1
+265|extracao_tabuleiros|CANCELLED by 1122600047|01:02:38|2026-05-27T15:04:55|billing=1,cpu=1,mem=62900M,node=1
+266|extracao_tabuleiros|CANCELLED by 1122600047|00:12:37|2026-05-27T16:07:35|billing=1,cpu=1,mem=62900M,node=1
+267|extracao_tabuleiros|CANCELLED by 1122600047|02:11:46|2026-05-27T16:20:14|billing=1,cpu=1,mem=62900M,node=1
+268|extracao_tabuleiros|CANCELLED by 1122600047|00:13:45|2026-05-27T18:32:02|billing=8,cpu=8,mem=32G,node=1
+269|extracao_tabuleiros|CANCELLED by 1122600047|02:17:29|2026-05-27T18:45:49|billing=8,cpu=8,mem=32G,node=1
+270|extracao_tabuleiros|CANCELLED by 1122600047|00:16:58|2026-05-27T21:03:49|billing=8,cpu=8,mem=30G,node=1
+271|extracao_tabuleiros|CANCELLED by 1122600047|00:03:23|2026-05-27T21:20:38|billing=8,cpu=8,mem=30G,node=1
+272|extracao_tabuleiros|CANCELLED by 1122600047|00:39:36|2026-05-27T21:23:21|billing=8,cpu=8,mem=30G,node=1
+273_1|extracao_tabuleiros_2gpu|FAILED|00:00:01|2026-05-27T22:03:38|billing=4,cpu=4,mem=16G,node=1
+273_2|extracao_tabuleiros_2gpu|FAILED|00:00:00|2026-05-27T22:03:39|billing=4,cpu=4,mem=16G,node=1
+275_1|extracao_tabuleiros_2gpu|FAILED|00:00:25|2026-05-27T22:06:57|billing=4,cpu=4,mem=16G,node=1
+275_2|extracao_tabuleiros_2gpu|FAILED|00:00:25|2026-05-27T22:06:57|billing=4,cpu=4,mem=16G,node=1
+277_1|extracao_tabuleiros_2gpu|CANCELLED by 1122600047|00:03:51|2026-05-27T22:08:53|billing=4,cpu=4,mem=16G,node=1
+277_2|extracao_tabuleiros_2gpu|FAILED|00:00:37|2026-05-27T22:08:53|billing=4,cpu=4,mem=16G,node=1
+279_1|extracao_tabuleiros_2gpu|CANCELLED by 1122600047|00:01:01|2026-05-27T22:15:48|billing=16,cpu=16,mem=32G,node=1
+279_2|extracao_tabuleiros_2gpu|CANCELLED by 1122600047|00:00:00|None|
+281_1|extracao_tabuleiros_2gpu|CANCELLED by 1122600047|00:00:39|2026-05-27T22:23:11|billing=8,cpu=8,mem=32G,node=1
+281_2|extracao_tabuleiros_2gpu|CANCELLED by 1122600047|00:00:00|None|
+283_1|extracao_tabuleiros_2gpu|CANCELLED by 1122600047|00:02:37|2026-05-27T22:26:35|billing=8,cpu=8,mem=16G,node=1
+283_2|extracao_tabuleiros_2gpu|FAILED|00:00:37|2026-05-27T22:26:35|billing=8,cpu=8,mem=16G,node=1
+285|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:01:07|2026-05-27T22:44:41|billing=8,cpu=8,mem=30G,node=1
+286|extracao_tabuleiros_auto|FAILED|00:00:44|2026-05-27T22:46:43|billing=8,cpu=8,mem=30G,node=1
+287|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:01:38|2026-05-27T22:56:15|billing=16,cpu=16,mem=60G,node=1
+288|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:11:14|2026-05-28T00:01:26|billing=16,cpu=16,mem=60G,node=1
+289|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:49:52|2026-05-28T00:13:46|billing=16,cpu=16,mem=60G,node=1
+290|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:12:12|2026-05-28T01:04:00|billing=16,cpu=16,mem=60G,node=1
+291|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:00:19|2026-05-28T01:18:00|billing=16,cpu=16,mem=60G,node=1
+292|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:00:01|2026-05-28T01:18:21|billing=16,cpu=16,mem=60G,node=1
+293|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:03:22|2026-05-28T01:19:26|billing=8,cpu=8,mem=30G,node=1
+294|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:00:04|2026-05-28T01:19:30|billing=8,cpu=8,mem=30G,node=1
+295|extracao_tabuleiros_auto|CANCELLED by 1122600047|00:03:11|2026-05-28T01:19:39|billing=8,cpu=8,mem=30G,node=1
+296_1|extracao_tabuleiros_2gpu|CANCELLED by 1122600047|00:02:58|2026-05-28T01:57:40|billing=8,cpu=8,mem=30G,node=1
+296_2|extracao_tabuleiros_2gpu|FAILED|00:00:25|2026-05-28T01:57:41|billing=8,cpu=8,mem=30G,node=1
+298_1|extracao_tabuleiros_2gpu|TIMEOUT|12:00:01|2026-05-28T02:06:09|billing=8,cpu=8,mem=30G,node=1
+298_2|extracao_tabuleiros_2gpu|TIMEOUT|12:00:01|2026-05-28T02:06:09|billing=8,cpu=8,mem=30G,node=1
+309|valcheck|CANCELLED by 1122600047|00:00:00|None|
+310|dompi_test|CANCELLED by 1122600047|00:00:00|None|
+311|dompi_test|CANCELLED by 1122600047|00:00:00|None|
+312|dompi_test|COMPLETED|00:03:26|2026-06-01T20:46:58|billing=8,cpu=8,mem=32G,node=1
+313|dompi_test|CANCELLED by 1122600047|00:00:00|None|
+314|dompi-smoke|COMPLETED|00:00:42|2026-06-02T13:12:51|billing=6,cpu=6,mem=24G,node=1
+315|dompi-extrai|CANCELLED by 1122600047|00:00:00|None|
+316|dompi-extrai|FAILED|00:00:00|2026-06-02T13:19:03|billing=8,cpu=8,mem=24G,node=1
+317|dompi-extrai|COMPLETED|07:57:49|2026-06-02T13:20:46|billing=8,cpu=8,mem=24G,node=1
+320|dompi-extrai|COMPLETED|04:53:45|2026-06-02T22:07:31|billing=8,cpu=8,mem=32G,node=1
+321|dompi-extrai|COMPLETED|02:31:42|2026-06-03T03:14:46|billing=8,cpu=8,mem=32G,node=1
+323|dompi-extrai|COMPLETED|01:05:55|2026-06-03T13:55:51|billing=8,cpu=8,mem=32G,node=1
+326|dompi-extrai|COMPLETED|03:41:57|2026-06-03T16:33:29|billing=8,cpu=8,mem=32G,node=1
+327|dompi-extrai|CANCELLED by 1122600047|00:14:42|2026-06-04T01:43:54|billing=8,cpu=8,mem=32G,node=1
+328|dompi-extrai|TIMEOUT|08:00:14|2026-06-04T01:58:56|billing=8,cpu=8,mem=32G,node=1
+329|dompi-extrai|CANCELLED by 1122600047|00:00:00|None|
+330|dompi-extrai|COMPLETED|07:52:57|2026-06-04T02:12:21|billing=8,cpu=8,mem=28G,node=1
+331|dompi-extrai|COMPLETED|02:29:15|2026-06-04T09:59:10|billing=8,cpu=8,mem=28G,node=1
+338|dompi-extrai|COMPLETED|04:51:55|2026-06-06T00:33:36|billing=8,cpu=8,mem=28G,node=1
+339|dompi-extrai|COMPLETED|07:58:08|2026-06-06T00:43:46|billing=8,cpu=8,mem=28G,node=1
+340|dompi-extrai|COMPLETED|07:59:34|2026-06-06T04:34:46|billing=8,cpu=8,mem=28G,node=1
+341|dompi-extrai|FAILED|07:57:41|2026-06-06T08:35:43|billing=8,cpu=8,mem=28G,node=1
+342|dompi-extrai|COMPLETED|02:38:30|2026-06-06T08:41:56|billing=8,cpu=8,mem=28G,node=1
+343|dompi-extrai|COMPLETED|05:28:43|2026-06-06T12:34:20|billing=8,cpu=8,mem=28G,node=1
+344|dompi-extrai|TIMEOUT|08:00:28|2026-06-06T13:47:52|billing=8,cpu=8,mem=28G,node=1
+345|dompi-extrai|COMPLETED|04:12:41|2026-06-06T16:50:23|billing=8,cpu=8,mem=28G,node=1
+346|dompi-extrai|COMPLETED|07:58:07|2026-06-06T19:44:57|billing=8,cpu=8,mem=28G,node=1
+347|dompi-extrai|COMPLETED|07:58:14|2026-06-06T22:17:55|billing=8,cpu=8,mem=28G,node=1
+348|dompi-extrai|COMPLETED|07:57:59|2026-06-07T03:43:04|billing=8,cpu=8,mem=28G,node=1
+349|dompi-extrai|COMPLETED|03:51:54|2026-06-07T06:16:10|billing=8,cpu=8,mem=28G,node=1
+350|dompi-extrai|COMPLETED|04:08:28|2026-06-07T11:41:03|billing=8,cpu=8,mem=28G,node=1
+369|dompi-extrai|COMPLETED|01:57:38|2026-06-11T16:06:36|billing=8,cpu=8,mem=28G,node=1
+370|dompi-pretreino|FAILED|00:00:00|2026-06-12T03:21:35|billing=8,cpu=8,mem=32G,node=1
+371|dompi-pretreino|COMPLETED|03:59:29|2026-06-12T03:25:24|billing=8,cpu=8,mem=32G,node=1
+372|dompi-eval-post|COMPLETED|00:04:12|2026-06-12T07:50:03|billing=4,cpu=4,mem=16G,node=1
+379|dompi-inferencia|COMPLETED|00:00:01|2026-06-12T20:27:59|billing=4,cpu=4,mem=20G,node=1
+380|dompi-inf|COMPLETED|00:00:31|2026-06-12T20:44:34|billing=4,cpu=4,mem=20G,node=1
+381|dompi-pretreino|COMPLETED|04:04:49|2026-06-12T21:49:10|billing=8,cpu=8,mem=32G,node=1
+382|dompi-eval|COMPLETED|00:08:20|2026-06-13T03:35:14|billing=4,cpu=4,mem=24G,node=1
+383|dompi-pretreino|COMPLETED|04:04:53|2026-06-13T16:39:29|billing=8,cpu=8,mem=32G,node=1
+384|dompi-pretreino|COMPLETED|04:04:28|2026-06-13T20:55:40|billing=8,cpu=8,mem=32G,node=1
+385|dompi-inferencias-q1|COMPLETED|00:00:40|2026-06-15T15:49:52|billing=4,cpu=4,mem=24G,node=1
+386|dompi-lora-0.5b|CANCELLED by 1122600047|01:31:49|2026-06-15T15:49:53|billing=8,cpu=8,mem=32G,node=1
+387|dompi-lora-1.5b|CANCELLED by 1122600047|00:00:00|None|
+388|dompi-qlora-1.5b|CANCELLED by 1122600047|00:00:00|None|
+389|dompi-teresina-lr2e6|CANCELLED by 1122600047|00:00:00|None|
+390|dompi-lora-0.5b|CANCELLED by 1122600047|00:08:33|2026-06-15T17:40:08|billing=8,cpu=8,mem=32G,node=1
+391|dompi-lora-1.5b|CANCELLED by 1122600047|00:00:00|None|
+392|dompi-qlora-1.5b|CANCELLED by 1122600047|00:00:00|None|
+393|dompi-teresina-lr2e6|CANCELLED by 1122600047|00:00:00|None|
+394|dompi-teresina-lr2e6|COMPLETED|00:18:36|2026-06-15T17:48:43|billing=8,cpu=8,mem=32G,node=1
+395|dompi-lora-0.5b|COMPLETED|03:31:24|2026-06-15T18:07:19|billing=8,cpu=8,mem=32G,node=1
+396|dompi-lora-1.5b|COMPLETED|11:41:39|2026-06-15T21:38:43|billing=8,cpu=8,mem=40G,node=1
+397|dompi-qlora-1.5b|COMPLETED|00:00:41|2026-06-16T01:48:09|billing=8,cpu=8,mem=30000M,node=1
+398|q1-pretrain-qwen3-4b|CANCELLED by 1122600047|00:00:00|None|
+399|q1-pretrain-qwen3-4b|FAILED|00:01:01|2026-06-16T09:20:22|billing=16,cpu=16,mem=58G,node=1
+400|dompi-lora-0.5b|CANCELLED by 1122600047|03:00:26|2026-06-16T09:21:23|billing=8,cpu=8,mem=32G,node=1
+403|dompi-qlora-1.5b|CANCELLED by 1122600047|00:00:00|None|
+405|q4-datagen-diarios|COMPLETED|01:52:37|2026-06-16T02:29:48|billing=8,cpu=8,mem=28G,node=1
+406|q4-distill-qwen3-0p6b|COMPLETED|00:02:54|2026-06-16T04:22:48|billing=8,cpu=8,mem=28G,node=1
+407|q4-distill-gemma3-1b|COMPLETED|00:03:50|2026-06-16T04:25:48|billing=8,cpu=8,mem=28G,node=1
+408|q4-distill-smollm2-360m|COMPLETED|00:02:33|2026-06-16T04:29:48|billing=8,cpu=8,mem=28G,node=1
+409|q4-distill-smollm2-135m|COMPLETED|00:02:12|2026-06-16T04:32:48|billing=8,cpu=8,mem=28G,node=1
+410|q4-distill-qwen2p5-0p5b|COMPLETED|00:02:16|2026-06-16T04:35:18|billing=8,cpu=8,mem=28G,node=1
+412|q4-eval-distill|COMPLETED|01:09:49|2026-06-16T06:35:44|billing=8,cpu=8,mem=28G,node=1
+413|q4-logitkd|COMPLETED|00:05:55|2026-06-16T07:45:51|billing=8,cpu=8,mem=28G,node=1
+414|q4-eval-logitkd|COMPLETED|00:05:59|2026-06-16T08:19:48|billing=8,cpu=8,mem=28G,node=1
+415|q1-pretrain-qwen3-4b|FAILED|00:00:54|2026-06-16T12:21:51|billing=16,cpu=16,mem=58G,node=1
+418|q5-examples|COMPLETED|00:01:18|2026-06-16T09:59:33|billing=8,cpu=8,mem=28G,node=1
+419|dompi-lora-0.5b|COMPLETED|05:20:40|2026-06-16T12:22:46|billing=8,cpu=8,mem=32G,node=1
+420|dompi-lora-1.5b-v2|CANCELLED by 1122600047|00:00:00|None|
+421|dompi-qlora-1.5b|COMPLETED|17:21:36|2026-06-16T17:43:26|billing=8,cpu=8,mem=32G,node=1
+423|q1-pretrain-qwen3-4b|FAILED|00:00:59|2026-06-17T11:05:03|billing=16,cpu=16,mem=58G,node=1
+426|dompi-lora-1.5b-v2|COMPLETED|11:30:24|2026-06-16T14:31:54|billing=8,cpu=8,mem=28G,node=1
+427|dompi-relatorio-q2|COMPLETED|00:00:01|2026-06-17T11:05:03|billing=2,cpu=2,mem=4G,node=1
+428|q23-sweeps|COMPLETED|00:59:55|2026-06-17T02:02:27|billing=8,cpu=8,mem=28G,node=1
+429|dompi-fullft-teresina|COMPLETED|02:35:58|2026-06-17T02:31:14|billing=8,cpu=8,mem=24G,node=1
+430|q1-pretrain-qwen3-4b|FAILED|00:00:38|2026-06-17T11:24:14|billing=16,cpu=16,mem=58G,node=1
+433|q1-pretrain-qwen3-4b|FAILED|00:00:42|2026-06-17T11:27:29|billing=16,cpu=16,mem=58G,node=1
+436|q1-pretrain-qwen3-4b|FAILED|00:00:39|2026-06-17T11:31:08|billing=16,cpu=16,mem=58G,node=1
+439|q5-rag-30b|COMPLETED|00:14:00|2026-06-17T11:34:17|billing=16,cpu=16,mem=58G,node=1
+440|q1-forgetting|FAILED|00:00:00|2026-06-17T13:46:54|billing=8,cpu=8,mem=24G,node=1
+441|q1-forgetting|COMPLETED|00:44:37|2026-06-17T13:47:47|billing=8,cpu=8,mem=24G,node=1
+442|q1-gpt2|COMPLETED|00:10:49|2026-06-17T13:55:03|billing=8,cpu=8,mem=28G,node=1
+443|q1-gpt2-med|COMPLETED|00:25:04|2026-06-17T13:57:40|billing=8,cpu=8,mem=28G,node=1
+444|q1-gpt2-lrg|COMPLETED|00:47:27|2026-06-17T14:05:53|billing=8,cpu=8,mem=28G,node=1
+445|q2-gpt2-base|COMPLETED|00:00:51|2026-06-17T14:22:44|billing=8,cpu=8,mem=28G,node=1
+446|q2-med-base|COMPLETED|00:02:22|2026-06-17T14:23:35|billing=8,cpu=8,mem=28G,node=1
+447|q2-lrg-base|COMPLETED|00:06:22|2026-06-17T14:25:57|billing=8,cpu=8,mem=28G,node=1
+448|q2-gpt2-q1|COMPLETED|00:00:48|2026-06-17T14:32:19|billing=8,cpu=8,mem=28G,node=1
+449|q2-med-q1|COMPLETED|00:02:23|2026-06-17T14:32:25|billing=8,cpu=8,mem=28G,node=1
+450|q2-lrg-q1|COMPLETED|00:05:55|2026-06-17T14:53:20|billing=8,cpu=8,mem=28G,node=1
+451|q1-gpt2-eval|COMPLETED|00:23:10|2026-06-17T15:02:19|billing=8,cpu=8,mem=24G,node=1
+452|q2-gpt2-eval|COMPLETED|00:41:05|2026-06-17T15:02:19|billing=8,cpu=8,mem=28G,node=1
+453|train-1gpu|FAILED|00:00:11|2026-06-17T15:16:52|billing=8,cpu=8,mem=28G,node=1
+454|train-1gpu|FAILED|00:00:09|2026-06-17T15:17:03|billing=8,cpu=8,mem=28G,node=1
+455|train-1gpu|FAILED|00:00:10|2026-06-17T15:17:12|billing=8,cpu=8,mem=28G,node=1
+456|train-1gpu|FAILED|00:00:09|2026-06-17T15:17:22|billing=8,cpu=8,mem=28G,node=1
+457|train-1gpu|FAILED|00:00:10|2026-06-17T15:17:31|billing=8,cpu=8,mem=28G,node=1
+458|train-1gpu|FAILED|00:00:12|2026-06-17T15:17:41|billing=8,cpu=8,mem=28G,node=1
+459|train-1gpu|COMPLETED|00:00:56|2026-06-17T15:17:53|billing=8,cpu=8,mem=28G,node=1
+460|train-1gpu|COMPLETED|00:00:43|2026-06-17T15:21:36|billing=8,cpu=8,mem=28G,node=1
+461|train-1gpu|COMPLETED|00:01:47|2026-06-17T15:22:19|billing=8,cpu=8,mem=28G,node=1
+462|train-1gpu|COMPLETED|00:04:47|2026-06-17T15:24:06|billing=8,cpu=8,mem=28G,node=1
+463|train-1gpu|COMPLETED|00:00:45|2026-06-17T15:25:29|billing=8,cpu=8,mem=28G,node=1
+464|train-1gpu|COMPLETED|00:01:44|2026-06-17T15:26:14|billing=8,cpu=8,mem=28G,node=1
+465|train-1gpu|COMPLETED|00:04:35|2026-06-17T15:27:58|billing=8,cpu=8,mem=28G,node=1
+466|q4-eval-gpt2|COMPLETED|00:05:06|2026-06-17T15:28:53|billing=8,cpu=8,mem=28G,node=1
+467|q3-eval-gpt2|COMPLETED|00:26:11|2026-06-17T15:32:33|billing=8,cpu=8,mem=28G,node=1
+468|q5-student-engines|COMPLETED|00:58:53|2026-06-17T15:43:24|billing=8,cpu=8,mem=40G,node=1
+469|q4-datagen-30b|COMPLETED|00:53:56|2026-06-17T16:47:45|billing=8,cpu=8,mem=40G,node=1
+470|q4-datagen-teacher|CANCELLED by 1122600047|00:00:00|None|
+471|q4-datagen-teacher|CANCELLED by 1122600047|00:00:00|None|
+472|q4-datagen-teacher|CANCELLED by 1122600047|00:00:00|None|
+473|q4-datagen-teacher|COMPLETED|00:31:26|2026-06-17T16:51:00|billing=8,cpu=8,mem=24G,node=1
+474|q4-datagen-teacher|COMPLETED|01:03:33|2026-06-17T17:41:41|billing=8,cpu=8,mem=32G,node=1
+475|q4-datagen-teacher|COMPLETED|01:28:03|2026-06-17T18:45:15|billing=8,cpu=8,mem=32G,node=1
+476|q4-distill-teacher|COMPLETED|00:06:59|2026-06-17T17:22:26|billing=8,cpu=8,mem=28G,node=1
+477|q4-eval-teacher|COMPLETED|00:30:26|2026-06-17T17:29:25|billing=8,cpu=8,mem=28G,node=1
+478|q4-distill-teacher|COMPLETED|00:06:51|2026-06-17T17:41:45|billing=8,cpu=8,mem=28G,node=1
+479|q4-eval-teacher|COMPLETED|00:29:25|2026-06-17T17:48:45|billing=8,cpu=8,mem=28G,node=1
+480|q4-distill-teacher|COMPLETED|00:06:41|2026-06-17T18:45:15|billing=8,cpu=8,mem=28G,node=1
+481|q4-eval-teacher|COMPLETED|00:29:18|2026-06-17T18:51:56|billing=8,cpu=8,mem=28G,node=1
+482|q4-distill-teacher|COMPLETED|00:07:00|2026-06-17T20:13:18|billing=8,cpu=8,mem=28G,node=1
+483|q4-eval-teacher|COMPLETED|00:28:44|2026-06-17T20:20:18|billing=8,cpu=8,mem=28G,node=1
+484|q5-big-engines|COMPLETED|00:05:30|2026-06-17T20:13:18|billing=8,cpu=8,mem=40G,node=1
+485|q5-big-engines|COMPLETED|00:31:00|2026-06-17T20:22:04|billing=8,cpu=8,mem=40G,node=1
+486|q5-31b-retry|COMPLETED|00:10:39|2026-06-17T20:55:49|billing=8,cpu=8,mem=40G,node=1
+487|dompi-fullft-unif|COMPLETED|13:52:17|2026-06-18T04:34:14|billing=8,cpu=8,mem=24G,node=1
+488|q1-fullft-ter-v2|COMPLETED|02:51:02|2026-06-18T19:45:23|billing=8,cpu=8,mem=24G,node=1
+489|q1-fullft-ter-v3|CANCELLED by 1122600047|04:00:33|2026-06-18T22:58:44|billing=8,cpu=8,mem=24G,node=1
+490|q1-eval-v3|COMPLETED|00:02:06|2026-06-19T02:59:19|billing=8,cpu=8,mem=24G,node=1
+491|q1-fullft-unif-v2|COMPLETED|06:40:46|2026-06-19T04:03:18|billing=8,cpu=8,mem=24G,node=1
+492|q1-qlora-unif-v2|COMPLETED|17:21:53|2026-06-19T04:25:37|billing=8,cpu=8,mem=32G,node=1
+493|q4-smoke|FAILED|00:00:01|2026-06-21T05:34:16|billing=16,cpu=16,mem=62900M,node=1
+494|q4-gerar-dataset|FAILED|00:00:02|2026-06-21T06:02:57|billing=16,cpu=16,mem=62900M,node=1
+495|q4-smoke|FAILED|00:05:31|2026-06-21T23:15:32|billing=16,cpu=16,mem=62900M,node=1
+496|q4-smoke|FAILED|00:00:42|2026-06-21T23:22:37|billing=16,cpu=16,mem=62900M,node=1
+497|q4-smoke|FAILED|00:01:10|2026-06-21T23:25:29|billing=16,cpu=16,mem=62900M,node=1
+498|q4-smoke|FAILED|00:00:54|2026-06-21T23:28:40|billing=16,cpu=16,mem=62900M,node=1
+499|q4-smoke|COMPLETED|00:01:44|2026-06-21T23:30:25|billing=16,cpu=16,mem=62900M,node=1
+500|q4-gerar-dataset|FAILED|00:40:33|2026-06-21T23:32:54|billing=16,cpu=16,mem=62900M,node=1
+501|q4-gerar-dataset|FAILED|00:07:38|2026-06-22T00:16:25|billing=16,cpu=16,mem=62900M,node=1
+502|q4-gerar-dataset|COMPLETED|00:21:28|2026-06-22T00:28:00|billing=16,cpu=16,mem=62900M,node=1
+503|q4-destilar|COMPLETED|01:26:00|2026-06-22T00:55:23|billing=16,cpu=16,mem=62900M,node=1
+504|q4-avaliar|COMPLETED|01:03:10|2026-06-22T02:21:53|billing=16,cpu=16,mem=62900M,node=1
+505|q4-crossfam|FAILED|00:00:18|2026-06-22T04:35:25|billing=16,cpu=16,mem=62900M,node=1
+506|q4-crossfam|COMPLETED|00:43:19|2026-06-22T04:36:44|billing=16,cpu=16,mem=62900M,node=1
+507|q4-aval-bxf|COMPLETED|00:10:53|2026-06-22T05:20:59|billing=8,cpu=8,mem=62900M,node=1
+508|q4-futebol|COMPLETED|02:19:09|2026-06-22T05:54:01|billing=16,cpu=16,mem=62900M,node=1
+509|q4-aval-fut|COMPLETED|00:27:03|2026-06-22T08:13:10|billing=16,cpu=16,mem=62900M,node=1
+510|q4-dapt-distill|COMPLETED|00:44:05|2026-06-22T18:12:14|billing=8,cpu=8,mem=31000M,node=1
+511|q4-aval-dapt|COMPLETED|00:17:33|2026-06-22T18:56:19|billing=8,cpu=8,mem=31000M,node=1
+518|q4-dapt-distill|COMPLETED|00:43:53|2026-06-22T23:12:20|billing=8,cpu=8,mem=31000M,node=1
+519|q4-aval-dapt|COMPLETED|00:17:44|2026-06-22T23:56:13|billing=8,cpu=8,mem=31000M,node=1
+520|q4-uld|COMPLETED|01:07:52|2026-06-22T23:12:20|billing=16,cpu=16,mem=62900M,node=1
+536|q1-evidencias|FAILED|00:00:11|2026-06-27T23:32:23|billing=8,cpu=8,mem=24G,node=1
+537|q1-evidencias|COMPLETED|00:25:29|2026-06-27T23:34:04|billing=8,cpu=8,mem=24G,node=1
+538|q1-fullft-limpo|COMPLETED|05:05:59|2026-06-27T23:45:08|billing=8,cpu=8,mem=24G,node=1
+539|q1-dose|COMPLETED|02:16:07|2026-06-28T00:02:07|billing=8,cpu=8,mem=24G,node=1
+540|q1-dose|COMPLETED|02:58:35|2026-06-28T00:02:07|billing=8,cpu=8,mem=24G,node=1
+541|q1-llama32-fsdp|FAILED|00:09:38|2026-06-28T04:51:08|billing=16,cpu=16,mem=48G,node=1
+542|q1-llama32-fsdp|FAILED|00:08:30|2026-06-28T05:05:38|billing=16,cpu=16,mem=48G,node=1
+543|q1-llama32-fsdp|FAILED|00:02:59|2026-06-28T05:17:46|billing=16,cpu=16,mem=48G,node=1
+544|q1-llama32-1gpu|COMPLETED|13:22:51|2026-06-28T16:32:38|billing=8,cpu=8,mem=32G,node=1
+545|q4-bench-pub|CANCELLED by 1122600047|00:00:00|None|
+546|q4-bench-pub|CANCELLED by 1122600047|00:00:00|None|
+547|q4-bench-pub|COMPLETED|00:07:51|2026-06-28T19:57:48|billing=8,cpu=8,mem=28G,node=1
+548|q2-gerar-1gpu|COMPLETED|00:29:21|2026-06-29T01:13:49|billing=8,cpu=8,mem=31000M,node=1
+549|q2q3-treino-aval|COMPLETED|01:10:08|2026-06-29T01:43:10|billing=8,cpu=8,mem=31000M,node=1
+550|q2q3-juiz-1gpu|COMPLETED|00:05:18|2026-06-29T02:53:18|billing=8,cpu=8,mem=31000M,node=1
+559|q4-topicos|COMPLETED|00:45:09|2026-06-30T15:10:22|billing=16,cpu=16,mem=62900M,node=1
+573|q1-pt-qwen2p5-1p5b|CANCELLED by 1122600047|00:03:31|2026-07-01T01:04:17|billing=8,cpu=8,mem=28G,node=1
+574|q1-pt-qwen2p5-3b|CANCELLED by 1122600047|00:03:31|2026-07-01T01:04:17|billing=16,cpu=16,mem=58G,node=1
+575|q1-3b|FAILED|00:06:55|2026-07-01T01:09:25|billing=16,cpu=16,mem=58G,node=1
+576|q1-1p5b|CANCELLED by 1122600047|00:20:06|2026-07-01T01:09:25|billing=8,cpu=8,mem=28G,node=1
+577|q1-0p6b|COMPLETED|1-19:22:26|2026-07-01T01:16:20|billing=8,cpu=8,mem=28G,node=1
+578|q1-1p7b|CANCELLED by 1122600047|00:13:11|2026-07-01T01:16:20|billing=8,cpu=8,mem=28G,node=1
+579|q1-gemma|CANCELLED by 1122600047|00:00:00|None|
+580|q1-1p7b|COMPLETED|1-07:47:19|2026-07-01T01:29:34|billing=8,cpu=8,mem=28G,node=1
+581|q1-1p5b|COMPLETED|1-01:58:02|2026-07-01T01:29:34|billing=8,cpu=8,mem=28G,node=1
+582|q1-gemma|COMPLETED|1-01:33:46|2026-07-02T03:27:36|billing=8,cpu=8,mem=28G,node=1
+583|q1-3b|FAILED|1-13:48:50|2026-07-02T20:38:46|billing=16,cpu=16,mem=58G,node=1
+584|q1-qwen2p5_1p5b-ep2|CANCELLED by 1122600047|00:00:00|None|
+587|q1-qwen3_1p7b-ep2|CANCELLED by 1122600047|00:00:00|None|
+590|q1-gemma3_1b-ep2|COMPLETED|1-01:01:29|2026-07-03T05:01:22|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+591|q1-gemma3_1b-ep3|COMPLETED|1-01:02:21|2026-07-04T06:02:51|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+592|q1-gemma3_1b-eval|COMPLETED|00:38:36|2026-07-05T07:05:12|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+593|q1-0p5b|COMPLETED|1-04:38:46|2026-07-04T10:27:36|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+594|q1-0p6b-it|COMPLETED|1-19:25:01|2026-07-04T10:27:36|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+595|q1-0p5b-it|CANCELLED by 1122600047|02:57:01|2026-07-05T07:43:48|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+596|q1-1p7b-it|CANCELLED by 1122600047|00:00:00|None|
+597|q1-1p5b-it|CANCELLED by 1122600047|00:00:00|None|
+598|q1-pt-qwen2p5-3b-it|CANCELLED by 1122600047|00:00:00|None|
+599|q1-gemma-it|CANCELLED by 1122600047|00:00:00|None|
+603|q1-heldout-done|COMPLETED|00:29:05|2026-07-05T10:40:51|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+604|q4-bench200|COMPLETED|00:49:22|2026-07-06T06:29:07|billing=16,cpu=16,gres/gpu=2,mem=62900M,node=1
+605|q4-aluno-xfam|FAILED|00:33:49|2026-07-06T07:18:29|billing=16,cpu=16,gres/gpu=2,mem=62900M,node=1
+606|q2-sft-anchored|COMPLETED|06:50:21|2026-07-05T15:06:23|billing=8,cpu=8,gres/gpu=1,mem=32G,node=1
+607|q1-eval-3b|COMPLETED|00:45:31|2026-07-05T11:09:56|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+608|q1-gemma-it|CANCELLED by 1122600047|03:48:08|2026-07-05T11:55:27|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+609|q2q3-0p6b|COMPLETED|03:29:45|2026-07-05T21:56:44|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+610|q2q3-1p7b|COMPLETED|04:14:43|2026-07-05T21:57:12|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+611|q2q3-gemma|COMPLETED|04:26:39|2026-07-06T01:26:29|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+612|q2-qlora-3b|COMPLETED|06:56:28|2026-07-06T05:53:08|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+613|q1-heldout-gemma|COMPLETED|00:13:46|2026-07-05T18:47:55|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+614|q2q3-rejudge-llama|TIMEOUT|08:00:02|2026-07-06T07:52:19|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+615|q2q3-rejudge-llama|COMPLETED|06:36:42|2026-07-06T12:49:36|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+616|q3-rank-sweep|COMPLETED|03:08:55|2026-07-06T03:20:12|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+617|dl-qwen3-32b|COMPLETED|00:08:12|2026-07-06T07:52:19|billing=4,cpu=4,gres/gpu=1,mem=8G,node=1
+618|q3-32b-r8|COMPLETED|00:02:09|2026-07-06T08:00:31|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+619|q3-32b-r16|COMPLETED|00:01:54|2026-07-06T08:02:42|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+620|q3-32b-r32|COMPLETED|00:01:45|2026-07-06T08:04:36|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+621|q3-32b-r64|COMPLETED|00:01:52|2026-07-06T08:06:21|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+622|dl-qwen3-14b|COMPLETED|00:04:32|2026-07-06T14:04:29|billing=4,cpu=4,gres/gpu=1,mem=8G,node=1
+623|q3-14b|COMPLETED|07:22:44|2026-07-06T14:09:01|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+624|q3-q1ckpt|COMPLETED|03:24:52|2026-07-06T15:52:22|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+625|q3-sweep-3b|COMPLETED|03:25:05|2026-07-06T19:17:14|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+626|q3-lora-vs-qlora|COMPLETED|03:21:05|2026-07-06T19:26:18|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+627|q3-32b|COMPLETED|05:14:07|2026-07-06T22:47:23|billing=8,cpu=8,gres/gpu=2,mem=58G,node=1
+628|q1-amao-2000|COMPLETED|01:01:16|2026-07-06T21:32:00|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+629|q2q3-instruct|COMPLETED|02:45:11|2026-07-06T22:33:30|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+630|q2q3-instruct|COMPLETED|02:10:48|2026-07-07T01:18:41|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+631|q2q3-dificuldade|COMPLETED|07:17:19|2026-07-07T03:29:29|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+632|q2q3-dificuldade-32b|COMPLETED|02:05:41|2026-07-07T04:01:30|billing=8,cpu=8,gres/gpu=2,mem=58G,node=1
+633|q2q3-sft-dificuldade|CANCELLED by 1122600047|01:41:40|2026-07-07T06:07:11|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+634|q2q3-sft-dificuldade|CANCELLED by 1122600047|04:05:07|2026-07-07T07:48:53|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+635|q2q3-sft-dificuldade|COMPLETED|04:05:29|2026-07-07T11:54:02|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1
+636|q2q3-sft-dif-full|COMPLETED|06:06:13|2026-07-07T14:15:08|billing=8,cpu=8,gres/gpu=1,mem=28G,node=1

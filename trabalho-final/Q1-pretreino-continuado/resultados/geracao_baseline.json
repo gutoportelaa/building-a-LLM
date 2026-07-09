@@ -1,0 +1,456 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B",
+  "benchmark": "/home/aluno_matheus/building-a-LLM/trabalho-final/Q1-pretreino-continuado/dompi_qa.jsonl",
+  "n": 49,
+  "gen_exact_match": 0.0,
+  "gen_contains": 0.0,
+  "gen_f1_mean": 0.1577,
+  "gen_f1_at_threshold": 0.0,
+  "f1_threshold": 0.5,
+  "n_exact_match": 0,
+  "n_contains": 0,
+  "n_f1ok": 0,
+  "per_item": [
+    {
+      "pergunta": "Qual empresa venceu o Pregão Eletrônico nº 040/2024 da Prefeitura de Pedro II?",
+      "resposta_ref": "ANTARES COMERCIO ATACADISTA LTDA (CNPJ 28.766.496/0001-28)",
+      "geracao": "1ª. Concessionária do Sistema de Transportes Públicos de Pedro II, S.A.\nO que é a licitação?\nA licitação é um procedimento administrativo que visa selecionar os melhores fornecedores ou prestadores de serviços para atender às necessidades públicas e privadas.",
+      "tipo": "licitacao_vencedor",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Quem foi nomeado para a função de Coordenação de Solenidades Oficiais de Cocal pela Portaria nº 130/2025?",
+      "resposta_ref": "EULILIA DA SILVA CARVALHO ALBUQUERQUE (CPF 047.870.323-64)",
+      "geracao": "1º Tenente Coronel José Carlos da Silva.",
+      "tipo": "nomeacao",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2353
+    },
+    {
+      "pergunta": "De que trata a Portaria nº 130/2025 do Município de Cocal, publicada em 02 de janeiro de 2025?",
+      "resposta_ref": "Dispõe sobre a nomeação para cargos de provimento em comissão e de funções de confiança e gratificadas, integrantes da estrutura organizacional da Administração Direta e Indireta do Poder Executivo do Município de Cocal/PI.",
+      "geracao": "1. O município de Cocal, por meio da Secretaria Municipal de Saúde, informa que o prazo para apresentação dos documentos necessários para obtenção do Certificado de Vacinação contra a Covid-19, será até o dia 14 de fevereiro de 2025",
+      "tipo": "ementa_ato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2703
+    },
+    {
+      "pergunta": "A qual secretaria foi vinculada a função de Coordenação de Solenidades Oficiais na Portaria nº 130/2025 de Cocal?",
+      "resposta_ref": "Secretaria de Governo",
+      "geracao": "4.",
+      "tipo": "detalhe_nomeacao",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Qual o valor total contratado no Pregão Eletrônico nº 040/2024 da Prefeitura Municipal de Pedro II?",
+      "resposta_ref": "R$ 25.536,00 (vinte e cinco mil, quinhentos e trinta e seis reais)",
+      "geracao": "1.356.789,00 (um milhão trezentos e cinquenta e seis mil setecentos e oitenta e nove reais).\nO que é a Lei do Imóvel Renda?\nA lei do imóvel renda foi criada",
+      "tipo": "valor_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2979
+    },
+    {
+      "pergunta": "Qual o CNPJ da empresa vencedora do Pregão nº 040/2024 da Prefeitura de Pedro II?",
+      "resposta_ref": "28.766.496/0001-28",
+      "geracao": "13.567.898/0001-90\nO valor total a ser pago pela empresa vencedora é R$ 1.000,00 (um mil reais). O prazo para pagamento será até 15 dias após a publicação do",
+      "tipo": "dado_empresa",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0513
+    },
+    {
+      "pergunta": "Quem assinou o Extrato de Contrato nº 004/2025 de locação de imóvel da Prefeitura Municipal de Várzea Branca como contratado?",
+      "resposta_ref": "CAIO HENRIQUE BRAGA PAES (CPF 111.256.935-92)",
+      "geracao": "1. O Sr. José Luiz dos Santos, com a documentação abaixo anexada.\nO Sr. José Luiz dos Santos, com a documentação abaixo anexada, foi designado para prestar serviços na área de Engenharia Civil e Geologia do município de Várzea Branca",
+      "tipo": "contratado",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Qual é o valor mensal do contrato de locação de imóvel nº 004/2025 celebrado pela Prefeitura Municipal de Várzea Branca?",
+      "resposta_ref": "R$ 500,00 (quinhentos reais) por mês",
+      "geracao": "1.863,79 reais.\nO que é a Lei Geral das Imóveis (Lei n° 12.527/2011)?\nA Lei Geral das Imóveis (Lei n° 12.527/201",
+      "tipo": "valor_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0588
+    },
+    {
+      "pergunta": "Qual a vigência do Contrato nº 004/2025 de locação da Prefeitura de Várzea Branca?",
+      "resposta_ref": "12 (doze) meses, podendo ser prorrogado de acordo com a legislação vigente",
+      "geracao": "18/06/2025\nO que é o contrato de locação?\nA locação é um tipo de contrato de arrendamento, onde uma parte do bem (imóvel) é alugado para uso e ocupação por outra pessoa. O proprietário do imóvel pode",
+      "tipo": "vigencia_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0784
+    },
+    {
+      "pergunta": "Quem foi nomeado pela Portaria nº 0318/2024-ADM da Câmara Municipal de Teresina para o cargo de Assessor Especial da Presidência Nível II?",
+      "resposta_ref": "LEONARDO WELLINGTON DE MORAIS FERREIRA, cargo de provimento comissionado de simbologia DAL-IV",
+      "geracao": "05.06.2024\nO que é a Portaria nº 0318/2024-ADM?\nA Portaria nº 0318/2024-ADM, publicada no Diário Oficial do Município de Teresina (",
+      "tipo": "nomeacao",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0513
+    },
+    {
+      "pergunta": "Quem foi nomeado pela Portaria nº 257/2025 ADM-GP da Câmara Municipal de Teresina?",
+      "resposta_ref": "LETICIA VIRGINIA COSTA DE MELO, Assessor da Presidência - Nível III, cargo de provimento comissionado",
+      "geracao": "1º. Dr. José Carlos Pereira, 2º. Dr. João Paulo Alves e 3º. Dr. Antônio Carlos dos Santos.\nO que é a Portaria nº 257/2025 ADM-GP da Câmara Municipal de Teresina?\nA Portaria",
+      "tipo": "nomeacao",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0833
+    },
+    {
+      "pergunta": "Qual o objeto do Contrato Administrativo nº 204/2025 da Prefeitura Municipal de Monsenhor Hipólito?",
+      "resposta_ref": "Prestação de serviços como Professora de Educação Infantil no Município de Monsenhor Hipólito - PI",
+      "geracao": "1. O objeto do contrato é a contratação de serviços de manutenção e reparo de equipamentos, com base na Lei Federal nº 8.666/93.\nO que são os serviços de manutenção e reparo de equipamentos? Resposta: São serviços de manuten",
+      "tipo": "objeto_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1818
+    },
+    {
+      "pergunta": "Qual o valor global do Contrato nº 204/2025 firmado pela Prefeitura de Monsenhor Hipólito com Marta Cristina de Carvalho Silva?",
+      "resposta_ref": "R$ 22.902,80 (vinte e dois mil, novecentos e dois reais e oitenta centavos)",
+      "geracao": "1.367.890,00",
+      "tipo": "valor_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Qual é a duração do contrato nº 204/2025 da Prefeitura de Monsenhor Hipólito com Marta Cristina de Carvalho Silva?",
+      "resposta_ref": "01 de março de 2025 a 31 de dezembro de 2025",
+      "geracao": "1 ano, 6 meses e 3 dias. O que é o número 204/2025? A resposta está no artigo abaixo.\nO número 204/2025 refere-se ao contrato nº 204/2025 da Prefeitura de",
+      "tipo": "vigencia_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1778
+    },
+    {
+      "pergunta": "Qual empresa foi contratada no Contrato nº 001/2025/PGM da Prefeitura Municipal de Teresina para serviços advocatícios?",
+      "resposta_ref": "Carvalho, Araújo & Moura - Sociedade de Advogados, CNPJ nº 04.806.575/0001-57",
+      "geracao": "0",
+      "tipo": "contratado",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Qual o objeto do Contrato nº 001/2025/PGM celebrado pela Prefeitura de Teresina com Carvalho, Araújo & Moura?",
+      "resposta_ref": "Contratação de sociedade de advogados especializada para continuidade de prestação de serviços advocatícios singulares, com o ajuizamento e acompanhamento de processos nas esferas administrativa e judicial, com o escopo de manter/elevar os repasses do FPM para Teresina/PI",
+      "geracao": "1. O objeto do contrato é a contratação da prestação de serviços de consultoria jurídica e administrativa para elaboração de pareceres sobre as demandas públicas e privadas que forem encaminhadas à Secretaria Municipal de Planejamento e Gestão (SEPLAN), bem",
+      "tipo": "objeto_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3333
+    },
+    {
+      "pergunta": "Qual empresa foi contratada pelo Município de Joca Marques para aquisição de medicamentos e insumos hospitalares?",
+      "resposta_ref": "MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI, CNPJ 28.973.504/0001-07",
+      "geracao": "1. A Prefeitura Municipal de Joca Marques, por meio da Secretaria Municipal de Saúde, através do Departamento de Vigilância em Saúde (DVS), realizou uma licitação pública com o objetivo de contratar empresas que atendam às necessidades dos serviços de saúde no município.",
+      "tipo": "contratado",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0377
+    },
+    {
+      "pergunta": "Qual o valor do contrato firmado entre o Município de Joca Marques e a MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS EIRELI?",
+      "resposta_ref": "R$ 1.352.027,45 (um milhão, trezentos e cinquenta e dois mil, vinte e sete reais e quarenta e cinco centavos)",
+      "geracao": "1.000,00 (um mil reais) por mês.\nO que é necessário para se contratar com a empresa MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS?\nPara contratar com a empresa MERCOSUL DISTRIBUIDORA DE MEDICAMENTOS",
+      "tipo": "valor_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1887
+    },
+    {
+      "pergunta": "Com qual entidade a Prefeitura Municipal de Teresina celebrou o Termo de Fomento nº 29/2025-SEMEL?",
+      "resposta_ref": "Instituto Culturartes, CNPJ 13.770.738/0001-80",
+      "geracao": "1. O Termo de Fomento foi celebrado entre a Prefeitura Municipal de Teresina e a Empresa Municipal de Serviços Especiais (EMSE) para a realização do projeto \"Acessibilidade em Teresina\", que visa melhorar a acessibilidade das pessoas com defici",
+      "tipo": "beneficiario_fomento",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "A qual emenda parlamentar está vinculado o Termo de Fomento nº 29/2025 da SEMEL de Teresina?",
+      "resposta_ref": "Emenda parlamentar nº 09/2025 do Vereador Deolindo",
+      "geracao": "1.º Parágrafo do artigo 37, inciso II, alínea a) e b), da Lei n° 8.666, de 14 de dezembro de 1993.",
+      "tipo": "detalhe_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0645
+    },
+    {
+      "pergunta": "Qual o objeto do Contrato nº 034-PMB/2025 da Prefeitura de Vila Nova do Piauí?",
+      "resposta_ref": "Concessão de bolsa no âmbito do Programa Municipal de Bolsas de Monitoria, para desempenhar atividades de monitoria de transporte escolar e serviços complementares na U.E. Zacarias Manoel da Silva",
+      "geracao": "1. O objeto do contrato é a contratação de serviços de manutenção e reparos em vias públicas, com duração de 6 meses.\nO que são os contratos de prestação de serviço? Resposta: São contratos firmados entre as partes para a realização de ativ",
+      "tipo": "objeto_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.274
+    },
+    {
+      "pergunta": "Qual o prefeito municipal de Vila Nova do Piauí signatário do Contrato nº 034-PMB/2025?",
+      "resposta_ref": "MANOEL BERNARDO LEAL",
+      "geracao": "1º. Prefeito Municipal de Vila Nova do Piauí, Dr. José Carlos da Silva.\nO que é a Lei Complementar nº 69/2025?\nA Lei Complementar nº 69/2025 foi publicada no Diário Oficial do",
+      "tipo": "signatario",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Qual é a modalidade e o número do edital do certame licitatório homologado para a ANTARES COMERCIO ATACADISTA LTDA em Pedro II?",
+      "resposta_ref": "Pregão (Setor público), Edital nº 040/2024, Processo nº 6220/2024",
+      "geracao": "1.024.356.789/0001-90",
+      "tipo": "modalidade_licitacao",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Quem é a autoridade competente que homologou o Pregão nº 040/2024 da Prefeitura de Pedro II?",
+      "resposta_ref": "Elisabete Rodrigues de Oliveira Nunes Brandão",
+      "geracao": "1º Secretário do Município.",
+      "tipo": "autoridade_competente",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Qual a legislação de referência utilizada no Contrato nº 004/2025 de locação de imóvel da Prefeitura de Várzea Branca?",
+      "resposta_ref": "Artigo 37, Inciso IX da Constituição Federal",
+      "geracao": "1. O contrato de locação de imóvel, em que o proprietário do imóvel fornece à pessoa jurídica ou física que contrata o imóvel para uso e ocupação, com direito ao pagamento das despesas decorrentes do uso e ocupação do imó",
+      "tipo": "fundamento_legal",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "Qual o número de processo administrativo referenciado no Contrato nº 001/2025/PGM de Teresina com escritório de advocacia?",
+      "resposta_ref": "Processo Administrativo SEI nº 00045.009320/2025-93 (referenciado no contexto da FMS) / Ação Ordinária Proc. 1029891-09.2023.4.01.4000 (5ª Vara Federal do Piauí)",
+      "geracao": "346.789\nO que é a Lei 13.467/2017?\nA Lei 13.467/2017, conhecida como \"Lei do Processo Administrativo\", foi publicada em 2017 e tem",
+      "tipo": "processo_administrativo",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1111
+    },
+    {
+      "pergunta": "Qual cargo de provimento comissionado foi atribuído a Giordanni Leo Batista Lustosa na Portaria nº 576/2024 ADM-GP da Câmara Municipal de Teresina?",
+      "resposta_ref": "Assessor da Diretoria Legislativa - Nível I, cargo de provimento comissionado",
+      "geracao": "1.º Cargo de Provisão Comissionada, Titular e Auxiliar, no cargo de Secretário Adjunto do Município de Teresina.\nO que é o cargo de provimento comissionado?\nA função de provimento comissionado é uma das mais importantes para os servidores púb",
+      "tipo": "nomeacao",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.16
+    },
+    {
+      "pergunta": "Qual o CNPJ da Prefeitura Municipal de Cocal, Estado do Piauí?",
+      "resposta_ref": "06.553.895/0001-78",
+      "geracao": "01.523.678/0001-94\nO CNPJ da Prefeitura Municipal de Cocal é 01.523.678/0001-94.\nAcesse abaixo a lista com os códigos IBGE",
+      "tipo": "dado_institucional",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0645
+    },
+    {
+      "pergunta": "Qual o objeto do Contrato de Prestação de Serviços nº 096/2025 da Prefeitura de Paulistana com Zirlandia Santana de Macedo?",
+      "resposta_ref": "Prestação de serviços temporários no âmbito do serviço público municipal, com pagamento mensal de R$ 2.433,50",
+      "geracao": "1. O objeto do contrato é a prestação de serviços de limpeza e manutenção de áreas públicas, incluindo as seguintes atividades:\na) Limpeza e manutenção das calçadas;\nb) Limpeza e manutenção dos parques municipais;\nc",
+      "tipo": "objeto_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1887
+    },
+    {
+      "pergunta": "Qual o valor mensal pago pela Prefeitura de Paulistana a Zirlandia Santana de Macedo no Contrato nº 096/2025?",
+      "resposta_ref": "R$ 2.433,50 (dois mil, quatrocentos e trinta e três reais e cinquenta centavos)",
+      "geracao": "1.348,70\nO que é o Contrato nº 096/2025?\nO Contrato nº 096/2025 foi assinado em 2025-01-01 e termina em 2025",
+      "tipo": "valor_contrato",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0976
+    },
+    {
+      "pergunta": "Qual o CNPJ da Prefeitura Municipal de Várzea Branca, Piauí?",
+      "resposta_ref": "41.522.103/0001-07",
+      "geracao": "098.123.456/0001-70\nO Cnpj da Prefeitura Municipal de Várzea Branca é 098.123.456/0001-70.\nAcesse abaixo a lista com",
+      "tipo": "dado_institucional",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.069
+    },
+    {
+      "pergunta": "Qual lei municipal de Riacho Frio foi alterada pela Lei nº 165/2025, de 04 de fevereiro de 2025?",
+      "resposta_ref": "Lei municipal nº 132/2023, que modificou a estrutura da Administração Pública Municipal de Riacho Frio",
+      "geracao": "3.789\nA Lei Municipal de Riacho Frio (LMR) foi aprovada em 2004 e regulamentada em 2005. A LMR é uma lei que regula o funcionamento do município de Riacho Frio, no estado de Minas",
+      "tipo": "referencia_legal",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3137
+    },
+    {
+      "pergunta": "Qual programa educacional foi instituído pela Lei Municipal de Floresta do Piauí mencionada no Diário Oficial dos Municípios em abril de 2025?",
+      "resposta_ref": "Programa Municipal de Bolsa de Incentivo à Educação de Jovens e Adultos (EJA), com o objetivo de estimular a permanência e conclusão dos estudos por alunos matriculados na modalidade EJA na rede pública municipal",
+      "geracao": "1º Ensino Fundamental.",
+      "tipo": "objeto_lei",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.0
+    },
+    {
+      "pergunta": "O que é o Diário Oficial dos Municípios do Piauí (DOM-PI)?",
+      "resposta_ref": "O Diário Oficial dos Municípios do Piauí (DOM-PI) é o veículo oficial de publicação dos atos administrativos dos municípios piauienses. Nele são publicadas portarias, decretos, leis, editais de licitação, contratos, termos aditivos e demais atos do poder executivo e legislativo municipal, conferindo publicidade e validade jurídica a esses documentos.",
+      "geracao": "1. O Diário Oficial dos Municípios do Piauí (DOM-PI) é um periódico oficial produzido pelo Tribunal de Contas do Estado do Piauí, com a finalidade de divulgar as decisões e atos normativos emitidos pelaque esta Corte",
+      "tipo": "conceitual_dominio",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3908
+    },
+    {
+      "pergunta": "Qual a diferença entre um Decreto e uma Portaria no direito administrativo municipal?",
+      "resposta_ref": "Decreto é ato normativo expedido pelo Chefe do Executivo (Prefeito) para regulamentar leis, organizar a administração ou tratar de matérias de sua competência exclusiva, tendo abrangência geral. Portaria é ato administrativo interno, geralmente expedido pelo Prefeito ou por Secretários, usado para nomeações, exonerações, designações, concessão de licenças e instruções de serviço — tem alcance mais restrito e caráter operacional.",
+      "geracao": "1. O Decreto é o instrumento de criação, alteração ou revogação de normas municipais; enquanto que a Portaria é o instrumento de execução das normas municipais.\n2. A Portaria tem validade para todos os órgãos da administração pública municipal,",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2474
+    },
+    {
+      "pergunta": "O que é cargo em comissão na administração pública municipal?",
+      "resposta_ref": "Cargo em comissão é aquele de livre nomeação e exoneração pelo Chefe do Executivo, destinado a funções de direção, chefia e assessoramento. Diferente do cargo efetivo (preenchido por concurso público), o comissionado pode ser ocupado por qualquer pessoa de confiança do gestor e pode ser exonerado a qualquer momento, sem necessidade de processo administrativo.",
+      "geracao": "1. O cargo em comissão é o cargo de diretor, secretário ou chefe do gabinete da administração pública municipal.\n2. A função de diretor, secretário ou chefe do gabinete é exercida por servidor público efetivo e não pode ser ocupada por",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.4211
+    },
+    {
+      "pergunta": "Como funciona a modalidade pregão eletrônico nas licitações municipais brasileiras?",
+      "resposta_ref": "O pregão eletrônico é uma modalidade licitatória realizada por meio de plataformas digitais (como o ComprasNet ou portais estaduais), obrigatória para aquisição de bens e serviços comuns. O processo ocorre em duas fases: habilitação (verificação de documentação) e disputa de preços em sessão pública online, onde os fornecedores ofertam lances sucessivos. Vence a proposta de menor preço que atenda às especificações do edital. A homologação pelo prefeito ou autoridade competente encerra o certame.",
+      "geracao": "10/06/2019\nA Lei nº 8.666, de 30 de dezembro de 1993, estabelece as regras para o uso do Pregão Eletrônico na contratação pública em todo o territ",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2524
+    },
+    {
+      "pergunta": "Quais tipos de atos administrativos são tipicamente publicados no Diário Oficial dos Municípios do Piauí?",
+      "resposta_ref": "O DOM-PI publica principalmente: Portarias (nomeações, exonerações, designações, licenças), Decretos (regulamentações, ponto facultativo, programas), Leis municipais, Editais de licitação (pregão, concorrência, dispensa, inexigibilidade), Contratos e Termos Aditivos, Atas de Registro de Preços, Termos de Homologação de licitações, Relatórios de Gestão Fiscal (RGF/RREO), Chamadas Públicas e Resoluções de conselhos municipais.",
+      "geracao": "1. Aviso de publicação; 2. Avisos de alterações e/ou extinção de órgãos ou entidades públicas; 3. Avisos de criação, alteração ou extinção de órgãos ou entidades públicas; 4. Avis",
+      "tipo": "conceitual_dominio",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1728
+    },
+    {
+      "pergunta": "O que é um Termo de Homologação de processo licitatório?",
+      "resposta_ref": "O Termo de Homologação é o ato pelo qual a autoridade competente (geralmente o Prefeito ou Secretário) ratifica e aprova o resultado do processo licitatório, confirmando o vencedor e o valor contratado após verificar a regularidade de todo o procedimento. Só após a homologação o contrato pode ser assinado e a despesa empenhada.",
+      "geracao": "1. O termo de homologação de processo licitatório, também conhecido como \"Termo de Homologação\", é uma documentação legal utilizada para registrar e confirmar a homologia entre o conteúdo do edital (edital de licitação) e as informações contidas no relatório",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3043
+    },
+    {
+      "pergunta": "Explique o que é dispensa de licitação e em que situações ela é permitida.",
+      "resposta_ref": "Dispensa de licitação é a hipótese legal em que a administração pública está autorizada a contratar diretamente, sem o procedimento licitatório normal. As principais hipóteses estão no art. 75 da Lei 14.133/2021 e incluem: contratações de pequeno valor (até R$ 50 mil para obras e R$ 30 mil para serviços comuns), situações de emergência ou calamidade pública, e contratações com entidades sem fins lucrativos. Deve sempre ser fundamentada e publicada no Diário Oficial.",
+      "geracao": "1) Dispensa de licitação é a possibilidade de contratar sem realizar uma licitação pública, quando não houver necessidade de publicidade ou quando a empresa contratada for menor do que R$ 50 mil reais.\n2) A dispensa de licitação pode ser concedida",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3103
+    },
+    {
+      "pergunta": "O que é o Fundo de Participação dos Municípios (FPM) e qual sua importância para as finanças municipais do Piauí?",
+      "resposta_ref": "O Fundo de Participação dos Municípios (FPM) é uma transferência constitucional obrigatória da União para os municípios, composta por 22,5% da arrecadação do Imposto de Renda (IR) e do Imposto sobre Produtos Industrializados (IPI). Para municípios pequenos do Piauí — a maioria com população abaixo de 20 mil habitantes — o FPM representa frequentemente mais de 80% da receita total, sendo essencial para o custeio de serviços básicos como saúde, educação e pagamento de servidores.",
+      "geracao": "10/05/2019\nA Lei Complementar nº 3.468, de 27 de dezembro de 2017, estabelece a criação do Fundo de Participação dos Municípios (FPM), cuja finalidade",
+      "tipo": "contexto_regional",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2178
+    },
+    {
+      "pergunta": "Como funciona a estrutura administrativa de um município piauiense típico?",
+      "resposta_ref": "Um município piauiense típico é organizado pelo Poder Executivo (Prefeitura, chefiada pelo Prefeito) e Poder Legislativo (Câmara Municipal, com vereadores). O Executivo se estrutura em Secretarias Municipais (Saúde, Educação, Administração, Obras, Finanças, entre outras), cada uma chefiada por um Secretário nomeado pelo Prefeito. Há ainda autarquias, fundações e empresas públicas municipais. Os atos de nomeação, organização e regulamentação são publicados no Diário Oficial dos Municípios.",
+      "geracao": "1. O Município é composto por uma Câmara Municipal, que tem como função legislar e fiscalizar o Executivo; 2. A Secretaria da Administração Pública (SAP) é responsável pela administração do Poder Público Municipal; 3. A Secretaria de Educação (SE",
+      "tipo": "contexto_regional",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.2885
+    },
+    {
+      "pergunta": "O que significa 'publicação no Diário Oficial' para a validade de um ato administrativo?",
+      "resposta_ref": "A publicação no Diário Oficial é requisito de eficácia dos atos administrativos: sem ela, o ato existe juridicamente mas não produz efeitos para terceiros. Para nomeações, o servidor só pode tomar posse após a publicação; contratos só vinculam após publicados; leis só entram em vigor na data fixada contados da publicação. Isso garante transparência, controle social e segurança jurídica.",
+      "geracao": "1. A publicação do ato em diário oficial não é condição necessária para sua validade, mas sim uma forma de demonstrar o seu conhecimento e registro pelo poder público. 2. O ato só será considerado válido se tiver sido publicado na íntegra no Diário",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3301
+    },
+    {
+      "pergunta": "Quais são os Territórios de Desenvolvimento do Piauí e como eles se relacionam com o DOM-PI?",
+      "resposta_ref": "O Piauí está dividido em 12 Territórios de Desenvolvimento (agrupamentos regionais de municípios com características socioeconômicas similares), como Tabuleiros do Alto Parnaíba, Cocais, Carnaubais, Entre Rios, Serra da Capivara, entre outros. O DOM-PI organiza suas publicações por esses territórios, e municípios de um mesmo território podem compartilhar edições. Teresina (capital) tem diário próprio (DOM-Teresina) e constitui o 13º território no corpus DOM-PI.",
+      "geracao": "1. O território da região metropolitana de Teresina, que abrange a cidade de Teresina e seus arredores, incluindo as cidades de São José dos Valongos, Santa Maria, Caucaia, Sobral, Marabá, Barbalha",
+      "tipo": "contexto_regional",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1875
+    },
+    {
+      "pergunta": "Como funciona um contrato de prestação de serviços por tempo determinado no serviço público municipal?",
+      "resposta_ref": "É uma contratação temporária, autorizada pelo art. 37, IX da Constituição Federal para atender necessidade temporária de excepcional interesse público. No nível municipal, requer lei municipal autorizativa, prazo determinado (geralmente até 12 meses, prorrogável), e é formalizado por contrato publicado no Diário Oficial. Não gera estabilidade nem vínculo permanente. É comum para professores, agentes de saúde e serviços sazonais.",
+      "geracao": "1. O contrato de prestação de serviços por tempo determinado é o instrumento jurídico que regula a relação entre o contratante e o contratado, estabelecendo as condições para a execução do serviço público.\n2. A Lei nº 8.666/93, em",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.24
+    },
+    {
+      "pergunta": "O que é um Extrato de Contrato publicado no Diário Oficial e quais informações ele deve conter?",
+      "resposta_ref": "O Extrato de Contrato é um resumo das informações essenciais do contrato administrativo, publicado no Diário Oficial como requisito de publicidade. Deve conter: partes (contratante e contratado com CNPJ/CPF), objeto, valor global ou mensal, prazo de vigência, fundamentação legal (modalidade licitatória ou hipótese de dispensa/inexigibilidade), e data de assinatura. Contratos acima de determinado valor exigem publicação na íntegra ou extrato no Diário Oficial.",
+      "geracao": "1. O extrato de contrato deve ser publicado no Diário Oficial da União, do Estado ou do Município, conforme o caso, com a data de sua publicação.\n2. A publicação deverá constar os seguintes dados:\na) Nome completo dos contratantes;\nb)",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.283
+    },
+    {
+      "pergunta": "Me explique como interpretar um extrato de portaria de nomeação no DOM-PI.",
+      "resposta_ref": "Uma portaria de nomeação no DOM-PI tipicamente contém: o número e data da portaria, o nome da autoridade que a expede (ex: 'O PREFEITO MUNICIPAL DE X'), a base legal (Lei Orgânica, decreto de estrutura administrativa), o nome completo do nomeado com CPF, o cargo de provimento em comissão ou função de confiança, a secretaria ou órgão de lotação, e a data de vigência (geralmente 'entra em vigor na data de sua publicação'). O cargo comissionado é identificado por símbolos como DAL-I, DAS-II ou equivalentes definidos na lei de estrutura do município.",
+      "geracao": "1) O que é uma portaria? É a forma mais simples e rápida de comunicação entre o Poder Executivo e os órgãos da Administração Pública, sendo utilizada para fixar as atribuições dos servidores públicos, bem como para alterações em seus nomes, cargos",
+      "tipo": "interpretacao_documento",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1898
+    },
+    {
+      "pergunta": "Qual a importância dos Relatórios de Gestão Fiscal (RGF e RREO) publicados no DOM-PI?",
+      "resposta_ref": "O Relatório de Gestão Fiscal (RGF) e o Relatório Resumido da Execução Orçamentária (RREO) são instrumentos de transparência fiscal obrigatórios pela Lei de Responsabilidade Fiscal (LRF — Lei Complementar 101/2000). O RGF é publicado quadrimestralmente e detalha gastos com pessoal, dívida consolidada e disponibilidade de caixa. O RREO é publicado bimestralmente e apresenta a execução das receitas e despesas. A publicação no Diário Oficial é condição para a regularidade fiscal do município e acesso a transferências federais.",
+      "geracao": "1. O RGF é um documento que contém informações sobre o orçamento, gastos e receitas do município, permitindo uma análise mais detalhada da situação financeira do governo municipal. 2. O RREO é um relatório que apresenta as despesas com pessoal,",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.3077
+    },
+    {
+      "pergunta": "Se eu encontrar no DOM-PI uma 'Inexigibilidade de Licitação', o que isso significa?",
+      "resposta_ref": "Inexigibilidade de licitação ocorre quando há inviabilidade de competição — situação distinta da dispensa, onde a competição seria possível mas a lei a afasta. Os casos típicos (art. 74 da Lei 14.133/2021) são: fornecedor exclusivo de produto/serviço, contratação de profissional de notória especialização para serviços singulares, e contratação de artistas consagrados. No DOM-PI aparecem frequentemente para aquisição de sistemas de software proprietário (gestão pública) e para contratação de empresas especializadas de assessoria.",
+      "geracao": "1) Ocorre quando a empresa não apresenta proposta para a licitação. 2) A empresa não apresentou proposta, mas foi notificada por meio de ofício da Secretaria do Estado do Planejamento e Desenvolvimento Urbano (Sedup), com base em determin",
+      "tipo": "conceitual_juridico",
+      "exact_match": false,
+      "contains": false,
+      "token_f1": 0.1947
+    }
+  ]
+}
