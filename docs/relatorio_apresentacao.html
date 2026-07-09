@@ -223,35 +223,35 @@
   </div>
 </div>
 
-<h3>O fio condutor entre as seis questões</h3>
-<p>As questões não são ilhas — elas formam um arco de construção de um assistente de domínio:</p>
+<!-- <h3>Relação entre as seis questões</h3>
+<p>As questões não precisam ser isoladas, elas formam um arco de construção de um assistente de domínio:</p> -->
 
-<div class="flow">
-  <div class="step"><span class="st-t">Q1 · DAPT</span>ensina o <em>idioma do domínio</em> aos pesos (pré-treino continuado no DOM-PI)</div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q2 · SFT</span>ensina o modelo a <em>seguir instruções</em> do domínio docentesDC</div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q3 · LoRA/QLoRA</span>repete a Q2 gastando <em>~1% dos parâmetros</em></div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q4 · Destilação</span>um professor 14B <em>transfere conhecimento</em> para alunos 0.5B/1.5B</div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q5 · RAG</span>traz o conhecimento <em>de fora dos pesos</em>, na hora da resposta</div>
-  <div class="arrow">→</div>
-  <div class="step"><span class="st-t">Q6 · Guardrails</span><em>protege</em> o assistente RAG em produção</div>
-</div>
+<!-- <div class="flow"> -->
+  <!-- <div class="step"><span class="st-t">Q1 · DAPT</span>ensina o <em>idioma do domínio</em> aos pesos (pré-treino continuado no DOM-PI)</div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q2 · SFT</span>ensina o modelo a <em>seguir instruções</em> do domínio docentesDC</div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q3 · LoRA/QLoRA</span>repete a Q2 gastando <em>~1% dos parâmetros</em></div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q4 · Destilação</span>um professor 14B <em>transfere conhecimento</em> para alunos 0.5B/1.5B</div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q5 · RAG</span>traz o conhecimento <em>de fora dos pesos</em>, na hora da resposta</div> -->
+  <!-- <div class="arrow">→</div> -->
+  <!-- <div class="step"><span class="st-t">Q6 · Guardrails</span><em>protege</em> o assistente RAG em produção</div>
+</div> -->
 
-<p>E há conexões cruzadas que aparecem ao longo do relatório: o modelo DAPT da Q1 vira o gerador <strong>G2</strong>
+<!-- <p>E há conexões cruzadas que aparecem ao longo do relatório: o modelo DAPT da Q1 vira o gerador <strong>G2</strong>
 do RAG da Q5 e é testado como ponto de partida do aluno na Q4; o RAG da Q5 "aterra" o professor no braço&nbsp;B da Q4;
 os guardrails da Q6 protegem exatamente o pipeline da Q5. A pergunta de fundo que atravessa tudo:
-<em>onde deve morar o conhecimento — nos pesos do modelo (Q1–Q4) ou fora deles, recuperado na hora (Q5)?</em></p>
+<em>onde deve morar o conhecimento — nos pesos do modelo (Q1–Q4) ou fora deles, recuperado na hora (Q5)?</em></p> -->
 
-<h3>Mapa de algoritmos — o que roda por baixo de cada questão</h3>
+<!-- <h3>Mapa de algoritmos — o que roda por baixo de cada questão</h3>
 <p>Para referência rápida na apresentação: os algoritmos centrais de cada questão, separados em
 <em>treino/inferência</em> (o que muda ou usa o modelo) e <em>avaliação</em> (como medimos). Cada um é explicado
 didaticamente na sua seção.</p>
 
 <table>
-  <tr><th>Questão</th><th>Algoritmos de treino / inferência</th><th>Algoritmos de avaliação</th></tr>
+  <tr><th>Questão</th><th>Algoritmos de treino / inferência</th><th>Avaliação</th></tr>
   <tr><td><strong>Q1</strong> · DAPT</td>
       <td>Modelagem causal de linguagem (previsão do próximo token) com <strong>cross-entropy</strong>, treino
       <em>packed</em> em blocos de 512; otimizador <strong>AdamW 8-bit</strong> + <em>gradient checkpointing</em>;
@@ -286,14 +286,14 @@ didaticamente na sua seção.</p>
       opcional; roteamento de fluxo (responder / bloquear / redirecionar). Implementação própria — ver
       "E o NeMo?" na §6.2.</td>
       <td>Taxa de proteção por categoria; helpfulness; over-refusal; latência por camada.</td></tr>
-</table>
+</table> -->
 
 <h3>Convenções de leitura deste relatório</h3>
 <ul>
   <li><strong>Cores dos gráficos:</strong> <span style="color:#5b93d8;font-weight:700">azul-claro = antes / sem intervenção</span> ·
       <span style="color:#256abf;font-weight:700">azul-escuro = depois / com intervenção</span>. Um único par de cores,
       seguro para daltonismo, usado em todo o relatório.</li>
-  <li><strong>Respostas dos modelos</strong> aparecem <em>verbatim</em> em blocos monoespaçados
+  <li><strong>Respostas dos modelos</strong> aparecem em blocos monoespaçados
       (<span class="model-tag tag-antes">antes</span> / <span class="model-tag tag-depois">depois</span>), com a
       pergunta e a resposta de referência do benchmark. Quando um modelo degenera em repetição, mostramos o trecho
       representativo e indicamos que o loop continua até o limite de tokens.</li>
@@ -311,7 +311,7 @@ didaticamente na sua seção.</p>
     depois da intervenção. A diferença é atribuível só à técnica.
   </div>
   <div class="card dim">
-    <div class="card-t">2 · de conjunto de teste separado antes do treino</div>
+    <div class="card-t">2 · Conjunto de teste separado antes do treino</div>
     Conjuntos de avaliação são separados <strong>antes</strong> de treinar (seed fixa) — o modelo nunca vê as
     perguntas nem os textos de avaliação durante o treino.
   </div>
@@ -397,7 +397,7 @@ métricas pedidas medem:</p>
   <tr><td><strong>Corpus</strong></td><td>DOM-PI unificado (~50&nbsp;M tokens, OCR ruidoso) + subcorpus curado de
       Teresina (~9,3&nbsp;M tokens, texto mais limpo)</td>
       <td>dois corpus permitem separar o efeito <em>volume</em> do efeito <em>qualidade</em> do texto.</td></tr>
-  <tr><td><strong>de conjunto de teste</strong></td><td>separado antes do treino, seed fixa</td>
+  <tr><td><strong>Conjunto de teste</strong></td><td>separado antes do treino, seed fixa</td>
       <td>a PPL é medida em texto que o modelo nunca viu — sem contaminação.</td></tr>
   <tr><td><strong>Receita de treino</strong></td><td>treino causal <em>packed</em> (blocos de 512), lr 2e-6,
       warmup 5% + cosine, early stopping pela CE no de conjunto de teste</td>
@@ -406,8 +406,8 @@ métricas pedidas medem:</p>
       verificados do corpus</td><td>quase o dobro do mínimo exigido (25); reaproveitado depois na Q5.</td></tr>
 </table>
 
-<h3>1.3 Protocolo de avaliação em três camadas</h3>
-<p>Avaliar DAPT só no domínio é contar meia história: o modelo pode melhorar nos diários <em>estragando</em> o resto.
+<h3>1.3 Protocolo de avaliação em outras situações</h3>
+<p>Avaliar DAPT só no domínio é limitado: o modelo pode melhorar nos diários <em>estragando</em> o resto.
 Por isso a avaliação segue o protocolo de três camadas consolidado na literatura de <em>continued pretraining</em>:</p>
 
 <div class="cards">
@@ -592,8 +592,12 @@ mostram <em>o que</em> a PPL está captando — e o que ela não resolve. Primei
     <code>gutoportelaa/qwen2.5-1.5b-dompi-teresina-v3</code> (corpus curado),
     <code>gutoportelaa/qwen2.5-1.5b-dompi-dapt</code> (variante QLoRA — gerador G2 da Q5).</li>
   <li><strong>Benchmark:</strong> <code>dompi_qa.jsonl</code> (49 perguntas + referências).</li>
-  <li><strong>Ordem das execuções:</strong> 1º treino full FT unificado → 2º treino Teresina → 3º variante QLoRA →
-      4º cross-família Llama → 5º evidências (retenção + geração + curva dose-resposta, só inferência).</li>
+  <li><strong>Ordem das execuções (com duração em 1× GPU L4):</strong> 1º treino full FT unificado (6h41) →
+      2º treino Teresina (2h36–2h51) → 3º variante QLoRA (17h22 — cada passo paga a dequantização NF4 e o adapter
+      percorre a agenda inteira sem disparar o early stopping) → 4º cross-família Llama-3.2-3B full FT (13h23) →
+      5º doses de 10% e 30% do corpus (2h16 e 2h59, treino+avaliação) → 6º corpus limpo (5h06) →
+      7º evidências — retenção nos dois held-outs, acurácia de geração 3×49 e curva, só inferência (25min ao todo;
+      a medição de PPL na Wikipedia-PT leva poucos minutos por modelo).</li>
 </ul>
 
 </div>
@@ -876,8 +880,9 @@ sobre os dados brutos:</p>
   <li><strong>Dataset:</strong> 1.500 pares instruction/output limpos (1.200 treino / 300 de conjunto de teste), com score de juiz.</li>
   <li><strong>Modelos:</strong> SFT full 1.5B e 0.5B (+ adapters LoRA/QLoRA da Q3, mesma cadeia).</li>
   <li><strong>Benchmark:</strong> <code>dc_bench.jsonl</code> — 30 perguntas CC/UFPI com referências e tipos.</li>
-  <li><strong>Ordem das execuções:</strong> 1º geração dos pares (professor 14B em vLLM) → 2º treino + avaliação
-      (todos os braços Q2/Q3 na mesma cadeia) → 3º julgamento LLM → 4º consolidação.</li>
+  <li><strong>Ordem das execuções (com duração em 1× GPU L4):</strong> 1º geração dos pares (professor 14B em
+      vLLM, 29min) → 2º treino + avaliação (todos os braços Q2/Q3 na mesma cadeia, 1h10) →
+      3º julgamento LLM (5min) → 4º consolidação.</li>
   <li><strong>Painel interativo</strong> com as 30 respostas de todos os braços:
       <a href="Q2-pos-treino-sft/painel_respostas_q2q3.html">painel_respostas_q2q3.html</a>.</li>
   <li><strong>Braço complementar:</strong> dados brutos + reanálise em
@@ -1018,7 +1023,8 @@ Adaptação de baixo custo não é imune a regressões pontuais; é para isso qu
       backbone pequeno.</li>
   <li><strong>Adapters</strong> LoRA/QLoRA de 1.5B e 0.5B salvos em <code>Q2-pos-treino-sft/modelos/</code>.</li>
   <li><strong>Ordem das execuções:</strong> mesma cadeia da Q2 (os seis braços — full/LoRA/QLoRA × 1.5B/0.5B —
-      treinaram e foram avaliados na mesma sequência, seguidos do julgamento LLM e da consolidação).</li>
+      treinaram e foram avaliados na mesma sequência dentro da mesma 1h10 de job, seguidos do julgamento LLM e da
+      consolidação; tempos individuais de treino na tabela da §3.2: full 9min · LoRA 6min · QLoRA 16min).</li>
 </ul>
 
 </div>
@@ -1519,9 +1525,11 @@ eixo de tamanho quando a quota recontabilizar.</span></p>
       <code>benchmark_v2_100.jsonl</code> (factual, 0 abstenções).</li>
   <li><strong>Modelos:</strong> 12 alunos do fatorial + especialistas v2 por tópico + extensões
       (cross-família, ULD, Copa 2026).</li>
-  <li><strong>Ordem das execuções:</strong> 1º geração do dataset (professor 14B em 2 GPUs) → 2º varredura dos 12
-      alunos (um por GPU, em paralelo) → 3º avaliação dos 14 modelos → 4º extensões (cross-família, Copa, DAPT,
-      ULD) → 5º v2 (contexto-ouro + especialistas) → 6º benchmark público ENEM.</li>
+  <li><strong>Ordem das execuções (com duração; GPUs L4):</strong> 1º geração do dataset (professor 14B em
+      2 GPUs, 21min) → 2º varredura dos 12 alunos (um por GPU, em paralelo, 1h26) → 3º avaliação dos 14 modelos →
+      4º extensões: cross-família 43min · ULD 1h08 · Copa 2026 2h19 → 5º v2 (contexto-ouro + 4 especialistas +
+      avaliação, 45min) → 6º benchmark público ENEM (8min) → 7º benchmark ampliado n100 (49min) → 8º alunos
+      cross-família (34min no cluster + avaliação de ~45min na RTX 4070 local).</li>
 </ul>
 
 </div>
@@ -1756,8 +1764,9 @@ Ação: RESPONDER[Não encontrado no corpus.]</div></div>
   <li><strong>Índice:</strong> 175.924 chunks × 768 dim, publicado no Hugging Face (privado):
       <code>gutoportelaa/dompi-rag-index-e5</code>.</li>
   <li><strong>Benchmark:</strong> <code>dompi_qa_tagged.jsonl</code> (49 perguntas, com tipo por pergunta).</li>
-  <li><strong>Ordem das execuções:</strong> 1º construção do índice (GPU) → 2º avaliação de retrieval (recall@k) →
-      3º geração G1/G2/G3 sem e com RAG → 4º traces dos 4 modos → 5º consolidação.</li>
+  <li><strong>Ordem das execuções:</strong> 1º construção do índice (GPU; ~882 embeddings/s → 175&nbsp;mil chunks
+      em minutos) → 2º avaliação de retrieval (recall@k) → 3º geração G1/G2/G3 sem e com RAG → 4º traces dos
+      4 modos → 5º consolidação. Toda a Q5 somou ~2h de GPU — o paradigma mais barato do trabalho (§10.4).</li>
 </ul>
 
 </div>
@@ -1961,7 +1970,8 @@ cada item <em>com e sem</em> guardrails e classifica a saída. As métricas capt
       por flag) sobre o RAG da Q5.</li>
   <li><strong>Benchmark:</strong> <code>guardrails_30.jsonl</code> — 30 itens com ação esperada por categoria.</li>
   <li><strong>Ordem das execuções (local, Ollama):</strong> 1º avaliação com groundedness → 2º avaliação da
-      configuração recomendada (sem groundedness) → comparação dos dois JSONs de resultados.</li>
+      configuração recomendada (sem groundedness) → comparação dos dois JSONs de resultados. Duração: ~10,5–15,5s
+      por item × 30 itens × 2 pipelines por configuração (≈ 30min por rodada, na latência média da §6.4).</li>
 </ul>
 
 </div>
@@ -2236,7 +2246,7 @@ GPUs NVIDIA L4 de 24&nbsp;GB (1 ou 2 por job).</p>
   <tr><td>Q6</td><td>avaliação dos guardrails (local, Ollama qwen2.5:14b)</td><td class="num">~30 chamadas × 2 configs</td></tr>
 </table>
 
-<h4>GPU-horas agregadas por frente (todos os jobs contabilizados, incl. falhas e reruns)</h4>
+<!-- <h4>GPU-horas agregadas por frente (todos os jobs contabilizados, incl. falhas e reruns)</h4>
 <table>
   <tr><th>Frente</th><th class="num">GPU-horas (elapsed)</th><th class="num">Jobs</th><th>Observação</th></tr>
   <tr><td>Q1 — DAPT</td><td class="num">355,4 h</td><td class="num">46</td><td>domina o custo: full FT com corpus de ~50 M tokens, múltiplas famílias e reruns pós-correção do bug</td></tr>
@@ -2249,9 +2259,9 @@ GPUs NVIDIA L4 de 24&nbsp;GB (1 ou 2 por job).</p>
 </table>
 <p class="small-note">Leitura de custo×benefício que os números contam: <strong>Q1 (355 h) e Q4 (23 h) entregam
 manchetes de magnitude comparável</strong> (−11 a −23% de PPL; +35 a +96% de key_recall) — colocar conhecimento nos
-pesos por pré-treino é ordens de magnitude mais caro que destilar ou recuperar (Q5: 2 h).</p>
+pesos por pré-treino é ordens de magnitude mais caro que destilar ou recuperar (Q5: 2 h).</p> -->
 
-<h4>Tamanhos registrados (antes da limpeza de 2026-07-07)</h4>
+<!-- <h4>Tamanhos registrados (antes da limpeza de 2026-07-07)</h4>
 <table>
   <tr><th>Artefato</th><th class="num">Tamanho</th><th>Destino na limpeza</th></tr>
   <tr><td>Checkpoints Q1 · full FT unificado (pré-correção do duplo-shift)</td><td class="num">118,5 GB</td><td>removido (superado pelo rerun corrigido)</td></tr>
@@ -2264,7 +2274,7 @@ pesos por pré-treino é ordens de magnitude mais caro que destilar ou recuperar
   <tr><td>Modelos Q4 · 29 alunos/especialistas salvos</td><td class="num">~60 GB (0.5B ≈ 0,94 GB · 1.5B ≈ 2,9 GB · Llama-1B ≈ 2,3 GB cada)</td><td>mantidos</td></tr>
   <tr><td>Modelos finais Q2 (full/LoRA/QLoRA × 2 tamanhos)</td><td class="num">~9,4 GB</td><td>mantidos</td></tr>
   <tr class="destaque"><td>Total liberado na limpeza</td><td class="num">≈ 525 GB</td><td><code>treino/</code>: 570 → 45 GB</td></tr>
-</table>
+</table> -->
 
 <h3>10.5 Referência metodológica</h3>
 <p class="small-note">Sebastian Raschka — <em>Build a Large Language Model (From Scratch)</em>: logits e softmax na
