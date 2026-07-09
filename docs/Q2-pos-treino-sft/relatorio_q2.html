@@ -196,7 +196,7 @@
 <li><strong>Professor:</strong> <code>Qwen2.5-14B-Instruct-AWQ</code> servido com <strong>vLLM</strong> em <strong>1 GPU L4</strong> (TP=1) — evitou a fila do nó de 2 GPUs.</li>
 <li><strong>Chunking:</strong> <code>len(text)&gt;200</code> → janelas de 800–1.200 chars em quebra natural.</li>
 <li><strong>Distribuição final:</strong> explicação 559 · código 367 · resumo 225 · comparação 198 · factual 151 (chunks com cara de código roteados para "código").</li>
-<li><strong>Controle de qualidade (3 camadas):</strong> validação estrutural → dedup de instruções → <strong>juiz LLM (1–5)</strong>. Descartes: 247 respostas curtas, 74 duplicadas, 9 JSON inválido, <strong>440 reprovados pelo juiz</strong> (score 1–2). Distribuição de score dos aprovados: 3→599, 4→492, 5→538. Resultado: <strong>1.500 pares limpos</strong> → <strong>1.200 treino / 300 held-out</strong>.</li>
+<li><strong>Controle de qualidade (3 camadas):</strong> validação estrutural → dedup de instruções → <strong>juiz LLM (1–5)</strong>. Descartes: 247 respostas curtas, 74 duplicadas, 9 JSON inválido, <strong>440 reprovados pelo juiz</strong> (score 1–2). Distribuição de score dos aprovados: 3→599, 4→492, 5→538. Resultado: <strong>1.500 pares limpos</strong> → <strong>1.200 treino / 300 de conjunto de teste</strong>.</li>
 </ul>
 <p>Scripts: <code>gerar_pares_docentes.py</code> · <code>run_q2_gerar_1gpu.sbatch</code>.</p>
 <h2>4. SFT</h2>
@@ -207,9 +207,9 @@
 <li>Script único <code>sft_docentes.py --method full</code> (LoRA/QLoRA = Q3, mesmo loop → comparação controlada).</li>
 </ul>
 <h2>5. Resultados — antes × depois (Qwen2.5-1.5B)</h2>
-<table><thead><tr><th>Modelo</th><th>PPL held-out ↓</th><th>F1 médio (bench)</th><th>Juiz 1-5 ↑</th><th>Compr. médio resposta</th></tr></thead><tbody><tr><td><strong>Base 1.5B (antes)</strong></td><td>4,33</td><td>0,212</td><td>3,43</td><td>849 chars</td></tr><tr><td><strong>SFT full (Q2)</strong></td><td><strong>3,56</strong> (−18%)</td><td><strong>0,283</strong> (+33%)</td><td>3,37</td><td>157 chars</td></tr></tbody></table>
+<table><thead><tr><th>Modelo</th><th>PPL de conjunto de teste ↓</th><th>F1 médio (bench)</th><th>Juiz 1-5 ↑</th><th>Compr. médio resposta</th></tr></thead><tbody><tr><td><strong>Base 1.5B (antes)</strong></td><td>4,33</td><td>0,212</td><td>3,43</td><td>849 chars</td></tr><tr><td><strong>SFT full (Q2)</strong></td><td><strong>3,56</strong> (−18%)</td><td><strong>0,283</strong> (+33%)</td><td>3,37</td><td>157 chars</td></tr></tbody></table>
 <ul>
-<li><strong>PPL no held-out caiu 18%</strong> — evidência limpa de que o SFT <strong>adaptou o modelo ao domínio</strong> docentesDC (a métrica menos enviesada, no conjunto reservado).</li>
+<li><strong>PPL no de conjunto de teste caiu 18%</strong> — evidência limpa de que o SFT <strong>adaptou o modelo ao domínio</strong> docentesDC (a métrica menos enviesada, no conjunto reservado).</li>
 <li><strong>F1 lexical subiu 33%</strong> no benchmark CC/UFPI.</li>
 <li>O <strong>juiz</strong> ficou praticamente igual (3,43→3,37): o baseline Instruct <strong>já é forte</strong> em CC genérica; o ganho de domínio não se traduz em vantagem clara num juiz semântico.</li>
 <li><code>EM</code>/<code>contains</code> foram <strong>0 em todos os braços</strong> (referências são frases completas e a geração parafraseia) → métricas não-informativas aqui; usamos <strong>PPL + F1 + juiz</strong>.</li>
@@ -225,7 +225,7 @@
 <h3>Eixo de tamanho (0.5B)</h3>
 <p>O 0.5B replica o padrão de forma mais severa: PPL 5,29→4,56, mas o juiz <strong>cai</strong> 2,77→1,87 (o modelo pequeno, ao encurtar, perde mais raciocínio). Confirma que a capacidade do backbone modula quanto o SFT ajuda × atrapalha.</p>
 <h2>6. Conclusão</h2>
-<p>O SFT a partir de 1.500 pares <em>grounded self-instruct</em> <strong>adaptou os modelos ao domínio</strong> docentesDC (PPL held-out −18%, conceitual ↑), com a ressalva honesta de que a <strong>compressão do estilo</strong> custa desempenho em código e que um baseline Instruct forte limita o ganho visível no juiz. A comparação com PEFT (LoRA/QLoRA) e o arco com a Q1 estão na <a href="../Q3-pos-treino-lora-qlora/relatorio.md">Questão 3</a> — onde a <strong>conservadoria do QLoRA vira vantagem</strong> justamente por comprimir menos.</p>
+<p>O SFT a partir de 1.500 pares <em>grounded self-instruct</em> <strong>adaptou os modelos ao domínio</strong> docentesDC (PPL de conjunto de teste −18%, conceitual ↑), com a ressalva honesta de que a <strong>compressão do estilo</strong> custa desempenho em código e que um baseline Instruct forte limita o ganho visível no juiz. A comparação com PEFT (LoRA/QLoRA) e o arco com a Q1 estão na <a href="../Q3-pos-treino-lora-qlora/relatorio.md">Questão 3</a> — onde a <strong>conservadoria do QLoRA vira vantagem</strong> justamente por comprimir menos.</p>
 <h2>7. Reprodução</h2>
 <p>Runbook: [<code>scripts/README_RUNBOOK.md</code>]. Cadeia: <code>run_q2_gerar_1gpu</code> → <code>run_q2q3_treino_aval</code> → <code>run_q2q3_juiz_1gpu</code> → <code>consolidar_q2q3.py</code>. Métricas brutas em <code>resultados/*.json</code> (com a geração completa por item), consolidado em <code>resultados/resumo_q2q3.md</code>.</p>
 </main></body></html>

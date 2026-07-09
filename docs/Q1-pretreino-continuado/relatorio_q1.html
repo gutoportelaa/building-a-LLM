@@ -235,35 +235,35 @@ administrativa dos diários oficiais.</p>
   <tr><th>Item</th><th>Descrição</th></tr>
   <tr><td>Base <strong>Qwen2.5-1.5B</strong></td><td>Forte em português, licença permissiva, cabe full-FT na L4 (24 GB) com AdamW 8-bit.</td></tr>
   <tr><td>Corpus <strong>unificado</strong> e <strong>Teresina</strong></td><td>DOM-PI (224 municípios + capital, ~50 M tokens de OCR ruidoso); Teresina curado (~9,3 M tokens, texto mais limpo).</td></tr>
-  <tr><td>Held-out fixo (seed=42)</td><td>Separado antes do treino — avaliação antes×depois reproduzível e sem vazamento.</td></tr>
+  <tr><td>de conjunto de teste fixo (seed=42)</td><td>Separado antes do treino — avaliação antes×depois reproduzível e sem vazamento.</td></tr>
   <tr><td>Benchmark <code>dompi_qa.jsonl</code></td><td><strong>49 perguntas</strong> com fatos verificados do tier A (supera o mínimo de 25).</td></tr>
 </table>
 <p>A avaliação segue o <strong>protocolo de três camadas</strong> consolidado para continued-pretraining
 (tutorial NAACL'25, <a href="https://arxiv.org/abs/2504.03931">arXiv:2504.03931</a>):</p>
 <table>
   <tr><th>Camada</th><th>O que mede</th><th>Como</th></tr>
-  <tr><td><strong>1. Ganho de domínio</strong></td><td>o modelo ficou melhor no DOM-PI?</td><td>PPL/CE/token-acc no held-out e no benchmark (§3)</td></tr>
-  <tr><td><strong>2. Retenção</strong></td><td>o DAPT estragou o conhecimento geral?</td><td>PPL num held-out de domínio <em>geral</em> (Wikipedia-PT) (§4)</td></tr>
+  <tr><td><strong>1. Ganho de domínio</strong></td><td>o modelo ficou melhor no DOM-PI?</td><td>PPL/CE/token-acc no de conjunto de teste e no benchmark (§3)</td></tr>
+  <tr><td><strong>2. Retenção</strong></td><td>o DAPT estragou o conhecimento geral?</td><td>PPL num de conjunto de teste de domínio <em>geral</em> (Wikipedia-PT) (§4)</td></tr>
   <tr><td><strong>3. Utilidade downstream</strong></td><td>serve numa tarefa real?</td><td>usado como gerador no RAG da Q5</td></tr>
 </table>
 
 <h2>3. Camada 1 — Ganho de domínio (resultado central)</h2>
-<p>Avaliação antes×depois no held-out de domínio (mesma execução das §4–§5):</p>
+<p>Avaliação antes×depois no de conjunto de teste de domínio (mesma execução das §4–§5):</p>
 <table>
-  <tr><th>Modelo</th><th>Corpus</th><th class="num">PPL held-out</th><th class="num">Δ vs baseline</th><th class="num">token-acc</th></tr>
+  <tr><th>Modelo</th><th>Corpus</th><th class="num">PPL de conjunto de teste</th><th class="num">Δ vs baseline</th><th class="num">token-acc</th></tr>
   <tr><td>Baseline 1.5B</td><td>—</td><td class="num">9,82 / 6,91 *</td><td class="num">—</td><td class="num">0,545</td></tr>
   <tr style="font-weight:bold;background:var(--ok-bg)"><td>Full FT unificado</td><td>completo</td><td class="num">8,74</td><td class="num">−11,1%</td><td class="num">0,562</td></tr>
   <tr style="font-weight:bold;background:var(--ok-bg)"><td>Full FT Teresina</td><td>Teresina</td><td class="num">6,02 *</td><td class="num">−12,8%</td><td class="num">0,608</td></tr>
   <tr><td>QLoRA unificado</td><td>completo</td><td class="num">9,88</td><td class="num">−1,4%</td><td class="num">~</td></tr>
 </table>
-<p style="font-size:0.82rem;color:var(--muted)">* Teresina mede no held-out curado de Teresina (baseline 6,91); o unificado, no held-out geral DOM-PI (baseline 9,82).</p>
+<p style="font-size:0.82rem;color:var(--muted)">* Teresina mede no de conjunto de teste curado de Teresina (baseline 6,91); o unificado, no de conjunto de teste geral DOM-PI (baseline 9,82).</p>
 <div class="callout info">
   <strong>Full-FT &gt; PEFT</strong> nos dois corpora — como a teoria de DAPT prevê: parâmetros plenos absorvem mais do
   domínio; o low-rank (NF4/QLoRA) regulariza, é mais robusto ao ruído, mas conservador (ganho marginal, −1,4%).
 </div>
 
 <h2>4. Camada 2 — Retenção de capacidade (anti-esquecimento)</h2>
-<p>Held-out de <strong>domínio geral</strong> (Wikipedia-PT, fora dos diários), PPL antes×depois — mesma execução que
+<p>de conjunto de teste de <strong>domínio geral</strong> (Wikipedia-PT, fora dos diários), PPL antes×depois — mesma execução que
 mediu o domínio:</p>
 <table>
   <tr><th>Modelo</th><th class="num">PPL domínio <em>geral</em></th><th class="num">PPL domínio <em>DOM-PI</em></th><th class="num">token-acc dom.</th></tr>
@@ -298,13 +298,13 @@ referência.</p>
 </div>
 
 <h2>6. Curva dose-resposta — PPL cai com log(tokens)</h2>
-<p>Treinamos o full-FT em frações crescentes do corpus (mesmo held-out fixo):</p>
+<p>Treinamos o full-FT em frações crescentes do corpus (mesmo de conjunto de teste fixo):</p>
 <figure>
-  <img src="resultados/figuras/curva_dose_resposta.png" alt="Curva dose-resposta: PPL no held-out versus tokens de DAPT (escala log)">
-  <figcaption>PPL no held-out cai monotonicamente e achata com log(tokens) de pré-treino continuado.</figcaption>
+  <img src="resultados/figuras/curva_dose_resposta.png" alt="Curva dose-resposta: PPL no de conjunto de teste versus tokens de DAPT (escala log)">
+  <figcaption>PPL no de conjunto de teste cai monotonicamente e achata com log(tokens) de pré-treino continuado.</figcaption>
 </figure>
 <table>
-  <tr><th class="num">Tokens de DAPT</th><th class="num">PPL held-out</th><th class="num">Δ vs baseline</th></tr>
+  <tr><th class="num">Tokens de DAPT</th><th class="num">PPL de conjunto de teste</th><th class="num">Δ vs baseline</th></tr>
   <tr><td class="num">0 (baseline)</td><td class="num">9,82</td><td class="num">—</td></tr>
   <tr><td class="num">~4,2 M (10%)</td><td class="num">9,28</td><td class="num">−5,5%</td></tr>
   <tr><td class="num">~12,5 M (30%)</td><td class="num">8,99</td><td class="num">−8,4%</td></tr>
@@ -316,23 +316,23 @@ treino.</p>
 
 <h2>7. Limpeza de OCR não melhora a PPL (negativo informativo)</h2>
 <p>Hipótese: remover ruído de OCR (IDs colados, linhas de baixa razão alfabética, cabeçalhos quebrados) daria um sinal
-de treino mais limpo e mais ganho — como o subcorpus curado de Teresina sugere. Aplicamos um filtro heurístico
+de treino mais limpo e mais ganho, como o subcorpus curado de Teresina sugere. Aplicamos um filtro heurístico
 (<code>limpar_corpus_ocr.py</code>): <strong>−13% de caracteres</strong>, 98% dos documentos preservados.</p>
 <table>
-  <tr><th>Treino</th><th class="num">PPL held-out</th><th class="num">Δ</th></tr>
+  <tr><th>Treino</th><th class="num">PPL de conjunto de teste</th><th class="num">Δ</th></tr>
   <tr><td>Corpus <strong>bruto</strong> (unificado)</td><td class="num">8,74</td><td class="num">−11,1%</td></tr>
   <tr><td>Corpus <strong>limpo</strong> (mesmo volume relativo)</td><td class="num">8,80</td><td class="num">−10,4%</td></tr>
 </table>
 <div class="callout warn">
-  <strong>Resultado:</strong> a limpeza <strong>não ajudou</strong> — ficou marginalmente pior. Causa provável: o
-  <strong>held-out continua sendo OCR bruto</strong>, então um modelo treinado em texto limpo sofre leve descasamento de
+  <strong>Resultado:</strong> a limpeza <strong>não ajudou</strong> , ficou levemente pior. Causa provável: o
+  <strong>de conjunto de teste continua sendo OCR bruto</strong>, então um modelo treinado em texto limpo sofre leve descasamento de
   distribuição (treino limpo × avaliação ruidosa) e ainda vê ~13% menos tokens. Mostrar o benefício real da limpeza
-  exigiria também um held-out limpo — mas aí os números deixariam de ser comparáveis. <strong>Decisão (canônica):</strong>
-  mantém-se o full-FT do corpus bruto unificado (−11,1%); a limpeza entra como análise, não como resposta.
+  exigiria também um de conjunto de teste limpo, mas aí os números deixariam de ser comparáveis. <strong>Decisão (canônica):</strong>
+  Manteve-se o full-FT do corpus bruto unificado (−11,1%); a limpeza entra como análise, não como resposta.
 </div>
 
 <h2>8. Generalização cross-família — Qwen vs Llama</h2>
-<p>O enunciado permite outra família. Repetimos o DAPT canônico (full-FT, mesmo corpus bruto unificado, mesmo held-out,
+<p>O enunciado permite outra família. Repetimos o DAPT canônico (full-FT, mesmo corpus bruto unificado, mesmo de conjunto de teste,
 mesmos hiperparâmetros) num modelo de <strong>família diferente</strong>, o <strong>Llama-3.2-3B (Meta)</strong>, para
 testar se o ganho é específico do Qwen ou um efeito geral.</p>
 <table>
@@ -341,8 +341,7 @@ testar se o ganho é específico do Qwen ou um efeito geral.</p>
   <tr style="font-weight:bold;background:var(--ok-bg)"><td>Llama-3.2-3B</td><td>Meta</td><td class="num">10,55</td><td class="num">8,09</td><td class="num">−23,3%</td><td class="num">0,566 → 0,605</td></tr>
 </table>
 <div class="callout success">
-  <strong>O DAPT generaliza entre arquiteturas.</strong> Ambas as famílias melhoram substancialmente — o ganho não é um
-  artefato do Qwen. E <strong>quem parte mais fraco no domínio ganha mais</strong>: o Llama começa pior (PPL 10,55 &gt;
+  <strong>O DAPT generaliza entre arquiteturas.</strong> Ambas as famílias melhoram substancialmente, mostrando que o ganho não é exclusividade do Qwen. E <strong>quem parte mais fraco no domínio ganha mais</strong>: o Llama começa pior (PPL 10,55 &gt;
   9,82 — o Qwen2.5 é mais forte em PT de fábrica), mas o DAPT rende o <strong>dobro</strong> (−23,3% vs −11,1%) e o
   Llama-3.2-3B <strong>ultrapassa</strong> o Qwen pós-adaptação (8,09 &lt; 8,74): mais capacidade (3 B) e mais "espaço
   para aprender" absorvem mais sinal.
@@ -380,17 +379,7 @@ gradient checkpointing; treino distribuído (FSDP) só seria necessário a parti
 <p>Magnitude e trade-off do nosso resultado são coerentes com a literatura: DAPT em corpus pequeno/ruidoso entrega
 ganho de domínio mensurável, com retenção preservada quando o <code>lr</code> é conservador.</p>
 
-<h2>10. Nota de validação do pipeline</h2>
-<div class="callout info">
-  Antes de confiar nas métricas, validamos a sanidade do <em>loop</em> de treino: a CE do baseline interno deve bater o
-  <code>avaliar_modelo.py</code> (<strong>PPL ≈ 10</strong>, não dezenas de milhar). Essa checagem expôs e corrigiu um
-  <em>duplo deslocamento de rótulos</em> no <code>PackedTextDataset</code> (o objetivo otimizava "prever 2 tokens à
-  frente"); após a correção (<code>labels = input_ids.clone()</code> — o shift fica só por conta do modelo), o baseline
-  interno reconcilia com a avaliação e os ganhos acima são reais. <strong>Lição metodológica:</strong> validar o
-  pipeline antes de atribuir resultados ao corpus.
-</div>
-
-<h2>11. Modelos publicados e reprodução</h2>
+<h2>10. Modelos publicados e reprodução</h2>
 <ul>
   <li><code>gutoportelaa/qwen2.5-1.5b-dompi-fullft-unificado</code> — canônica (dataset completo).</li>
   <li><code>gutoportelaa/qwen2.5-1.5b-dompi-teresina-v3</code> — alternativa (corpus curado).</li>

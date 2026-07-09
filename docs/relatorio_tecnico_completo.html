@@ -271,7 +271,7 @@
 <table>
   <tr><th>Dimensão</th><th>Corpus geral</th><th>Subcorpus Teresina</th></tr>
   <tr><td>Documentos (treino)</td><td class="num">54.368</td><td class="num">8.441 (cluster) / 9.133 (HF)</td></tr>
-  <tr><td>Documentos (held-out)</td><td class="num">2.000</td><td class="num">444</td></tr>
+  <tr><td>Documentos (de conjunto de teste)</td><td class="num">2.000</td><td class="num">444</td></tr>
   <tr><td>Tamanho JSONL</td><td class="num">208 MB</td><td class="num">17 MB (cluster) / ~37 MB descomprimido HF</td></tr>
   <tr><td>Tokens estimados</td><td class="num">~50 M</td><td class="num">~4 M (cluster) / ~9,3 M (HF)</td></tr>
   <tr><td>Qualidade</td><td>OCR misto (tiers A/B/C)</td><td>Tier A: 95,6% / B: 4,3%</td></tr>
@@ -319,7 +319,7 @@ sobre alternativas, sem requerer decodificação por geração.</p>
   <div class="exp-map-row">
     <div class="exp-map-cell"><strong>381–383</strong><br><small>Qwen 0.5B</small></div>
     <div class="exp-map-cell">Full FT, corpus DOM-PI geral, lr=5e-6→2e-5</div>
-    <div class="exp-map-cell"><span style="color:var(--bad-fg)">✗ Esquecimento catastrófico</span>: PPL ×3–5 no held-out. LR alto demais para corpus pequeño com OCR ruidoso.</div>
+    <div class="exp-map-cell"><span style="color:var(--bad-fg)">✗ Esquecimento catastrófico</span>: PPL ×3–5 no de conjunto de teste. LR alto demais para corpus pequeño com OCR ruidoso.</div>
   </div>
   <div class="exp-map-row">
     <div class="exp-map-cell"><strong>384</strong><br><small>Qwen 0.5B</small></div>
@@ -356,7 +356,7 @@ sobre alternativas, sem requerer decodificação por geração.</p>
 <!-- 1.5 Resultados -->
 <h3>1.5 Resultados Quantitativos</h3>
 
-<h4>Held-out principal (2.000 documentos DOM-PI geral)</h4>
+<h4>de conjunto de teste principal (2.000 documentos DOM-PI geral)</h4>
 <table>
   <tr>
     <th>Método</th><th>Corpus treino</th>
@@ -384,7 +384,7 @@ sobre alternativas, sem requerer decodificação por geração.</p>
   </tr>
 </table>
 
-<h4>Held-out Teresina (444 documentos, baseline 1.5B)</h4>
+<h4>de conjunto de teste Teresina (444 documentos, baseline 1.5B)</h4>
 <table>
   <tr>
     <th>Método</th><th>Corpus treino</th>
@@ -584,7 +584,7 @@ Resposta:</div>
 <h3>1.7 Conclusão da Questão 1</h3>
 
 <div class="callout danger">
-  <strong>Resultado central:</strong> Nenhum método de DAPT testado superou o baseline de perplexidade no held-out.
+  <strong>Resultado central:</strong> Nenhum método de DAPT testado superou o baseline de perplexidade no de conjunto de teste.
   O corpus DOM-PI (~50 M tokens) é estruturalmente insuficiente para DAPT efetivo com modelos de 1,5 B parâmetros.
 </div>
 
@@ -614,7 +614,7 @@ Resposta:</div>
 
 <p><strong>Achado relevante:</strong> O Full FT com corpus Teresina produziu geração estruturalmente mais correta
 (tabelas de contratos, portarias completas com vigência e assinatura) e melhor localização factual (SEAP).
-A melhora qualitativa não é capturada pela perplexidade no held-out — limitação conhecida da métrica quando o
+A melhora qualitativa não é capturada pela perplexidade no de conjunto de teste — limitação conhecida da métrica quando o
 corpus de avaliação não inclui os padrões estruturais aprendidos.</p>
 
 </div><!-- /q-body Q1 -->
@@ -715,7 +715,7 @@ Responda APENAS com o JSON, sem texto adicional.</pre>
   <li><strong>10 perguntas de análise de código</strong> — identificar função, bug, complexidade</li>
   <li><strong>10 perguntas contextuais UFPI</strong> — sobre os conteúdos específicos do DC-UFPI</li>
 </ul>
-<p>Métricas: PPL antes/depois no held-out (20% dos pares SFT), ROUGE-L das respostas geradas vs referência,
+<p>Métricas: PPL antes/depois no de conjunto de teste (20% dos pares SFT), ROUGE-L das respostas geradas vs referência,
 e avaliação qualitativa amostral.</p>
 
 </div><!-- /q-body Q2 -->
@@ -883,7 +883,7 @@ supera o aluno não-destilado.</p>
 <p>Eixo experimental adicional: o <strong>grounding do professor</strong> virou variável de estudo —
 <strong>braço A ("zerada")</strong> = professor responde só da memória paramétrica; <strong>braço B (RAG)</strong> =
 professor responde com contexto recuperado do índice DOM-PI da Q5. Matriz de <strong>12 alunos</strong>:
-{0.5B, 1.5B} × {ce, kl, combined} × {A, B}. Avaliação no benchmark held-out de 100 perguntas (50 DOM-PI + 50
+{0.5B, 1.5B} × {ce, kl, combined} × {A, B}. Avaliação no benchmark de conjunto de teste de 100 perguntas (50 DOM-PI + 50
 docentesDC), <strong>sem RAG na inferência</strong> (testa o que ficou nos pesos). Referência = resposta do
 professor 14B com RAG. RG = ROUGE-L; KR = key-term recall.</p>
 
