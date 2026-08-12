@@ -79,6 +79,9 @@ progress.jsonl
 data/*
 !data/samples/
 !data/samples/**
+# Exceção: lista de ids do held-out do Q1 (94 KB). O corpus é derivável do
+# dataset no HuggingFace, mas o split exato não — versionar torna-o reproduzível.
+!data/held_out_ids.txt
 
 # Notebook checkpoints
 .ipynb_checkpoints/
