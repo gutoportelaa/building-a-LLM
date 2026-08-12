@@ -44,21 +44,35 @@ arquivo = hash da URL), formato legado que perde município e data de publicaç�
 
 ## Artefatos que exigiram upload próprio
 
-Não derivam de nada publicado e foram salvos separadamente antes do descarte da
-máquina:
+Não derivam de nada publicado. Estão em
+[`dompi-trabalho-final-modelos`](https://huggingface.co/gutoportelaa/dompi-trabalho-final-modelos)
+(repositório **privado**), enviados em 2026-08-12:
 
-| Artefato | Tamanho | Observação |
-|---|---:|---|
-| `trabalho-final/Q2-pos-treino-sft/modelos/sft_full_0.5b` | 958 MB | full fine-tuning: os pesos são o próprio artefato |
-| `trabalho-final/Q2-pos-treino-sft/modelos/sft_full_1.5b` | 2,9 GB | idem |
-| `trabalho-final/Q2-pos-treino-sft/modelos/*/adapter/` (4×) | 209 MB | adapters LoRA/QLoRA dos quatro braços |
-| `trabalho-final/Q4-destilacao/modelos_local/xfam_llama1b_B_ce` | 2,4 GB | aluno cross-família do Q4 |
-| `data/train_corpus.jsonl` + `held_out.jsonl` | 219 MB | corpus de treino do Q1 (derivável do HF, mas o split não) |
-| `datalake/extraido/` | 254 MB | OCR bruto pré-limpeza |
+| Artefato | Caminho no repo HF | Tamanho |
+|---|---|---:|
+| `trabalho-final/Q2-pos-treino-sft/modelos/sft_full_0.5b` | `Q2-sft/sft_full_0.5b` | 988 MB |
+| `trabalho-final/Q2-pos-treino-sft/modelos/sft_full_1.5b` | `Q2-sft/sft_full_1.5b` | 3,1 GB |
+| `trabalho-final/Q2-pos-treino-sft/modelos/*/adapter/` (4×) | `Q2-sft/sft_{lora,qlora}_{0.5,1.5}b/adapter` | 218 MB |
+| `trabalho-final/Q4-destilacao/modelos_local/xfam_llama1b_B_ce` | `Q4-destilacao/xfam_llama1b_B_ce` | 2,5 GB |
+| `data/train_corpus.jsonl` + `held_out.jsonl` + `held_out_ids.txt` | `Q1-dados/` | 229 MB |
+
+Total conferido no servidor: **7,2 GB**.
+
+```bash
+hf download gutoportelaa/dompi-trabalho-final-modelos --local-dir modelos
+```
 
 Os `model.safetensors` **merged** dos braços LoRA/QLoRA (sft_lora_1.5b 3,0 GB,
 sft_qlora_1.5b 1,2 GB, sft_lora_0.5b 1007 MB, sft_qlora_0.5b 501 MB) não foram
-salvos: são base + adapter fundidos, regeneráveis a partir dos 209 MB de adapter.
+salvos: são base + adapter fundidos, regeneráveis a partir dos adapters.
+
+`datalake/extraido/` **não** exigiu upload próprio: já está publicado como o
+config `extraido` de `dom-pi-corpus-2025`, conforme a tabela acima.
+
+> Correção (2026-08-12): a versão anterior desta seção afirmava que estes
+> artefatos "foram salvos separadamente" antes de qualquer upload ter
+> acontecido. Na auditoria de descarte da máquina eles ainda existiam apenas no
+> disco local. Os uploads acima foram feitos e conferidos contra a API do Hub.
 
 ## Reprodutibilidade do split do Q1
 
